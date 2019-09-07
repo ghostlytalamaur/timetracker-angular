@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col">
+    <ng-container *ngIf="session$ | async as session; else errorTemplate">
+      <p>Start: {{ session.start }}</p>
+      <p>End: {{ session.end }}</p>
+    </ng-container>
+
+    <ng-template #errorTemplate>
+      <h4>Session with this id doesn't exists</h4>
+    </ng-template>
+
+  </div>
+</div>

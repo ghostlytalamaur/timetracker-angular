@@ -1,0 +1,34 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="push">
+    Side navigation content
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button (click)="sidenav.open()" mat-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <a mat-button routerLink="">Time Tracker</a>
+      <span class="flex-fill"></span>
+
+      <a mat-button routerLink="/login2">Page Not Found</a>
+
+      <ng-container *ngIf="isSignedIn$ | async; else loginBtnTemplate">
+        <a mat-button routerLink="sessions" routerLinkActive="active">Sessions</a>
+
+        <button (click)="onSignOut()" mat-button>Sign Out</button>
+      </ng-container>
+
+    </mat-toolbar>
+
+    <div [@routerAnimation]="o.isActivated ? o.activatedRoute : ''" class="content">
+      <router-outlet #o="outlet"></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<ng-template #loginBtnTemplate>
+  <a mat-button routerLink="/login" routerLinkActive="active">Sign In</a>
+</ng-template>

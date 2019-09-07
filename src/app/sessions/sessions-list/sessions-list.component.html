@@ -1,0 +1,13 @@
+<ng-container>
+  <div class="row">
+    <div class="col h-100 overflow-auto">
+      <mat-card
+        (click)="onOpenSession(session)"
+        *ngFor="let session of sessions$ | async; trackBy: trackById"
+      >
+        <p>Start: {{ session.start }}</p>
+        <p>End: {{ session.end }}</p>
+      </mat-card>
+    </div>
+  </div>
+</ng-container>

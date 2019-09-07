@@ -1,0 +1,92 @@
+<!--<div class="row h-100 justify-content-center align-items-center">-->
+<!--  <div class="col">-->
+
+<!--    <div class="row justify-content-center">-->
+<!--      <ng-container *ngIf="!(isLoading$ | async); else loadingTemplate">-->
+<!--        <form class="col-6" ngForm (ngSubmit)="onSubmit(f)" #f="ngForm">-->
+<!--          <mat-form-field class="w-100">-->
+<!--            <input matInput type="text" required email placeholder="E-Mail" ngModel name="email">-->
+<!--          </mat-form-field>-->
+
+<!--          <mat-form-field class="w-100">-->
+<!--            <input matInput type="password" required placeholder="Password" ngModel name="password">-->
+<!--          </mat-form-field>-->
+
+<!--          <div>-->
+<!--            <button mat-flat-button type="button" (click)="onSwitchMode()">Switch-->
+<!--              to {{ isSignInMode ? 'Sign Up' : 'Sign In' }}</button>-->
+<!--            <button mat-flat-button type="submit" color="primary">{{ isSignInMode ? 'Sign In' : 'Sign Up' }}</button>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </ng-container>-->
+<!--    </div>-->
+
+<!--    <div class="row justify-content-center" *ngIf="error$ | async as error">-->
+<!--      <p class="col-6 text-center"><b>{{ error }}</b></p>-->
+<!--    </div>-->
+
+<!--  </div>-->
+<!--</div>-->
+
+<!--<ng-template #loadingTemplate>-->
+<!--  <div class="col">-->
+<!--    <div class="d-flex justify-content-center">-->
+<!--      <mat-spinner></mat-spinner>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->
+<div class="row h-100 w-100 justify-content-center align-items-center">
+  <div class="col">
+
+
+    <ng-container *ngIf="!(isLoading$ | async); else loadingTemplate">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)" ngForm>
+        <div class="row justify-content-center">
+          <div class="col-6">
+            <mat-card>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="w-100">
+                    <input email matInput name="email" ngModel placeholder="E-Mail" required type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="w-100">
+                    <input matInput name="password" ngModel placeholder="Password" required type="password">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <button color="primary" mat-flat-button
+                          type="submit">{{ isSignInMode ? 'Sign In' : 'Sign Up' }}</button>
+                  <button (click)="onSwitchMode()" mat-flat-button type="button">Switch
+                    to {{ isSignInMode ? 'Sign Up' : 'Sign In' }}</button>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+
+    <ng-template #loadingTemplate>
+      <div class="row align-items-center">
+        <div class="col">
+          <mat-spinner class="mx-auto"></mat-spinner>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="error$ | async as error">
+      <div class="row justify-content-center align-items-center">
+        <p class="col-6 text-center"><b>{{ error }}</b></p>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
