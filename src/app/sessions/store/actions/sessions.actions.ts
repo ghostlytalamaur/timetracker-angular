@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { UpdateStr } from '@ngrx/entity/src/models';
 import { SessionEntity } from '../../model/session-entity';
+import { Update } from '../../services/fire-entity.service';
 
 export const loadSessions = createAction(
   '[Sessions] Load Sessions'
@@ -18,12 +18,12 @@ export const removeSession = createAction(
 
 export const updateSession = createAction(
   '[Sessions] Update Session',
-  props<{ changes: UpdateStr<SessionEntity> }>()
+  props<{ changes: Update<SessionEntity> }>()
 );
 
 export const updateSessions = createAction(
   '[Sessions] Update Session',
-  props<{ changes: UpdateStr<SessionEntity>[] }>()
+  props<{ changes: Update<SessionEntity>[] }>()
 );
 
 

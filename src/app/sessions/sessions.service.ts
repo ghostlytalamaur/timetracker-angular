@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromSessions from './store';
 import { Observable } from 'rxjs';
-import { createSession, SessionEntity } from './model/session-entity';
+import { SessionEntity } from './model/session-entity';
 import { SessionsActions } from './store/actions';
-import { UpdateStr } from '@ngrx/entity/src/models';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { Session } from './model/session';
+import { Update } from './services/fire-entity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class SessionsService {
     this.store.dispatch(SessionsActions.addSession({ session }));
   }
 
-  updateSession(changes: UpdateStr<SessionEntity>): void {
+  updateSession(changes: Update<SessionEntity>): void {
     this.store.dispatch(SessionsActions.updateSession({ changes }));
   }
 
@@ -51,12 +51,17 @@ export class SessionsService {
       .pipe(
         take(1),
         map((sessions: Session[]) => {
-          const date = new Date().toString();
+          const now = new Date();
           if (sessions.length > 0) {
-            const changes = sessions.map<UpdateStr<SessionEntity>>(s => ({ id: s.id, changes: { end: date } }));
+            const changes = sessions.map<Update<SessionEntity>>(s =>
+              ({
+                id: s.id,
+                end: now.toTimeString()
+              })
+            );
             return SessionsActions.updateSessions({ changes });
           } else {
-            const session = createSession(uuid(), date, null);
+            const session = new Session(uuid(), now, now, null).toEntity();
             return SessionsActions.addSession({ session });
           }
         })

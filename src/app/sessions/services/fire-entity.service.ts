@@ -4,17 +4,14 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../../core/auth/auth.service';
 import { User } from '../../core/auth/model/user';
 
-// function removeUndefined<T extends object>(obj: T): T {
-//   const res = { ...obj };
-//   for (const key of Object.keys(res)) {
-//     if (typeof res[key] === 'undefined') {
-//       delete res[key];
-//     }
-//   }
-//   return res;
-// }
+interface EntityType {
+  id: string;
+}
 
-export abstract class FireEntityService<Entity, EntityData> {
+export type Update<T> = EntityType & Partial<T>;
+
+
+export abstract class FireEntityService<Entity extends EntityType, EntityData extends EntityType> {
 
   protected constructor(
     private readonly afs: AngularFirestore,
@@ -65,26 +62,26 @@ export abstract class FireEntityService<Entity, EntityData> {
     }
   }
 
-  protected async updateEntity(id: string, entityData: Partial<EntityData>): Promise<void> {
+  protected async updateEntity(change: Update<EntityData>): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       return this.afs.collection<EntityData>(this.getCollectionPath(user.id))
-        .doc(id)
-        .update(entityData);
+        .doc(change.id)
+        .update(change);
     } else {
       return Promise.reject(new Error('Not authenticated'));
     }
   }
 
-  protected async updateEntities(data: { id: string, entityData: Partial<EntityData> }[]): Promise<void> {
+  protected async updateEntities(changes: Update<EntityData>[]): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       const promises: Promise<void>[] = [];
       const collection = this.getCollectionPath(user.id);
-      for (const change of data) {
+      for (const change of changes) {
         const res = this.afs.collection<EntityData>(collection)
           .doc(change.id)
-          .update(change.entityData);
+          .update(change);
         promises.push(res);
       }
       return Promise.all(promises).then();
@@ -100,27 +97,26 @@ export abstract class FireEntityService<Entity, EntityData> {
       const collection = this.getCollectionPath(user.id);
       for (const entity of entities) {
         const res = this.afs.collection<EntityData>(collection)
-          .add(entity)
-          .then(() => {
-          });
+          .doc(entity.id)
+          .set(entity);
         promises.push(res);
       }
       return Promise.all(promises).then();
     }
   }
 
-  protected async addEntity(id: string, entityData: EntityData): Promise<void> {
+  protected async addEntity(entityData: EntityData): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       return this.afs.collection<EntityData>(this.getCollectionPath(user.id))
-        .doc(id)
+        .doc(entityData.id)
         .set(entityData);
     } else {
       return Promise.reject(new Error('Not authenticated'));
     }
   }
 
-  protected abstract createEntity(userId: string, id: string, data: EntityData): Entity | Promise<Entity>;
+  protected abstract createEntity(userId: string, data: EntityData): Entity | Promise<Entity>;
 
   protected getEntityPath(userId: string, entityId: string): string {
     return `${this.getCollectionPath(userId)}/${entityId}`;
@@ -163,9 +159,8 @@ export abstract class FireEntityService<Entity, EntityData> {
     Promise<Entity | undefined> {
 
     if (doc.exists) {
-      const id = doc.id;
       const data = doc.data();
-      const entity = this.createEntity(user.id, id, data);
+      const entity = this.createEntity(user.id, data);
       if (entity instanceof Promise) {
         return entity;
       } else {

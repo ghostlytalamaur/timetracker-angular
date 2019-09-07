@@ -4,10 +4,10 @@ import { SessionsActions } from './actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SessionEntity } from '../model/session-entity';
 import { Injectable } from '@angular/core';
-import { UpdateStr } from '@ngrx/entity/src/models';
 import { from, merge, Observable, of } from 'rxjs';
 import * as fromSessions from '../store';
 import { SessionsStorageService } from '../services/sessions-storage.service';
+import { Update } from '../services/fire-entity.service';
 
 
 @Injectable()
@@ -56,7 +56,7 @@ export class SessionsEffects {
     return this.wrapVoid(this.storage.addSession(session), 'Cannot add session.');
   }
 
-  private handleUpdateSessions(changes: UpdateStr<SessionEntity>[]): Observable<Action> {
+  private handleUpdateSessions(changes: Update<SessionEntity>[]): Observable<Action> {
     return this.wrapVoid(this.storage.updateSessions(changes), 'Cannot update session.');
   }
 

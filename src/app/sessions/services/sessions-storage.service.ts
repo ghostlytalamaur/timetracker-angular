@@ -1,9 +1,8 @@
-import { FireEntityService } from './fire-entity.service';
+import { FireEntityService, Update } from './fire-entity.service';
 import { SessionEntity } from '../model/session-entity';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../core/auth/auth.service';
 import { Injectable } from '@angular/core';
-import { UpdateStr } from '@ngrx/entity/src/models';
 
 @Injectable({
   providedIn: 'root'
@@ -18,23 +17,18 @@ export class SessionsStorageService extends FireEntityService<SessionEntity, Ses
   }
 
   addSession(session: SessionEntity): Promise<void> {
-    return this.addEntity(session.id, session);
+    return this.addEntity(session);
   }
 
   removeSession(id: string): Promise<void> {
     return this.deleteEntity(id);
   }
 
-  updateSession(changes: UpdateStr<SessionEntity>): Promise<void> {
-    return this.updateEntity(changes.id, changes.changes);
+  updateSessions(changes: Update<SessionEntity>[]): Promise<void> {
+    return this.updateEntities(changes);
   }
 
-  updateSessions(changes: UpdateStr<SessionEntity>[]): Promise<void> {
-    const data = changes.map(c => ({ id: c.id, entityData: c.changes }));
-    return this.updateEntities(data);
-  }
-
-  protected createEntity(userId: string, id: string, data: SessionEntity): Promise<SessionEntity> | SessionEntity {
+  protected createEntity(userId: string, data: SessionEntity): Promise<SessionEntity> | SessionEntity {
     return data;
   }
 

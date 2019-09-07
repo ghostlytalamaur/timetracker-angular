@@ -6,7 +6,7 @@
       <div>End: {{ session.end | date:format }}</div>
     </div>
     <div *ngIf="!session.isRunning()" class="col-3">
-      <div>Elapsed: {{ session.elapsed | timeInterval }}</div>
+      <div>Duration: {{ session.duration | timeInterval }}</div>
     </div>
   </div>
 </mat-card>
