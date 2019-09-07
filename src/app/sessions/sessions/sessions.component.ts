@@ -19,6 +19,7 @@ export class SessionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sessionsSrv.loadSessions();
   }
 
   onToggleSession(): void {

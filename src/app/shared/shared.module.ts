@@ -8,6 +8,7 @@ import {
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
+import { TimeIntervalPipe } from './time-interval.pipe';
 
 const materialModules = [
   MatSidenavModule,
@@ -24,8 +25,10 @@ const materialModules = [
     ...materialModules
   ],
   exports: [
-    ...materialModules
-  ]
+    ...materialModules,
+    TimeIntervalPipe
+  ],
+  declarations: [TimeIntervalPipe]
 })
 export class SharedModule {
 }

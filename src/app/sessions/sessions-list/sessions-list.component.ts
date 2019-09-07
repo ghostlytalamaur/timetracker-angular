@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SessionsService } from '../sessions.service';
 import { Observable } from 'rxjs';
-import { Session } from '../model/session';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Session } from '../model/session';
 
 @Component({
   selector: 'app-sessions-list',

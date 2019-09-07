@@ -1,9 +1,9 @@
 import * as fromRoot from '../../core/store';
 import { Action, createFeatureSelector, createReducer, createSelector, on, Selector } from '@ngrx/store';
-import { createSession, Session } from '../model/session';
+import { SessionEntity } from '../model/session-entity';
 import { SessionsActions } from './actions';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { v4 as uuid } from 'uuid';
+import { Session } from '../model/session';
 
 interface LoadingStatus {
   type: 'loading';
@@ -17,7 +17,7 @@ interface ErrorStatus {
 type Status = LoadingStatus | ErrorStatus;
 export const sessionsFeatureKey = 'sessions';
 
-export interface SessionsState extends EntityState<Session> {
+export interface SessionsState extends EntityState<SessionEntity> {
   status: Status | undefined;
 }
 
@@ -25,62 +25,12 @@ export interface State extends fromRoot.State {
   [sessionsFeatureKey]: SessionsState;
 }
 
-const adapter = createEntityAdapter<Session>();
+const adapter = createEntityAdapter<SessionEntity>();
 
-const defaultSession: Session[] = [
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  )
-  ,
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  ),
-  createSession(uuid(),
-    new Date(2019, 1, 1, 8, 0).toString(),
-    new Date(2019, 1, 1, 8, 0).toString()
-  )
-];
 
 const initialState = adapter.getInitialState<SessionsState>({
-  ids: defaultSession.map(s => s.id),
-  entities: defaultSession.reduce<{ [id: string]: Session }>((acc, s) => {
-    acc[s.id] = s;
-    return acc;
-  }, {}),
+  ids: [],
+  entities: {},
   status: undefined
 });
 
@@ -104,10 +54,14 @@ const {
 } = adapter.getSelectors(selectSessionsState);
 
 
-export const getSessions: Selector<State, Session[]> = selectAll;
+export const getSessions: Selector<State, Session[]> = createSelector(
+  selectAll,
+  entities => entities.map(e => Session.fromEntity(e))
+);
+
 export const getRunningSessions: Selector<State, Session[]> = createSelector(
   getSessions,
-  sessions => sessions.filter(s => !s.end)
+  sessions => sessions.filter(s => s.isRunning())
 );
 export const hasRunningSessions: Selector<State, boolean> = createSelector(
   getRunningSessions,
@@ -117,5 +71,7 @@ export const hasRunningSessions: Selector<State, boolean> = createSelector(
 export const getSession: (id: string) => Selector<State, Session | undefined> =
   (id: string) => createSelector(
     selectEntities,
-    entities => entities[id]
-  );
+    entities => {
+      const e = entities[id];
+      return e && Session.fromEntity(e);
+    });

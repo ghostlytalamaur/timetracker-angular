@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import * as fromAuth from './store';
 import { Injectable } from '@angular/core';
 import { AuthActions } from './store/actions';
+import { User } from './model/user';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,17 @@ export class AuthService {
     private readonly store: Store<fromAuth.State>
   ) {
     this.store.dispatch(AuthActions.autoSignIn());
+  }
+
+
+  get user$(): Observable<User | undefined> {
+    return this.store.select(fromAuth.getUser);
+  }
+
+  get user(): Promise<User | undefined> {
+    return this.user$
+      .pipe(first())
+      .toPromise();
   }
 
   isSignedIn(): Observable<boolean> {

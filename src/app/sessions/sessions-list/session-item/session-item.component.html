@@ -1,0 +1,12 @@
+<mat-card>
+
+  <div class="row">
+    <div class="col">
+      <div>Start: {{ session.start | date:format }}</div>
+      <div>End: {{ session.end | date:format }}</div>
+    </div>
+    <div *ngIf="!session.isRunning()" class="col-3">
+      <div>Elapsed: {{ session.elapsed | timeInterval }}</div>
+    </div>
+  </div>
+</mat-card>

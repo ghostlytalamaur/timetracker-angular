@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { UpdateStr } from '@ngrx/entity/src/models';
-import { Session } from '../../model/session';
+import { SessionEntity } from '../../model/session-entity';
 
 export const loadSessions = createAction(
   '[Sessions] Load Sessions'
@@ -8,7 +8,7 @@ export const loadSessions = createAction(
 
 export const addSession = createAction(
   '[Sessions] Add Session',
-  props<{ session: Session }>()
+  props<{ session: SessionEntity }>()
 );
 
 export const removeSession = createAction(
@@ -18,26 +18,31 @@ export const removeSession = createAction(
 
 export const updateSession = createAction(
   '[Sessions] Update Session',
-  props<{ changes: UpdateStr<Session> }>()
+  props<{ changes: UpdateStr<SessionEntity> }>()
 );
 
 export const updateSessions = createAction(
   '[Sessions] Update Session',
-  props<{ changes: UpdateStr<Session>[] }>()
+  props<{ changes: UpdateStr<SessionEntity>[] }>()
 );
 
 
 export const sessionsAdded = createAction(
   '[Sessions] Sessions Added',
-  props<{ sessions: Session[] }>()
+  props<{ sessions: SessionEntity[] }>()
 );
 
 export const sessionsModified = createAction(
   '[Sessions] Sessions Modified',
-  props<{ sessions: Session[] }>()
+  props<{ sessions: SessionEntity[] }>()
 );
 
 export const sessionsRemoved = createAction(
   '[Sessions] Session Removed',
   props<{ ids: string [] }>()
+);
+
+export const sessionsError = createAction(
+  '[Sessions] Error',
+  props<{ message: string }>()
 );

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionsService } from '../sessions.service';
 import { Observable, of } from 'rxjs';
-import { Session } from '../model/session';
 import { switchMap } from 'rxjs/operators';
+import { Session } from '../model/session';
 
 @Component({
   selector: 'app-session-details',

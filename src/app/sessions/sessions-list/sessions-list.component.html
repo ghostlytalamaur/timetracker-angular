@@ -1,13 +1,11 @@
 <ng-container>
   <div class="row">
     <div class="col h-100 overflow-auto">
-      <mat-card
+      <app-session-item
+        *ngFor="let session of (sessions$ | async).slice().reverse(); trackBy: trackById"
         (click)="onOpenSession(session)"
-        *ngFor="let session of sessions$ | async; trackBy: trackById"
-      >
-        <p>Start: {{ session.start }}</p>
-        <p>End: {{ session.end }}</p>
-      </mat-card>
+        [session]="session"
+        class="list-item"></app-session-item>
     </div>
   </div>
 </ng-container>

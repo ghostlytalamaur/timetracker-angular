@@ -9,9 +9,10 @@ import * as fromSessions from './store';
 import { SharedModule } from '../shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
 import { SessionsEffects } from './store/sessions.effects';
+import { SessionItemComponent } from './sessions-list/session-item/session-item.component';
 
 @NgModule({
-  declarations: [SessionDetailsComponent, SessionsListComponent, SessionsComponent],
+  declarations: [SessionDetailsComponent, SessionsListComponent, SessionsComponent, SessionItemComponent],
   imports: [
     CommonModule,
     SessionsRoutingModule,
