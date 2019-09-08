@@ -4,6 +4,7 @@ import { SessionsService } from '../sessions.service';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Session } from '../model/session';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-session-details',
@@ -12,6 +13,8 @@ import { Session } from '../model/session';
 })
 export class SessionDetailsComponent implements OnInit {
 
+  readonly dateFormat = environment.settings.dateFormat;
+  readonly timeFormat = environment.settings.timeFormat;
   readonly session$: Observable<Session | undefined>;
 
   constructor(

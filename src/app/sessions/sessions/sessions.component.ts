@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { SessionsService } from '../sessions.service';
+import { filter, switchMap } from 'rxjs/operators';
+import { DialogsService } from '../../shared/alert-dialog/dialogs.service';
 
 @Component({
   selector: 'app-sessions',
@@ -8,18 +10,36 @@ import { SessionsService } from '../sessions.service';
   styleUrls: ['./sessions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SessionsComponent implements OnInit {
+export class SessionsComponent implements OnInit, OnDestroy {
 
-  hasRunning$: Observable<boolean>;
+  readonly hasRunning$: Observable<boolean>;
+  readonly isLoading$: Observable<boolean>;
+  readonly error$: Observable<string>;
+  subscription: Subscription;
 
   constructor(
-    private sessionsSrv: SessionsService
+    private sessionsSrv: SessionsService,
+    private dialogs: DialogsService
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
+    this.isLoading$ = this.sessionsSrv.isLoading();
+    this.error$ = this.sessionsSrv.getError();
   }
 
   ngOnInit() {
     this.sessionsSrv.loadSessions();
+    this.subscription = this.error$
+      .pipe(
+        filter(message => !!message),
+        switchMap(message => this.dialogs.showAlert({ title: 'Error', message }))
+      )
+      .subscribe(() => this.sessionsSrv.clearError());
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onToggleSession(): void {

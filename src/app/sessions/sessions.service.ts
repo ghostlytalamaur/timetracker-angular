@@ -7,7 +7,7 @@ import { SessionsActions } from './store/actions';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { Session } from './model/session';
-import { Update } from './services/fire-entity.service';
+import { Update } from './services/entity-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +30,32 @@ export class SessionsService {
     return this.store.select(fromSessions.hasRunningSessions);
   }
 
+  isLoading(): Observable<boolean> {
+    return this.store.select(fromSessions.isLoading);
+  }
+
+  getError(): Observable<string> {
+    return this.store.select(fromSessions.getError);
+  }
+
   loadSessions(): void {
-    this.store.dispatch(SessionsActions.loadSessions());
+    this.store.select(fromSessions.isLoaded)
+      .pipe(
+        take(1)
+      )
+      .subscribe(isLoaded => {
+        if (!isLoaded) {
+          this.store.dispatch(SessionsActions.loadSessions());
+        }
+      });
   }
 
   addSession(session: SessionEntity): void {
     this.store.dispatch(SessionsActions.addSession({ session }));
+  }
+
+  addSessions(sessions: SessionEntity[]): void {
+    this.store.dispatch(SessionsActions.addSessions({ sessions }));
   }
 
   updateSession(changes: Update<SessionEntity>): void {
@@ -69,5 +89,9 @@ export class SessionsService {
       .subscribe(
         action => this.store.dispatch(action)
       );
+  }
+
+  clearError() {
+    this.store.dispatch(SessionsActions.clearError());
   }
 }

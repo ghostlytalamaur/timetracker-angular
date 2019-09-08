@@ -1,15 +1,26 @@
 <div class="container">
-  <div class="row actions-row">
-    <div class="col">
-      <div class="d-flex flex-row">
-        <button (click)="onToggleSession()" color="primary"
-                mat-flat-button>{{ (hasRunning$ | async) ? 'Stop' : 'Start' }}</button>
+  <ng-container *ngIf="!(isLoading$ | async); else loadingTemplate">
+    <div class="row actions-row">
+      <div class="col">
+        <div class="d-flex flex-row">
+          <button (click)="onToggleSession()" color="primary"
+                  mat-flat-button>{{ (hasRunning$ | async) ? 'Stop' : 'Start' }}</button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <router-outlet></router-outlet>
+    <div class="row content">
+      <div class="col">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-template #loadingTemplate>
+    <div class="row align-items-center">
+      <div class="col">
+        <mat-spinner class="mx-auto"></mat-spinner>
+      </div>
+    </div>
+  </ng-template>
+
 </div>

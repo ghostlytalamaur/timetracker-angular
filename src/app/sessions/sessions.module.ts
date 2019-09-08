@@ -10,15 +10,18 @@ import { SharedModule } from '../shared/shared.module';
 import { EffectsModule } from '@ngrx/effects';
 import { SessionsEffects } from './store/sessions.effects';
 import { SessionItemComponent } from './sessions-list/session-item/session-item.component';
+import { SessionsImportComponent } from './import/sessions-import.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [SessionDetailsComponent, SessionsListComponent, SessionsComponent, SessionItemComponent],
+  declarations: [SessionDetailsComponent, SessionsListComponent, SessionsComponent, SessionItemComponent, SessionsImportComponent],
   imports: [
     CommonModule,
     SessionsRoutingModule,
     StoreModule.forFeature(fromSessions.sessionsFeatureKey, fromSessions.reducers),
     EffectsModule.forFeature([SessionsEffects]),
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class SessionsModule {

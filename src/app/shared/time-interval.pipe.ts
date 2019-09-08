@@ -10,7 +10,7 @@ export class TimeIntervalPipe implements PipeTransform {
   private static msPerSecond = 1000;
 
   transform(milliseconds: number): string {
-    if (milliseconds > 0) {
+    if (milliseconds) {
       const hours = (milliseconds / TimeIntervalPipe.msPerHour).toFixed();
 
       milliseconds = milliseconds % TimeIntervalPipe.msPerHour;

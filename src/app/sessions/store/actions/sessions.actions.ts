@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { SessionEntity } from '../../model/session-entity';
-import { Update } from '../../services/fire-entity.service';
+import { Update } from '../../services/entity-storage';
 
 export const loadSessions = createAction(
   '[Sessions] Load Sessions'
@@ -9,6 +9,11 @@ export const loadSessions = createAction(
 export const addSession = createAction(
   '[Sessions] Add Session',
   props<{ session: SessionEntity }>()
+);
+
+export const addSessions = createAction(
+  '[Sessions] Add Sessions',
+  props<{ sessions: SessionEntity[] }>()
 );
 
 export const removeSession = createAction(
@@ -39,10 +44,14 @@ export const sessionsModified = createAction(
 
 export const sessionsRemoved = createAction(
   '[Sessions] Session Removed',
-  props<{ ids: string [] }>()
+  props<{ ids: string[] }>()
 );
 
 export const sessionsError = createAction(
   '[Sessions] Error',
   props<{ message: string }>()
+);
+
+export const clearError = createAction(
+  '[Sessions] Clear Error'
 );

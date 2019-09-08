@@ -1,3 +1,13 @@
+$margin: 16px;
+
 .list-item {
-  margin-bottom: 16px;
+  margin: 0 $margin $margin;
+
+  &:first-child {
+    margin-top: $margin;
+  }
+}
+
+.scroll-viewport {
+  height: 100%;
 }

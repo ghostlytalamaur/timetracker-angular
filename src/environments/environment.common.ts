@@ -1,4 +1,8 @@
 export const commonEnvironment = {
+  settings: {
+    dateFormat: 'EEEE, MMMM d, y',
+    timeFormat: 'HH:mm'
+  },
   firebase: {
     apiKey: 'AIzaSyDfhUBBpFLw_2Na9c5mMIvRbFgmlcnP_tA',
     authDomain: 'timetracker-1548352730517.firebaseapp.com',

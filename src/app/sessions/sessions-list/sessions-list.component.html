@@ -1,11 +1,11 @@
-<ng-container>
-  <div class="row">
-    <div class="col h-100 overflow-auto">
+<div class="row h-100">
+  <div class="col">
+    <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="104">
       <app-session-item
-        *ngFor="let session of (sessions$ | async).slice().reverse(); trackBy: trackById"
+        *cdkVirtualFor="let session of (sessions$ | async).slice().reverse(); trackBy: trackById"
         (click)="onOpenSession(session)"
         [session]="session"
         class="list-item"></app-session-item>
-    </div>
+    </cdk-virtual-scroll-viewport>
   </div>
-</ng-container>
+</div>

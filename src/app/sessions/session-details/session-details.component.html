@@ -1,8 +1,11 @@
 <div class="row">
   <div class="col">
     <ng-container *ngIf="session$ | async as session; else errorTemplate">
-      <p>Start: {{ session.start }}</p>
-      <p>End: {{ session.end }}</p>
+      <div>Date: {{ session.date | date:dateFormat }}</div>
+      <div>Start: {{ session.start | date:timeFormat }}</div>
+      <div>End: {{ session.end | date:timeFormat }}</div>
+      <div *ngIf="!session.isRunning()"
+      >Duration: {{ session.duration | timeInterval }}</div>
     </ng-container>
 
     <ng-template #errorTemplate>

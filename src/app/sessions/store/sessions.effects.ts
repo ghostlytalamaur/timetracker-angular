@@ -7,8 +7,7 @@ import { Injectable } from '@angular/core';
 import { from, merge, Observable, of } from 'rxjs';
 import * as fromSessions from '../store';
 import { SessionsStorageService } from '../services/sessions-storage.service';
-import { Update } from '../services/fire-entity.service';
-
+import { Update } from '../services/entity-storage';
 
 @Injectable()
 export class SessionsEffects {
@@ -26,6 +25,14 @@ export class SessionsEffects {
       .pipe(
         ofType(SessionsActions.addSession),
         switchMap(action => this.handleAddSession(action.session))
+      )
+  );
+
+  addSessions$ = createEffect(() =>
+    this.actions$
+      .pipe(
+        ofType(SessionsActions.addSessions),
+        switchMap(action => this.handleAddSessions(action.sessions))
       )
   );
 
@@ -50,6 +57,10 @@ export class SessionsEffects {
     private readonly store: Store<fromSessions.State>,
     private readonly storage: SessionsStorageService
   ) {
+  }
+
+  private handleAddSessions(sessions: SessionEntity[]): Observable<Action> {
+    return this.wrapVoid(this.storage.addSessions(sessions), 'Cannot add sessions.');
   }
 
   private handleAddSession(session: SessionEntity): Observable<Action> {
@@ -86,7 +97,7 @@ export class SessionsEffects {
     return stream
       .pipe(
         catchError(err => {
-          console.error(err);
+          console.log(err);
           const message = err instanceof Error ? err.message : msg + JSON.stringify(err);
           return of(SessionsActions.sessionsError({ message }));
         })
@@ -94,21 +105,21 @@ export class SessionsEffects {
   }
 
   private getAddedSessions(): Observable<Action> {
-    return this.storage.addedEntities()
+    return this.storage.addedSessions()
       .pipe(
         map(sessions => SessionsActions.sessionsAdded({ sessions }))
       );
   }
 
   private getRemovedSessions(): Observable<Action> {
-    return this.storage.removedEntities()
+    return this.storage.removedSessions()
       .pipe(
         map(ids => SessionsActions.sessionsRemoved({ ids }))
       );
   }
 
   private getModifiedSessions(): Observable<Action> {
-    return this.storage.modifiedEntities()
+    return this.storage.modifiedSessions()
       .pipe(
         map(sessions => SessionsActions.sessionsModified({ sessions }))
       );
