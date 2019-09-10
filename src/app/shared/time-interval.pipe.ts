@@ -5,19 +5,19 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeIntervalPipe implements PipeTransform {
 
-  private static msPerHour = 60 * 60 * 1000;
-  private static msPerMinutes = 60 * 1000;
   private static msPerSecond = 1000;
+  private static msPerMinutes = 60 * TimeIntervalPipe.msPerSecond;
+  private static msPerHour = 60 * TimeIntervalPipe.msPerMinutes;
 
   transform(milliseconds: number): string {
     if (milliseconds) {
-      const hours = (milliseconds / TimeIntervalPipe.msPerHour).toFixed();
+      const hours = Math.trunc(milliseconds / TimeIntervalPipe.msPerHour);
 
       milliseconds = milliseconds % TimeIntervalPipe.msPerHour;
-      const min = (milliseconds / TimeIntervalPipe.msPerMinutes).toFixed();
+      const min = Math.trunc(milliseconds / TimeIntervalPipe.msPerMinutes);
 
       milliseconds = milliseconds % TimeIntervalPipe.msPerMinutes;
-      const sec = (milliseconds / TimeIntervalPipe.msPerSecond).toFixed();
+      const sec = Math.trunc(milliseconds / TimeIntervalPipe.msPerSecond);
 
       return `${hours} h ${min} min ${sec} sec`;
     }
