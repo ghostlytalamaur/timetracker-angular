@@ -19,6 +19,7 @@
     "@angular/fire": "^5.2.1",
     "@angular/forms": "~8.2.0",
     "@angular/material": "^8.1.4",
+    "date-fns": "^2.1.0",
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
