@@ -59,7 +59,7 @@ export class SessionsService {
   }
 
   updateSession(changes: Update<SessionEntity>): void {
-    this.store.dispatch(SessionsActions.updateSession({ changes }));
+    this.store.dispatch(SessionsActions.updateSessions({ changes: [changes] }));
   }
 
   removeSession(id: string): void {
