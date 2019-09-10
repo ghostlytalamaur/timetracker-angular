@@ -21,16 +21,10 @@ export const removeSession = createAction(
   props<{ id: string }>()
 );
 
-export const updateSession = createAction(
-  '[Sessions] Update Session',
-  props<{ changes: Update<SessionEntity> }>()
-);
-
 export const updateSessions = createAction(
-  '[Sessions] Update Session',
+  '[Sessions] Update Sessions',
   props<{ changes: Update<SessionEntity>[] }>()
 );
-
 
 export const sessionsAdded = createAction(
   '[Sessions] Sessions Added',
