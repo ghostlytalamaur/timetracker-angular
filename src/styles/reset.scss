@@ -4,12 +4,3 @@
     outline: none !important;
   }
 }
-
-$link-hover-decoration: none; // remove underline from button links
-
-$link-color: #3f51b5; // set link color based on the used material theme
-$link-hover-color: currentColor;
-
-//a:not(.mat-button):not(.mat-raised-button):not(.mat-fab):not(.mat-mini-fab):not([mat-list-item]) {
-//  color: #3f51b5; // 2
-//}
