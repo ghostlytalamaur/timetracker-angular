@@ -1,11 +1,58 @@
 <div class="row">
   <div class="col">
     <ng-container *ngIf="session$ | async as session; else errorTemplate">
-      <div>Date: {{ session.date | date:dateFormat }}</div>
-      <div>Start: {{ session.start | date:timeFormat }}</div>
-      <div>End: {{ session.end | date:timeFormat }}</div>
-      <div *ngIf="!session.isRunning()"
-      >Duration: {{ session.duration | timeInterval }}</div>
+      <form #f="ngForm" (ngSubmit)="onSubmit(session, f)" ngForm>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline" class="d-block">
+              <input #date=ngModel
+                     [matDatepicker]="datePicker"
+                     [ngModel]="session.date"
+                     [placeholder]="dateFormat"
+                     matInput
+                     name="date"
+                     required>
+              <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline" class="d-block">
+              <mat-label>Start</mat-label>
+              <input [appDateTimeInput]="timeFormat"
+                     [ngModel]="session.start"
+                     [placeholder]="timeFormat"
+                     name="start"
+                     required>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline" class="d-block">
+              <mat-label>End</mat-label>
+              <input [appDateTimeInput]="timeFormat"
+                     [ngModel]="session.end"
+                     [placeholder]="timeFormat"
+                     name="end">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p>Duration: {{ session.duration$ | async | timeInterval }}</p>
+          </div>
+        </div>
+
+        <div>
+          <button [disabled]="!f.valid" color="primary" mat-flat-button type="submit">Save</button>
+          <button (click)="resetForm(session, f)" [disabled]="!f.touched" color="warn" mat-button type="button">
+            Reset
+          </button>
+        </div>
+      </form>
     </ng-container>
 
     <ng-template #errorTemplate>

@@ -1,6 +1,10 @@
 import { createSession, SessionEntity } from './session-entity';
+import { interval, Observable, of } from 'rxjs';
+import { map, publishReplay, refCount } from 'rxjs/operators';
 
 export class Session {
+
+  readonly duration$: Observable<number>;
 
   constructor(
     public readonly id: string,
@@ -8,6 +12,20 @@ export class Session {
     public readonly start: Date,
     public readonly end: Date | null
   ) {
+    if (this.isRunning()) {
+      this.duration$ = interval(1)
+        .pipe(
+          map(() => this.duration)
+        );
+    } else {
+      this.duration$ = of(this.duration);
+    }
+
+    this.duration$ = this.duration$
+      .pipe(
+        publishReplay(1),
+        refCount()
+      );
   }
 
   get duration(): number {
