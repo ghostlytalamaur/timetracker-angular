@@ -13,9 +13,18 @@
 @import 'theme-dark';
 @import 'reset-theme';
 
+@mixin custom-styles($theme) {
+  $warn: map-get($theme, warn);
+
+  .text-warn {
+    color: mat-color($warn, text);
+  }
+}
+
 @mixin app-theme($theme) {
   @include app-theme-reset($theme);
   @include angular-material-theme($theme);
+  @include custom-styles($theme);
 }
 
 @include app-theme($app-dark-theme);

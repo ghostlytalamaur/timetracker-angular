@@ -71,8 +71,8 @@ export class SessionsService {
       .pipe(
         take(1),
         map((sessions: Session[]) => {
-          const now = new Date();
           if (sessions.length > 0) {
+            const now = new Date();
             const changes = sessions.map<Update<SessionEntity>>(s =>
               ({
                 id: s.id,
@@ -81,7 +81,7 @@ export class SessionsService {
             );
             return SessionsActions.updateSessions({ changes });
           } else {
-            const session = new Session(uuid(), now, now, null).toEntity();
+            const session = Session.fromNow(uuid()).toEntity();
             return SessionsActions.addSession({ session });
           }
         })

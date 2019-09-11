@@ -15,7 +15,7 @@ import { TimeIntervalPipe } from './time-interval.pipe';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { DateTimeInputDirective } from './directives/date-time-input.directive';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 const materialModules = [
@@ -35,16 +35,26 @@ const materialModules = [
 @NgModule({
   imports: [
     ...materialModules,
+    CommonModule,
     FormsModule,
-    CommonModule
+    ReactiveFormsModule
+  ],
+  declarations: [
+    TimeIntervalPipe,
+    AlertDialogComponent,
+    DateTimeInputDirective
+  ],
+  entryComponents: [
+    AlertDialogComponent
   ],
   exports: [
     ...materialModules,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     TimeIntervalPipe,
     DateTimeInputDirective
-  ],
-  declarations: [TimeIntervalPipe, AlertDialogComponent, DateTimeInputDirective],
-  entryComponents: [AlertDialogComponent]
+  ]
 })
 export class SharedModule {
 }

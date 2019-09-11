@@ -1,17 +1,15 @@
 <div class="row">
   <div class="col">
-    <ng-container *ngIf="session$ | async as session; else errorTemplate">
-      <form #f="ngForm" (ngSubmit)="onSubmit(session, f)" ngForm>
+    <ng-container *ngIf="!error; else errorTemplate">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <div class="row">
           <div class="col">
             <mat-form-field appearance="outline" class="d-block">
-              <input #date=ngModel
-                     [matDatepicker]="datePicker"
-                     [ngModel]="session.date"
+              <mat-label>Date</mat-label>
+              <input [matDatepicker]="datePicker"
                      [placeholder]="dateFormat"
-                     matInput
-                     name="date"
-                     required>
+                     formControlName="date"
+                     matInput>
               <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #datePicker></mat-datepicker>
             </mat-form-field>
@@ -23,32 +21,31 @@
             <mat-form-field appearance="outline" class="d-block">
               <mat-label>Start</mat-label>
               <input [appDateTimeInput]="timeFormat"
-                     [ngModel]="session.start"
                      [placeholder]="timeFormat"
-                     name="start"
-                     required>
+                     formControlName="start">
             </mat-form-field>
           </div>
           <div class="col">
             <mat-form-field appearance="outline" class="d-block">
               <mat-label>End</mat-label>
               <input [appDateTimeInput]="timeFormat"
-                     [ngModel]="session.end"
                      [placeholder]="timeFormat"
-                     name="end">
+                     formControlName="end">
             </mat-form-field>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
-            <p>Duration: {{ session.duration$ | async | timeInterval }}</p>
+            <p>Duration:
+              <app-session-duration [duration]="duration$ | async"></app-session-duration>
+            </p>
           </div>
         </div>
 
         <div>
-          <button [disabled]="!f.valid" color="primary" mat-flat-button type="submit">Save</button>
-          <button (click)="resetForm(session, f)" [disabled]="!f.touched" color="warn" mat-button type="button">
+          <button [disabled]="!form.valid" color="primary" mat-flat-button type="submit">Save</button>
+          <button (click)="resetForm()" color="warn" mat-button type="button">
             Reset
           </button>
         </div>
@@ -56,7 +53,7 @@
     </ng-container>
 
     <ng-template #errorTemplate>
-      <h4>Session with this id doesn't exists</h4>
+      <h4>{{ error }}</h4>
     </ng-template>
 
   </div>

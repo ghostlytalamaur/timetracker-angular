@@ -1,13 +1,14 @@
 <mat-card>
-
   <div class="row">
     <div class="col">
-      <div>Date: {{ session.date | date:dateFormat }}</div>
-      <div>Start: {{ session.start | date:timeFormat }}</div>
-      <div>End: {{ session.end | date:timeFormat }}</div>
+      <div>Date: {{ session?.date | date:dateFormat }}</div>
+      <div>Start: {{ session?.start | date:timeFormat }}</div>
+      <div>End: {{ session?.end | date:timeFormat }}</div>
     </div>
     <div class="col-5">
-      <div>Duration: {{ session.duration$ | async | timeInterval }}</div>
+      <div>Duration:
+        <app-session-duration [duration]="duration$ | async"></app-session-duration>
+      </div>
     </div>
   </div>
 </mat-card>

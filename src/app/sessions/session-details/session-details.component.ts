@@ -1,13 +1,20 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionsService } from '../sessions.service';
-import { Observable, of } from 'rxjs';
-import { publishReplay, refCount, switchMap } from 'rxjs/operators';
-import { Session } from '../model/session';
+import { defer, merge, Observable, of, Subscription } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { getDuration, Session } from '../model/session';
 import { environment } from '../../../environments/environment';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SessionEntity } from '../model/session-entity';
 import { Update } from '../services/entity-storage';
+import { v4 as uuid } from 'uuid';
+
+interface FormData {
+  date: Date | null;
+  start: Date | null;
+  end: Date | null;
+}
 
 @Component({
   selector: 'app-session-details',
@@ -15,53 +22,92 @@ import { Update } from '../services/entity-storage';
   styleUrls: ['./session-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SessionDetailsComponent implements OnInit {
+export class SessionDetailsComponent implements OnInit, OnDestroy {
 
   readonly dateFormat = environment.settings.dateFormat;
   readonly timeFormat = environment.settings.timeFormat;
-  readonly session$: Observable<Session | undefined>;
+  readonly form: FormGroup;
+  readonly duration$: Observable<number | undefined>;
+  error: string;
+  private subscription: Subscription | undefined;
+  private session: Session | undefined;
 
   constructor(
-    private route: ActivatedRoute,
-    private sessionsSrv: SessionsService
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly sessionsSrv: SessionsService
   ) {
-    this.session$ = this.route.params
+    this.form = new FormGroup({
+      date: new FormControl(undefined, [Validators.required]),
+      start: new FormControl(undefined, [Validators.required]),
+      end: new FormControl()
+    });
+
+    this.duration$ = defer(() => merge(of(this.form.value), this.form.valueChanges))
       .pipe(
-        switchMap(params => {
-          const id = params.id;
-          if (id) {
-            return this.sessionsSrv.getSession(id);
-          } else {
-            return of(undefined);
-          }
-        }),
-        publishReplay(1),
-        refCount()
+        switchMap((data: FormData) => getDuration(data.start, data.end, environment.settings.durationRate))
       );
   }
 
   ngOnInit() {
+    this.subscription = this.route.params
+      .pipe(
+        switchMap(params => params.id ? this.getSession(params.id) : of(undefined))
+      )
+      .subscribe(
+        session => {
+          this.session = session;
+          this.form.setValue(this.sessionToFormData());
+        },
+        (err: Error) => this.error = err.message
+      );
   }
 
-  onSubmit(session: Session, form: NgForm) {
-    const date: Date = form.value.date;
-    const start: Date = form.value.start;
-    const end: Date = form.value.end;
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  onSubmit() {
+    if (!this.form.valid) {
+      return;
+    }
+
+    const date: Date = this.form.value.date;
+    const start: Date = this.form.value.start;
+    const end: Date = this.form.value.end;
     const changes: Update<SessionEntity> = {
-      id: session.id,
+      id: this.session && this.session.id || uuid(),
       date: date.toDateString(),
       start: start.toTimeString(),
       end: end ? end.toTimeString() : null
     };
     this.sessionsSrv.updateSession(changes);
+    this.router.navigate(['../'], { relativeTo: this.route }).catch(console.log);
   }
 
-  resetForm(session: Session, form: NgForm) {
-    form.reset({
-      date: session.date,
-      start: session.start,
-      end: session.end
-    });
+  resetForm() {
+    this.form.reset(this.sessionToFormData());
+  }
+
+  private sessionToFormData(): FormData {
+    return {
+      date: this.session && this.session.date || null,
+      start: this.session && this.session.start || null,
+      end: this.session && this.session.end || null
+    };
+  }
+
+  private getSession(id: string): Observable<Session | undefined> {
+    return this.sessionsSrv.getSession(id)
+      .pipe(
+        tap(s => {
+          if (!s) {
+            throw new Error('Session with this id doesn\'t exists');
+          }
+        })
+      );
   }
 
 }

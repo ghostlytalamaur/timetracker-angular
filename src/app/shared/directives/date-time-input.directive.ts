@@ -26,7 +26,7 @@ function isValidDate(date: Date | null | undefined): date is Date {
   return date instanceof Date && isFinite(+date);
 }
 
-function dateValidator(control: AbstractControl): ValidationErrors | null {
+export function dateValidator(control: AbstractControl): ValidationErrors | null {
   if (!control.value || isValidDate(control.value)) {
     return null;
   }
@@ -42,44 +42,29 @@ function dateValidator(control: AbstractControl): ValidationErrors | null {
 })
 export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, MatFormFieldControl<Date> {
 
-  /** Gets the NgControl for this control. */
-  readonly ngControl: NgControl | null;
-  @HostBinding('attr.disabled')
-  isDisabled: boolean;
   @HostBinding('attr.aria-describedby')
   describedBy = '';
+
   @HostBinding('class')
   readonly class = 'mat-input-element mat-form-field-autofill-control';
-  @Input('appDateTimeInput')
-  format: string;
-  @Output()
-  readonly valueChange: EventEmitter<Date | null>;
-  /**
-   * Stream that emits whenever the state of the control changes such that the parent `MatFormField`
-   * needs to run change detection.
-   */
+
+  readonly ngControl: NgControl | null;
   readonly stateChanges: Observable<void>;
-  /**
-   * An optional name for the control type that can be used to distinguish `mat-form-field` elements
-   * based on their control type. The form field will add a class,
-   * `mat-form-field-type-{{controlType}}` to its root element.
-   */
   readonly controlType = 'date-time-input';
+
   private readonly stateChangesSubj: Subject<void>;
+  @Output()
+  readonly valueChange: EventEmitter<Date | null> = new EventEmitter<any>();
+  private readonly uid = uuid();
+  private mRequired = false;
+  private mDisabled = false;
   private subscription: Subscription;
   private date: Date | null;
   private mId: string;
-  private readonly uid: string;
-  @HostBinding('attr.placeholder')
   private mPlaceholder: string;
   private mFocused = false;
-  @HostBinding('attr.required')
-  private mRequired = false;
-  @HostBinding('disabled')
-  private mDisabled = false;
   private mAutoFilled = false;
-  private onTouched: () => void;
-  private onChange: (value: Date | null) => void;
+  private mFormat: string;
 
   constructor(
     private readonly focusMonitor: FocusMonitor,
@@ -91,27 +76,21 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-    this.onChange = (ignored: Date | null) => {
-    };
-    this.onTouched = () => {
-    };
     this.stateChangesSubj = new Subject();
     this.stateChanges = this.stateChangesSubj.asObservable();
-    this.valueChange = new EventEmitter<any>();
-    this.uid = uuid();
   }
 
-  /** The element ID for this control. */
-  @Input()
-  get id(): string {
-    return this.mId ? this.mId : this.uid;
+  get format(): string {
+    return this.mFormat;
   }
 
-  set id(value: string) {
-    this.mId = value;
+  @Input('appDateTimeInput')
+  set format(fmt: string) {
+    this.mFormat = fmt;
+    this.input.nativeElement.value = isValidDate(this.value) && this.format ? format(this.value, this.format) : '';
+    this.stateChangesSubj.next();
   }
 
-  /** The value of the control. */
   @Input()
   get value(): Date | null {
     return this.date;
@@ -121,10 +100,32 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.writeValue(date);
   }
 
-  /** The placeholder for this control. */
   @Input()
+  @HostBinding('attr.id')
+  get id(): string {
+    return this.mId ? this.mId : this.uid;
+  }
+
+  @Input()
+  @HostBinding('attr.placeholder')
   get placeholder(): string {
     return this.mPlaceholder;
+  }
+
+  @Input()
+  @HostBinding('required')
+  get required(): boolean {
+    return this.mRequired;
+  }
+
+  set id(value: string) {
+    this.mId = value;
+  }
+
+  @Input()
+  @HostBinding('disabled')
+  get disabled(): boolean {
+    return this.mDisabled;
   }
 
   set placeholder(value: string) {
@@ -132,25 +133,8 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChangesSubj.next();
   }
 
-  /** Whether the control is focused. */
   get focused(): boolean {
     return this.mFocused;
-  }
-
-  /** Whether the control is empty. */
-  get empty(): boolean {
-    return !this.input.nativeElement.value;
-  }
-
-  /** Whether the `MatFormField` label should try to float. */
-  get shouldLabelFloat(): boolean {
-    return this.focused || !this.empty;
-  }
-
-  /** Whether the control is required. */
-  @Input()
-  get required(): boolean {
-    return this.mRequired;
   }
 
   set required(value: boolean) {
@@ -158,10 +142,8 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChangesSubj.next();
   }
 
-  /** Whether the control is disabled. */
-  @Input()
-  get disabled(): boolean {
-    return this.mDisabled;
+  get empty(): boolean {
+    return !this.input.nativeElement.value;
   }
 
   set disabled(value: boolean) {
@@ -172,25 +154,41 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     }
   }
 
-  /** Whether the control is in an error state. */
+  get shouldLabelFloat(): boolean {
+    return this.focused || !this.empty;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  writeValue(value: any): void {
+    if (!value || value === this.date) {
+      return;
+    }
+    if (!(value instanceof Date)) {
+      throw new Error('Unsupported value');
+    }
+
+    this.date = isValidDate(value) ? value : null;
+
+    this.input.nativeElement.value = isValidDate(this.value) && this.format ? format(this.value, this.format) : '';
+    this.valueChange.emit(this.date);
+    this.stateChangesSubj.next();
+  }
+
   get errorState(): boolean {
     return !!this.ngControl && !!this.ngControl.errors;
   }
 
-  /**
-   * Whether the input is currently in an autofilled state. If property is not present on the
-   * control it is assumed to be false.
-   */
   get autofilled(): boolean {
     return this.mAutoFilled;
   }
 
-  /** Sets the list of element IDs that currently describe this control. */
   setDescribedByIds(ids: string[]): void {
     this.describedBy = ids.join(' ');
   }
 
-  /** Handles a click on the control's container. */
   onContainerClick(event: MouseEvent): void {
     if ((event.target as Element).tagName.toLowerCase() !== 'input') {
       this.input.nativeElement.focus();
@@ -235,32 +233,25 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-  }
-
-  writeValue(value: any): void {
-    if (!value) {
-      return;
-    }
-    if (!(value instanceof Date)) {
-      throw new Error('Unsupported value');
-    }
-
-    this.date = value;
-    this.input.nativeElement.value = isValidDate(this.value) ? format(this.value, this.format) : '';
-    this.valueChange.emit(this.date);
-    this.stateChangesSubj.next();
-  }
-
   @HostListener('change')
   @HostListener('input')
   onInputChange() {
     const value = this.input.nativeElement.value;
     this.date = value ? parse(value, this.format, isValidDate(this.value) ? this.value : new Date()) : null;
+
+    if (!isValidDate(this.date)) {
+      this.date = null;
+    }
+
     this.onChange(this.value);
     this.valueChange.emit(this.date);
     this.stateChangesSubj.next();
   }
+
+  private onTouched: () => void = () => {
+  };
+
+  private onChange: (value: Date | null) => void = (ignored: Date | null) => {
+  };
 
 }

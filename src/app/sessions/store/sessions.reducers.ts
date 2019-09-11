@@ -3,7 +3,7 @@ import { Action, createFeatureSelector, createReducer, createSelector, on, Selec
 import { SessionEntity } from '../model/session-entity';
 import { SessionsActions } from './actions';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { Session } from '../model/session';
+import { isRunning, Session } from '../model/session';
 
 interface LoadingStatus {
   type: 'loading';
@@ -101,7 +101,7 @@ export const getSessions: Selector<State, Session[]> = createSelector(
 
 export const getRunningSessions: Selector<State, Session[]> = createSelector(
   getSessions,
-  sessions => sessions.filter(s => s.isRunning())
+  sessions => sessions.filter(isRunning)
 );
 export const hasRunningSessions: Selector<State, boolean> = createSelector(
   getRunningSessions,

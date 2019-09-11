@@ -9,19 +9,22 @@ export class TimeIntervalPipe implements PipeTransform {
   private static msPerMinutes = 60 * TimeIntervalPipe.msPerSecond;
   private static msPerHour = 60 * TimeIntervalPipe.msPerMinutes;
 
-  transform(milliseconds: number): string {
-    if (milliseconds) {
-      const hours = Math.trunc(milliseconds / TimeIntervalPipe.msPerHour);
-
-      milliseconds = milliseconds % TimeIntervalPipe.msPerHour;
-      const min = Math.trunc(milliseconds / TimeIntervalPipe.msPerMinutes);
-
-      milliseconds = milliseconds % TimeIntervalPipe.msPerMinutes;
-      const sec = Math.trunc(milliseconds / TimeIntervalPipe.msPerSecond);
-
-      return `${hours} h ${min} min ${sec} sec`;
+  transform(milliseconds: number | undefined | null): string {
+    if (typeof milliseconds !== 'number') {
+      return '--:--:--';
     }
-    return '0';
+
+    const sign = milliseconds < 0 ? '-' : '';
+    milliseconds = Math.abs(milliseconds);
+    const hours = Math.trunc(milliseconds / TimeIntervalPipe.msPerHour);
+
+    milliseconds = milliseconds % TimeIntervalPipe.msPerHour;
+    const min = Math.trunc(milliseconds / TimeIntervalPipe.msPerMinutes).toString().padStart(2, '0');
+
+    milliseconds = milliseconds % TimeIntervalPipe.msPerMinutes;
+    const sec = Math.trunc(milliseconds / TimeIntervalPipe.msPerSecond).toString().padStart(2, '0');
+
+    return `${sign}${hours}:${min}:${sec}`;
   }
 
 }

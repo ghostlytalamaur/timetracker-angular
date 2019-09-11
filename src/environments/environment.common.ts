@@ -1,7 +1,8 @@
 export const commonEnvironment = {
   settings: {
     dateFormat: 'EEEE, MMMM d, y',
-    timeFormat: 'HH:mm'
+    timeFormat: 'HH:mm',
+    durationRate: 1000
   },
   firebase: {
     apiKey: 'AIzaSyDfhUBBpFLw_2Na9c5mMIvRbFgmlcnP_tA',

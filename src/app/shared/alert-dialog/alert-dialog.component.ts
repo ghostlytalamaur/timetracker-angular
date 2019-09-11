@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 export interface AlertDialogData {
   title: string;
@@ -12,8 +12,7 @@ export interface AlertDialogData {
 export class AlertDialogComponent implements OnInit {
 
   constructor(
-    private readonly dialogRef: MatDialogRef<AlertDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private readonly data: AlertDialogData
+    @Inject(MAT_DIALOG_DATA) readonly data: AlertDialogData
   ) {
   }
 
