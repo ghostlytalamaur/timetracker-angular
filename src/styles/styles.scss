@@ -19,6 +19,13 @@
   .text-warn {
     color: mat-color($warn, text);
   }
+
+  .custom-mat-dialog {
+    .mat-dialog-actions {
+      // due to box-sizing: border-box; adjust dialog-actions margin
+      margin-bottom: -16px;
+    }
+  }
 }
 
 @mixin app-theme($theme) {

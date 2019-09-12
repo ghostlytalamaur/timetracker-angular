@@ -1,7 +1,17 @@
-<h4 mat-dialog-title>{{ data.title }}</h4>
+<h4 *ngIf="data.title" mat-dialog-title>{{ data.title }}</h4>
 <mat-dialog-content>
   <div>{{ data.message }}</div>
 </mat-dialog-content>
-<mat-dialog-actions class="justify-content-end">
-  <button color="warn" mat-dialog-close mat-flat-button>Close</button>
+
+<mat-dialog-actions align="end">
+
+  <ng-container *ngIf="data.type === confirmationType">
+    <button [matDialogClose]="okResult" mat-flat-button>Ok</button>
+    <button [matDialogClose]="cancelResult" mat-flat-button>Cancel</button>
+  </ng-container>
+
+  <ng-container *ngIf="data.type === alertType">
+    <button [matDialogClose]="closeResult" mat-flat-button>Close</button>
+  </ng-container>
+
 </mat-dialog-actions>

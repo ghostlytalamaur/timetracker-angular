@@ -2,7 +2,14 @@
   <div class="row">
     <div class="col">
       <div>Date: {{ session?.date | date:dateFormat }}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <div>Start: {{ session?.start | date:timeFormat }}</div>
+    </div>
+    <div class="col">
       <div>End: {{ session?.end | date:timeFormat }}</div>
     </div>
     <div class="col-5">
@@ -11,4 +18,13 @@
       </div>
     </div>
   </div>
+
+  <mat-card-actions align="end">
+    <button
+      (click)="onDelete($event)"
+      class="mt-auto" mat-button>
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </mat-card-actions>
+
 </mat-card>

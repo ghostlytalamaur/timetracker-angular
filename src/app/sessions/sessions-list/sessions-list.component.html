@@ -1,9 +1,10 @@
 <div class="row h-100">
   <div class="col">
-    <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="104">
+    <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="116">
       <app-session-item
         *cdkVirtualFor="let session of (sessions$ | async)?.slice().reverse(); trackBy: trackById"
         (click)="onOpenSession(session)"
+        (sessionDelete)="onDeleteSession(session)"
         [session]="session"
         class="list-item"></app-session-item>
     </cdk-virtual-scroll-viewport>
