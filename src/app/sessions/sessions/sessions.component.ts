@@ -12,7 +12,6 @@ import { DialogsService } from '../../shared/alert-dialog/dialogs.service';
 })
 export class SessionsComponent implements OnInit, OnDestroy {
 
-  readonly hasRunning$: Observable<boolean>;
   readonly isLoading$: Observable<boolean>;
   readonly error$: Observable<string>;
   subscription: Subscription;
@@ -21,7 +20,6 @@ export class SessionsComponent implements OnInit, OnDestroy {
     private sessionsSrv: SessionsService,
     private dialogs: DialogsService
   ) {
-    this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
     this.isLoading$ = this.sessionsSrv.isLoading();
     this.error$ = this.sessionsSrv.getError();
   }
@@ -42,7 +40,4 @@ export class SessionsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onToggleSession(): void {
-    this.sessionsSrv.toggleSession();
-  }
 }
