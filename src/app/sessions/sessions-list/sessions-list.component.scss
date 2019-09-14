@@ -1,7 +1,7 @@
 $margin: 16px;
 
 .list-item {
-  margin: 0 $margin $margin;
+  margin: 0 0 $margin;
 
   &:first-child {
     margin-top: $margin;
@@ -10,4 +10,9 @@ $margin: 16px;
 
 .scroll-viewport {
   height: 100%;
+}
+
+
+.actions-row {
+  padding-bottom: $margin;
 }

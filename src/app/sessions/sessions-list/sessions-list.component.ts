@@ -16,6 +16,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
   readonly sessions$: Observable<Session[]>;
   private readonly alive$: Subject<void>;
+  private readonly hasRunning$: Observable<boolean>;
 
   constructor(
     private readonly router: Router,
@@ -24,6 +25,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     private readonly dialog: DialogsService
   ) {
     this.sessions$ = this.sessionsSrv.getSessions();
+    this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
     this.alive$ = new Subject<void>();
   }
 
@@ -56,5 +58,9 @@ export class SessionsListComponent implements OnInit, OnDestroy {
         () => {
         }
       );
+  }
+
+  onToggleSession(): void {
+    this.sessionsSrv.toggleSession();
   }
 }

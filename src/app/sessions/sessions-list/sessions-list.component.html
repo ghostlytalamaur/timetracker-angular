@@ -1,5 +1,13 @@
 <div class="row h-100">
   <div class="col">
+    <div class="row actions-row">
+      <div class="col">
+        <div class="d-flex flex-row">
+          <button (click)="onToggleSession()" color="primary"
+                  mat-flat-button>{{ (hasRunning$ | async) ? 'Stop' : 'Start' }}</button>
+        </div>
+      </div>
+    </div>
     <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="116">
       <app-session-item
         *cdkVirtualFor="let session of (sessions$ | async)?.slice().reverse(); trackBy: trackById"

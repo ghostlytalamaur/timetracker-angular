@@ -1,13 +1,5 @@
 <div class="container">
   <ng-container *ngIf="!(isLoading$ | async); else loadingTemplate">
-    <div class="row actions-row">
-      <div class="col">
-        <div class="d-flex flex-row">
-          <button (click)="onToggleSession()" color="primary"
-                  mat-flat-button>{{ (hasRunning$ | async) ? 'Stop' : 'Start' }}</button>
-        </div>
-      </div>
-    </div>
     <div class="row content">
       <div class="col">
         <router-outlet></router-outlet>
