@@ -1,16 +1,16 @@
 <mat-card>
   <div class="row">
     <div class="col">
-      <div>Date: {{ session?.date | date:dateFormat }}</div>
+      <div>Date: {{ session?.start | dateTimeToFormat:dateFormat }}</div>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <div>Start: {{ session?.start | date:timeFormat }}</div>
+      <div>Start: {{ session?.start | dateTimeToFormat:timeFormat }}</div>
     </div>
     <div class="col">
-      <div>End: {{ session?.end | date:timeFormat }}</div>
+      <div>End: {{ session?.start | date:timeFormat }}</div>
     </div>
     <div class="col-5">
       <div>Duration:

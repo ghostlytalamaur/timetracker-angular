@@ -3,6 +3,7 @@ import { SessionsService } from '../sessions.service';
 import { SessionEntity } from '../model/session-entity';
 import { Session } from '../model/session';
 import { v4 as uuid } from 'uuid';
+import { DateTime } from 'luxon';
 
 interface DayBackup {
   id: number;
@@ -95,9 +96,9 @@ export class SessionsImportComponent implements OnInit {
   private importSessions(backup: SessionsBackup) {
     const sessions: SessionEntity[] = [];
     for (const s of backup.sessions) {
-      const start = new Date(s.start * 1000);
-      const end = new Date(s.end * 1000);
-      sessions.push(new Session(uuid(), start, start, end).toEntity());
+      const start = DateTime.fromMillis(s.start * 1000);
+      const end = DateTime.fromMillis(s.end * 1000);
+      sessions.push(new Session(uuid(), start, end.diff(start)).toEntity());
     }
     this.sessionsSrv.addSessions(sessions);
   }

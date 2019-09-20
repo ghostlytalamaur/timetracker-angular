@@ -6,21 +6,33 @@ export interface EntityType {
 
 export type Update<T> = EntityType & Partial<T>;
 
-export interface EntityStorage<Entity extends EntityType> {
+export type WhereFilterOp = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
+export type OrderByDirection = 'desc' | 'asc';
+export type QueryFunction<Q extends EntityQuery<unknown>> = (query: Q) => Q;
+
+export interface EntityQuery<E> {
+  where<K extends keyof E & string>(field: K, operation: WhereFilterOp, value: E[K]): this;
+
+  orderBy<K extends keyof E & string>(field: K, direction?: OrderByDirection): this;
+
+  limit(limit: number): this;
+}
+
+export interface EntityStorage<Entity extends EntityType, Q extends EntityQuery<Entity>> {
   /**
    *  Emits each added entities. For the first time load entities from underlying storage.
    */
-  addedEntities(): Observable<Entity[]>;
+  addedEntities(queryFn?: QueryFunction<Q>): Observable<Entity[]>;
 
   /**
    * Emits each modified entities.
    */
-  modifiedEntities(): Observable<Entity[]>;
+  modifiedEntities(queryFn?: QueryFunction<Q>): Observable<Entity[]>;
 
   /**
    * Emits ids of removed entities
    */
-  removedEntities(): Observable<string[]>;
+  deletedEntities(): Observable<string[]>;
 
   /**
    * Add entities to storage

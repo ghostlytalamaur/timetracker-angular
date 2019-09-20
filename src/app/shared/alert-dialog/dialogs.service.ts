@@ -3,6 +3,7 @@ import { AlertDialogComponent, AlertDialogData, ConfirmationDialogData, DialogRe
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { ComponentType } from '@angular/cdk/portal';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,15 @@ export class DialogsService {
           type: 'alert',
           ...data
         }
+      })
+      .afterClosed();
+  }
+
+  component<D, R>(component: ComponentType<any>, data?: D): Observable<R | undefined> {
+    return this.matDialog.open<any, D, R>(component,
+      {
+        ...this.defaultConfig,
+        data
       })
       .afterClosed();
   }

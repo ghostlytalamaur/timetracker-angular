@@ -11,12 +11,17 @@ import {
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
-import { TimeIntervalPipe } from './time-interval.pipe';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { DateTimeInputDirective } from './directives/date-time-input.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { LuxonModule } from 'luxon-angular';
+import {
+  DateRangePickerDialogComponent,
+  DateRangePickerDialogDirective
+} from './components/date-range-picker/date-range-picker-dialog.component';
 
 const materialModules = [
   ScrollingModule,
@@ -33,27 +38,25 @@ const materialModules = [
 ];
 
 @NgModule({
-  imports: [
-    ...materialModules,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
+  imports: [...materialModules, CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [
-    TimeIntervalPipe,
     AlertDialogComponent,
-    DateTimeInputDirective
+    DateTimeInputDirective,
+    DateRangePickerComponent,
+    DateRangePickerDialogComponent,
+    DateRangePickerDialogDirective
   ],
-  entryComponents: [
-    AlertDialogComponent
-  ],
+  entryComponents: [AlertDialogComponent, DateRangePickerDialogComponent],
   exports: [
     ...materialModules,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TimeIntervalPipe,
-    DateTimeInputDirective
+    DateTimeInputDirective,
+    DateRangePickerComponent,
+    DateRangePickerDialogComponent,
+    DateRangePickerDialogDirective,
+    LuxonModule
   ]
 })
 export class SharedModule {

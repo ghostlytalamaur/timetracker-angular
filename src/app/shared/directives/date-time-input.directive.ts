@@ -14,16 +14,16 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NgControl, ValidationErrors } from '@angular/forms';
-import { format, parse } from 'date-fns';
 import { MatFormFieldControl } from '@angular/material';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { DateTime } from 'luxon';
 
 function isValidDate(date: Date | null | undefined): date is Date {
-  return date instanceof Date && isFinite(+date);
+  return !!(date && isFinite(+date));
 }
 
 export function dateValidator(control: AbstractControl): ValidationErrors | null {
@@ -87,7 +87,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   @Input('appDateTimeInput')
   set format(fmt: string) {
     this.mFormat = fmt;
-    this.input.nativeElement.value = isValidDate(this.value) && this.format ? format(this.value, this.format) : '';
+    this.input.nativeElement.value = isValidDate(this.value) && this.format ? DateTime.fromJSDate(this.value).toFormat(this.format) : '';
     this.stateChangesSubj.next();
   }
 
@@ -106,11 +106,21 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     return this.mId ? this.mId : this.uid;
   }
 
+  set id(value: string) {
+    this.mId = value;
+  }
+
   @Input()
   @HostBinding('attr.placeholder')
   get placeholder(): string {
     return this.mPlaceholder;
   }
+
+  set placeholder(value: string) {
+    this.mPlaceholder = value;
+    this.stateChangesSubj.next();
+  }
+
 
   @Input()
   @HostBinding('required')
@@ -118,8 +128,9 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     return this.mRequired;
   }
 
-  set id(value: string) {
-    this.mId = value;
+  set required(value: boolean) {
+    this.mRequired = coerceBooleanProperty(value);
+    this.stateChangesSubj.next();
   }
 
   @Input()
@@ -128,30 +139,20 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     return this.mDisabled;
   }
 
-  set placeholder(value: string) {
-    this.mPlaceholder = value;
-    this.stateChangesSubj.next();
-  }
-
-  get focused(): boolean {
-    return this.mFocused;
-  }
-
-  set required(value: boolean) {
-    this.mRequired = coerceBooleanProperty(value);
-    this.stateChangesSubj.next();
-  }
-
-  get empty(): boolean {
-    return !this.input.nativeElement.value;
-  }
-
   set disabled(value: boolean) {
     this.mDisabled = coerceBooleanProperty(value);
     if (this.focused) {
       this.mFocused = false;
       this.stateChangesSubj.next();
     }
+  }
+
+  get focused(): boolean {
+    return this.mFocused;
+  }
+
+  get empty(): boolean {
+    return !this.input.nativeElement.value;
   }
 
   get shouldLabelFloat(): boolean {
@@ -166,13 +167,9 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     if (!value || value === this.date) {
       return;
     }
-    if (!(value instanceof Date)) {
-      throw new Error('Unsupported value');
-    }
-
     this.date = isValidDate(value) ? value : null;
 
-    this.input.nativeElement.value = isValidDate(this.value) && this.format ? format(this.value, this.format) : '';
+    this.input.nativeElement.value = isValidDate(this.value) && this.format ? DateTime.fromJSDate(this.value).toFormat(this.format) : '';
     this.valueChange.emit(this.date);
     this.stateChangesSubj.next();
   }
@@ -237,7 +234,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   @HostListener('input')
   onInputChange() {
     const value = this.input.nativeElement.value;
-    this.date = value ? parse(value, this.format, isValidDate(this.value) ? this.value : new Date()) : null;
+    this.date = value ? DateTime.fromFormat(value, this.format).toJSDate() : null;
 
     if (!isValidDate(this.date)) {
       this.date = null;
@@ -250,7 +247,6 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
 
   private onTouched: () => void = () => {
   };
-
   private onChange: (value: Date | null) => void = (ignored: Date | null) => {
   };
 

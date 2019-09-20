@@ -1,21 +1,24 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Duration } from 'luxon';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-session-duration',
-  template: '<span [ngClass]="getDurationClasses()">{{ duration | timeInterval }}</span>',
+  template: `
+      <ng-container *ngIf="duration && duration.valueOf() > 0; else negativeTemplate">
+          <span>{{ duration | durationToFormat:timeFormat }}</span>
+      </ng-container>
+      <ng-template #negativeTemplate>
+          <span class="text-warn">-{{ duration?.negate() | durationToFormat:timeFormat }}</span>
+      </ng-template>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionDurationComponent {
 
-  @Input()
-  duration: number | undefined;
+  readonly timeFormat = environment.settings.timeFormat;
 
-  getDurationClasses(): { [clazz: string]: boolean } {
-    const res: { [clazz: string]: boolean } = {};
-    if (!this.duration || this.duration < 0) {
-      res['text-warn'] = true;
-    }
-    return res;
-  }
+  @Input()
+  duration: Duration | undefined | null;
 
 }

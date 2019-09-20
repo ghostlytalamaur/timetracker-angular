@@ -8,6 +8,8 @@ import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { Session } from './model/session';
 import { Update } from './services/entity-storage';
+import { Range } from '../shared/types';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -72,11 +74,11 @@ export class SessionsService {
         take(1),
         map((sessions: Session[]) => {
           if (sessions.length > 0) {
-            const now = new Date();
+            const now = DateTime.local();
             const changes = sessions.map<Update<SessionEntity>>(s =>
               ({
                 id: s.id,
-                end: now.toTimeString()
+                duration: now.valueOf() - s.start.valueOf()
               })
             );
             return SessionsActions.updateSessions({ changes });
@@ -93,5 +95,16 @@ export class SessionsService {
 
   clearError() {
     this.store.dispatch(SessionsActions.clearError());
+  }
+
+  getDisplayRange(): Observable<Range<DateTime>> {
+    return this.store.select(fromSessions.getDisplayRange);
+  }
+
+  setDisplayRange(range: Range<DateTime>): void {
+    this.store.dispatch(SessionsActions.setDisplayRange({
+      start: range.start.valueOf(),
+      end: range.end.valueOf()
+    }));
   }
 }

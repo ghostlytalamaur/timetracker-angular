@@ -8,6 +8,8 @@ import { from, merge, Observable, of } from 'rxjs';
 import * as fromSessions from '../store';
 import { SessionsStorageService } from '../services/sessions-storage.service';
 import { Update } from '../services/entity-storage';
+import { Range } from '../../shared/types';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class SessionsEffects {
@@ -84,11 +86,16 @@ export class SessionsEffects {
   }
 
   private getChangesActions(): Observable<Action> {
-    const changes$ = merge(
-      this.getAddedSessions(),
-      this.getRemovedSessions(),
-      this.getModifiedSessions()
-    );
+    const changes$ = this.store.select(fromSessions.getDisplayRange)
+      .pipe(
+        switchMap(range => {
+          return merge(
+            this.getAddedSessions(range),
+            this.getRemovedSessions(),
+            this.getModifiedSessions(range)
+          );
+        })
+      );
 
     return this.catchError(changes$, '');
   }
@@ -104,8 +111,8 @@ export class SessionsEffects {
       );
   }
 
-  private getAddedSessions(): Observable<Action> {
-    return this.storage.addedSessions()
+  private getAddedSessions(range: Range<DateTime>): Observable<Action> {
+    return this.storage.addedSessions(range)
       .pipe(
         map(sessions => SessionsActions.sessionsAdded({ sessions }))
       );
@@ -118,8 +125,8 @@ export class SessionsEffects {
       );
   }
 
-  private getModifiedSessions(): Observable<Action> {
-    return this.storage.modifiedSessions()
+  private getModifiedSessions(range: Range<DateTime>): Observable<Action> {
+    return this.storage.modifiedSessions(range)
       .pipe(
         map(sessions => SessionsActions.sessionsModified({ sessions }))
       );

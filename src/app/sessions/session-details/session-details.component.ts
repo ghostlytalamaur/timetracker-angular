@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SessionEntity } from '../model/session-entity';
 import { Update } from '../services/entity-storage';
 import { v4 as uuid } from 'uuid';
+import { DateTime, Duration } from 'luxon';
 
 interface FormData {
   date: Date | null;
@@ -24,10 +25,9 @@ interface FormData {
 })
 export class SessionDetailsComponent implements OnInit, OnDestroy {
 
-  readonly dateFormat = environment.settings.dateFormat;
   readonly timeFormat = environment.settings.timeFormat;
   readonly form: FormGroup;
-  readonly duration$: Observable<number | undefined>;
+  readonly duration$: Observable<Duration | null>;
   error: string;
   private subscription: Subscription | undefined;
   private session: Session | undefined;
@@ -37,15 +37,24 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly sessionsSrv: SessionsService
   ) {
+    const now = DateTime.local();
     this.form = new FormGroup({
-      date: new FormControl(undefined, [Validators.required]),
-      start: new FormControl(undefined, [Validators.required]),
-      end: new FormControl()
+      date: new FormControl(now, [Validators.required]),
+      start: new FormControl(now, [Validators.required]),
+      end: new FormControl(now)
     });
 
     this.duration$ = defer(() => merge(of(this.form.value), this.form.valueChanges))
       .pipe(
-        switchMap((data: FormData) => getDuration(data.start, data.end, environment.settings.durationRate))
+        switchMap((data: FormData) => {
+          const start = data.start ? DateTime.fromJSDate(data.start) : null;
+          let duration: Duration | null = null;
+          if (data.start && data.end) {
+            duration = DateTime.fromJSDate(data.end).diff(DateTime.fromJSDate(data.start));
+          }
+
+          return getDuration(start, duration, environment.settings.durationRate);
+        })
       );
   }
 
@@ -74,14 +83,12 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const date: Date = this.form.value.date;
-    const start: Date = this.form.value.start;
-    const end: Date = this.form.value.end;
+    const start: DateTime = this.form.value.start;
+    const end: DateTime | null = this.form.value.end;
     const changes: Update<SessionEntity> = {
       id: this.session && this.session.id || uuid(),
-      date: date.toDateString(),
-      start: start.toTimeString(),
-      end: end ? end.toTimeString() : null
+      start: start.valueOf(),
+      duration: end ? end.valueOf() - start.valueOf() : null
     };
     this.sessionsSrv.updateSession(changes);
     this.router.navigate(['../'], { relativeTo: this.route }).catch(console.log);
@@ -93,9 +100,9 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
 
   private sessionToFormData(): FormData {
     return {
-      date: this.session && this.session.date || null,
-      start: this.session && this.session.start || null,
-      end: this.session && this.session.end || null
+      date: this.session && this.session.start ? this.session.start.toJSDate() : null,
+      start: this.session && this.session.start ? this.session.start.toJSDate() : null,
+      end: this.session && this.session.start && this.session.duration ? this.session.start.plus(this.session.duration).toJSDate() : null
     };
   }
 

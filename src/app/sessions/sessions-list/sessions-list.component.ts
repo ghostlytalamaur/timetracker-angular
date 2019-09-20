@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { SessionsService } from '../sessions.service';
-import { Observable, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Session } from '../model/session';
+import { DateTime } from 'luxon';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { DialogsService } from '../../shared/alert-dialog/dialogs.service';
-import { takeUntil } from 'rxjs/operators';
+import { Range } from '../../shared/types';
+import { Session } from '../model/session';
+import { SessionsService } from '../sessions.service';
 
 @Component({
   selector: 'app-sessions-list',
@@ -16,7 +18,8 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
   readonly sessions$: Observable<Session[]>;
   private readonly alive$: Subject<void>;
-  private readonly hasRunning$: Observable<boolean>;
+  readonly hasRunning$: Observable<boolean>;
+  readonly displayRange$: Observable<Range<Date>>;
 
   constructor(
     private readonly router: Router,
@@ -26,6 +29,10 @@ export class SessionsListComponent implements OnInit, OnDestroy {
   ) {
     this.sessions$ = this.sessionsSrv.getSessions();
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
+    this.displayRange$ = this.sessionsSrv.getDisplayRange()
+      .pipe(
+        map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() }))
+      );
     this.alive$ = new Subject<void>();
   }
 
@@ -63,4 +70,12 @@ export class SessionsListComponent implements OnInit, OnDestroy {
   onToggleSession(): void {
     this.sessionsSrv.toggleSession();
   }
+
+  onDisplayRangeChange(range: Range<Date>): void {
+    this.sessionsSrv.setDisplayRange({
+      start: DateTime.fromJSDate(range.start),
+      end: DateTime.fromJSDate(range.end)
+    });
+  }
+
 }

@@ -49,3 +49,8 @@ export const sessionsError = createAction(
 export const clearError = createAction(
   '[Sessions] Clear Error'
 );
+
+export const setDisplayRange = createAction(
+  '[Sessions] Set Display Range',
+  props<{ start: number, end: number }>()
+);
