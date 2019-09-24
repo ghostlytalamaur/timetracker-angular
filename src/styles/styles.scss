@@ -1,19 +1,12 @@
-@import 'variables';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/reboot';
-@import '~bootstrap/scss/grid';
-@import '~bootstrap/scss/utilities';
-@import 'reset';
 @import '~@angular/material/theming';
 
 @include mat-core();
 
 @import 'theme-dark';
-@import 'reset-theme';
+@import 'bootstrap.theme';
 
 @mixin custom-styles($theme) {
+  $background: map-get($theme, background);
   $warn: map-get($theme, warn);
 
   .text-warn {
@@ -26,15 +19,50 @@
       margin-bottom: -16px;
     }
   }
+
+  $margin: 16px;
+
+  .list-item {
+    margin: 0 0 $margin;
+
+    display: block;
+    cursor: pointer;
+
+    &:first-child {
+      margin-top: $margin;
+    }
+  }
+
+  .bg-hover:hover {
+    background-color: mat-color($background, hover)
+  }
+
+  .bg-card {
+    background-color: mat-color($background, card);
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
 }
 
+
 @mixin app-theme($theme) {
-  @include app-theme-reset($theme);
   @include angular-material-theme($theme);
   @include custom-styles($theme);
+  @include bootstrap-material-theme($theme);
 }
 
 @include app-theme($app-dark-theme);
+
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/utilities';
+
+@import '~bootstrap/scss/list-group';
+
+@include bootstrap-reset();
+
 
 html, body {
   height: 100%;
@@ -48,3 +76,4 @@ body {
     box-sizing: border-box;
   }
 }
+

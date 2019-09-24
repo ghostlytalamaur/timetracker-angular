@@ -12,6 +12,10 @@ import { SessionItemComponent } from './sessions-list/session-item/session-item.
 import { SessionsImportComponent } from './import/sessions-import.component';
 import * as fromSessions from './store';
 import { SessionDurationComponent } from './session-duration/session-duration.component';
+import { SessionsGroupItemComponent } from './sessions-group-item/sessions-group-item.component';
+import { SessionsGroupTypeSelectorComponent } from './sessions-group-type-selector/sessions-group-type-selector.component';
+import { SessionsGroupListComponent } from './sessions-group-list/sessions-group-list.component';
+import { SessionsContainerComponent } from './sessions-container/sessions-container.component';
 
 @NgModule({
   imports: [
@@ -27,7 +31,11 @@ import { SessionDurationComponent } from './session-duration/session-duration.co
     SessionsComponent,
     SessionItemComponent,
     SessionsImportComponent,
-    SessionDurationComponent
+    SessionDurationComponent,
+    SessionsGroupItemComponent,
+    SessionsGroupTypeSelectorComponent,
+    SessionsGroupListComponent,
+    SessionsContainerComponent
   ]
 })
 export class SessionsModule {

@@ -1,0 +1,18 @@
+.mat-expansion-panel-header-title {
+  flex-basis: 50%;
+}
+
+.mat-expansion-panel-header-description {
+  flex-grow: 0;
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessions-list {
+  height: 140px;
+}

@@ -8,8 +8,9 @@ import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { Session } from './model/session';
 import { Update } from './services/entity-storage';
-import { Range } from '../shared/types';
+import { Range } from '../shared/utils';
 import { DateTime } from 'luxon';
+import { SessionsGroup, SessionsGroupType } from './model/sessions-group';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,14 @@ export class SessionsService {
 
   getError(): Observable<string> {
     return this.store.select(fromSessions.getError);
+  }
+
+  getGroupType(): Observable<SessionsGroupType> {
+    return this.store.select(fromSessions.getGroupType);
+  }
+
+  getSessionGroups(): Observable<SessionsGroup[]> {
+    return this.store.select(fromSessions.getSessionsGroups);
   }
 
   loadSessions(): void {
@@ -106,5 +115,9 @@ export class SessionsService {
       start: range.start.valueOf(),
       end: range.end.valueOf()
     }));
+  }
+
+  changeGroupType(group: SessionsGroupType) {
+    this.store.dispatch(SessionsActions.changeGroupType({ group }));
   }
 }

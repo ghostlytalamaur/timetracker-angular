@@ -1,30 +1,32 @@
-<mat-card>
-  <div class="row">
-    <div class="col">
-      <div>Date: {{ session?.start | dateTimeToFormat:dateFormat }}</div>
-    </div>
-  </div>
+<div class="row align-items-center">
 
-  <div class="row">
-    <div class="col">
-      <div>Start: {{ session?.start | dateTimeToFormat:timeFormat }}</div>
-    </div>
-    <div class="col">
-      <div>End: {{ session?.start | date:timeFormat }}</div>
-    </div>
-    <div class="col-5">
-      <div>Duration:
-        <app-session-duration [duration]="duration$ | async"></app-session-duration>
+  <div class="col mr-auto">
+    <div class="row">
+      <div class="col">
+        <div>{{ session?.start | dateTimeToFormat:dateFormat }}</div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <div>Start: {{ session?.start | dateTimeToFormat:timeFormat }}</div>
+      </div>
+
+      <div class="col-auto">
+        <div>Duration:
+          <app-session-duration [duration]="duration$ | async"></app-session-duration>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <mat-card-actions align="end">
+
+  <div class="col-auto">
     <button
       (click)="onDelete($event)"
       class="mt-auto" mat-button>
       <mat-icon>delete_forever</mat-icon>
     </button>
-  </mat-card-actions>
-
-</mat-card>
+  </div>
+</div>

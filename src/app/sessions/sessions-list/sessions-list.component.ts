@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DateTime } from 'luxon';
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DialogsService } from '../../shared/alert-dialog/dialogs.service';
-import { Range } from '../../shared/types';
 import { Session } from '../model/session';
 import { SessionsService } from '../sessions.service';
 
@@ -16,10 +14,9 @@ import { SessionsService } from '../sessions.service';
 })
 export class SessionsListComponent implements OnInit, OnDestroy {
 
-  readonly sessions$: Observable<Session[]>;
+  @Input()
+  sessions: Session[];
   private readonly alive$: Subject<void>;
-  readonly hasRunning$: Observable<boolean>;
-  readonly displayRange$: Observable<Range<Date>>;
 
   constructor(
     private readonly router: Router,
@@ -27,12 +24,6 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     private readonly sessionsSrv: SessionsService,
     private readonly dialog: DialogsService
   ) {
-    this.sessions$ = this.sessionsSrv.getSessions();
-    this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
-    this.displayRange$ = this.sessionsSrv.getDisplayRange()
-      .pipe(
-        map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() }))
-      );
     this.alive$ = new Subject<void>();
   }
 
@@ -65,17 +56,6 @@ export class SessionsListComponent implements OnInit, OnDestroy {
         () => {
         }
       );
-  }
-
-  onToggleSession(): void {
-    this.sessionsSrv.toggleSession();
-  }
-
-  onDisplayRangeChange(range: Range<Date>): void {
-    this.sessionsSrv.setDisplayRange({
-      start: DateTime.fromJSDate(range.start),
-      end: DateTime.fromJSDate(range.end)
-    });
   }
 
 }

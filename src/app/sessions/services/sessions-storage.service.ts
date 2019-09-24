@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { FireEntityStorage } from './fire-entity-storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../core/auth/auth.service';
-import { Range } from '../../shared/types';
+import { Range } from '../../shared/utils';
 import { DateTime } from 'luxon';
 import { map } from 'rxjs/operators';
 import { DexieEntityStorage } from './dexie-entity-storage';

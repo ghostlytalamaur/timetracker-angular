@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { getDuration, Session } from '../../model/session';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -12,6 +12,9 @@ import { Duration } from 'luxon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SessionItemComponent {
+
+  @HostBinding('class')
+  readonly class = 'bg-card bg-hover list-group-item cursor-pointer';
 
   readonly dateFormat = environment.settings.dateFormat;
   readonly timeFormat = environment.settings.timeFormat;

@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { SessionEntity } from '../../model/session-entity';
 import { Update } from '../../services/entity-storage';
+import { SessionsGroupType } from '../../model/sessions-group';
 
 export const loadSessions = createAction(
   '[Sessions] Load Sessions'
@@ -53,4 +54,9 @@ export const clearError = createAction(
 export const setDisplayRange = createAction(
   '[Sessions] Set Display Range',
   props<{ start: number, end: number }>()
+);
+
+export const changeGroupType = createAction(
+  '[Sessions] Change Group Type',
+  props<{ group: SessionsGroupType }>()
 );

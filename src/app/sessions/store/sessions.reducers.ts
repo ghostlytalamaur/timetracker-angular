@@ -1,46 +1,8 @@
-import * as fromRoot from '../../core/store';
-import { Action, compose, createFeatureSelector, createReducer, createSelector, on, Selector } from '@ngrx/store';
-import { SessionEntity } from '../model/session-entity';
+import { Action, createReducer, on } from '@ngrx/store';
 import { SessionsActions } from './actions';
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { isRunning, Session } from '../model/session';
-import { isInRange, Range } from '../../shared/types';
+import { isInRange } from '../../shared/utils';
+import { adapter, SessionsState } from './sessions.state';
 import { DateTime } from 'luxon';
-
-interface LoadingStatus {
-  type: 'loading';
-}
-
-interface ErrorStatus {
-  type: 'error';
-  message: string;
-}
-
-type Status = LoadingStatus | ErrorStatus;
-export const sessionsFeatureKey = 'sessions';
-
-export interface SessionsState extends EntityState<SessionEntity> {
-  displayRange: Range<number>;
-  status: Status | undefined;
-  loaded: boolean;
-}
-
-export interface State extends fromRoot.State {
-  [sessionsFeatureKey]: SessionsState;
-}
-
-const adapter = createEntityAdapter<SessionEntity>();
-
-const initialState: SessionsState = adapter.getInitialState<SessionsState>({
-  ids: [],
-  entities: {},
-  displayRange: {
-    start: DateTime.local().startOf('month').valueOf(),
-    end: DateTime.local().endOf('month').valueOf()
-  },
-  status: undefined,
-  loaded: false
-});
 
 function onLoadSessions(state: SessionsState): SessionsState {
   return {
@@ -86,6 +48,25 @@ function onSetDisplayRange(state: SessionsState, displayRange: ReturnType<typeof
   });
 }
 
+function onChangeGroupType(state: SessionsState, group: ReturnType<typeof SessionsActions.changeGroupType>): SessionsState {
+  return {
+    ...state,
+    groupType: group.group
+  };
+}
+
+const initialState: SessionsState = adapter.getInitialState<SessionsState>({
+  ids: [],
+  entities: {},
+  displayRange: {
+    start: DateTime.local().startOf('month').valueOf(),
+    end: DateTime.local().endOf('month').valueOf()
+  },
+  groupType: 'none',
+  status: undefined,
+  loaded: false
+});
+
 export const sessionsReducers = createReducer<SessionsState>(initialState,
   on(SessionsActions.loadSessions, onLoadSessions),
   on(SessionsActions.sessionsAdded, onSessionsAdded),
@@ -93,65 +74,10 @@ export const sessionsReducers = createReducer<SessionsState>(initialState,
   on(SessionsActions.sessionsRemoved, onSessionsRemoved),
   on(SessionsActions.sessionsError, onSessionsError),
   on(SessionsActions.clearError, onClearError),
-  on(SessionsActions.setDisplayRange, onSetDisplayRange)
+  on(SessionsActions.setDisplayRange, onSetDisplayRange),
+  on(SessionsActions.changeGroupType, onChangeGroupType)
 );
 
 export function reducers(state: SessionsState | undefined, action: Action): SessionsState {
   return sessionsReducers(state, action);
 }
-
-const selectSessionsState = createFeatureSelector<SessionsState>(sessionsFeatureKey);
-
-const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal
-} = adapter.getSelectors(selectSessionsState);
-
-export const selectDisplayRange: Selector<State, Range<number>> = compose(
-  state => state.displayRange,
-  selectSessionsState
-);
-
-export const getDisplayRange: Selector<State, Range<DateTime>> = createSelector(
-  selectDisplayRange,
-  range => ({ start: DateTime.fromMillis(range.start), end: DateTime.fromMillis(range.end) })
-);
-
-export const getSessions: Selector<State, Session[]> = createSelector(
-  selectAll,
-  entities => entities.map(e => Session.fromEntity(e)).sort((a, b) => a.start.valueOf() - b.start.valueOf())
-);
-
-export const getRunningSessions: Selector<State, Session[]> = createSelector(
-  getSessions,
-  sessions => sessions.filter(isRunning)
-);
-export const hasRunningSessions: Selector<State, boolean> = createSelector(
-  getRunningSessions,
-  sessions => sessions.length > 0
-);
-
-export const getSession: (id: string) => Selector<State, Session | undefined> =
-  (id: string) => createSelector(
-    selectEntities,
-    entities => {
-      const e = entities[id];
-      return e && Session.fromEntity(e);
-    });
-
-export const isLoading: Selector<State, boolean> = createSelector(
-  selectSessionsState,
-  state => !!(state.status && state.status.type === 'loading')
-);
-
-export const isLoaded: Selector<State, boolean> = createSelector(
-  selectSessionsState,
-  state => state.loaded
-);
-
-export const getError: Selector<State, string> = createSelector(
-  selectSessionsState,
-  state => state.status && state.status.type === 'error' ? state.status.message : ''
-);

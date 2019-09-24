@@ -1,6 +1,6 @@
 import { Component, Directive, EventEmitter, HostListener, Inject, Input, OnDestroy, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Range } from '../../types';
+import { Range } from '../../utils';
 import { DialogsService } from '../../alert-dialog/dialogs.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';

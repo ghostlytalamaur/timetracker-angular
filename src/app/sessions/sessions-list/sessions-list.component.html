@@ -1,39 +1,11 @@
-<div class="row h-100">
-  <div class="col">
-    <div class="row actions-row">
-      <div class="col">
-        <div class="d-flex flex-row">
-
-          <button (click)="onToggleSession()" color="primary" mat-flat-button>
-            {{ (hasRunning$ | async) ? "Stop" : "Start" }}
-          </button>
-
-          <div class="ml-auto">
-            <ng-container *ngIf="displayRange$ | async as range">
-              <button
-                (rangeChange)="onDisplayRangeChange($event)"
-                [appDateRangePicker]="range"
-                mat-button
-              >
-                {{ range.start | date }} - {{ range.end | date }}
-              </button>
-            </ng-container>
-
-          </div>
-        </div>
-      </div>
-    </div>
-    <cdk-virtual-scroll-viewport class="scroll-viewport" itemSize="116">
-      <app-session-item
-        *cdkVirtualFor="
-          let session of (sessions$ | async)?.slice().reverse();
+<cdk-virtual-scroll-viewport class="h-100 list-group" itemSize="74">
+  <app-session-item
+    (click)="onOpenSession(session)"
+    (sessionDelete)="onDeleteSession(session)"
+    *cdkVirtualFor="
+          let session of sessions?.slice().reverse();
           trackBy: trackById
         "
-        (click)="onOpenSession(session)"
-        (sessionDelete)="onDeleteSession(session)"
-        [session]="session"
-        class="list-item"
-      ></app-session-item>
-    </cdk-virtual-scroll-viewport>
-  </div>
-</div>
+    [session]="session"
+  ></app-session-item>
+</cdk-virtual-scroll-viewport>

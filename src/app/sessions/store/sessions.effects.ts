@@ -8,7 +8,7 @@ import { from, merge, Observable, of } from 'rxjs';
 import * as fromSessions from '../store';
 import { SessionsStorageService } from '../services/sessions-storage.service';
 import { Update } from '../services/entity-storage';
-import { Range } from '../../shared/types';
+import { Range } from '../../shared/utils';
 import { DateTime } from 'luxon';
 
 @Injectable()

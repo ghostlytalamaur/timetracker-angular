@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Range, withEnd, withStart } from '../../types';
+import { Range, withEnd, withStart } from '../../utils';
 
 @Component({
   selector: 'app-date-range-picker',

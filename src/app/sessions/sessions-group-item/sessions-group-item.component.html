@@ -1,0 +1,32 @@
+<mat-expansion-panel [disabled]="!group.sessions.length">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <ng-container [ngSwitch]="group?.type">
+        <ng-container *ngSwitchCase="'week'">
+          <div>
+            {{ group.date | appDateTimeToStartOf:'week' | dateTimeToFormat:dateFormat[group.type] }}
+            -
+            {{ group.date | appDateTimeToEndOf:'week' | dateTimeToFormat:dateFormat[group.type] }}
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <div>{{ group.date | dateTimeToFormat:dateFormat[group.type] }}</div>
+        </ng-container>
+      </ng-container>
+    </mat-panel-title>
+
+    <mat-panel-description>
+      <div>Duration:
+        <app-session-duration [duration]="duration$ | async"></app-session-duration>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <ng-template matExpansionPanelContent>
+    <div [ngStyle]="{'height.px': getListSize()}"
+         class="sessions-list"
+    >
+      <app-sessions-list [sessions]="group.sessions"></app-sessions-list>
+    </div>
+  </ng-template>
+</mat-expansion-panel>

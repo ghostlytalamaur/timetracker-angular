@@ -4,10 +4,12 @@ import {
   MatCardModule,
   MatDatepickerModule,
   MatDialogModule,
+  MatExpansionModule,
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
@@ -22,6 +24,7 @@ import {
   DateRangePickerDialogComponent,
   DateRangePickerDialogDirective
 } from './components/date-range-picker/date-range-picker-dialog.component';
+import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';
 
 const materialModules = [
   ScrollingModule,
@@ -34,7 +37,9 @@ const materialModules = [
   MatCardModule,
   MatDialogModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatSelectModule,
+  MatExpansionModule
 ];
 
 @NgModule({
@@ -44,7 +49,9 @@ const materialModules = [
     DateTimeInputDirective,
     DateRangePickerComponent,
     DateRangePickerDialogComponent,
-    DateRangePickerDialogDirective
+    DateRangePickerDialogDirective,
+    DateTimeToStartOf,
+    DateTimeToEndOf
   ],
   entryComponents: [AlertDialogComponent, DateRangePickerDialogComponent],
   exports: [
@@ -56,6 +63,8 @@ const materialModules = [
     DateRangePickerComponent,
     DateRangePickerDialogComponent,
     DateRangePickerDialogDirective,
+    DateTimeToStartOf,
+    DateTimeToEndOf,
     LuxonModule
   ]
 })
