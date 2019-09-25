@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { SessionsActions } from './actions';
+import { EntitiesActions } from './entities';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SessionEntity } from '../model/session-entity';
 import { Injectable } from '@angular/core';
@@ -17,7 +17,7 @@ export class SessionsEffects {
   loadEffect$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.loadSessions),
+        ofType(EntitiesActions.loadSessions),
         switchMap(ignored => this.getChangesActions())
       )
   );
@@ -25,7 +25,7 @@ export class SessionsEffects {
   addSession$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.addSession),
+        ofType(EntitiesActions.addSession),
         switchMap(action => this.handleAddSession(action.session))
       )
   );
@@ -33,7 +33,7 @@ export class SessionsEffects {
   addSessions$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.addSessions),
+        ofType(EntitiesActions.addSessions),
         switchMap(action => this.handleAddSessions(action.sessions))
       )
   );
@@ -41,7 +41,7 @@ export class SessionsEffects {
   updateSessions$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.updateSessions),
+        ofType(EntitiesActions.updateSessions),
         switchMap(action => this.handleUpdateSessions(action.changes))
       )
   );
@@ -49,7 +49,7 @@ export class SessionsEffects {
   removeSession$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.removeSession),
+        ofType(EntitiesActions.removeSession),
         switchMap(action => this.handleRemoveSession(action.id))
       )
   );
@@ -106,7 +106,7 @@ export class SessionsEffects {
         catchError(err => {
           console.log(err);
           const message = err instanceof Error ? err.message : msg + JSON.stringify(err);
-          return of(SessionsActions.sessionsError({ message }));
+          return of(EntitiesActions.sessionsError({ message }));
         })
       );
   }
@@ -114,21 +114,21 @@ export class SessionsEffects {
   private getAddedSessions(range: Range<DateTime>): Observable<Action> {
     return this.storage.addedSessions(range)
       .pipe(
-        map(sessions => SessionsActions.sessionsAdded({ sessions }))
+        map(sessions => EntitiesActions.sessionsAdded({ sessions }))
       );
   }
 
   private getRemovedSessions(): Observable<Action> {
     return this.storage.removedSessions()
       .pipe(
-        map(ids => SessionsActions.sessionsRemoved({ ids }))
+        map(ids => EntitiesActions.sessionsRemoved({ ids }))
       );
   }
 
   private getModifiedSessions(range: Range<DateTime>): Observable<Action> {
     return this.storage.modifiedSessions(range)
       .pipe(
-        map(sessions => SessionsActions.sessionsModified({ sessions }))
+        map(sessions => EntitiesActions.sessionsModified({ sessions }))
       );
   }
 

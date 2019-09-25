@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromSessions from './store';
+import { SessionsActions } from './store';
 import { Observable } from 'rxjs';
 import { SessionEntity } from './model/session-entity';
-import { SessionsActions } from './store/actions';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 import { Session } from './model/session';

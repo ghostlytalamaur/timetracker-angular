@@ -1,71 +1,38 @@
 import { compose, createFeatureSelector, createSelector, Selector } from '@ngrx/store';
-import { adapter, sessionsFeatureKey, SessionsState, State } from './sessions.state';
-import { clustering, Range } from '../../shared/utils';
-import { DateTime } from 'luxon';
-import { isRunning, Session } from '../model/session';
-import { createGroup, SessionsGroup, SessionsGroupType } from '../model/sessions-group';
+import { sessionsFeatureKey, SessionsState, State } from './sessions.state';
+import { clustering } from '../../shared/utils';
+import { Session } from '../model/session';
+import { createGroup, SessionsGroup } from '../model/sessions-group';
+import * as fromSettings from './settings';
+import * as fromEntities from './entities';
 
 const selectSessionsState = createFeatureSelector<SessionsState>(sessionsFeatureKey);
 
-const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal
-} = adapter.getSelectors(selectSessionsState);
-
-export const selectDisplayRange: Selector<State, Range<number>> = compose(
-  state => state.displayRange,
+const selectSessionsEntityState = compose(
+  state => state.entities,
   selectSessionsState
 );
 
-export const getDisplayRange: Selector<State, Range<DateTime>> = createSelector(
-  selectDisplayRange,
-  range => ({ start: DateTime.fromMillis(range.start), end: DateTime.fromMillis(range.end) })
+const selectSettings = compose(
+  state => state.settings,
+  selectSessionsState
 );
 
-export const getSessions: Selector<State, Session[]> = createSelector(
-  selectAll,
-  entities => entities.map(e => Session.fromEntity(e)).sort((a, b) => a.start.valueOf() - b.start.valueOf())
-);
+export const {
+  getDisplayRange,
+  getGroupType
+} = fromSettings.getSelectors(selectSettings);
 
-export const getRunningSessions: Selector<State, Session[]> = createSelector(
+export const {
   getSessions,
-  sessions => sessions.filter(isRunning)
-);
-
-export const hasRunningSessions: Selector<State, boolean> = createSelector(
   getRunningSessions,
-  sessions => sessions.length > 0
-);
+  hasRunningSessions,
+  getSession,
+  getError,
+  isLoading,
+  isLoaded
+} = fromEntities.getSelectors(selectSessionsEntityState);
 
-export const getSession: (id: string) => Selector<State, Session | undefined> =
-  (id: string) => createSelector(
-    selectEntities,
-    entities => {
-      const e = entities[id];
-      return e && Session.fromEntity(e);
-    });
-
-export const isLoading: Selector<State, boolean> = createSelector(
-  selectSessionsState,
-  state => !!(state.status && state.status.type === 'loading')
-);
-
-export const isLoaded: Selector<State, boolean> = createSelector(
-  selectSessionsState,
-  state => state.loaded
-);
-
-export const getError: Selector<State, string> = createSelector(
-  selectSessionsState,
-  state => state.status && state.status.type === 'error' ? state.status.message : ''
-);
-
-export const getGroupType: Selector<State, SessionsGroupType> = createSelector(
-  selectSessionsState,
-  state => state.groupType
-);
 
 export const getSessionsGroups: Selector<State, SessionsGroup[]> = createSelector(
   getSessions,

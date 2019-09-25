@@ -16,6 +16,7 @@ import { SessionsGroupItemComponent } from './sessions-group-item/sessions-group
 import { SessionsGroupTypeSelectorComponent } from './sessions-group-type-selector/sessions-group-type-selector.component';
 import { SessionsGroupListComponent } from './sessions-group-list/sessions-group-list.component';
 import { SessionsContainerComponent } from './sessions-container/sessions-container.component';
+import { SettingsEffects } from './store/settings/settings.effects';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { SessionsContainerComponent } from './sessions-container/sessions-contai
     SessionsRoutingModule,
     SharedModule,
     StoreModule.forFeature(fromSessions.sessionsFeatureKey, fromSessions.reducers),
-    EffectsModule.forFeature([SessionsEffects])
+    EffectsModule.forFeature([SessionsEffects, SettingsEffects])
   ],
   declarations: [
     SessionDetailsComponent,
