@@ -17,15 +17,24 @@ function onChangeGroupType(state: SettingsState, group: ReturnType<typeof Settin
   };
 }
 
+function onChangeSortType(state: SettingsState, sortType: ReturnType<typeof SettingsActions.changeSortType>): SettingsState {
+  return {
+    ...state,
+    sortType: sortType.sortType
+  };
+}
+
 export const initialState: SettingsState = {
   displayRange: {
     start: DateTime.local().startOf('month').valueOf(),
     end: DateTime.local().endOf('month').valueOf()
   },
-  groupType: 'none'
+  groupType: 'none',
+  sortType: 'desc'
 };
 
 export const settingsReducers = createReducer<SettingsState>(initialState,
   on(SettingsActions.setDisplayRange, onSetDisplayRange),
-  on(SettingsActions.changeGroupType, onChangeGroupType)
+  on(SettingsActions.changeGroupType, onChangeGroupType),
+  on(SettingsActions.changeSortType, onChangeSortType)
 );

@@ -14,10 +14,11 @@ export class SettingsEffects {
         .pipe(
           ofType(
             SettingsActions.setDisplayRange,
-            SettingsActions.changeGroupType
+            SettingsActions.changeGroupType,
+            SettingsActions.changeSortType
           ),
           withLatestFrom(this.store.select(selectSettings)),
-          tap(([action, settings]) => this.storeSettings(settings))
+          tap(([ignored, settings]) => SettingsEffects.storeSettings(settings))
         ),
     { dispatch: false }
   );
@@ -28,7 +29,7 @@ export class SettingsEffects {
   ) {
   }
 
-  private storeSettings(settings: SettingsState): void {
+  private static storeSettings(settings: SettingsState): void {
     LocalStorageService.setItem(sessionsFeatureKey, settingsKey, settings);
   }
 }

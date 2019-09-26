@@ -12,16 +12,11 @@ function initStateFromLocalStorage(reducer: ActionReducer<State>): ActionReducer
     const newState = reducer(state, action);
     switch (action.type) {
       case INIT:
-        return { ...newState, ...LocalStorageService.loadState('APP_STATE') };
+        return LocalStorageService.loadState('APP_STATE', newState);
       case UPDATE:
         const features = (action as any).features;
         if (Array.isArray(features)) {
-          return features.reduce((loaded, feature) =>
-              ({
-                ...loaded,
-                ...LocalStorageService.loadState(feature)
-              })
-            , newState);
+          return features.reduce((loaded, feature) => LocalStorageService.loadState(feature, loaded), newState);
         }
     }
 

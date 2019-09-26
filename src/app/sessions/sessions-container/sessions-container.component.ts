@@ -3,9 +3,11 @@ import { Range } from '../../shared/utils';
 import { DateTime } from 'luxon';
 import { SessionsService } from '../sessions.service';
 import { map, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { SessionsGroup, SessionsGroupType } from '../model/sessions-group';
 import { Session } from '../model/session';
+import { SortType } from '../store/settings';
+import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
 
 interface Sessions {
   type: 'sessions';
@@ -17,7 +19,25 @@ interface Groups {
   groups: SessionsGroup[];
 }
 
+const ordDateTime = fromCompare<DateTime>((d1, d2) => d1 < d2 ? -1 : d1 > d2 ? 1 : 0);
+const ordGroups = contramap<DateTime, SessionsGroup>(g => g.date)(ordDateTime);
+const ordSessions = contramap<DateTime, Session>(s => s.start)(ordDateTime);
+
 type SessionsOrGroups = Sessions | Groups;
+
+function sortData(data: SessionsOrGroups, direction: SortType): SessionsOrGroups {
+  if (data.type === 'groups') {
+    return {
+      type: 'groups',
+      groups: data.groups.slice().sort(direction === 'asc' ? ordGroups.compare : getDualOrd(ordGroups).compare)
+    };
+  } else {
+    return {
+      type: 'sessions',
+      sessions: data.sessions.slice().sort(direction === 'asc' ? ordSessions.compare : getDualOrd(ordSessions).compare)
+    };
+  }
+}
 
 @Component({
   selector: 'app-sessions-container',
@@ -31,6 +51,7 @@ export class SessionsContainerComponent implements OnInit {
   readonly displayRange$: Observable<Range<Date>>;
   readonly data$: Observable<SessionsOrGroups>;
   readonly groupType$: Observable<SessionsGroupType>;
+  readonly sortType$: Observable<SortType>;
 
   constructor(
     private readonly sessionsSrv: SessionsService
@@ -41,7 +62,8 @@ export class SessionsContainerComponent implements OnInit {
         map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() }))
       );
     this.groupType$ = this.sessionsSrv.getGroupType();
-    this.data$ = this.groupType$
+    this.sortType$ = this.sessionsSrv.getSortType();
+    const data$ = this.groupType$
       .pipe(
         switchMap(groupType => {
           if (groupType === 'none') {
@@ -62,6 +84,10 @@ export class SessionsContainerComponent implements OnInit {
               );
           }
         })
+      );
+    this.data$ = combineLatest(data$, this.sortType$)
+      .pipe(
+        map(([data, sortType]) => sortData(data, sortType))
       );
   }
 
@@ -92,4 +118,7 @@ export class SessionsContainerComponent implements OnInit {
     return data.type === 'groups';
   }
 
+  onSetSortType(sortType: SortType): void {
+    this.sessionsSrv.changeSortType(sortType);
+  }
 }

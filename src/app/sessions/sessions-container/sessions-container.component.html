@@ -31,6 +31,14 @@
                 ></app-sessions-group-type-selector>
               </div>
 
+              <ng-container *ngIf="sortType$ | async as sortType">
+                <button (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')" mat-button>
+                  <mat-icon>
+                    {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
+                  </mat-icon>
+                </button>
+              </ng-container>
+
             </div>
           </div>
         </div>

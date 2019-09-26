@@ -11,6 +11,7 @@ import { Update } from './services/entity-storage';
 import { Range } from '../shared/utils';
 import { DateTime } from 'luxon';
 import { SessionsGroup, SessionsGroupType } from './model/sessions-group';
+import { SortType } from './store/settings';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,10 @@ export class SessionsService {
 
   getSessionGroups(): Observable<SessionsGroup[]> {
     return this.store.select(fromSessions.getSessionsGroups);
+  }
+
+  getSortType(): Observable<SortType> {
+    return this.store.select(fromSessions.getSortType);
   }
 
   loadSessions(): void {
@@ -119,5 +124,9 @@ export class SessionsService {
 
   changeGroupType(group: SessionsGroupType) {
     this.store.dispatch(SessionsActions.changeGroupType({ group }));
+  }
+
+  changeSortType(sortType: SortType) {
+    this.store.dispatch(SessionsActions.changeSortType({ sortType }));
   }
 }

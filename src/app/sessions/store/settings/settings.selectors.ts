@@ -1,4 +1,4 @@
-import { SettingsState } from './settings.state';
+import { SettingsState, SortType } from './settings.state';
 import { createSelector, Selector } from '@ngrx/store';
 import { Range } from '../../../shared/utils';
 import { DateTime } from 'luxon';
@@ -13,15 +13,18 @@ export const getDisplayRange: Selector<SettingsState, Range<DateTime>> = createS
 );
 
 export const getGroupType: Selector<SettingsState, SessionsGroupType> = state => state.groupType;
+export const getSortType: Selector<SettingsState, SortType> = state => state.sortType;
 
 interface SettingsSelectors<S> {
   getGroupType: Selector<S, SessionsGroupType>;
   getDisplayRange: Selector<S, Range<DateTime>>;
+  getSortType: Selector<S, SortType>;
 }
 
 export function getSelectors<S>(selectState: (state: S) => SettingsState): SettingsSelectors<S> {
   return {
     getDisplayRange: createSelector(selectState, getDisplayRange),
-    getGroupType: createSelector(selectState, getGroupType)
+    getGroupType: createSelector(selectState, getGroupType),
+    getSortType: createSelector(selectState, getSortType)
   };
 }

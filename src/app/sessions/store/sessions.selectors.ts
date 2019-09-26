@@ -20,7 +20,8 @@ export const selectSettings = compose(
 
 export const {
   getDisplayRange,
-  getGroupType
+  getGroupType,
+  getSortType
 } = fromSettings.getSelectors(selectSettings);
 
 export const {
