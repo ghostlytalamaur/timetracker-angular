@@ -16,7 +16,7 @@ import { SessionsGroupItemComponent } from './sessions-group-item/sessions-group
 import { SessionsGroupTypeSelectorComponent } from './sessions-group-type-selector/sessions-group-type-selector.component';
 import { SessionsGroupListComponent } from './sessions-group-list/sessions-group-list.component';
 import { SessionsContainerComponent } from './sessions-container/sessions-container.component';
-import { SettingsEffects } from './store/settings/settings.effects';
+import { SettingsEffects } from './store/settings.effects';
 
 @NgModule({
   imports: [

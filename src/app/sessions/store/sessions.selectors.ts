@@ -13,7 +13,7 @@ const selectSessionsEntityState = compose(
   selectSessionsState
 );
 
-const selectSettings = compose(
+export const selectSettings = compose(
   state => state.settings,
   selectSessionsState
 );

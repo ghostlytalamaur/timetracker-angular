@@ -1,5 +1,5 @@
 import { Action, combineReducers, createReducer, on } from '@ngrx/store';
-import { SessionsState } from './sessions.state';
+import { SessionsState, settingsKey } from './sessions.state';
 import * as fromSettings from './settings';
 import { SettingsActions } from './settings';
 import { isInRange } from '../../shared/utils';
@@ -14,7 +14,7 @@ function onChangeDisplayRange(state: SessionsState, displayRange: ReturnType<typ
 
 const initialState: SessionsState = {
   entities: fromEntities.initialState,
-  settings: fromSettings.initialState
+  [settingsKey]: fromSettings.initialState
 };
 
 const compositeReducer = createReducer<SessionsState>(initialState,
@@ -22,8 +22,8 @@ const compositeReducer = createReducer<SessionsState>(initialState,
 );
 
 const combinedReducer = combineReducers<SessionsState>({
-  settings: fromSettings.settingsReducers,
-  entities: fromEntities.sessionsReducers
+  entities: fromEntities.sessionsReducers,
+  [settingsKey]: fromSettings.settingsReducers
 });
 
 export function reducers(state: SessionsState | undefined, action: Action): SessionsState {
