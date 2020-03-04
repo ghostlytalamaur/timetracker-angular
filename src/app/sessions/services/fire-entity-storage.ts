@@ -1,5 +1,5 @@
 import { AngularFirestore, DocumentChangeAction, DocumentSnapshot, Query, QueryDocumentSnapshot, QueryFn } from '@angular/fire/firestore';
-import { NEVER, Observable } from 'rxjs';
+import { merge, NEVER, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../core/auth/auth.service';
 import { User } from '../../core/auth/model/user';
@@ -38,7 +38,10 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   }
 
   addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
-    return this.changedEntities('added', queryFn);
+    return merge(
+      this.loadEntities(queryFn),
+      this.changedEntities('added', queryFn)
+    );
   }
 
   modifiedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
@@ -110,6 +113,25 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
     return this.authService.user$
       .pipe(
         switchMap(user => user ? this.changedEntitiesForUser(user, type, queryFn) : NEVER)
+      );
+  }
+
+  private loadEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
+    return this.authService.user$
+      .pipe(
+        switchMap(user => {
+          if (user) {
+            const collection = this.afs.collection<Entity>(this.getCollectionPath(user.id));
+            return this.afs.collection<Entity>(collection.ref, this.wrapQuery(queryFn))
+              .get()
+              .pipe(
+                map(snapshot => snapshot.docs.map(doc => this.createEntityFromDoc(doc as QueryDocumentSnapshot<Entity>))),
+                map(entities => entities.filter(entity => !!entity) as Entity[])
+              );
+          } else {
+            return of([]);
+          }
+        })
       );
   }
 

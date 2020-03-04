@@ -7,7 +7,7 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {};
 
 
-function initStateFromLocalStorage(reducer: ActionReducer<State>): ActionReducer<State> {
+export function initStateFromLocalStorage(reducer: ActionReducer<State>): ActionReducer<State> {
   return (state, action) => {
     const newState = reducer(state, action);
     switch (action.type) {
@@ -24,9 +24,8 @@ function initStateFromLocalStorage(reducer: ActionReducer<State>): ActionReducer
   };
 }
 
-const commonMetaReducers: MetaReducer<State>[] = [
+export const metaReducers: MetaReducer<State>[] = [
   initStateFromLocalStorage
 ];
 
-export const metaReducers: MetaReducer<State>[] = commonMetaReducers;
 

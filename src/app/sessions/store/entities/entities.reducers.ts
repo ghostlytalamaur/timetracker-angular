@@ -44,7 +44,7 @@ export const initialState: SessionsEntityState = adapter.getInitialState<Session
   ids: [],
   entities: {},
   status: undefined,
-  loaded: false
+  loaded: false,
 });
 
 export const sessionsReducers = createReducer<SessionsEntityState>(initialState,

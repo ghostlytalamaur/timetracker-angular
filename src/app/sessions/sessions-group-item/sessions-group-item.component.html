@@ -1,4 +1,5 @@
-<mat-expansion-panel [disabled]="!group.sessions.length">
+<mat-expansion-panel *ngIf="group"
+                     [disabled]="!group.sessions.length">
   <mat-expansion-panel-header>
     <mat-panel-title>
       <ng-container [ngSwitch]="group?.type">

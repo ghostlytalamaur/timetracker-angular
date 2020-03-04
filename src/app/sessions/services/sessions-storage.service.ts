@@ -2,37 +2,46 @@ import { SessionEntity } from '../model/session-entity';
 import { inject, Inject, Injectable, InjectionToken } from '@angular/core';
 import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment';
 import { FireEntityStorage } from './fire-entity-storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '../../core/auth/auth.service';
 import { Range } from '../../shared/utils';
 import { DateTime } from 'luxon';
 import { map } from 'rxjs/operators';
-import { DexieEntityStorage } from './dexie-entity-storage';
-import { SessionStorageEntity } from '../../core/db/session-storage-entity';
-import { DbService } from '../../core/db/db.service';
+import * as firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
+
+
+export interface SessionStorageEntity {
+  id: string;
+  start: Timestamp;
+  duration: number | null;
+}
+
 
 function createFireStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
   return new FireEntityStorage(inject(AngularFirestore), inject(AuthService), 'sessions');
 }
 
-function createDexieStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
-  const db = inject(DbService);
-  return new DexieEntityStorage(db, db.sessions);
-}
+//
+// function createDexieStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
+//   const db = inject(DbService);
+//   return new DexieEntityStorage(db, db.sessions);
+// }
 
 const SESSIONS_STORAGE = new InjectionToken<EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>>('Sessions storage implementation', {
   providedIn: 'root',
   // Use local indexedDb api in development environment to reduce fireStore api calls and decrease quota usage
-  factory: () => environment.production ? createFireStorage() : createDexieStorage()
+  factory: () => createFireStorage(),
+  // factory: () => !environment.production ? createFireStorage() : createDexieStorage()
 });
 
 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
   return {
     id: session.id,
-    start: new Date(session.start),
+    start: Timestamp.fromDate(new Date(session.start)),
     duration: session.duration
   };
 }
@@ -40,7 +49,7 @@ function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
 function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity {
   return {
     id: session.id,
-    start: session.start.valueOf(),
+    start: session.start.toDate().valueOf(),
     duration: session.duration
   };
 }
@@ -90,7 +99,7 @@ export class SessionsStorageService {
         id: change.id
       };
       if (change.start) {
-        stChange.start = new Date(change.start);
+        stChange.start = Timestamp.fromDate(new Date(change.start));
       }
       if (change.duration) {
         stChange.duration = change.duration;
@@ -102,7 +111,7 @@ export class SessionsStorageService {
 
   private makeQueryFn(range: Range<DateTime>): QueryFunction<EntityQuery<SessionStorageEntity>> {
     return query =>
-      query.where('start', '>=', range.start.toJSDate())
-        .where('start', '<=', range.end.toJSDate());
+      query.where('start', '>=', Timestamp.fromDate(range.start.toJSDate()))
+        .where('start', '<=', Timestamp.fromDate(range.end.toJSDate()));
   }
 }

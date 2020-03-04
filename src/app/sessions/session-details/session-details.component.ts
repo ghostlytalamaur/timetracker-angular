@@ -17,6 +17,13 @@ interface FormData {
   end: Date | null;
 }
 
+function withDate(date: DateTime, time: DateTime): DateTime {
+  return DateTime.local(
+    date.year, date.month, date.day,
+    time.hour, time.minute, time.second, time.millisecond
+  );
+}
+
 @Component({
   selector: 'app-session-details',
   templateUrl: './session-details.component.html',
@@ -83,13 +90,15 @@ export class SessionDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const start: DateTime = this.form.value.start;
-    const end: DateTime | null = this.form.value.end;
+    const date: DateTime = DateTime.fromJSDate(this.form.value.date);
+    const start: DateTime = withDate(date, DateTime.fromJSDate(this.form.value.start));
+    const end: DateTime | null = this.form.value.end ? withDate(date, DateTime.fromJSDate(this.form.value.end)) : null;
     const changes: Update<SessionEntity> = {
       id: this.session && this.session.id || uuid(),
       start: start.valueOf(),
       duration: end ? end.valueOf() - start.valueOf() : null
     };
+
     this.sessionsSrv.updateSession(changes);
     this.router.navigate(['../'], { relativeTo: this.route }).catch(console.log);
   }

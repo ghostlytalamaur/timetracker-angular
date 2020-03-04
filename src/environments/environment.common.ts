@@ -5,7 +5,7 @@ export const commonEnvironment = {
     durationRate: 1000
   },
   firebase: {
-    apiKey: 'AIzaSyDfhUBBpFLw_2Na9c5mMIvRbFgmlcnP_tA',
+    apiKey: 'AIzaSyDMpoTmKsZfLBR2jDzHTJVnSLhkoMRObwg',
     authDomain: 'timetracker-1548352730517.firebaseapp.com',
     databaseURL: 'https://timetracker-1548352730517.firebaseio.com',
     projectId: 'timetracker-1548352730517',
