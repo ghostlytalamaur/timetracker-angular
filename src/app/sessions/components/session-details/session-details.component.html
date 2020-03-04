@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-label>Date</mat-label>
+            <input [matDatepicker]="datePicker"
+                   formControlName="date"
+                   matInput>
+            <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-label>Start</mat-label>
+            <input [appDateTimeInput]="timeFormat"
+                   [placeholder]="timeFormat"
+                   formControlName="start">
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-label>End</mat-label>
+            <input [appDateTimeInput]="timeFormat"
+                   [placeholder]="timeFormat"
+                   formControlName="end">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <p>Duration:
+            <app-session-duration [duration]="duration$ | async"></app-session-duration>
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <button [disabled]="!form.valid" color="primary" mat-flat-button type="submit">Save</button>
+        <button (click)="resetForm()" color="warn" mat-button type="button">
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

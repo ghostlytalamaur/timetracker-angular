@@ -1,4 +1,4 @@
-import { SessionEntity } from '../model/session-entity';
+import { SessionEntity } from '../models/session-entity';
 import { inject, Inject, Injectable, InjectionToken } from '@angular/core';
 import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
 import { Observable } from 'rxjs';

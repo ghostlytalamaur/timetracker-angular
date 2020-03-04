@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SessionDetailsComponent } from './session-details/session-details.component';
-import { SessionsComponent } from './sessions/sessions.component';
+import { SessionsComponent } from './containers/sessions/sessions.component';
 import { AuthGuard } from '../core/auth/auth.guard';
-import { SessionsImportComponent } from './import/sessions-import.component';
-import { SessionsContainerComponent } from './sessions-container/sessions-container.component';
+import { SessionsImportComponent } from './containers/sessions-import/sessions-import.component';
+import { SessionsContainerComponent } from './containers/sessions-container/sessions-container.component';
+import { SessionDetailsContainerComponent } from './containers/session-details-container/session-details-container.component';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', component: SessionsContainerComponent },
       { path: 'import', component: SessionsImportComponent },
-      { path: ':id', component: SessionDetailsComponent }
+      { path: ':id', component: SessionDetailsContainerComponent }
     ]
   }
 ];
