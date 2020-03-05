@@ -19,7 +19,7 @@ export interface SessionStorageEntity {
 }
 
 
-function createFireStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
+export function createFireStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
   return new FireEntityStorage(inject(AngularFirestore), inject(AuthService), 'sessions');
 }
 
@@ -29,12 +29,13 @@ function createFireStorage(): EntityStorage<SessionStorageEntity, EntityQuery<Se
 //   return new DexieEntityStorage(db, db.sessions);
 // }
 
-const SESSIONS_STORAGE = new InjectionToken<EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>>('Sessions storage implementation', {
-  providedIn: 'root',
-  // Use local indexedDb api in development environment to reduce fireStore api calls and decrease quota usage
-  factory: () => createFireStorage(),
-  // factory: () => !environment.production ? createFireStorage() : createDexieStorage()
-});
+export const SESSIONS_STORAGE = new InjectionToken<EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>>(
+  'Sessions storage implementation', {
+    providedIn: 'root',
+    // Use local indexedDb api in development environment to reduce fireStore api calls and decrease quota usage
+    factory: () => createFireStorage(),
+    // factory: () => !environment.production ? createFireStorage() : createDexieStorage()
+  });
 
 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {

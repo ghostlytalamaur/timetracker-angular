@@ -4,12 +4,14 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { filter, map, switchMap, take } from 'rxjs/operators';
 
-class BaseAuthGuard {
+@Injectable()
+export class BaseAuthGuard {
 
   constructor(
     private readonly authService: AuthService,
     protected readonly router: Router
   ) {
+    console.log(`${name} ctor`, authService, router);
   }
 
   protected isSignedIn(): Observable<boolean> {
@@ -31,7 +33,7 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return super.isSignedIn()
+    return this.isSignedIn()
       .pipe(
         map(isSignedIn => {
           if (isSignedIn) {
