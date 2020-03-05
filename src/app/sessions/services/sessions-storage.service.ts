@@ -1,4 +1,4 @@
-import { SessionEntity } from '../models/session-entity';
+import { SessionEntity } from '../models';
 import { inject, Inject, Injectable, InjectionToken } from '@angular/core';
 import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
 import { Observable } from 'rxjs';
@@ -9,13 +9,12 @@ import { AuthService } from '../../core/auth/auth.service';
 import { Range } from '../../shared/utils';
 import { DateTime } from 'luxon';
 import { map } from 'rxjs/operators';
-import * as firebase from 'firebase';
-import Timestamp = firebase.firestore.Timestamp;
-
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 export interface SessionStorageEntity {
   id: string;
-  start: Timestamp;
+  start: firebase.firestore.Timestamp;
   duration: number | null;
 }
 
@@ -41,7 +40,7 @@ const SESSIONS_STORAGE = new InjectionToken<EntityStorage<SessionStorageEntity, 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
   return {
     id: session.id,
-    start: Timestamp.fromDate(new Date(session.start)),
+    start: firebase.firestore.Timestamp.fromDate(new Date(session.start)),
     duration: session.duration
   };
 }
@@ -99,7 +98,7 @@ export class SessionsStorageService {
         id: change.id
       };
       if (change.start) {
-        stChange.start = Timestamp.fromDate(new Date(change.start));
+        stChange.start = firebase.firestore.Timestamp.fromDate(new Date(change.start));
       }
       if (change.duration) {
         stChange.duration = change.duration;
@@ -111,7 +110,7 @@ export class SessionsStorageService {
 
   private makeQueryFn(range: Range<DateTime>): QueryFunction<EntityQuery<SessionStorageEntity>> {
     return query =>
-      query.where('start', '>=', Timestamp.fromDate(range.start.toJSDate()))
-        .where('start', '<=', Timestamp.fromDate(range.end.toJSDate()));
+      query.where('start', '>=', firebase.firestore.Timestamp.fromDate(range.start.toJSDate()))
+        .where('start', '<=', firebase.firestore.Timestamp.fromDate(range.end.toJSDate()));
   }
 }
