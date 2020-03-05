@@ -1,4 +1,4 @@
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AlertDialogComponent, AlertDialogData, ConfirmationDialogData, DialogResult } from './alert-dialog.component';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
