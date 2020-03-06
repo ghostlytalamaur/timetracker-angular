@@ -1,5 +1,6 @@
-import { Session } from './session';
 import { DateTime } from 'luxon';
+
+import { Session } from './session';
 
 export type SessionsGroupType = 'none' | 'day' | 'week' | 'month' | 'year';
 

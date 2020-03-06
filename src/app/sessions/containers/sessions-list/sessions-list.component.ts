@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
 import { Session } from '../../models';
 import { SessionsService } from '../../services/sessions.service';

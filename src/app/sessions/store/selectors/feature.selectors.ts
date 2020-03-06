@@ -1,10 +1,11 @@
 import { compose, createFeatureSelector, createSelector, Selector } from '@ngrx/store';
+
 import { clustering } from '../../../shared/utils';
 import { createGroup, Session, SessionsGroup } from '../../models';
 import { fromSessionsFeature } from '../reducers';
 
-import * as SettingsSelectors from './settings.selectors';
 import * as SessionsSelectors from './sessions.selectors';
+import * as SettingsSelectors from './settings.selectors';
 
 const selectSessionsState = createFeatureSelector<fromSessionsFeature.SessionsState>(fromSessionsFeature.sessionsFeatureKey);
 

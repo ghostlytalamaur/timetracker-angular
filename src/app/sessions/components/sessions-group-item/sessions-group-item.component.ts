@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DateTime, Duration } from 'luxon';
 import { Observable, of, timer } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
+
+import { environment } from '../../../../environments/environment';
 import { Session, SessionsGroup, SessionsGroupType } from '../../models';
 
 @Component({

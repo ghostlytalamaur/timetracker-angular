@@ -1,8 +1,9 @@
-import { DateTime } from 'luxon';
 import { createReducer, on } from '@ngrx/store';
+import { DateTime } from 'luxon';
+
+import { Range } from '../../../shared/utils';
 import { SessionsGroupType, SortType } from '../../models';
 import { SettingsActions } from '../actions';
-import { Range } from '../../../shared/utils';
 
 export interface SettingsState {
   readonly displayRange: Range<number>;

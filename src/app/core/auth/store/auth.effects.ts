@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions } from './actions';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
-import { Action } from '@ngrx/store';
-import { from, Observable, of } from 'rxjs';
-import { createUser } from '../model/user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { from, Observable, of } from 'rxjs';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+
+import { createUser } from '../model/user';
+
+import { AuthActions } from './actions';
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable()

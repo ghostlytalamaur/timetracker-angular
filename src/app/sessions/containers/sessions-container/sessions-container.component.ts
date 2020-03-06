@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Range } from '../../../shared/utils';
-import { DateTime } from 'luxon';
-import { SessionsService } from '../../services/sessions.service';
-import { map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
-
 import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
+import { DateTime } from 'luxon';
+import { combineLatest, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+import { Range } from '../../../shared/utils';
 import { Session, SessionsGroup, SessionsGroupType, SortType } from '../../models';
+import { SessionsService } from '../../services/sessions.service';
 
 interface Sessions {
   type: 'sessions';

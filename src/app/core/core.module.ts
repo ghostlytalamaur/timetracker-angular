@@ -1,14 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from '../../environments/environment';
-import { StoreModule } from '@ngrx/store';
-import * as fromRoot from './store';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { environment } from '../../environments/environment';
+
 import { AuthModule } from './auth/auth.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { CommonModule } from '@angular/common';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import * as fromRoot from './store';
 
 @NgModule({
   declarations: [

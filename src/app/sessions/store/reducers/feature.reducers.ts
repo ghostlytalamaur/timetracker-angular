@@ -1,10 +1,11 @@
 import { Action, combineReducers, createReducer, on } from '@ngrx/store';
 
+import * as fromRoot from '../../../core/store';
 import { isInRange } from '../../../shared/utils';
 import { SettingsActions } from '../actions';
-import * as fromRoot from '../../../core/store';
-import * as fromSettings from './settings.reducers';
+
 import * as fromSessions from './sessions.reducers';
+import * as fromSettings from './settings.reducers';
 
 
 export const settingsKey = 'settings';

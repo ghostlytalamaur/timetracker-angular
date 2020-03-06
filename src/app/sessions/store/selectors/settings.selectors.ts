@@ -1,6 +1,7 @@
 import { createSelector, Selector } from '@ngrx/store';
-import { Range } from '../../../shared/utils';
 import { DateTime } from 'luxon';
+
+import { Range } from '../../../shared/utils';
 import { SessionsGroupType, SortType } from '../../models';
 import { fromSettings } from '../reducers';
 

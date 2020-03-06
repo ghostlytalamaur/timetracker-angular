@@ -1,16 +1,18 @@
-import { SessionEntity } from '../models';
-import { inject, Inject, Injectable, InjectionToken } from '@angular/core';
-import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
-import { Observable } from 'rxjs';
-// import { environment } from '../../../environments/environment';
-import { FireEntityStorage } from './fire-entity-storage';
+import { Inject, inject, Injectable, InjectionToken } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AuthService } from '../../core/auth/auth.service';
-import { Range } from '../../shared/utils';
-import { DateTime } from 'luxon';
-import { map } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import { DateTime } from 'luxon';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { AuthService } from '../../core/auth/auth.service';
+import { Range } from '../../shared/utils';
+import { SessionEntity } from '../models';
+
+import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
+// import { environment } from '../../../environments/environment';
+import { FireEntityStorage } from './fire-entity-storage';
 
 export interface SessionStorageEntity {
   id: string;

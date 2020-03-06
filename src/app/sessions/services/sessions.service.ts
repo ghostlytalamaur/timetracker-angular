@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
-import { Update } from './entity-storage';
+
 import { Range } from '../../shared/utils';
-import { DateTime } from 'luxon';
 import { Session, SessionEntity, SessionsGroup, SessionsGroupType, SortType } from '../models';
-import { SessionsFeatureSelectors } from '../store/selectors';
 import { SessionsActions, SettingsActions } from '../store/actions';
+import { SessionsFeatureSelectors } from '../store/selectors';
+
+import { Update } from './entity-storage';
 
 @Injectable({
   providedIn: 'root',

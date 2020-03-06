@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+
 import { SessionsGroupType, SortType } from '../../models';
 
 export const setDisplayRange = createAction(

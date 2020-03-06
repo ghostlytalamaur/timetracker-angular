@@ -1,8 +1,10 @@
 import { AngularFirestore, DocumentChangeAction, DocumentSnapshot, Query, QueryDocumentSnapshot, QueryFn } from '@angular/fire/firestore';
 import { merge, NEVER, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+
 import { AuthService } from '../../core/auth/auth.service';
 import { User } from '../../core/auth/model/user';
+
 import { EntityQuery, EntityStorage, EntityType, OrderByDirection, QueryFunction, Update, WhereFilterOp } from './entity-storage';
 
 class FireStoreQuery<E> implements EntityQuery<E> {

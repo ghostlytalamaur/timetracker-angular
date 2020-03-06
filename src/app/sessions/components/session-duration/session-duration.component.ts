@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Duration } from 'luxon';
+
 import { environment } from '../../../../environments/environment';
 
 @Component({

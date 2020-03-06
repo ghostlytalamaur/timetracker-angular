@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SessionsService } from '../../services/sessions.service';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+
 import { Session, SessionEntity } from '../../models';
+import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-session-details-container',

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { tap, withLatestFrom } from 'rxjs/operators';
-import { selectSettings } from '../selectors/feature.selectors';
+
 import { LocalStorageService } from '../../../core/local-storage.service';
 import { SettingsActions } from '../actions';
 import { fromSessionsFeature, fromSettings } from '../reducers';
+import { selectSettings } from '../selectors/feature.selectors';
 
 @Injectable()
 export class SettingsEffects {

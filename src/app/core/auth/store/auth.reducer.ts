@@ -1,6 +1,8 @@
 import { Action, ActionReducer, compose, createFeatureSelector, createReducer, on, Selector } from '@ngrx/store';
+
 import * as fromRoot from '../../store';
 import { User } from '../model/user';
+
 import { AuthActions } from './actions';
 
 export const authFeatureKey = 'auth';

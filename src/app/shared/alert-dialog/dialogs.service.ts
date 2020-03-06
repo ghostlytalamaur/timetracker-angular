@@ -1,9 +1,10 @@
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AlertDialogComponent, AlertDialogData, ConfirmationDialogData, DialogResult } from './alert-dialog.component';
-import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { ComponentType } from '@angular/cdk/portal';
+import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { AlertDialogComponent, AlertDialogData, ConfirmationDialogData, DialogResult } from './alert-dialog.component';
 
 @Injectable({
   providedIn: 'root',

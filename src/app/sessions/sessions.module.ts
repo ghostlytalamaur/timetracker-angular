@@ -1,5 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+
+import { SharedModule } from '../shared/shared.module';
+
 import {
   SessionDetailsComponent,
   SessionDurationComponent,
@@ -8,10 +13,6 @@ import {
   SessionsGroupListComponent,
   SessionsGroupTypeSelectorComponent,
 } from './components';
-import { SessionsRoutingModule } from './sessions-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { SharedModule } from '../shared/shared.module';
-import { EffectsModule } from '@ngrx/effects';
 import {
   SessionDetailsContainerComponent,
   SessionsComponent,
@@ -19,8 +20,9 @@ import {
   SessionsImportComponent,
   SessionsListComponent,
 } from './containers';
-import { SessionsEffects, SettingsEffects } from './store/effects';
+import { SessionsRoutingModule } from './sessions-routing.module';
 import { fromSessionsFeature } from './store';
+import { SessionsEffects, SettingsEffects } from './store/effects';
 
 @NgModule({
   imports: [

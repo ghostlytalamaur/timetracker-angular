@@ -1,9 +1,10 @@
 import { Component, Directive, EventEmitter, HostListener, Inject, Input, OnDestroy, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Range } from '../../utils';
-import { DialogsService } from '../../alert-dialog/dialogs.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+
+import { DialogsService } from '../../alert-dialog/dialogs.service';
+import { Range } from '../../utils';
 
 @Component({
   template: '<app-date-range-picker [range]="range" (rangeChange)="onRangeChange($event)"></app-date-range-picker>',

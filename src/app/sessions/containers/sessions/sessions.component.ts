@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { SessionsService } from '../../services/sessions.service';
 import { filter, switchMap } from 'rxjs/operators';
+
 import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
+import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-sessions',

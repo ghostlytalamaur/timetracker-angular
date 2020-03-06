@@ -1,4 +1,5 @@
 import { createSelector, Selector } from '@ngrx/store';
+
 import { isRunning, Session } from '../../models';
 import { fromSessions } from '../reducers';
 

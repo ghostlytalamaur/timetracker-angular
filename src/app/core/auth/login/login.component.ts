@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
+
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',

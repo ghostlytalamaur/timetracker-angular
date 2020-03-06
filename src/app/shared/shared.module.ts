@@ -1,4 +1,7 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -11,17 +14,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
-import { DateTimeInputDirective } from './directives/date-time-input.directive';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { LuxonModule } from 'luxon-angular';
+
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import {
   DateRangePickerDialogComponent,
   DateRangePickerDialogDirective,
 } from './components/date-range-picker/date-range-picker-dialog.component';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { DateTimeInputDirective } from './directives/date-time-input.directive';
 import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';
 
 const materialModules = [

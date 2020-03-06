@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { getDuration, Session } from '../../models';
-import { environment } from '../../../../environments/environment';
+import { Duration } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Duration } from 'luxon';
+
+import { environment } from '../../../../environments/environment';
+import { getDuration, Session } from '../../models';
 
 @Component({
   selector: 'app-session-item',

@@ -1,7 +1,8 @@
-import { createReducer, on } from '@ngrx/store';
-import * as SessionsActions from '../actions/sessions.actions';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
+
 import { SessionEntity } from '../../models';
+import * as SessionsActions from '../actions/sessions.actions';
 
 export interface LoadingStatus {
   type: 'loading';

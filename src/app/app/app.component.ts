@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { routerAnimation } from './animations';
 import { Observable } from 'rxjs';
+
 import { AuthService } from '../core/auth/auth.service';
+
+import { routerAnimation } from './animations';
 
 @Component({
   selector: 'app-root',

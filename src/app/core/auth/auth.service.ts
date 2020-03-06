@@ -1,10 +1,11 @@
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import * as fromAuth from './store';
 import { Injectable } from '@angular/core';
-import { AuthActions } from './store/actions';
-import { User } from './model/user';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+
+import { User } from './model/user';
+import * as fromAuth from './store';
+import { AuthActions } from './store/actions';
 
 @Injectable({
   providedIn: 'root',

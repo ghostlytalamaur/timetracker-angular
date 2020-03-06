@@ -1,13 +1,14 @@
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { SessionEntity } from '../../models';
-import { Injectable } from '@angular/core';
-import { from, merge, Observable, of } from 'rxjs';
-import { SessionsStorageService } from '../../services/sessions-storage.service';
-import { Update } from '../../services/entity-storage';
-import { Range } from '../../../shared/utils';
 import { DateTime } from 'luxon';
+import { from, merge, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+
+import { Range } from '../../../shared/utils';
+import { SessionEntity } from '../../models';
+import { Update } from '../../services/entity-storage';
+import { SessionsStorageService } from '../../services/sessions-storage.service';
 import { SessionsActions } from '../actions';
 import { SessionsFeatureSelectors } from '../selectors';
 

@@ -1,7 +1,8 @@
-import { createSession, SessionEntity } from './session-entity';
+import { DateTime, Duration } from 'luxon';
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DateTime, Duration } from 'luxon';
+
+import { createSession, SessionEntity } from './session-entity';
 
 export class Session {
   constructor(
