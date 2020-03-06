@@ -1,6 +1,6 @@
-import { createSelector, Selector } from '@ngrx/store';
+import { Selector, createSelector } from '@ngrx/store';
 
-import { isRunning, Session } from '../../models';
+import { Session, isRunning } from '../../models';
 import { fromSessions } from '../reducers';
 
 const {

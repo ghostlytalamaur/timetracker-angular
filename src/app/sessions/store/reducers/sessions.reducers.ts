@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { SessionEntity } from '../../models';
@@ -63,7 +63,7 @@ function onClearError(state: SessionsEntityState): SessionsEntityState {
 
 export const initialState: SessionsEntityState = adapter.getInitialState<SessionsEntityState>({
   ids: [],
-  entities: {},
+  entities: { },
   status: undefined,
   loaded: false,
 });

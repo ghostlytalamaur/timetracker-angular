@@ -1,4 +1,4 @@
-import { Inject, inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';

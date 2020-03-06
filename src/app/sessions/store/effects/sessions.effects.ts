@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
-import { from, merge, Observable, of } from 'rxjs';
+import { Observable, from, merge, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { Range } from '../../../shared/utils';

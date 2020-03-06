@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
-import { getDuration, Session } from '../../models';
+import { Session, getDuration } from '../../models';
 
 @Component({
   selector: 'app-session-item',

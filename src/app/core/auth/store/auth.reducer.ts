@@ -1,4 +1,4 @@
-import { Action, ActionReducer, compose, createFeatureSelector, createReducer, on, Selector } from '@ngrx/store';
+import { Action, ActionReducer, Selector, compose, createFeatureSelector, createReducer, on } from '@ngrx/store';
 
 import * as fromRoot from '../../store';
 import { User } from '../model/user';

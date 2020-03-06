@@ -1,4 +1,4 @@
-import { createSelector, Selector } from '@ngrx/store';
+import { Selector, createSelector } from '@ngrx/store';
 import { DateTime } from 'luxon';
 
 import { Range } from '../../../shared/utils';

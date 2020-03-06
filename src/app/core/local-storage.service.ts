@@ -23,7 +23,7 @@ export class LocalStorageService {
           if (keyData) {
             curState[keys[i]] = { ...keyData };
           } else {
-            curState[keys[i]] = {};
+            curState[keys[i]] = { };
           }
           curState = curState[keys[i]];
         }

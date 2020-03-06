@@ -2,9 +2,9 @@ import { ActionReducer, ActionReducerMap, INIT, MetaReducer, UPDATE } from '@ngr
 
 import { LocalStorageService } from '../local-storage.service';
 
-export type State = {}
+export type State = { }
 
-export const reducers: ActionReducerMap<State> = {};
+export const reducers: ActionReducerMap<State> = { };
 
 
 export function initStateFromLocalStorage(reducer: ActionReducer<State>): ActionReducer<State> {

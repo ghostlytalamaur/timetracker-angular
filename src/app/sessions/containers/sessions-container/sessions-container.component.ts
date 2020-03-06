@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
 import { DateTime } from 'luxon';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { Range } from '../../../shared/utils';

@@ -1,7 +1,7 @@
-import { compose, createFeatureSelector, createSelector, Selector } from '@ngrx/store';
+import { Selector, compose, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { clustering } from '../../../shared/utils';
-import { createGroup, Session, SessionsGroup } from '../../models';
+import { Session, SessionsGroup, createGroup } from '../../models';
 import { fromSessionsFeature } from '../reducers';
 
 import * as SessionsSelectors from './sessions.selectors';

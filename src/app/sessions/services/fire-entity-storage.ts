@@ -1,5 +1,5 @@
 import { AngularFirestore, DocumentChangeAction, DocumentSnapshot, Query, QueryDocumentSnapshot, QueryFn } from '@angular/fire/firestore';
-import { merge, NEVER, Observable, of } from 'rxjs';
+import { NEVER, Observable, merge, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../../core/auth/auth.service';
