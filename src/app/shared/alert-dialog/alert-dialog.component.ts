@@ -17,7 +17,7 @@ type DialogData = AlertDialogData | ConfirmationDialogData;
 export type DialogResult = 'ok' | 'cancel' | 'close';
 
 @Component({
-  templateUrl: './alert-dialog.component.html'
+  templateUrl: './alert-dialog.component.html',
 })
 export class AlertDialogComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class AlertDialogComponent implements OnInit {
   readonly closeResult: DialogResult = 'close';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: DialogData
+    @Inject(MAT_DIALOG_DATA) readonly data: DialogData,
   ) {
   }
 

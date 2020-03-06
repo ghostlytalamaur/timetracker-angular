@@ -20,7 +20,7 @@ import { DateRangePickerComponent } from './components/date-range-picker/date-ra
 import { LuxonModule } from 'luxon-angular';
 import {
   DateRangePickerDialogComponent,
-  DateRangePickerDialogDirective
+  DateRangePickerDialogDirective,
 } from './components/date-range-picker/date-range-picker-dialog.component';
 import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';
 
@@ -37,7 +37,7 @@ const materialModules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatSelectModule,
-  MatExpansionModule
+  MatExpansionModule,
 ];
 
 @NgModule({
@@ -49,7 +49,7 @@ const materialModules = [
     DateRangePickerDialogComponent,
     DateRangePickerDialogDirective,
     DateTimeToStartOf,
-    DateTimeToEndOf
+    DateTimeToEndOf,
   ],
   entryComponents: [AlertDialogComponent, DateRangePickerDialogComponent],
   exports: [
@@ -63,8 +63,8 @@ const materialModules = [
     DateRangePickerDialogDirective,
     DateTimeToStartOf,
     DateTimeToEndOf,
-    LuxonModule
-  ]
+    LuxonModule,
+  ],
 })
 export class SharedModule {
 }

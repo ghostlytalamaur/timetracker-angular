@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionsService } from '../../services/sessions.service';
-import { SessionEntity } from '../../models/session-entity';
-import { Session } from '../../models/session';
 import { v4 as uuid } from 'uuid';
 import { DateTime } from 'luxon';
+import { Session, SessionEntity } from '../../models';
 
 interface DayBackup {
   id: number;
@@ -60,12 +59,12 @@ function isSessionsBackup(backup: any): backup is SessionsBackup {
 @Component({
   selector: 'app-sessions-import',
   templateUrl: './sessions-import.component.html',
-  styleUrls: ['./sessions-import.component.scss']
+  styleUrls: ['./sessions-import.component.scss'],
 })
 export class SessionsImportComponent implements OnInit {
 
   constructor(
-    private readonly sessionsSrv: SessionsService
+    private readonly sessionsSrv: SessionsService,
   ) {
   }
 

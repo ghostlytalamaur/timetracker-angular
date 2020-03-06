@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Session } from '../../models/session';
 import { DateTime, Duration } from 'luxon';
 import { Observable, of, timer } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
-import { SessionsGroup, SessionsGroupType } from '../../models/sessions-group';
+import { Session, SessionsGroup, SessionsGroupType } from '../../models';
 
 @Component({
   selector: 'app-sessions-group-item',
   templateUrl: './sessions-group-item.component.html',
   styleUrls: ['./sessions-group-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupItemComponent implements OnInit {
   readonly dateFormat: Record<SessionsGroupType, string> = {
@@ -18,7 +17,7 @@ export class SessionsGroupItemComponent implements OnInit {
     day: 'MMMM d, y',
     week: 'MMMM d, y',
     month: 'MMMM, y',
-    year: 'y'
+    year: 'y',
   };
   private mGroup: SessionsGroup | undefined;
   private mDuration: Observable<Duration> | undefined;
@@ -71,10 +70,10 @@ export class SessionsGroupItemComponent implements OnInit {
           map(() => {
             const now = DateTime.local();
             const sumDuration = runningSessions.reduce((acc, session) =>
-              acc.plus(now.diff(session.start)), Duration.fromMillis(0)
+              acc.plus(now.diff(session.start)), Duration.fromMillis(0),
             );
             return closedDuration.plus(sumDuration);
-          })
+          }),
         );
     }
   }

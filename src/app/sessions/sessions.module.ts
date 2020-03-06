@@ -6,7 +6,7 @@ import {
   SessionItemComponent,
   SessionsGroupItemComponent,
   SessionsGroupListComponent,
-  SessionsGroupTypeSelectorComponent
+  SessionsGroupTypeSelectorComponent,
 } from './components';
 import { SessionsRoutingModule } from './sessions-routing.module';
 import { StoreModule } from '@ngrx/store';
@@ -17,7 +17,7 @@ import {
   SessionsComponent,
   SessionsContainerComponent,
   SessionsImportComponent,
-  SessionsListComponent
+  SessionsListComponent,
 } from './containers';
 import { SessionsEffects, SettingsEffects } from './store/effects';
 import { fromSessionsFeature } from './store';
@@ -28,7 +28,7 @@ import { fromSessionsFeature } from './store';
     SessionsRoutingModule,
     SharedModule,
     StoreModule.forFeature(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.reducers),
-    EffectsModule.forFeature([SessionsEffects, SettingsEffects])
+    EffectsModule.forFeature([SessionsEffects, SettingsEffects]),
   ],
   declarations: [
     SessionDetailsComponent,
@@ -42,7 +42,7 @@ import { fromSessionsFeature } from './store';
     SessionsGroupTypeSelectorComponent,
     SessionsGroupListComponent,
     SessionsContainerComponent,
-  ]
+  ],
 })
 export class SessionsModule {
 }

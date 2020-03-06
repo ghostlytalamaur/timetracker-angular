@@ -6,23 +6,23 @@ const {
   selectIds,
   selectEntities,
   selectAll,
-  selectTotal
+  selectTotal,
 } = fromSessions.adapter.getSelectors();
 
 
 const getSessions: Selector<fromSessions.SessionsEntityState, Session[]> = createSelector(
   selectAll,
-  entities => entities.map(e => Session.fromEntity(e)).sort((a, b) => a.start.valueOf() - b.start.valueOf())
+  entities => entities.map(e => Session.fromEntity(e)).sort((a, b) => a.start.valueOf() - b.start.valueOf()),
 );
 
 const getRunningSessions: Selector<fromSessions.SessionsEntityState, Session[]> = createSelector(
   getSessions,
-  sessions => sessions.filter(isRunning)
+  sessions => sessions.filter(isRunning),
 );
 
 const hasRunningSessions: Selector<fromSessions.SessionsEntityState, boolean> = createSelector(
   getRunningSessions,
-  sessions => sessions.length > 0
+  sessions => sessions.length > 0,
 );
 
 const getSession: (id: string) => Selector<fromSessions.SessionsEntityState, Session | undefined> =
@@ -58,6 +58,6 @@ export function getSelectors<S>(selectState: (state: S) => fromSessions.Sessions
     getSession: id => createSelector(selectState, getSession(id)),
     getError: createSelector(selectState, getError),
     isLoaded: createSelector(selectState, isLoaded),
-    isLoading: createSelector(selectState, isLoading)
+    isLoading: createSelector(selectState, isLoading),
   };
 }

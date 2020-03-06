@@ -1,8 +1,7 @@
 import { ActionReducer, ActionReducerMap, INIT, MetaReducer, UPDATE } from '@ngrx/store';
 import { LocalStorageService } from '../local-storage.service';
 
-export interface State {
-}
+export type State = {}
 
 export const reducers: ActionReducerMap<State> = {};
 
@@ -25,7 +24,7 @@ export function initStateFromLocalStorage(reducer: ActionReducer<State>): Action
 }
 
 export const metaReducers: MetaReducer<State>[] = [
-  initStateFromLocalStorage
+  initStateFromLocalStorage,
 ];
 
 

@@ -20,12 +20,12 @@ import { SharedModule } from '../../shared/shared.module';
     AuthRoutingModule,
     StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.reducers),
     EffectsModule.forFeature([AuthEffects]),
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
 export class AuthModule {
   constructor(
-    @Optional() @SkipSelf() existing: AuthModule
+    @Optional() @SkipSelf() existing: AuthModule,
   ) {
     if (existing) {
       throw new Error('AuthModule already imported');

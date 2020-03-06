@@ -23,22 +23,22 @@ export interface State extends fromRoot.State {
 function onChangeDisplayRange(state: SessionsState, displayRange: ReturnType<typeof SettingsActions.setDisplayRange>): SessionsState {
   return {
     ...state,
-    entities: fromSessions.adapter.removeMany(e => !isInRange(e.start, displayRange), state.entities)
+    entities: fromSessions.adapter.removeMany(e => !isInRange(e.start, displayRange), state.entities),
   };
 }
 
 const initialState: SessionsState = {
   entities: fromSessions.initialState,
-  [settingsKey]: fromSettings.initialState
+  [settingsKey]: fromSettings.initialState,
 };
 
 const compositeReducer = createReducer<SessionsState>(initialState,
-  on(SettingsActions.setDisplayRange, onChangeDisplayRange)
+  on(SettingsActions.setDisplayRange, onChangeDisplayRange),
 );
 
 const combinedReducer = combineReducers<SessionsState>({
   entities: fromSessions.sessionsReducers,
-  [settingsKey]: fromSettings.settingsReducers
+  [settingsKey]: fromSettings.settingsReducers,
 });
 
 export function reducers(state: SessionsState | undefined, action: Action): SessionsState {

@@ -16,46 +16,46 @@ export class AuthEffects {
     this.actions$
       .pipe(
         ofType(AuthActions.autoSignIn),
-        switchMap(() => this.handleAutoSign())
-      )
+        switchMap(() => this.handleAutoSign()),
+      ),
   );
 
   signUp$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signUp),
-        switchMap(credentials => this.handleSignUp(credentials))
-      )
+        switchMap(credentials => this.handleSignUp(credentials)),
+      ),
   );
 
   signIn$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signIn),
-        switchMap(credentials => this.handleSignIn(credentials))
-      )
+        switchMap(credentials => this.handleSignIn(credentials)),
+      ),
   );
 
   signOut$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signOut),
-        switchMap(() => this.handleSignOut())
-      )
+        switchMap(() => this.handleSignOut()),
+      ),
   );
 
   signOutSuccess$ = createEffect(() =>
       this.actions$
         .pipe(
           ofType(AuthActions.signOutSuccess),
-          tap(() => this.router.navigate(['/login']))
+          tap(() => this.router.navigate(['/login'])),
         ),
     { dispatch: false });
 
   constructor(
     private readonly actions$: Actions,
     private readonly afa: AngularFireAuth,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
   }
 
@@ -84,7 +84,7 @@ export class AuthEffects {
         catchError(err => {
           const errMsg = err instanceof Error ? err.message : 'Authentication failed. Unknown error.';
           return of(AuthActions.authError({ message: errMsg }));
-        })
+        }),
       );
   }
 
@@ -108,7 +108,7 @@ export class AuthEffects {
             return AuthActions.autoSignInFailed();
           }
         }),
-        take(1)
+        take(1),
       );
   }
 }

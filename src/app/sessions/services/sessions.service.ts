@@ -11,11 +11,11 @@ import { SessionsFeatureSelectors } from '../store/selectors';
 import { SessionsActions, SettingsActions } from '../store/actions';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionsService {
   constructor(
-    private readonly store: Store<object>
+    private readonly store: Store<object>,
   ) {
   }
 
@@ -54,7 +54,7 @@ export class SessionsService {
   loadSessions(): void {
     this.store.select(SessionsFeatureSelectors.isLoaded)
       .pipe(
-        take(1)
+        take(1),
       )
       .subscribe(isLoaded => {
         if (!isLoaded) {
@@ -89,18 +89,18 @@ export class SessionsService {
             const changes = sessions.map<Update<SessionEntity>>(s =>
               ({
                 id: s.id,
-                duration: now.valueOf() - s.start.valueOf()
-              })
+                duration: now.valueOf() - s.start.valueOf(),
+              }),
             );
             return SessionsActions.updateSessions({ changes });
           } else {
             const session = Session.fromNow(uuid()).toEntity();
             return SessionsActions.addSession({ session });
           }
-        })
+        }),
       )
       .subscribe(
-        action => this.store.dispatch(action)
+        action => this.store.dispatch(action),
       );
   }
 
@@ -115,7 +115,7 @@ export class SessionsService {
   setDisplayRange(range: Range<DateTime>): void {
     this.store.dispatch(SettingsActions.setDisplayRange({
       start: range.start.valueOf(),
-      end: range.end.valueOf()
+      end: range.end.valueOf(),
     }));
   }
 

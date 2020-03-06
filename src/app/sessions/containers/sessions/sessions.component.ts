@@ -8,7 +8,7 @@ import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
   selector: 'app-sessions',
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsComponent implements OnInit, OnDestroy {
 
@@ -18,7 +18,7 @@ export class SessionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private sessionsSrv: SessionsService,
-    private dialogs: DialogsService
+    private dialogs: DialogsService,
   ) {
     this.isLoading$ = this.sessionsSrv.isLoading();
     this.error$ = this.sessionsSrv.getError();
@@ -29,7 +29,7 @@ export class SessionsComponent implements OnInit, OnDestroy {
     this.subscription = this.error$
       .pipe(
         filter(message => !!message),
-        switchMap(message => this.dialogs.showAlert({ title: 'Error', message }))
+        switchMap(message => this.dialogs.showAlert({ title: 'Error', message })),
       )
       .subscribe(() => this.sessionsSrv.clearError());
   }

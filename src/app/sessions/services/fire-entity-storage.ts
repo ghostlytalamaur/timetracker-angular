@@ -7,7 +7,7 @@ import { EntityQuery, EntityStorage, EntityType, OrderByDirection, QueryFunction
 
 class FireStoreQuery<E> implements EntityQuery<E> {
   constructor(
-    public ref: Query
+    public ref: Query,
   ) {
   }
 
@@ -33,14 +33,14 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   constructor(
     private readonly afs: AngularFirestore,
     protected readonly authService: AuthService,
-    private readonly collection: string
+    private readonly collection: string,
   ) {
   }
 
   addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return merge(
       this.loadEntities(queryFn),
-      this.changedEntities('added', queryFn)
+      this.changedEntities('added', queryFn),
     );
   }
 
@@ -51,7 +51,7 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   deletedEntities(): Observable<string[]> {
     return this.authService.user$
       .pipe(
-        switchMap(user => user ? this.deletedEntitiesForUser(user) : NEVER)
+        switchMap(user => user ? this.deletedEntitiesForUser(user) : NEVER),
       );
   }
 
@@ -112,7 +112,7 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   private changedEntities(type: 'added' | 'modified', queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return this.authService.user$
       .pipe(
-        switchMap(user => user ? this.changedEntitiesForUser(user, type, queryFn) : NEVER)
+        switchMap(user => user ? this.changedEntitiesForUser(user, type, queryFn) : NEVER),
       );
   }
 
@@ -126,12 +126,12 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
               .get()
               .pipe(
                 map(snapshot => snapshot.docs.map(doc => this.createEntityFromDoc(doc as QueryDocumentSnapshot<Entity>))),
-                map(entities => entities.filter(entity => !!entity) as Entity[])
+                map(entities => entities.filter(entity => !!entity) as Entity[]),
               );
           } else {
             return of([]);
           }
-        })
+        }),
       );
   }
 
@@ -146,14 +146,14 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
     return action$
       .pipe(
         switchMap(changes => Promise.all(changes.map(doc => this.createEntityFromDoc(doc.payload.doc)))),
-        map(entities => entities.filter(entity => !!entity) as Entity[])
+        map(entities => entities.filter(entity => !!entity) as Entity[]),
       );
   }
 
   private deletedEntitiesForUser(user: User): Observable<string[]> {
     return this.afs.collection<Entity>(this.getCollectionPath(user.id)).stateChanges(['removed'])
       .pipe(
-        map(changes => changes.map(change => change.payload.doc.id))
+        map(changes => changes.map(change => change.payload.doc.id)),
       );
   }
 

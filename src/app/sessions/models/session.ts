@@ -7,14 +7,14 @@ export class Session {
   constructor(
     public readonly id: string,
     public readonly start: DateTime,
-    public readonly duration: Duration | null
+    public readonly duration: Duration | null,
   ) {
   }
 
   static fromEntity(entity: SessionEntity): Session {
     return new Session(entity.id,
       DateTime.fromMillis(entity.start),
-      entity.duration ? Duration.fromMillis(entity.duration) : null
+      entity.duration ? Duration.fromMillis(entity.duration) : null,
     );
   }
 
@@ -44,7 +44,7 @@ export function getDuration(start: DateTime | null, duration: Duration | null, r
   } else if (start && !duration) {
     return timer(0, rate)
       .pipe(
-        map(() => DateTime.local().diff(start))
+        map(() => DateTime.local().diff(start)),
       );
   } else {
     return of(duration);

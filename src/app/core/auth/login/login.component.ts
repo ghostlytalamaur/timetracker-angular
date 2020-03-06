@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   isSignInMode = true;
 
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {
     this.isLoading$ = this.authService.isLoading();
     this.error$ = this.authService.getError();
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
     const credentials = {
       email: form.value.email,
-      password: form.value.password
+      password: form.value.password,
     };
     if (this.isSignInMode) {
       this.authService.signIn(credentials);

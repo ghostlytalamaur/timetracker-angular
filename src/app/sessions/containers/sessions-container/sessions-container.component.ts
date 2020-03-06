@@ -28,12 +28,12 @@ function sortData(data: SessionsOrGroups, direction: SortType): SessionsOrGroups
   if (data.type === 'groups') {
     return {
       type: 'groups',
-      groups: data.groups.slice().sort(direction === 'asc' ? ordGroups.compare : getDualOrd(ordGroups).compare)
+      groups: data.groups.slice().sort(direction === 'asc' ? ordGroups.compare : getDualOrd(ordGroups).compare),
     };
   } else {
     return {
       type: 'sessions',
-      sessions: data.sessions.slice().sort(direction === 'asc' ? ordSessions.compare : getDualOrd(ordSessions).compare)
+      sessions: data.sessions.slice().sort(direction === 'asc' ? ordSessions.compare : getDualOrd(ordSessions).compare),
     };
   }
 }
@@ -42,7 +42,7 @@ function sortData(data: SessionsOrGroups, direction: SortType): SessionsOrGroups
   selector: 'app-sessions-container',
   templateUrl: './sessions-container.component.html',
   styleUrls: ['./sessions-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsContainerComponent implements OnInit {
 
@@ -53,12 +53,12 @@ export class SessionsContainerComponent implements OnInit {
   readonly sortType$: Observable<SortType>;
 
   constructor(
-    private readonly sessionsSrv: SessionsService
+    private readonly sessionsSrv: SessionsService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
     this.displayRange$ = this.sessionsSrv.getDisplayRange()
       .pipe(
-        map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() }))
+        map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() })),
       );
     this.groupType$ = this.sessionsSrv.getGroupType();
     this.sortType$ = this.sessionsSrv.getSortType();
@@ -70,23 +70,23 @@ export class SessionsContainerComponent implements OnInit {
               .pipe(
                 map((sessions: Session[]): Sessions => ({
                   type: 'sessions',
-                  sessions
-                }))
+                  sessions,
+                })),
               );
           } else {
             return this.sessionsSrv.getSessionGroups()
               .pipe(
                 map((groups: SessionsGroup[]): Groups => ({
                   type: 'groups',
-                  groups
-                }))
+                  groups,
+                })),
               );
           }
-        })
+        }),
       );
-    this.data$ = combineLatest(data$, this.sortType$)
+    this.data$ = combineLatest([data$, this.sortType$])
       .pipe(
-        map(([data, sortType]) => sortData(data, sortType))
+        map(([data, sortType]) => sortData(data, sortType)),
       );
   }
 
@@ -101,7 +101,7 @@ export class SessionsContainerComponent implements OnInit {
   onDisplayRangeChange(range: Range<Date>): void {
     this.sessionsSrv.setDisplayRange({
       start: DateTime.fromJSDate(range.start),
-      end: DateTime.fromJSDate(range.end)
+      end: DateTime.fromJSDate(range.end),
     });
   }
 

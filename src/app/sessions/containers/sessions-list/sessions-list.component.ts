@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
-import { Session } from '../../models/session';
+import { Session } from '../../models';
 import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-sessions-list',
   templateUrl: './sessions-list.component.html',
   styleUrls: ['./sessions-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsListComponent implements OnInit, OnDestroy {
 
@@ -22,7 +22,7 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly sessionsSrv: SessionsService,
-    private readonly dialog: DialogsService
+    private readonly dialog: DialogsService,
   ) {
     this.alive$ = new Subject<void>();
   }
@@ -46,15 +46,15 @@ export class SessionsListComponent implements OnInit, OnDestroy {
 
   onDeleteSession(session: Session) {
     this.dialog.confirmation({
-      message: 'Remove session?'
+      message: 'Remove session?',
     })
       .pipe(
-        takeUntil(this.alive$)
+        takeUntil(this.alive$),
       )
       .subscribe(
         () => this.sessionsSrv.removeSession(session.id),
         () => {
-        }
+        },
       );
   }
 

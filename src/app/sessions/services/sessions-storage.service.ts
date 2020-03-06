@@ -42,7 +42,7 @@ function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
   return {
     id: session.id,
     start: firebase.firestore.Timestamp.fromDate(new Date(session.start)),
-    duration: session.duration
+    duration: session.duration,
   };
 }
 
@@ -50,30 +50,30 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
   return {
     id: session.id,
     start: session.start.toDate().valueOf(),
-    duration: session.duration
+    duration: session.duration,
   };
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionsStorageService {
   constructor(
-    @Inject(SESSIONS_STORAGE) private readonly storage: EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>
+    @Inject(SESSIONS_STORAGE) private readonly storage: EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>,
   ) {
   }
 
   addedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
     return this.storage.addedEntities(this.makeQueryFn(range))
       .pipe(
-        map(entities => entities.map(entity => fromSessionStorageEntity(entity)))
+        map(entities => entities.map(entity => fromSessionStorageEntity(entity))),
       );
   }
 
   modifiedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
     return this.storage.modifiedEntities(this.makeQueryFn(range))
       .pipe(
-        map(entities => entities.map(entity => fromSessionStorageEntity(entity)))
+        map(entities => entities.map(entity => fromSessionStorageEntity(entity))),
       );
   }
 
@@ -96,7 +96,7 @@ export class SessionsStorageService {
   updateSessions(changes: Update<SessionEntity>[]): Promise<void> {
     const stChanges: Update<SessionStorageEntity>[] = changes.map(change => {
       const stChange: Update<SessionStorageEntity> = {
-        id: change.id
+        id: change.id,
       };
       if (change.start) {
         stChange.start = firebase.firestore.Timestamp.fromDate(new Date(change.start));

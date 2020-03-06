@@ -10,18 +10,18 @@ const selectSessionsState = createFeatureSelector<fromSessionsFeature.SessionsSt
 
 const selectSessionsEntityState = compose(
   state => state.entities,
-  selectSessionsState
+  selectSessionsState,
 );
 
 export const selectSettings = compose(
   state => state.settings,
-  selectSessionsState
+  selectSessionsState,
 );
 
 export const {
   getDisplayRange,
   getGroupType,
-  getSortType
+  getSortType,
 } = SettingsSelectors.getSelectors(selectSettings);
 
 export const {
@@ -31,7 +31,7 @@ export const {
   getSession,
   getError,
   isLoading,
-  isLoaded
+  isLoaded,
 } = SessionsSelectors.getSelectors(selectSessionsEntityState);
 
 
@@ -59,5 +59,5 @@ export const getSessionsGroups: Selector<fromSessionsFeature.State, SessionsGrou
       const date = cluster.reduce((min, session) => session.start < min ? session.start : min, cluster[0].start);
       return createGroup(getSessionId(cluster[0]), groupType, date, cluster);
     });
-  }
+  },
 );

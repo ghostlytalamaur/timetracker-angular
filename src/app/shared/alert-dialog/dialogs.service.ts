@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { ComponentType } from '@angular/cdk/portal';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DialogsService {
 
@@ -17,7 +17,7 @@ export class DialogsService {
   };
 
   constructor(
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
   ) {
   }
 
@@ -27,8 +27,8 @@ export class DialogsService {
         ...this.defaultConfig,
         data: {
           type: 'confirmation',
-          ...data
-        }
+          ...data,
+        },
       })
       .afterClosed()
       .pipe(
@@ -36,7 +36,7 @@ export class DialogsService {
           if (result !== 'ok') {
             throw new Error('Dialog closed with negative result');
           }
-        })
+        }),
       );
   }
 
@@ -46,8 +46,8 @@ export class DialogsService {
         ...this.defaultConfig,
         data: {
           type: 'alert',
-          ...data
-        }
+          ...data,
+        },
       })
       .afterClosed();
   }
@@ -56,7 +56,7 @@ export class DialogsService {
     return this.matDialog.open<any, D, R>(component,
       {
         ...this.defaultConfig,
-        data
+        data,
       })
       .afterClosed();
   }

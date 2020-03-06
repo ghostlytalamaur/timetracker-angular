@@ -6,12 +6,12 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
-  template: '<app-date-range-picker [range]="range" (rangeChange)="onRangeChange($event)"></app-date-range-picker>'
+  template: '<app-date-range-picker [range]="range" (rangeChange)="onRangeChange($event)"></app-date-range-picker>',
 })
 export class DateRangePickerDialogComponent {
   constructor(
     private readonly dialogRef: MatDialogRef<DateRangePickerDialogComponent, Range<Date>>,
-    @Inject(MAT_DIALOG_DATA) public readonly range: Range<Date>
+    @Inject(MAT_DIALOG_DATA) public readonly range: Range<Date>,
   ) {
   }
 
@@ -21,7 +21,7 @@ export class DateRangePickerDialogComponent {
 }
 
 @Directive({
-  selector: '[appDateRangePicker]'
+  selector: '[appDateRangePicker]',
 })
 export class DateRangePickerDialogDirective implements OnDestroy {
 
@@ -32,7 +32,7 @@ export class DateRangePickerDialogDirective implements OnDestroy {
   private alive$: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly dialogs: DialogsService
+    private readonly dialogs: DialogsService,
   ) {
   }
 
@@ -46,14 +46,14 @@ export class DateRangePickerDialogDirective implements OnDestroy {
     this.dialogs.component<Range<Date>, Range<Date>>(DateRangePickerDialogComponent, this.range)
       .pipe(
         take(1),
-        takeUntil(this.alive$)
+        takeUntil(this.alive$),
       )
       .subscribe(
         range => {
           if (range) {
             this.rangeChange.emit(range);
           }
-        }
+        },
       );
   }
 }

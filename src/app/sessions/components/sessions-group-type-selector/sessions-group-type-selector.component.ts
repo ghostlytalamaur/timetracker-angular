@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { SessionsGroupType } from '../../models/sessions-group';
+import { SessionsGroupType } from '../../models';
 
 @Component({
   selector: 'app-sessions-group-type-selector',
   templateUrl: './sessions-group-type-selector.component.html',
   styleUrls: ['./sessions-group-type-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupTypeSelectorComponent {
 
@@ -14,7 +14,7 @@ export class SessionsGroupTypeSelectorComponent {
     { label: 'Day', value: 'day' },
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
-    { label: 'Year', value: 'year' }
+    { label: 'Year', value: 'year' },
   ];
 
   @Input()

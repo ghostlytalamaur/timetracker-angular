@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { SessionsGroup } from '../../models/sessions-group';
+import { SessionsGroup } from '../../models';
 
 @Component({
   selector: 'app-sessions-group-list',
   templateUrl: './sessions-group-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupListComponent {
 

@@ -3,16 +3,16 @@ import { User } from '../../model/user';
 
 export const signUp = createAction(
   '[Auth] Sign Up',
-  props<{ email: string, password: string }>()
+  props<{ email: string, password: string }>(),
 );
 
 export const signIn = createAction(
   '[Auth] Sign In',
-  props<{ email: string, password: string }>()
+  props<{ email: string, password: string }>(),
 );
 
 export const signOut = createAction(
-  '[Auth] Sign Out'
+  '[Auth] Sign Out',
 );
 
 export const signOutSuccess = createAction(
@@ -21,18 +21,18 @@ export const signOutSuccess = createAction(
 
 export const authError = createAction(
   '[Auth] Auth Error',
-  props<{ message: string }>()
+  props<{ message: string }>(),
 );
 
 export const authSuccess = createAction(
   '[Auth] Auth Success',
-  props<{ user: User }>()
+  props<{ user: User }>(),
 );
 
 export const autoSignIn = createAction(
-  '[Auth] Auth Auto Sign In'
+  '[Auth] Auth Auto Sign In',
 );
 
 export const autoSignInFailed = createAction(
-  '[Auth] Auth Auto Sign In Failed'
+  '[Auth] Auth Auto Sign In Failed',
 );

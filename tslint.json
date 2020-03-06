@@ -73,7 +73,20 @@
       true,
       "single"
     ],
-    "trailing-comma": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "arrays": "always",
+          "exports": "always",
+          "functions": "always",
+          "imports": "always",
+          "objects": "always",
+          "typeLiterals": "always"
+        },
+        "esSpecCompliant": true
+      }
+    ],
     "no-conflicting-lifecycle": true,
     "no-host-metadata-property": true,
     "no-input-rename": true,
@@ -83,7 +96,7 @@
     "no-output-rename": true,
     "no-outputs-metadata-property": true,
     "template-banana-in-box": true,
-    "template-no-negated-async": true,
+    "template-no-negated-async": false,
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true
   },

@@ -12,10 +12,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   exports: [
-    AuthModule
+    AuthModule,
   ],
   imports: [
     CommonModule,
@@ -26,7 +26,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
       projectId: 'timetracker-1548352730517',
       storageBucket: '',
       messagingSenderId: '146785403320',
-      appId: '1:146785403320:web:69f2e38e38a94bd5'
+      appId: '1:146785403320:web:69f2e38e38a94bd5',
     }),
     AngularFirestoreModule,
     StoreModule.forRoot(fromRoot.reducers, {
@@ -35,15 +35,15 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
         strictStateImmutability: true,
         strictActionImmutability: true,
         strictStateSerializability: false,
-        strictActionSerializability: false
-      }
+        strictActionSerializability: false,
+      },
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
-      logOnly: environment.production
+      logOnly: environment.production,
     }),
-    AuthModule
-  ]
+    AuthModule,
+  ],
 })
 export class CoreModule {
 }

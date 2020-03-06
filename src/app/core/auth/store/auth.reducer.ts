@@ -41,7 +41,7 @@ const authReducers: ActionReducer<AuthState, Action> = createReducer<AuthState>(
   on(AuthActions.authError, (state, { message }) => {
     return {
       ...state,
-      status: { type: 'error', message }
+      status: { type: 'error', message },
     };
   }),
 
@@ -49,14 +49,14 @@ const authReducers: ActionReducer<AuthState, Action> = createReducer<AuthState>(
     return {
       ...state,
       user,
-      status: undefined
+      status: undefined,
     };
   }),
 
   on(AuthActions.autoSignInFailed, (state) => {
     return {
       ...state,
-      status: undefined
+      status: undefined,
     };
   }),
 
@@ -64,9 +64,9 @@ const authReducers: ActionReducer<AuthState, Action> = createReducer<AuthState>(
     return {
       ...state,
       user: undefined,
-      status: undefined
+      status: undefined,
     };
-  })
+  }),
 );
 
 export function reducers(state: AuthState, action: Action): AuthState {
@@ -76,20 +76,20 @@ export function reducers(state: AuthState, action: Action): AuthState {
 const selectAuthState: Selector<State, AuthState> = createFeatureSelector(authFeatureKey);
 export const getUser: Selector<State, User | undefined> = compose(
   state => state.user,
-  selectAuthState
+  selectAuthState,
 );
 
 export const isSignedIn: Selector<State, boolean> = compose(
   user => !!user,
-  getUser
+  getUser,
 );
 
 export const isLoading: Selector<State, boolean> = compose(
   state => !!(state.status && state.status.type === 'loading'),
-  selectAuthState
+  selectAuthState,
 );
 
 export const getError: Selector<State, string | undefined> = compose(
   state => state.status && state.status.type === 'error' ? state.status.message : undefined,
-  selectAuthState
+  selectAuthState,
 );

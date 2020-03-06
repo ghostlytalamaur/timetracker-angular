@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DateTime, DurationUnit } from 'luxon';
 
 @Pipe({
-  name: 'appDateTimeToStartOf'
+  name: 'appDateTimeToStartOf',
 })
 export class DateTimeToStartOf implements PipeTransform {
 
@@ -13,7 +13,7 @@ export class DateTimeToStartOf implements PipeTransform {
 }
 
 @Pipe({
-  name: 'appDateTimeToEndOf'
+  name: 'appDateTimeToEndOf',
 })
 export class DateTimeToEndOf implements PipeTransform {
 

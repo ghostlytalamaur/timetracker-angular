@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { defer, merge, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getDuration, Session } from '../../models/session';
+import { getDuration, Session, SessionEntity } from '../../models';
 import { environment } from '../../../../environments/environment';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SessionEntity } from '../../models/session-entity';
 import { v4 as uuid } from 'uuid';
 import { DateTime, Duration } from 'luxon';
 
@@ -17,7 +16,7 @@ interface FormData {
 function withDate(date: DateTime, time: DateTime): DateTime {
   return DateTime.local(
     date.year, date.month, date.day,
-    time.hour, time.minute, time.second, time.millisecond
+    time.hour, time.minute, time.second, time.millisecond,
   );
 }
 
@@ -25,7 +24,7 @@ function withDate(date: DateTime, time: DateTime): DateTime {
   selector: 'app-session-details',
   templateUrl: './session-details.component.html',
   styleUrls: ['./session-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionDetailsComponent implements OnChanges {
 
@@ -42,7 +41,7 @@ export class SessionDetailsComponent implements OnChanges {
     this.form = new FormGroup({
       date: new FormControl(now, [Validators.required]),
       start: new FormControl(now, [Validators.required]),
-      end: new FormControl(now)
+      end: new FormControl(now),
     });
 
     this.duration$ = defer(() => merge(of(this.form.value), this.form.valueChanges))
@@ -55,7 +54,7 @@ export class SessionDetailsComponent implements OnChanges {
           }
 
           return getDuration(start, duration, environment.settings.durationRate);
-        })
+        }),
       );
   }
 
@@ -76,7 +75,7 @@ export class SessionDetailsComponent implements OnChanges {
     const sessionEntity: SessionEntity = {
       id: this.session && this.session.id || uuid(),
       start: start.valueOf(),
-      duration: end ? end.valueOf() - start.valueOf() : null
+      duration: end ? end.valueOf() - start.valueOf() : null,
     };
     this.saveSession.emit(sessionEntity);
   }
@@ -89,7 +88,7 @@ export class SessionDetailsComponent implements OnChanges {
     return {
       date: this.session && this.session.start ? this.session.start.toJSDate() : null,
       start: this.session && this.session.start ? this.session.start.toJSDate() : null,
-      end: this.session && this.session.start && this.session.duration ? this.session.start.plus(this.session.duration).toJSDate() : null
+      end: this.session && this.session.start && this.session.duration ? this.session.start.plus(this.session.duration).toJSDate() : null,
     };
   }
 

@@ -18,46 +18,46 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.loadSessions),
-        switchMap(ignored => this.getChangesActions())
-      )
+        switchMap(ignored => this.getChangesActions()),
+      ),
   );
 
   addSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSession),
-        switchMap(action => this.handleAddSession(action.session))
-      )
+        switchMap(action => this.handleAddSession(action.session)),
+      ),
   );
 
   addSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSessions),
-        switchMap(action => this.handleAddSessions(action.sessions))
-      )
+        switchMap(action => this.handleAddSessions(action.sessions)),
+      ),
   );
 
   updateSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.updateSessions),
-        switchMap(action => this.handleUpdateSessions(action.changes))
-      )
+        switchMap(action => this.handleUpdateSessions(action.changes)),
+      ),
   );
 
   removeSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.removeSession),
-        switchMap(action => this.handleRemoveSession(action.id))
-      )
+        switchMap(action => this.handleRemoveSession(action.id)),
+      ),
   );
 
   constructor(
     private readonly actions$: Actions,
     private readonly store: Store<object>,
-    private readonly storage: SessionsStorageService
+    private readonly storage: SessionsStorageService,
   ) {
   }
 
@@ -80,7 +80,7 @@ export class SessionsEffects {
   private wrapVoid(promise: Promise<any>, msg: string): Observable<Action> {
     const stream$ = from(promise)
       .pipe(
-        map(() => ({ type: 'DUMMY ACTION' }))
+        map(() => ({ type: 'DUMMY ACTION' })),
       );
     return this.catchError(stream$, msg);
   }
@@ -92,9 +92,9 @@ export class SessionsEffects {
           return merge(
             this.getAddedSessions(range),
             this.getRemovedSessions(),
-            this.getModifiedSessions(range)
+            this.getModifiedSessions(range),
           );
-        })
+        }),
       );
 
     return this.catchError(changes$, '');
@@ -107,28 +107,28 @@ export class SessionsEffects {
           console.log(err);
           const message = err instanceof Error ? err.message : msg + JSON.stringify(err);
           return of(SessionsActions.sessionsError({ message }));
-        })
+        }),
       );
   }
 
   private getAddedSessions(range: Range<DateTime>): Observable<Action> {
     return this.storage.addedSessions(range)
       .pipe(
-        map(sessions => SessionsActions.sessionsAdded({ sessions }))
+        map(sessions => SessionsActions.sessionsAdded({ sessions })),
       );
   }
 
   private getRemovedSessions(): Observable<Action> {
     return this.storage.removedSessions()
       .pipe(
-        map(ids => SessionsActions.sessionsRemoved({ ids }))
+        map(ids => SessionsActions.sessionsRemoved({ ids })),
       );
   }
 
   private getModifiedSessions(range: Range<DateTime>): Observable<Action> {
     return this.storage.modifiedSessions(range)
       .pipe(
-        map(sessions => SessionsActions.sessionsModified({ sessions }))
+        map(sessions => SessionsActions.sessionsModified({ sessions })),
       );
   }
 

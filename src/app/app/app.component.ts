@@ -8,14 +8,14 @@ import { AuthService } from '../core/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [routerAnimation]
+  animations: [routerAnimation],
 })
 export class AppComponent {
 
   isSignedIn$: Observable<boolean>;
 
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {
     this.isSignedIn$ = this.authService.isSignedIn();
   }

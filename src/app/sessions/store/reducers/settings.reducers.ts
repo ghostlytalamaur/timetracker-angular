@@ -13,35 +13,35 @@ export interface SettingsState {
 function onSetDisplayRange(state: SettingsState, displayRange: ReturnType<typeof SettingsActions.setDisplayRange>): SettingsState {
   return {
     ...state,
-    displayRange: { start: displayRange.start, end: displayRange.end }
+    displayRange: { start: displayRange.start, end: displayRange.end },
   };
 }
 
 function onChangeGroupType(state: SettingsState, group: ReturnType<typeof SettingsActions.changeGroupType>): SettingsState {
   return {
     ...state,
-    groupType: group.group
+    groupType: group.group,
   };
 }
 
 function onChangeSortType(state: SettingsState, sortType: ReturnType<typeof SettingsActions.changeSortType>): SettingsState {
   return {
     ...state,
-    sortType: sortType.sortType
+    sortType: sortType.sortType,
   };
 }
 
 export const initialState: SettingsState = {
   displayRange: {
     start: DateTime.local().startOf('month').valueOf(),
-    end: DateTime.local().endOf('month').valueOf()
+    end: DateTime.local().endOf('month').valueOf(),
   },
   groupType: 'none',
-  sortType: 'desc'
+  sortType: 'desc',
 };
 
 export const settingsReducers = createReducer<SettingsState>(initialState,
   on(SettingsActions.setDisplayRange, onSetDisplayRange),
   on(SettingsActions.changeGroupType, onChangeGroupType),
-  on(SettingsActions.changeSortType, onChangeSortType)
+  on(SettingsActions.changeSortType, onChangeSortType),
 );

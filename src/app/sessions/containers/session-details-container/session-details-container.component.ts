@@ -9,7 +9,7 @@ import { Session, SessionEntity } from '../../models';
   selector: 'app-session-details-container',
   templateUrl: './session-details-container.component.html',
   styleUrls: ['./session-details-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionDetailsContainerComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class SessionDetailsContainerComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly sessionsSrv: SessionsService
+    private readonly sessionsSrv: SessionsService,
   ) {
   }
 

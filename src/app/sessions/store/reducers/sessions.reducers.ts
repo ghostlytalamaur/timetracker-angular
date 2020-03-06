@@ -25,7 +25,7 @@ export const adapter = createEntityAdapter<SessionEntity>();
 function onLoadSessions(state: SessionsEntityState): SessionsEntityState {
   return {
     ...state,
-    status: { type: 'loading' }
+    status: { type: 'loading' },
   };
 }
 
@@ -33,7 +33,7 @@ function onSessionsAdded(state: SessionsEntityState, { sessions }: ReturnType<ty
   return {
     ...adapter.addMany(sessions, state),
     loaded: true,
-    status: undefined
+    status: undefined,
   };
 }
 
@@ -49,14 +49,14 @@ function onSessionsRemoved(state: SessionsEntityState, { ids }: ReturnType<typeo
 function onSessionsError(state: SessionsEntityState, { message }: ReturnType<typeof SessionsActions.sessionsError>): SessionsEntityState {
   return {
     ...state,
-    status: { type: 'error', message }
+    status: { type: 'error', message },
   };
 }
 
 function onClearError(state: SessionsEntityState): SessionsEntityState {
   return {
     ...state,
-    status: undefined
+    status: undefined,
   };
 }
 

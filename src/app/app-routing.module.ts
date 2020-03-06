@@ -6,11 +6,11 @@ import { PageNotFoundComponent } from './core/page-not-found/page-not-found.comp
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/sessions' },
   { path: 'sessions', loadChildren: () => import('./sessions/sessions.module').then(mod => mod.SessionsModule) },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { getDuration, Session } from '../../models/session';
+import { getDuration, Session } from '../../models';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { Duration } from 'luxon';
   selector: 'app-session-item',
   templateUrl: './session-item.component.html',
   styleUrls: ['./session-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionItemComponent {
 
@@ -37,7 +37,7 @@ export class SessionItemComponent {
     this.mSession = new BehaviorSubject<Session | undefined>(undefined);
     this.duration$ = this.mSession
       .pipe(
-        switchMap(s => getDuration(s && s.start ? s.start : null, s ? s.duration : null, environment.settings.durationRate))
+        switchMap(s => getDuration(s && s.start ? s.start : null, s ? s.duration : null, environment.settings.durationRate)),
       );
     this.sessionDelete = new EventEmitter<void>();
   }

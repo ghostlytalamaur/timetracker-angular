@@ -7,11 +7,11 @@ import { User } from './model/user';
 import { first } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   constructor(
-    private readonly store: Store<fromAuth.State>
+    private readonly store: Store<fromAuth.State>,
   ) {
     this.store.dispatch(AuthActions.autoSignIn());
   }

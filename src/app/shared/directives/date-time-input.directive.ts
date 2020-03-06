@@ -11,7 +11,7 @@ import {
   Optional,
   Output,
   Self,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NgControl, ValidationErrors } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -37,8 +37,8 @@ export function dateValidator(control: AbstractControl): ValidationErrors | null
   selector: 'input[appDateTimeInput]',
   providers: [
     { provide: MatFormFieldControl, useExisting: DateTimeInputDirective },
-    { provide: NG_VALIDATORS, useValue: dateValidator, multi: true }
-  ]
+    { provide: NG_VALIDATORS, useValue: dateValidator, multi: true },
+  ],
 })
 export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, MatFormFieldControl<Date> {
 
@@ -70,7 +70,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     private readonly focusMonitor: FocusMonitor,
     private readonly autoFillMonitor: AutofillMonitor,
     private readonly input: ElementRef<HTMLInputElement>,
-    @Optional() @Self() ngControl: NgControl
+    @Optional() @Self() ngControl: NgControl,
   ) {
     this.ngControl = ngControl ? ngControl : null;
     if (this.ngControl) {
@@ -198,7 +198,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
       this.autoFillMonitor.monitor(this.input).subscribe(event => {
         this.mAutoFilled = event.isAutofilled;
         this.stateChangesSubj.next();
-      })
+      }),
     );
 
     this.subscription.add(
@@ -207,7 +207,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
           this.mFocused = !!origin;
           this.onTouched();
           this.stateChangesSubj.next();
-        })
+        }),
     );
   }
 

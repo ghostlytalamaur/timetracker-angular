@@ -9,7 +9,7 @@ const selectDisplayRange: Selector<fromSettings.SettingsState, Range<number>> = 
 
 export const getDisplayRange: Selector<fromSettings.SettingsState, Range<DateTime>> = createSelector(
   selectDisplayRange,
-  range => ({ start: DateTime.fromMillis(range.start), end: DateTime.fromMillis(range.end) })
+  range => ({ start: DateTime.fromMillis(range.start), end: DateTime.fromMillis(range.end) }),
 );
 
 export const getGroupType: Selector<fromSettings.SettingsState, SessionsGroupType> = state => state.groupType;
@@ -25,6 +25,6 @@ export function getSelectors<S>(selectState: (state: S) => fromSettings.Settings
   return {
     getDisplayRange: createSelector(selectState, getDisplayRange),
     getGroupType: createSelector(selectState, getGroupType),
-    getSortType: createSelector(selectState, getSortType)
+    getSortType: createSelector(selectState, getSortType),
   };
 }

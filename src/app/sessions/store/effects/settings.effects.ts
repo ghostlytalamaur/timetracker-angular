@@ -15,17 +15,17 @@ export class SettingsEffects {
           ofType(
             SettingsActions.setDisplayRange,
             SettingsActions.changeGroupType,
-            SettingsActions.changeSortType
+            SettingsActions.changeSortType,
           ),
           withLatestFrom(this.store.select(selectSettings)),
-          tap(([ignored, settings]) => SettingsEffects.storeSettings(settings))
+          tap(([ignored, settings]) => SettingsEffects.storeSettings(settings)),
         ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
     private readonly actions$: Actions,
-    private readonly store: Store<object>
+    private readonly store: Store<object>,
   ) {
   }
 

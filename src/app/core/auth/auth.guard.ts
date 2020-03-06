@@ -9,7 +9,7 @@ export class BaseAuthGuard {
 
   constructor(
     private readonly authService: AuthService,
-    protected readonly router: Router
+    protected readonly router: Router,
   ) {
     console.log(`${name} ctor`, authService, router);
   }
@@ -19,14 +19,14 @@ export class BaseAuthGuard {
       .pipe(
         filter(isLoading => !isLoading),
         switchMap(ignored => this.authService.isSignedIn()),
-        take(1)
+        take(1),
       );
   }
 
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard extends BaseAuthGuard implements CanActivate {
 
@@ -41,13 +41,13 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate {
           } else {
             return this.router.createUrlTree(['/login']);
           }
-        })
+        }),
       );
   }
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnonymousGuard extends BaseAuthGuard implements CanActivate {
 
@@ -62,7 +62,7 @@ export class AnonymousGuard extends BaseAuthGuard implements CanActivate {
           } else {
             return this.router.createUrlTree(['/']);
           }
-        })
+        }),
       );
   }
 }
