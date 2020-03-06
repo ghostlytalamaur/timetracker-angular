@@ -10,9 +10,9 @@ import { SessionsGroup } from '../../models';
 export class SessionsGroupListComponent {
 
   @Input()
-  groups: SessionsGroup[];
+  public groups: SessionsGroup[];
 
-  trackById(index: number, group: SessionsGroup): string {
+  public trackById(index: number, group: SessionsGroup): string {
     return group.id;
   }
 

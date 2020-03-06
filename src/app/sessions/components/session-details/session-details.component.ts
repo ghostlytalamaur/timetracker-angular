@@ -32,11 +32,11 @@ export class SessionDetailsComponent implements OnChanges {
   @Input() public session: Session;
   @Output() public saveSession: EventEmitter<SessionEntity>;
 
-  readonly timeFormat = environment.settings.timeFormat;
-  readonly form: FormGroup;
-  readonly duration$: Observable<Duration | null>;
+  public readonly timeFormat = environment.settings.timeFormat;
+  public readonly form: FormGroup;
+  public readonly duration$: Observable<Duration | null>;
 
-  constructor() {
+  public constructor() {
     this.saveSession = new EventEmitter<SessionEntity>();
     const now = DateTime.local();
     this.form = new FormGroup({
@@ -59,13 +59,13 @@ export class SessionDetailsComponent implements OnChanges {
       );
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
       this.form.setValue(this.sessionToFormData());
     }
   }
 
-  onSubmit() {
+  public onSubmit() {
     if (!this.form.valid) {
       return;
     }
@@ -81,7 +81,7 @@ export class SessionDetailsComponent implements OnChanges {
     this.saveSession.emit(sessionEntity);
   }
 
-  resetForm() {
+  public resetForm() {
     this.form.reset(this.sessionToFormData());
   }
 

@@ -11,7 +11,6 @@ import { Range } from '../../shared/utils';
 import { SessionEntity } from '../models';
 
 import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
-// import { environment } from '../../../environments/environment';
 import { FireEntityStorage } from './fire-entity-storage';
 
 export interface SessionStorageEntity {
@@ -26,7 +25,7 @@ export function createFireStorage(): EntityStorage<SessionStorageEntity, EntityQ
 }
 
 //
-// function createDexieStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
+// export function createDexieStorage(): EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>> {
 //   const db = inject(DbService);
 //   return new DexieEntityStorage(db, db.sessions);
 // }
@@ -60,42 +59,42 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
   providedIn: 'root',
 })
 export class SessionsStorageService {
-  constructor(
+  public constructor(
     @Inject(SESSIONS_STORAGE) private readonly storage: EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>,
   ) {
   }
 
-  addedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
+  public addedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
     return this.storage.addedEntities(this.makeQueryFn(range))
       .pipe(
         map(entities => entities.map(entity => fromSessionStorageEntity(entity))),
       );
   }
 
-  modifiedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
+  public modifiedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
     return this.storage.modifiedEntities(this.makeQueryFn(range))
       .pipe(
         map(entities => entities.map(entity => fromSessionStorageEntity(entity))),
       );
   }
 
-  removedSessions(): Observable<string[]> {
+  public removedSessions(): Observable<string[]> {
     return this.storage.deletedEntities();
   }
 
-  addSession(session: SessionEntity): Promise<void> {
+  public addSession(session: SessionEntity): Promise<void> {
     return this.storage.addEntities(toSessionStorageEntity(session));
   }
 
-  addSessions(sessions: SessionEntity[]): Promise<void> {
+  public addSessions(sessions: SessionEntity[]): Promise<void> {
     return this.storage.addEntities(...sessions.map(session => toSessionStorageEntity(session)));
   }
 
-  removeSession(id: string): Promise<void> {
+  public removeSession(id: string): Promise<void> {
     return this.storage.deleteEntities(id);
   }
 
-  updateSessions(changes: Update<SessionEntity>[]): Promise<void> {
+  public updateSessions(changes: Update<SessionEntity>[]): Promise<void> {
     const stChanges: Update<SessionStorageEntity>[] = changes.map(change => {
       const stChange: Update<SessionStorageEntity> = {
         id: change.id,

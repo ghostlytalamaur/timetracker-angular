@@ -15,26 +15,26 @@ import { Session, getDuration } from '../../models';
 export class SessionItemComponent {
 
   @HostBinding('class')
-  readonly class = 'bg-card bg-hover list-group-item cursor-pointer';
+  public readonly class = 'bg-card bg-hover list-group-item cursor-pointer';
 
-  readonly dateFormat = environment.settings.dateFormat;
-  readonly timeFormat = environment.settings.timeFormat;
-  duration$: Observable<Duration | null>;
+  public readonly dateFormat = environment.settings.dateFormat;
+  public readonly timeFormat = environment.settings.timeFormat;
+  public duration$: Observable<Duration | null>;
   private readonly mSession: BehaviorSubject<Session | undefined>;
 
   @Output()
-  sessionDelete: EventEmitter<void>;
+  public sessionDelete: EventEmitter<void>;
 
-  get session(): Session | undefined {
+  public get session(): Session | undefined {
     return this.mSession.value;
   }
 
   @Input()
-  set session(session: Session | undefined) {
+  public set session(session: Session | undefined) {
     this.mSession.next(session);
   }
 
-  constructor() {
+  public constructor() {
     this.mSession = new BehaviorSubject<Session | undefined>(undefined);
     this.duration$ = this.mSession
       .pipe(
@@ -43,7 +43,7 @@ export class SessionItemComponent {
     this.sessionDelete = new EventEmitter<void>();
   }
 
-  onDelete(event: MouseEvent) {
+  public onDelete(event: MouseEvent) {
     event.stopPropagation();
     this.sessionDelete.emit();
   }

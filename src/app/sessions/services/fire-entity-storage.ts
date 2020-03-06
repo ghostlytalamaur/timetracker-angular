@@ -8,22 +8,22 @@ import { User } from '../../core/auth/model/user';
 import { EntityQuery, EntityStorage, EntityType, OrderByDirection, QueryFunction, Update, WhereFilterOp } from './entity-storage';
 
 class FireStoreQuery<E> implements EntityQuery<E> {
-  constructor(
+  public constructor(
     public ref: Query,
   ) {
   }
 
-  limit(limit: number): this {
+  public limit(limit: number): this {
     this.ref = this.ref.limit(limit);
     return this;
   }
 
-  orderBy<K extends keyof E & string>(field: K, direction?: OrderByDirection): this {
+  public orderBy<K extends keyof E & string>(field: K, direction?: OrderByDirection): this {
     this.ref = this.ref.orderBy(field, direction);
     return this;
   }
 
-  where<K extends keyof E & string>(field: K, operation: WhereFilterOp, value: E[K]): this {
+  public where<K extends keyof E & string>(field: K, operation: WhereFilterOp, value: E[K]): this {
     this.ref = this.ref.where(field, operation, value);
     return this;
   }
@@ -32,32 +32,32 @@ class FireStoreQuery<E> implements EntityQuery<E> {
 
 export class FireEntityStorage<Entity extends EntityType> implements EntityStorage<Entity, FireStoreQuery<Entity>> {
 
-  constructor(
+  public constructor(
     private readonly afs: AngularFirestore,
     protected readonly authService: AuthService,
     private readonly collection: string,
   ) {
   }
 
-  addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
+  public addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return merge(
       this.loadEntities(queryFn),
       this.changedEntities('added', queryFn),
     );
   }
 
-  modifiedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
+  public modifiedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return this.changedEntities('modified', queryFn);
   }
 
-  deletedEntities(): Observable<string[]> {
+  public deletedEntities(): Observable<string[]> {
     return this.authService.user$
       .pipe(
         switchMap(user => user ? this.deletedEntitiesForUser(user) : NEVER),
       );
   }
 
-  async deleteEntities(...ids: string[]): Promise<void> {
+  public async deleteEntities(...ids: string[]): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       const promises: Promise<void>[] = [];
@@ -74,7 +74,7 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
     }
   }
 
-  async updateEntities(...changes: Update<Entity>[]): Promise<void> {
+  public async updateEntities(...changes: Update<Entity>[]): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       const promises: Promise<void>[] = [];
@@ -91,7 +91,7 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
     }
   }
 
-  async addEntities(...entities: Entity[]): Promise<void> {
+  public async addEntities(...entities: Entity[]): Promise<void> {
     const user = await this.authService.user;
     if (user) {
       const promises: Promise<void>[] = [];

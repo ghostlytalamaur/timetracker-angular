@@ -21,19 +21,19 @@ export type DialogResult = 'ok' | 'cancel' | 'close';
 })
 export class AlertDialogComponent implements OnInit {
 
-  readonly confirmationType = 'confirmation';
-  readonly alertType = 'alert';
+  public readonly confirmationType = 'confirmation';
+  public readonly alertType = 'alert';
 
-  readonly okResult: DialogResult = 'ok';
-  readonly cancelResult: DialogResult = 'cancel';
-  readonly closeResult: DialogResult = 'close';
+  public readonly okResult: DialogResult = 'ok';
+  public readonly cancelResult: DialogResult = 'cancel';
+  public readonly closeResult: DialogResult = 'close';
 
-  constructor(
+  public constructor(
     @Inject(MAT_DIALOG_DATA) readonly data: DialogData,
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
 }

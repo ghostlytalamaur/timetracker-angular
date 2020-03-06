@@ -17,14 +17,14 @@ export class SessionDetailsContainerComponent implements OnInit {
   public error: string;
   public session$: Observable<Session | null>;
 
-  constructor(
+  public constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly sessionsSrv: SessionsService,
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.session$ = this.route.params
       .pipe(
         switchMap(params => params.id ? this.getSession(params.id) : of(null)),

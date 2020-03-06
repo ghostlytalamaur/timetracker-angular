@@ -46,13 +46,13 @@ function sortData(data: SessionsOrGroups, direction: SortType): SessionsOrGroups
 })
 export class SessionsContainerComponent implements OnInit {
 
-  readonly hasRunning$: Observable<boolean>;
-  readonly displayRange$: Observable<Range<Date>>;
-  readonly data$: Observable<SessionsOrGroups>;
-  readonly groupType$: Observable<SessionsGroupType>;
-  readonly sortType$: Observable<SortType>;
+  public readonly hasRunning$: Observable<boolean>;
+  public readonly displayRange$: Observable<Range<Date>>;
+  public readonly data$: Observable<SessionsOrGroups>;
+  public readonly groupType$: Observable<SessionsGroupType>;
+  public readonly sortType$: Observable<SortType>;
 
-  constructor(
+  public constructor(
     private readonly sessionsSrv: SessionsService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
@@ -90,34 +90,34 @@ export class SessionsContainerComponent implements OnInit {
       );
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
 
-  onToggleSession(): void {
+  public onToggleSession(): void {
     this.sessionsSrv.toggleSession();
   }
 
-  onDisplayRangeChange(range: Range<Date>): void {
+  public onDisplayRangeChange(range: Range<Date>): void {
     this.sessionsSrv.setDisplayRange({
       start: DateTime.fromJSDate(range.start),
       end: DateTime.fromJSDate(range.end),
     });
   }
 
-  onGroupTypeChange(groupType: SessionsGroupType): void {
+  public onGroupTypeChange(groupType: SessionsGroupType): void {
     this.sessionsSrv.changeGroupType(groupType);
   }
 
-  isSessions(data: SessionsOrGroups): data is Sessions {
+  public isSessions(data: SessionsOrGroups): data is Sessions {
     return data.type === 'sessions';
   }
 
-  isGroups(data: SessionsOrGroups): data is Groups {
+  public isGroups(data: SessionsOrGroups): data is Groups {
     return data.type === 'groups';
   }
 
-  onSetSortType(sortType: SortType): void {
+  public onSetSortType(sortType: SortType): void {
     this.sessionsSrv.changeSortType(sortType);
   }
 }

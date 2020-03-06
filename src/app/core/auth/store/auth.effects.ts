@@ -14,7 +14,7 @@ import UserCredential = firebase.auth.UserCredential;
 @Injectable()
 export class AuthEffects {
 
-  autoSignIn$ = createEffect(() =>
+  public autoSignIn$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.autoSignIn),
@@ -22,7 +22,7 @@ export class AuthEffects {
       ),
   );
 
-  signUp$ = createEffect(() =>
+  public signUp$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signUp),
@@ -30,7 +30,7 @@ export class AuthEffects {
       ),
   );
 
-  signIn$ = createEffect(() =>
+  public signIn$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signIn),
@@ -38,7 +38,7 @@ export class AuthEffects {
       ),
   );
 
-  signOut$ = createEffect(() =>
+  public signOut$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signOut),
@@ -46,7 +46,7 @@ export class AuthEffects {
       ),
   );
 
-  signOutSuccess$ = createEffect(() =>
+  public signOutSuccess$ = createEffect(() =>
       this.actions$
         .pipe(
           ofType(AuthActions.signOutSuccess),
@@ -54,7 +54,7 @@ export class AuthEffects {
         ),
     { dispatch: false });
 
-  constructor(
+  public constructor(
     private readonly actions$: Actions,
     private readonly afa: AngularFireAuth,
     private readonly router: Router,

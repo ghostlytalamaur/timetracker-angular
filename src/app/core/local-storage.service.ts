@@ -2,7 +2,7 @@ const APP_KEY = 'TIME_TRACKER.';
 
 export class LocalStorageService {
 
-  static loadState(feature: string, initialState: any): object {
+  public static loadState(feature: string, initialState: any): object {
     feature = `${APP_KEY}${feature}`;
     return Object.keys(localStorage).reduce((state: any, key: string) => {
       if (key.startsWith(feature)) {
@@ -34,7 +34,7 @@ export class LocalStorageService {
     }, initialState);
   }
 
-  static setItem(feature: string, key: string, value: any) {
+  public static setItem(feature: string, key: string, value: any) {
     localStorage.setItem(`${APP_KEY}${feature}.${key}`, JSON.stringify(value));
   }
 

@@ -10,7 +10,7 @@ import { SessionsGroupType } from '../../models';
 })
 export class SessionsGroupTypeSelectorComponent {
 
-  readonly groups = [
+  public readonly groups = [
     { label: 'No grouping', value: 'none' },
     { label: 'Day', value: 'day' },
     { label: 'Week', value: 'week' },
@@ -19,12 +19,12 @@ export class SessionsGroupTypeSelectorComponent {
   ];
 
   @Input()
-  groupType: SessionsGroupType;
+  public groupType: SessionsGroupType;
 
   @Output()
-  groupTypeChange: EventEmitter<SessionsGroupType> = new EventEmitter<SessionsGroupType>();
+  public groupTypeChange: EventEmitter<SessionsGroupType> = new EventEmitter<SessionsGroupType>();
 
-  onChangeGroupType(group: SessionsGroupType): void {
+  public onChangeGroupType(group: SessionsGroupType): void {
     this.groupTypeChange.emit(group);
   }
 

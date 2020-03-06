@@ -26,7 +26,7 @@ import { AuthEffects } from './store/auth.effects';
   ],
 })
 export class AuthModule {
-  constructor(
+  public constructor(
     @Optional() @SkipSelf() existing: AuthModule,
   ) {
     if (existing) {

@@ -16,10 +16,10 @@ import { SessionsService } from '../../services/sessions.service';
 export class SessionsListComponent implements OnInit, OnDestroy {
 
   @Input()
-  sessions: Session[];
+  public sessions: Session[];
   private readonly alive$: Subject<void>;
 
-  constructor(
+  public constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly sessionsSrv: SessionsService,
@@ -28,24 +28,24 @@ export class SessionsListComponent implements OnInit, OnDestroy {
     this.alive$ = new Subject<void>();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.alive$.next();
     this.alive$.complete();
   }
 
-  trackById(index: number, item: Session): string {
+  public trackById(index: number, item: Session): string {
     return item.id;
   }
 
-  onOpenSession(session: Session): void {
+  public onOpenSession(session: Session): void {
     this.router.navigate([session.id], { relativeTo: this.route })
       .catch(console.log);
   }
 
-  onDeleteSession(session: Session) {
+  public onDeleteSession(session: Session) {
     this.dialog.confirmation({
       message: 'Remove session?',
     })

@@ -14,15 +14,15 @@ import { routerAnimation } from './animations';
 })
 export class AppComponent {
 
-  isSignedIn$: Observable<boolean>;
+  public isSignedIn$: Observable<boolean>;
 
-  constructor(
+  public constructor(
     private readonly authService: AuthService,
   ) {
     this.isSignedIn$ = this.authService.isSignedIn();
   }
 
-  onSignOut(): void {
+  public onSignOut(): void {
     this.authService.logout();
   }
 }

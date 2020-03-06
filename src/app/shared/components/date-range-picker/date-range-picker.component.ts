@@ -11,22 +11,22 @@ import { Range, withEnd, withStart } from '../../utils';
 export class DateRangePickerComponent {
 
   @Input()
-  range: Range<Date>;
+  public range: Range<Date>;
 
   @Output()
-  rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
+  public rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
 
-  onSubmit() {
+  public onSubmit() {
     if (this.range) {
       this.rangeChange.emit(this.range);
     }
   }
 
-  onStartChange(start: Date) {
+  public onStartChange(start: Date) {
     this.range = withStart(this.range, start);
   }
 
-  onEndChange(end: Date) {
+  public onEndChange(end: Date) {
     this.range = withEnd(this.range, end);
   }
 }

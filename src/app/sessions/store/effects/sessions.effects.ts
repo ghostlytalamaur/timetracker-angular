@@ -15,7 +15,7 @@ import { SessionsFeatureSelectors } from '../selectors';
 @Injectable()
 export class SessionsEffects {
 
-  loadEffect$ = createEffect(() =>
+  public loadEffect$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.loadSessions),
@@ -23,7 +23,7 @@ export class SessionsEffects {
       ),
   );
 
-  addSession$ = createEffect(() =>
+  public addSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSession),
@@ -31,7 +31,7 @@ export class SessionsEffects {
       ),
   );
 
-  addSessions$ = createEffect(() =>
+  public addSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSessions),
@@ -39,7 +39,7 @@ export class SessionsEffects {
       ),
   );
 
-  updateSessions$ = createEffect(() =>
+  public updateSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.updateSessions),
@@ -47,7 +47,7 @@ export class SessionsEffects {
       ),
   );
 
-  removeSession$ = createEffect(() =>
+  public removeSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.removeSession),
@@ -55,7 +55,7 @@ export class SessionsEffects {
       ),
   );
 
-  constructor(
+  public constructor(
     private readonly actions$: Actions,
     private readonly store: Store<object>,
     private readonly storage: SessionsStorageService,

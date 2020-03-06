@@ -11,21 +11,21 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  isLoading$: Observable<boolean>;
-  error$: Observable<string | undefined>;
-  isSignInMode = true;
+  public isLoading$: Observable<boolean>;
+  public error$: Observable<string | undefined>;
+  public isSignInMode = true;
 
-  constructor(
+  public constructor(
     private readonly authService: AuthService,
   ) {
     this.isLoading$ = this.authService.isLoading();
     this.error$ = this.authService.getError();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
-  onSubmit(form: NgForm) {
+  public onSubmit(form: NgForm) {
     const credentials = {
       email: form.value.email,
       password: form.value.password,
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSwitchMode() {
+  public onSwitchMode() {
     this.isSignInMode = !this.isSignInMode;
   }
 }

@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class BaseAuthGuard {
 
-  constructor(
+  public constructor(
     private readonly authService: AuthService,
     protected readonly router: Router,
   ) {
@@ -31,8 +31,8 @@ export class BaseAuthGuard {
 })
 export class AuthGuard extends BaseAuthGuard implements CanActivate {
 
-  canActivate(route: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  public canActivate(route: ActivatedRouteSnapshot,
+                     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()
       .pipe(
@@ -52,8 +52,8 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate {
 })
 export class AnonymousGuard extends BaseAuthGuard implements CanActivate {
 
-  canActivate(route: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  public canActivate(route: ActivatedRouteSnapshot,
+                     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()
       .pipe(

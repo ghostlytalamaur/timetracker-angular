@@ -1,9 +1,10 @@
-import Dexie from 'dexie';
 import { Injectable } from '@angular/core';
+import Dexie from 'dexie';
+
 import { SessionStorageEntity } from './session-storage-entity';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DbService extends Dexie {
 
@@ -13,7 +14,7 @@ export class DbService extends Dexie {
     super('time_tracker_db');
     this.version(1)
       .stores({
-        sessions: '&id, start'
+        sessions: '&id, start',
       });
 
     this.sessions = this.table('sessions');

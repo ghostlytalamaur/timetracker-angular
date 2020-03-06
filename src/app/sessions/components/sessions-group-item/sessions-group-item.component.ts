@@ -13,7 +13,7 @@ import { Session, SessionsGroup, SessionsGroupType } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupItemComponent implements OnInit {
-  readonly dateFormat: Record<SessionsGroupType, string> = {
+  public readonly dateFormat: Record<SessionsGroupType, string> = {
     none: environment.settings.dateFormat,
     day: 'MMMM d, y',
     week: 'MMMM d, y',
@@ -23,27 +23,27 @@ export class SessionsGroupItemComponent implements OnInit {
   private mGroup: SessionsGroup | undefined;
   private mDuration: Observable<Duration> | undefined;
 
-  constructor() {
+  public constructor() {
   }
 
-  get group(): SessionsGroup | undefined {
+  public get group(): SessionsGroup | undefined {
     return this.mGroup;
   }
 
   @Input()
-  set group(value: SessionsGroup | undefined) {
+  public set group(value: SessionsGroup | undefined) {
     this.mGroup = value;
     this.updateDuration();
   }
 
-  get duration$(): Observable<Duration> | undefined {
+  public get duration$(): Observable<Duration> | undefined {
     return this.mDuration;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
-  getListSize(): number {
+  public getListSize(): number {
     return Math.min(5, this.group ? this.group.sessions.length : 0) * 74;
   }
 

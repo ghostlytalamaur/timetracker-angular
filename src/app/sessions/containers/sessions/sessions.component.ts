@@ -13,11 +13,11 @@ import { SessionsService } from '../../services/sessions.service';
 })
 export class SessionsComponent implements OnInit, OnDestroy {
 
-  readonly isLoading$: Observable<boolean>;
-  readonly error$: Observable<string>;
-  subscription: Subscription;
+  public readonly isLoading$: Observable<boolean>;
+  public readonly error$: Observable<string>;
+  public subscription: Subscription;
 
-  constructor(
+  public constructor(
     private sessionsSrv: SessionsService,
     private dialogs: DialogsService,
   ) {
@@ -25,7 +25,7 @@ export class SessionsComponent implements OnInit, OnDestroy {
     this.error$ = this.sessionsSrv.getError();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.sessionsSrv.loadSessions();
     this.subscription = this.error$
       .pipe(
@@ -35,7 +35,7 @@ export class SessionsComponent implements OnInit, OnDestroy {
       .subscribe(() => this.sessionsSrv.clearError());
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

@@ -5,26 +5,26 @@ import { map } from 'rxjs/operators';
 import { SessionEntity, createSession } from './session-entity';
 
 export class Session {
-  constructor(
+  public constructor(
     public readonly id: string,
     public readonly start: DateTime,
     public readonly duration: Duration | null,
   ) {
   }
 
-  static fromEntity(entity: SessionEntity): Session {
+  public static fromEntity(entity: SessionEntity): Session {
     return new Session(entity.id,
       DateTime.fromMillis(entity.start),
       entity.duration ? Duration.fromMillis(entity.duration) : null,
     );
   }
 
-  static fromNow(id: string): Session {
+  public static fromNow(id: string): Session {
     const date = DateTime.local();
     return new Session(id, date, null);
   }
 
-  toEntity(): SessionEntity {
+  public toEntity(): SessionEntity {
     return createSession(
       this.id,
       this.start.valueOf(),
