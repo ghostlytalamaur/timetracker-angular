@@ -1,8 +1,8 @@
 {
-  "name": "time-tracker",
-  "short_name": "TimeTracker",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "Time Tracker",
+  "short_name": "Time Tracker",
+  "theme_color": "#607d8b",
+  "background_color": "#303030",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
