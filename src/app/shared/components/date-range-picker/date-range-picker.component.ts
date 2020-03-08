@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { DateTime } from 'luxon';
 
 import { Range, withEnd, withStart } from '../../utils';
 
@@ -23,10 +24,10 @@ export class DateRangePickerComponent {
   }
 
   public onStartChange(start: Date) {
-    this.range = withStart(this.range, start);
+    this.range = withStart(this.range, DateTime.fromJSDate(start).startOf('day').toJSDate());
   }
 
   public onEndChange(end: Date) {
-    this.range = withEnd(this.range, end);
+    this.range = withEnd(this.range, DateTime.fromJSDate(end).endOf('day').toJSDate());
   }
 }

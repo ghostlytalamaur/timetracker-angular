@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
@@ -7,8 +7,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { Range } from '../../../shared/utils';
 import { SessionEntity } from '../../models';
+import { SESSIONS_STORAGE, SessionsStorage } from '../../services';
 import { Update } from '../../services/entity-storage';
-import { SessionsStorageService } from '../../services/sessions-storage.service';
 import { SessionsActions } from '../actions';
 import { SessionsFeatureSelectors } from '../selectors';
 
@@ -58,7 +58,7 @@ export class SessionsEffects {
   public constructor(
     private readonly actions$: Actions,
     private readonly store: Store<object>,
-    private readonly storage: SessionsStorageService,
+    @Inject(SESSIONS_STORAGE) private readonly storage: SessionsStorage,
   ) {
   }
 
