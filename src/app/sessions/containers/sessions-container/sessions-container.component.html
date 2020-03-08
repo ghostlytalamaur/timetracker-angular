@@ -3,45 +3,38 @@
 
     <div class="row actions-row">
       <div class="col">
-        <div class="d-flex flex-row">
+        <button (click)="onToggleSession()" color="primary" mat-flat-button>
+          {{ (hasRunning$ | async) ? "Stop" : "Start" }}
+        </button>
+      </div>
 
-          <button (click)="onToggleSession()" color="primary" mat-flat-button>
-            {{ (hasRunning$ | async) ? "Stop" : "Start" }}
-          </button>
-
-          <div class="ml-auto">
-            <div class="row">
-
-              <div class="col">
-                <ng-container *ngIf="displayRange$ | async as range">
-                  <button
-                    (rangeChange)="onDisplayRangeChange($event)"
-                    [appDateRangePicker]="range"
-                    mat-button
-                  >
-                    {{ range.start | date }} - {{ range.end | date }}
-                  </button>
-                </ng-container>
-              </div>
-
-              <div class="col align-self-center">
-                <app-sessions-group-type-selector
-                  (groupTypeChange)="onGroupTypeChange($event)"
-                  [groupType]="groupType$ | async"
-                ></app-sessions-group-type-selector>
-              </div>
-
-              <ng-container *ngIf="sortType$ | async as sortType">
-                <button (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')" mat-button>
-                  <mat-icon>
-                    {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
-                  </mat-icon>
-                </button>
-              </ng-container>
-
-            </div>
-          </div>
+      <div class="col d-flex justify-content-end">
+        <div class="align-self-center">
+          <app-sessions-group-type-selector
+            (groupTypeChange)="onGroupTypeChange($event)"
+            [groupType]="groupType$ | async"
+          ></app-sessions-group-type-selector>
         </div>
+
+        <ng-container *ngIf="displayRange$ | async as range">
+          <button
+            (rangeChange)="onDisplayRangeChange($event)"
+            [appDateRangePicker]="range"
+            mat-icon-button
+          >
+            <mat-icon>date_range</mat-icon>
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="sortType$ | async as sortType">
+          <button
+            mat-icon-button
+            (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')">
+            <mat-icon>
+              {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
+            </mat-icon>
+          </button>
+        </ng-container>
       </div>
     </div>
 
