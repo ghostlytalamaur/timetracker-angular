@@ -11,11 +11,7 @@
       <a mat-button routerLink="">Time Tracker</a>
       <span class="flex-fill"></span>
 
-      <a mat-button routerLink="/login2">Page Not Found</a>
-
       <ng-container *ngIf="isSignedIn$ | async; else loginBtnTemplate">
-        <a mat-button routerLink="sessions" routerLinkActive="active">Sessions</a>
-
         <button (click)="onSignOut()" mat-button>Sign Out</button>
       </ng-container>
 
