@@ -13,7 +13,7 @@ export const routerAnimation: AnimationTriggerMetadata = trigger('routerAnimatio
           style({ transform: 'translateY(0%)', opacity: 1 }),
           animate(
             '0.2s ease-in-out',
-            style({ transform: 'translateY(-3%)', opacity: 0 }),
+            style({ transform: 'translateY(-0%)', opacity: 0 }),
           ),
           style({ position: 'fixed' }),
         ],
@@ -23,7 +23,7 @@ export const routerAnimation: AnimationTriggerMetadata = trigger('routerAnimatio
         ':enter > *',
         [
           style({
-            transform: 'translateY(-3%)',
+            transform: 'translateY(-0%)',
             opacity: 0,
             position: 'static',
           }),

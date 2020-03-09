@@ -4,12 +4,14 @@ import { filter, switchMap } from 'rxjs/operators';
 
 import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
 import { SessionsService } from '../../services/sessions.service';
+import { routerAnimation } from '../../../app/animations';
 
 @Component({
   selector: 'app-sessions',
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [routerAnimation],
 })
 export class SessionsComponent implements OnInit, OnDestroy {
 
