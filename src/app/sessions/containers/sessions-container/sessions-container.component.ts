@@ -48,6 +48,7 @@ export class SessionsContainerComponent implements OnInit {
 
   public readonly hasRunning$: Observable<boolean>;
   public readonly displayRange$: Observable<Range<Date>>;
+  public readonly isTodayInvisible$: Observable<boolean>;
   public readonly data$: Observable<SessionsOrGroups>;
   public readonly groupType$: Observable<SessionsGroupType>;
   public readonly sortType$: Observable<SortType>;
@@ -59,6 +60,10 @@ export class SessionsContainerComponent implements OnInit {
     this.displayRange$ = this.sessionsSrv.getDisplayRange()
       .pipe(
         map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() })),
+      );
+    this.isTodayInvisible$ = this.sessionsSrv.getDisplayRange()
+      .pipe(
+        map(range => DateTime.local().diff(range.end).valueOf() > 0),
       );
     this.groupType$ = this.sessionsSrv.getGroupType();
     this.sortType$ = this.sessionsSrv.getSortType();

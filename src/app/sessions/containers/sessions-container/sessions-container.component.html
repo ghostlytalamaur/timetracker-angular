@@ -2,7 +2,12 @@
 
   <div class="row mb-3">
     <div class="col">
-      <button (click)="onToggleSession()" color="primary" mat-flat-button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="isTodayInvisible$ | async"
+        (click)="onToggleSession()"
+      >
         {{ (hasRunning$ | async) ? "Stop" : "Start" }}
       </button>
     </div>
