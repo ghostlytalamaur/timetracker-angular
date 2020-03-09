@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { User } from './model/user';
+import { Credentials, User } from './model';
 import * as fromAuth from './store';
 import { AuthActions } from './store/actions';
 
@@ -32,11 +32,11 @@ export class AuthService {
     return this.store.select(fromAuth.isSignedIn);
   }
 
-  public signUp(credentials: { email: string, password: string }): void {
+  public signUp(credentials: Credentials): void {
     this.store.dispatch(AuthActions.signUp(credentials));
   }
 
-  public signIn(credentials: { email: string, password: string }): void {
+  public signIn(credentials: Credentials): void {
     this.store.dispatch(AuthActions.signIn(credentials));
   }
 

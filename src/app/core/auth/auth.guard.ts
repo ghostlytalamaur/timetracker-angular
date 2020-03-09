@@ -12,7 +12,6 @@ export class BaseAuthGuard {
     private readonly authService: AuthService,
     protected readonly router: Router,
   ) {
-    console.log(`${name} ctor`, authService, router);
   }
 
   protected isSignedIn(): Observable<boolean> {

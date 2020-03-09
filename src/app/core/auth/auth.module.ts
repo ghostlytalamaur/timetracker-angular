@@ -8,13 +8,17 @@ import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../../shared/shared.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
-import { LoginComponent } from './login/login.component';
+import { LoginContainerComponent } from './containers';
 import * as fromAuth from './store';
 import { AuthEffects } from './store/auth.effects';
+import { LoginComponent } from './components';
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [
+    LoginComponent,
+    LoginContainerComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

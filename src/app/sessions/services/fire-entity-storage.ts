@@ -3,7 +3,7 @@ import { NEVER, Observable, merge, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../../core/auth/auth.service';
-import { User } from '../../core/auth/model/user';
+import { User } from '../../core/auth/model';
 
 import { EntityQuery, EntityStorage, EntityType, OrderByDirection, QueryFunction, Update, WhereFilterOp } from './entity-storage';
 

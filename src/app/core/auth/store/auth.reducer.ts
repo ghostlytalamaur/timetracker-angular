@@ -1,7 +1,7 @@
 import { Action, ActionReducer, Selector, compose, createFeatureSelector, createReducer, on } from '@ngrx/store';
 
 import * as fromRoot from '../../store';
-import { User } from '../model/user';
+import { User } from '../model';
 
 import { AuthActions } from './actions';
 
