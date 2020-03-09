@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DateTime, Duration } from 'luxon';
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { Session, SessionsGroup, SessionsGroupType } from '../../models';
   styleUrls: ['./sessions-group-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SessionsGroupItemComponent implements OnInit {
+export class SessionsGroupItemComponent implements OnInit, OnChanges {
   public readonly dateFormat: Record<SessionsGroupType, string> = {
     none: environment.settings.dateFormat,
     day: 'MMMM d, y',
@@ -20,36 +20,23 @@ export class SessionsGroupItemComponent implements OnInit {
     month: 'MMMM, y',
     year: 'y',
   };
-  private mGroup: SessionsGroup | undefined;
-  private mDuration: Observable<Duration> | undefined;
 
-  public constructor() {
-  }
+  @Input() public group: SessionsGroup | undefined;
 
-  public get group(): SessionsGroup | undefined {
-    return this.mGroup;
-  }
-
-  @Input()
-  public set group(value: SessionsGroup | undefined) {
-    this.mGroup = value;
-    this.updateDuration();
-  }
-
-  public get duration$(): Observable<Duration> | undefined {
-    return this.mDuration;
-  }
+  public duration$: Observable<Duration> | undefined;
 
   public ngOnInit() {
   }
 
-  public getListSize(): number {
-    return Math.min(5, this.group ? this.group.sessions.length : 0) * 74;
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.group) {
+      this.updateDuration();
+    }
   }
 
   private updateDuration(): void {
     if (!this.group) {
-      this.mDuration = undefined;
+      this.duration$ = undefined;
       return;
     }
 
@@ -64,9 +51,9 @@ export class SessionsGroupItemComponent implements OnInit {
     }
 
     if (!runningSessions.length) {
-      this.mDuration = of(closedDuration);
+      this.duration$ = of(closedDuration);
     } else {
-      this.mDuration = timer(0, environment.settings.durationRate)
+      this.duration$ = timer(0, environment.settings.durationRate)
         .pipe(
           map(() => {
             const now = DateTime.local();
