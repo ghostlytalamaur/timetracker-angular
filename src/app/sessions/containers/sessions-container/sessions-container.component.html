@@ -1,54 +1,55 @@
-<div class="row h-100">
-  <div class="col">
+<div class="d-flex flex-column h-100">
 
-    <div class="row actions-row">
-      <div class="col">
-        <button (click)="onToggleSession()" color="primary" mat-flat-button>
-          {{ (hasRunning$ | async) ? "Stop" : "Start" }}
-        </button>
-      </div>
-
-      <div class="col d-flex justify-content-end">
-        <div class="align-self-center">
-          <app-sessions-group-type-selector
-            (groupTypeChange)="onGroupTypeChange($event)"
-            [groupType]="groupType$ | async"
-          ></app-sessions-group-type-selector>
-        </div>
-
-        <ng-container *ngIf="displayRange$ | async as range">
-          <button
-            (rangeChange)="onDisplayRangeChange($event)"
-            [appDateRangePicker]="range"
-            mat-icon-button
-          >
-            <mat-icon>date_range</mat-icon>
-          </button>
-        </ng-container>
-
-        <ng-container *ngIf="sortType$ | async as sortType">
-          <button
-            mat-icon-button
-            (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')">
-            <mat-icon>
-              {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
-            </mat-icon>
-          </button>
-        </ng-container>
-      </div>
+  <div class="row mb-3">
+    <div class="col">
+      <button (click)="onToggleSession()" color="primary" mat-flat-button>
+        {{ (hasRunning$ | async) ? "Stop" : "Start" }}
+      </button>
     </div>
 
-    <ng-container *ngIf="data$ | async as data">
-      <app-sessions-list
-        *ngIf="isSessions(data)"
-        [sessions]="data.sessions"
-      ></app-sessions-list>
+    <div class="col d-flex justify-content-end">
+      <div class="align-self-center">
+        <app-sessions-group-type-selector
+          (groupTypeChange)="onGroupTypeChange($event)"
+          [groupType]="groupType$ | async"
+        ></app-sessions-group-type-selector>
+      </div>
 
-      <app-sessions-group-list
-        *ngIf="isGroups(data)"
-        [groups]="data.groups"
-      ></app-sessions-group-list>
-    </ng-container>
+      <ng-container *ngIf="displayRange$ | async as range">
+        <button
+          (rangeChange)="onDisplayRangeChange($event)"
+          [appDateRangePicker]="range"
+          mat-icon-button
+        >
+          <mat-icon>date_range</mat-icon>
+        </button>
+      </ng-container>
 
+      <ng-container *ngIf="sortType$ | async as sortType">
+        <button
+          mat-icon-button
+          (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')">
+          <mat-icon>
+            {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
+          </mat-icon>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row flex-grow-1">
+    <div class="col">
+      <ng-container *ngIf="data$ | async as data">
+        <app-sessions-list
+          *ngIf="isSessions(data)"
+          [sessions]="data.sessions"
+        ></app-sessions-list>
+
+        <app-sessions-group-list
+          *ngIf="isGroups(data)"
+          [groups]="data.groups"
+        ></app-sessions-group-list>
+      </ng-container>
+    </div>
   </div>
 </div>
