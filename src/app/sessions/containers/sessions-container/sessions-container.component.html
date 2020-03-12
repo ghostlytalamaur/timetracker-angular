@@ -45,15 +45,19 @@
   <div class="row flex-grow-1">
     <div class="col">
       <ng-container *ngIf="data$ | async as data">
-        <app-sessions-list
-          *ngIf="isSessions(data)"
-          [sessions]="data.sessions"
-        ></app-sessions-list>
+        <app-sessions-table
+          [sessions]="sessions$ | async"
+          [groupType]="groupType$ | async"
+        ></app-sessions-table>
+<!--        <app-sessions-list-->
+<!--          *ngIf="isSessions(data)"-->
+<!--          [sessions]="data.sessions"-->
+<!--        ></app-sessions-list>-->
 
-        <app-sessions-group-list
-          *ngIf="isGroups(data)"
-          [groups]="data.groups"
-        ></app-sessions-group-list>
+<!--        <app-sessions-group-list-->
+<!--          *ngIf="isGroups(data)"-->
+<!--          [groups]="data.groups"-->
+<!--        ></app-sessions-group-list>-->
       </ng-container>
     </div>
   </div>

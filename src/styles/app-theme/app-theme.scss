@@ -1,0 +1,15 @@
+@use '~@angular/material/theming' as material;
+@use './ngx-datatable.theme' as ngx-datatable-theme;
+@use './custom-styles';
+@use './bootstrap';
+
+@mixin components-themes($theme) {
+  @include custom-styles.custom-styles($theme);
+  @include ngx-datatable-theme.ngx-datatable-app-theme($theme);
+}
+
+@mixin app-theme($theme) {
+  @include material.angular-material-theme($theme);
+  @include bootstrap.bootstrap-material-theme2($theme);
+  @include components-themes($theme);
+}

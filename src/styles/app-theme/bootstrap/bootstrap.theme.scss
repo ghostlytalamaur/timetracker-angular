@@ -1,0 +1,54 @@
+@use 'sass:meta';
+@use 'sass:map';
+@use '~@angular/material/theming' as material;
+
+@mixin bootstrap-reset($theme) {
+  $foreground: map.get($theme, foreground);
+  a {
+    color: material.mat-color($foreground, text);
+
+    &:hover {
+      color: material.mat-color($foreground, text);
+    }
+  }
+
+  * {
+    &:active,
+    :focus {
+      outline: none !important;
+    }
+  }
+}
+
+@mixin bootstrap-material-theme2($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  @include meta.load-css(
+      './app-theme/bootstrap/bootstrap-app.scss',
+    $with: (
+      'body-bg': material.mat-color($background),
+      'body-color': material.mat-color($foreground, text),
+      'primary': material.mat-color($primary),
+      'secondary': material.mat-color($accent),
+      'warning': material.mat-color($warn),
+      'component-active-color': material.mat-color($foreground, text),
+      'border-color': material.mat-color($foreground, divider),
+      'link-color': material.mat-color($foreground, text),
+      'link-hover-color': currentColor,
+      'link-hover-decoration': none,
+      'label-margin-bottom': 0,
+
+      // list-group
+      'list-group-color': material.mat-color($foreground, text),
+      'list-group-bg': material.mat-color($background),
+      'list-group-border-color': material.mat-color($foreground, divider),
+      'list-group-hover-bg': material.mat-color($foreground, divider),
+    )
+  );
+
+  @include bootstrap-reset($theme);
+}

@@ -1,0 +1,17 @@
+<div class="p-2">
+  <div
+    class="row"
+    *ngIf="showDate"
+  >
+    <div class="col">
+      {{ session.start | dateTimeToFormat:dateFormat }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col d-flex justify-content-between">
+      <div>Start: {{ session?.start | dateTimeToFormat:timeFormat }}</div>
+      <app-session-duration [duration]="duration$ | async"></app-session-duration>
+    </div>
+  </div>
+</div>

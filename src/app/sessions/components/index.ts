@@ -4,3 +4,4 @@ export * from './sessions-group-item/sessions-group-item.component';
 export * from './sessions-group-type-selector/sessions-group-type-selector.component';
 export * from './session-item/session-item.component';
 export * from './sessions-group-list/sessions-group-list.component';
+export * from './sessions-table/sessions-table.component';

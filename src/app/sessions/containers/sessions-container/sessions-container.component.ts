@@ -52,6 +52,7 @@ export class SessionsContainerComponent implements OnInit {
   public readonly data$: Observable<SessionsOrGroups>;
   public readonly groupType$: Observable<SessionsGroupType>;
   public readonly sortType$: Observable<SortType>;
+  public readonly sessions$: Observable<Session[]>;
 
   public constructor(
     private readonly sessionsSrv: SessionsService,
@@ -67,6 +68,7 @@ export class SessionsContainerComponent implements OnInit {
       );
     this.groupType$ = this.sessionsSrv.getGroupType();
     this.sortType$ = this.sessionsSrv.getSortType();
+    this.sessions$ = this.sessionsSrv.getSessions();
     const data$ = this.groupType$
       .pipe(
         switchMap(groupType => {

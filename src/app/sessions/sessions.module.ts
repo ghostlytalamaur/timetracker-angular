@@ -11,7 +11,7 @@ import {
   SessionItemComponent,
   SessionsGroupItemComponent,
   SessionsGroupListComponent,
-  SessionsGroupTypeSelectorComponent,
+  SessionsGroupTypeSelectorComponent, SessionsTableComponent,
 } from './components';
 import {
   SessionDetailsContainerComponent,
@@ -23,6 +23,10 @@ import {
 import { SessionsRoutingModule } from './sessions-routing.module';
 import { fromSessionsFeature } from './store';
 import { SessionsEffects, SettingsEffects } from './store/effects';
+import { MatDividerModule } from '@angular/material/divider';
+import { SessionsTableRowComponent } from './components/sessions-table/sessions-table-row/sessions-table-row.component';
+import { GroupTableRowComponent } from './components/sessions-table/group-table-row/group-table-row.component';
+
 
 @NgModule({
   imports: [
@@ -31,6 +35,7 @@ import { SessionsEffects, SettingsEffects } from './store/effects';
     SharedModule,
     StoreModule.forFeature(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.reducers),
     EffectsModule.forFeature([SessionsEffects, SettingsEffects]),
+    MatDividerModule,
   ],
   declarations: [
     SessionDetailsComponent,
@@ -44,6 +49,9 @@ import { SessionsEffects, SettingsEffects } from './store/effects';
     SessionsGroupTypeSelectorComponent,
     SessionsGroupListComponent,
     SessionsContainerComponent,
+    SessionsTableComponent,
+    SessionsTableRowComponent,
+    GroupTableRowComponent,
   ],
 })
 export class SessionsModule {

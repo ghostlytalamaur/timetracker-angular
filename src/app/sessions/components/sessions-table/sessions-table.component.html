@@ -1,0 +1,201 @@
+<!--<ngx-datatable-->
+<!--  [rows]="rows"-->
+<!--  class="material expandable fixed-header fullscreen"-->
+<!--  [columnMode]="ColumnMode.flex"-->
+<!--  [groupedRows]="groupType === 'none' ? undefined : groupedRows"-->
+<!--  [groupExpansionDefault]="groupType === 'none' ? undefined : false"-->
+<!--  headerHeight="40"-->
+<!--  rowHeight="auto"-->
+<!--  #table-->
+<!--&gt;-->
+<!--  <ngx-datatable-group-header>-->
+<!--    <ng-template-->
+<!--      ngx-datatable-group-header-template-->
+<!--      let-group="group"-->
+<!--      let-expanded="expanded"-->
+<!--    >-->
+<!--      <div-->
+<!--        class="cursor-pointer d-flex align-items-center group-header"-->
+<!--        (click)="toggleExpandGroup(group)"-->
+<!--      >-->
+<!--        <mat-icon>{{ expanded ? 'arrow_drop_down' : 'arrow_right' }}</mat-icon>-->
+<!--        {{ group.key }}-->
+
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--  </ngx-datatable-group-header>-->
+
+<!--  <ngx-datatable-column-->
+<!--    name="Start"-->
+<!--    prop="start" [flexGrow]="3">-->
+<!--    <ng-template-->
+<!--      ngx-datatable-cell-template-->
+<!--      let-value="value"-->
+<!--    >-->
+<!--      {{ value | dateTimeToFormat:dateFormat }}-->
+<!--    </ng-template>-->
+
+<!--  </ngx-datatable-column>-->
+
+<!--  <ngx-datatable-column-->
+<!--    name="Duration"-->
+<!--    prop="duration" [flexGrow]="1">-->
+<!--    <ng-template-->
+<!--      ngx-datatable-cell-template-->
+<!--      let-value="value"-->
+<!--    >-->
+<!--      <app-session-duration [duration]="value"></app-session-duration>-->
+<!--    </ng-template>-->
+<!--  </ngx-datatable-column>-->
+
+<!--</ngx-datatable>-->
+
+<div>
+  <div *ngFor="let row of rows; trackBy: trackById; let index">
+
+    <ng-container *ngIf="row.type === 'group'">
+      <app-group-table-row [group]="row"></app-group-table-row>
+    </ng-container>
+
+    <ng-container *ngIf="row.type === 'session'">
+      <app-sessions-table-row [showDate]="groupType !== 'day'"
+                              [session]="row"
+                              [routerLink]="[row.id]"
+      >
+      </app-sessions-table-row>
+      <mat-divider *ngIf="index !== rows.length"></mat-divider>
+    </ng-container>
+
+  </div>
+</div>
+
+
+<!--<mat-table [dataSource]="rows"-->
+<!--           [trackBy]="trackById"-->
+<!--&gt;-->
+
+<!--  <ng-container matColumnDef="start">-->
+<!--    <mat-header-cell *matHeaderCellDef-->
+<!--                     [style.flex]="2"-->
+<!--    >Start-->
+<!--    </mat-header-cell>-->
+<!--    <mat-cell *matCellDef="let session"-->
+<!--              [style.flex]="2"-->
+<!--    >-->
+<!--      <div [ngClass]="groupType !== 'none' ? 'pl-3' : ''"-->
+<!--      >-->
+<!--        <div>Date: {{ session.start | dateTimeToFormat:dateFormat }}</div>-->
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <div class="row">-->
+<!--              <div class="col">Start</div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--              <div class="col">End</div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <div class="row">-->
+<!--              <div class="col">-->
+<!--                {{ session.start | dateTimeToFormat:timeFormat }}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--              <div class="col">-->
+<!--                <ng-container *ngIf="session.end">-->
+<!--                  {{ session.end | dateTimeToFormat:timeFormat }}-->
+<!--                </ng-container>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+
+<!--    </mat-cell>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="end">-->
+<!--    <mat-header-cell *matHeaderCellDef>End</mat-header-cell>-->
+<!--    <mat-cell *matCellDef="let session">-->
+<!--      <ng-container *ngIf="session.end">-->
+<!--        {{ session.end | dateTimeToFormat:timeFormat }}-->
+<!--      </ng-container>-->
+<!--    </mat-cell>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="duration">-->
+<!--    <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>-->
+<!--    <mat-cell *matCellDef="let session">-->
+<!--      <app-session-duration [duration]="session.duration$ | async"></app-session-duration>-->
+<!--    </mat-cell>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="group">-->
+<!--    &lt;!&ndash;    <mat-header-cell *matHeaderCellDef>End</mat-header-cell>&ndash;&gt;-->
+<!--    <mat-cell *matCellDef="let group" [style.flex]="1">-->
+<!--      {{ group.text }}-->
+<!--    </mat-cell>-->
+<!--  </ng-container>-->
+
+<!--  <mat-header-row *matHeaderRowDef="['start', 'duration']"></mat-header-row>-->
+
+<!--  <mat-row-->
+<!--    class="bg-hover cursor-pointer"-->
+<!--    *matRowDef="let row; columns: ['start', 'duration']"-->
+<!--  ></mat-row>-->
+
+<!--  <mat-row-->
+<!--    class="bg-hover cursor-pointer row-group"-->
+<!--    *matRowDef="let row; columns: ['group', 'duration']; when: isGroupTemplate"-->
+<!--  ></mat-row>-->
+
+<!--</mat-table>-->
+
+<!--<table mat-table [dataSource]="rows"-->
+<!--           [trackBy]="trackById"-->
+<!--&gt;-->
+
+<!--  <ng-container matColumnDef="start">-->
+<!--    <th mat-header-cell *matHeaderCellDef>Start</th>-->
+<!--    <td mat-cell *matCellDef="let session">-->
+<!--      <div>{{ session.start | dateTimeToFormat:dateFormat }}</div>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="end">-->
+<!--    <th mat-header-cell *matHeaderCellDef>End</th>-->
+<!--    <td mat-cell *matCellDef="let session">-->
+<!--      <ng-container *ngIf="session.end">-->
+<!--        {{ session.end | dateTimeToFormat:timeFormat }}-->
+<!--      </ng-container>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="duration">-->
+<!--    <th mat-header-cell *matHeaderCellDef>Duration</th>-->
+<!--    <td mat-cell *matCellDef="let session">-->
+<!--      <app-session-duration [duration]="session.duration$ | async"></app-session-duration>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="group">-->
+<!--    <th *matHeaderCellDef>End</th>-->
+<!--    <td mat-cell *matCellDef="let group" class="row-group">-->
+<!--      {{ group.text }}-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <tr mat-header-row *matHeaderRowDef="['start', 'end', 'duration']"></tr>-->
+
+<!--  <tr mat-row-->
+<!--    *matRowDef="let row; columns: ['start', 'end', 'duration']"-->
+<!--    class="bg-hover cursor-pointer"-->
+<!--  ></tr>-->
+
+<!--  <tr mat-row-->
+<!--    *matRowDef="let row; columns: ['group', 'duration']; when: isGroupTemplate"-->
+<!--    class="bg-hover cursor-pointer"-->
+<!--  ></tr>-->
+
+<!--</table>-->

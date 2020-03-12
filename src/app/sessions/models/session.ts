@@ -37,6 +37,7 @@ export function isRunning(session: Session): boolean {
   return !session.duration;
 }
 
+export function getDuration(start: DateTime, duration: Duration | null, rate: number): Observable<Duration>;
 export function getDuration(start: DateTime | null, duration: Duration | null, rate: number):
   Observable<Duration | null> {
 
