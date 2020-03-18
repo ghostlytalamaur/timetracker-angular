@@ -1,7 +1,4 @@
-import { Selector, compose, createFeatureSelector, createSelector } from '@ngrx/store';
-
-import { clustering } from '../../../shared/utils';
-import { Session, SessionsGroup, createGroup } from '../../models';
+import { compose, createFeatureSelector } from '@ngrx/store';
 import { fromSessionsFeature } from '../reducers';
 
 import * as SessionsSelectors from './sessions.selectors';
@@ -34,31 +31,3 @@ export const {
   isLoading,
   isLoaded,
 } = SessionsSelectors.getSelectors(selectSessionsEntityState);
-
-
-export const getSessionsGroups: Selector<fromSessionsFeature.State, SessionsGroup[]> = createSelector(
-  getSessions,
-  getGroupType,
-  (sessions, groupType) => {
-    const getSessionId: (session: Session) => string = session => {
-      switch (groupType) {
-        case 'none':
-          return session.id;
-        case 'day':
-          return `${session.start.year}-${session.start.month}-${session.start.day}`;
-        case 'week':
-          return `${session.start.year}-${session.start.weekNumber}`;
-        case 'month':
-          return `${session.start.year}-${session.start.month}`;
-        case 'year':
-          return `${session.start.year}`;
-      }
-    };
-
-    const clusters = clustering(sessions, getSessionId);
-    return clusters.map(cluster => {
-      const date = cluster.reduce((min, session) => session.start < min ? session.start : min, cluster[0].start);
-      return createGroup(getSessionId(cluster[0]), groupType, date, cluster);
-    });
-  },
-);

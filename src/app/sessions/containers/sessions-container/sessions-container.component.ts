@@ -1,42 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
 import { DateTime } from 'luxon';
-import { Observable, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Range } from '../../../shared/utils';
-import { Session, SessionsGroup, SessionsGroupType, SortType } from '../../models';
+import { Session, SessionsGroupType, SortType } from '../../models';
 import { SessionsService } from '../../services/sessions.service';
-
-interface Sessions {
-  type: 'sessions';
-  sessions: Session[];
-}
-
-interface Groups {
-  type: 'groups';
-  groups: SessionsGroup[];
-}
-
-const ordDateTime = fromCompare<DateTime>((d1, d2) => d1 < d2 ? -1 : d1 > d2 ? 1 : 0);
-const ordGroups = contramap<DateTime, SessionsGroup>(g => g.date)(ordDateTime);
-const ordSessions = contramap<DateTime, Session>(s => s.start)(ordDateTime);
-
-type SessionsOrGroups = Sessions | Groups;
-
-function sortData(data: SessionsOrGroups, direction: SortType): SessionsOrGroups {
-  if (data.type === 'groups') {
-    return {
-      type: 'groups',
-      groups: data.groups.slice().sort(direction === 'asc' ? ordGroups.compare : getDualOrd(ordGroups).compare),
-    };
-  } else {
-    return {
-      type: 'sessions',
-      sessions: data.sessions.slice().sort(direction === 'asc' ? ordSessions.compare : getDualOrd(ordSessions).compare),
-    };
-  }
-}
 
 @Component({
   selector: 'app-sessions-container',
@@ -49,7 +18,6 @@ export class SessionsContainerComponent implements OnInit {
   public readonly hasRunning$: Observable<boolean>;
   public readonly displayRange$: Observable<Range<Date>>;
   public readonly isTodayInvisible$: Observable<boolean>;
-  public readonly data$: Observable<SessionsOrGroups>;
   public readonly groupType$: Observable<SessionsGroupType>;
   public readonly sortType$: Observable<SortType>;
   public readonly sessions$: Observable<Session[]>;
@@ -69,32 +37,6 @@ export class SessionsContainerComponent implements OnInit {
     this.groupType$ = this.sessionsSrv.getGroupType();
     this.sortType$ = this.sessionsSrv.getSortType();
     this.sessions$ = this.sessionsSrv.getSessions();
-    const data$ = this.groupType$
-      .pipe(
-        switchMap(groupType => {
-          if (groupType === 'none') {
-            return this.sessionsSrv.getSessions()
-              .pipe(
-                map((sessions: Session[]): Sessions => ({
-                  type: 'sessions',
-                  sessions,
-                })),
-              );
-          } else {
-            return this.sessionsSrv.getSessionGroups()
-              .pipe(
-                map((groups: SessionsGroup[]): Groups => ({
-                  type: 'groups',
-                  groups,
-                })),
-              );
-          }
-        }),
-      );
-    this.data$ = combineLatest([data$, this.sortType$])
-      .pipe(
-        map(([data, sortType]) => sortData(data, sortType)),
-      );
   }
 
   public ngOnInit() {
@@ -116,15 +58,11 @@ export class SessionsContainerComponent implements OnInit {
     this.sessionsSrv.changeGroupType(groupType);
   }
 
-  public isSessions(data: SessionsOrGroups): data is Sessions {
-    return data.type === 'sessions';
-  }
-
-  public isGroups(data: SessionsOrGroups): data is Groups {
-    return data.type === 'groups';
-  }
-
   public onSetSortType(sortType: SortType): void {
     this.sessionsSrv.changeSortType(sortType);
+  }
+
+  public onDeleteSessions(sessionIds: string[]): void {
+    this.sessionsSrv.removeSessions(sessionIds);
   }
 }

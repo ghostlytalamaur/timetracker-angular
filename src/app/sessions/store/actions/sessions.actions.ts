@@ -17,9 +17,9 @@ export const addSessions = createAction(
   props<{ sessions: SessionEntity[] }>(),
 );
 
-export const removeSession = createAction(
+export const removeSessions = createAction(
   '[Sessions] Remove Session',
-  props<{ id: string }>(),
+  props<{ ids: string[] }>(),
 );
 
 export const updateSessions = createAction(

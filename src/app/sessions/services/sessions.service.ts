@@ -45,10 +45,6 @@ export class SessionsService {
     return this.store.select(SessionsFeatureSelectors.getGroupType);
   }
 
-  public getSessionGroups(): Observable<SessionsGroup[]> {
-    return this.store.select(SessionsFeatureSelectors.getSessionsGroups);
-  }
-
   public getSortType(): Observable<SortType> {
     return this.store.select(SessionsFeatureSelectors.getSortType);
   }
@@ -77,8 +73,8 @@ export class SessionsService {
     this.store.dispatch(SessionsActions.updateSessions({ changes: [changes] }));
   }
 
-  public removeSession(id: string): void {
-    this.store.dispatch(SessionsActions.removeSession({ id }));
+  public removeSessions(ids: string[]): void {
+    this.store.dispatch(SessionsActions.removeSessions({ ids }));
   }
 
   public toggleSession(): void {

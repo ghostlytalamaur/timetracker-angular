@@ -1,43 +1,58 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
-import { environment } from '../../../../environments/environment';
-import { Session, SessionsGroupType } from '../../models';
+import { Session, SessionsGroupType, SortType } from '../../models';
 
-import { SessionTableModelBuilder, TableRow } from './session-table.model';
-
+import { FlatNode, SessionTreeModel } from './session-tree.model';
 
 @Component({
   selector: 'app-sessions-table',
   templateUrl: './sessions-table.component.html',
   styleUrls: ['./sessions-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    SessionTreeModel,
+  ],
 })
 export class SessionsTableComponent implements OnInit, OnChanges {
 
   @Input() public sessions: Session[] = [];
   @Input() public groupType: SessionsGroupType = 'none';
+  @Input() public sortType: SortType;
+  @Output() public deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
 
-  public readonly dateFormat = environment.settings.dateFormat;
-  public readonly timeFormat = environment.settings.timeFormat;
-
-  public rows: TableRow[] = [];
+  public constructor(
+    public readonly model: SessionTreeModel,
+  ) {
+  }
 
   public ngOnInit(): void {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.sessions || changes.groupType) {
-      this.rows = new SessionTableModelBuilder(this.groupType, this.sessions).build();
-    } else {
-      this.rows = [];
+    if (changes.groupType) {
+      this.model.setGroupType(this.groupType);
     }
+
+    if (changes.sessions) {
+      this.model.setSessions(this.sessions);
+    }
+
+    if (changes.sortType) {
+      this.model.setSorting(this.sortType);
+    }
+
+    this.model.update();
   }
 
-  public isGroupTemplate(index: number, row: TableRow): boolean {
-    return row.type === 'group';
-  };
-
-  public trackById(index: number, row: TableRow): string {
-    return row.id;
+  public hasChild(index: number, node: FlatNode): boolean {
+    return node.expandable;
   }
 
+  public toggleNode(node: FlatNode): void {
+    this.model.treeControl.toggle(node);
+  }
+
+  public onDeleteSessions(sessions: Session[]): void {
+    this.deleteSessions.emit(sessions.map(s => s.id));
+  }
 }

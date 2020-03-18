@@ -21,7 +21,7 @@ export interface SessionsStorage {
   removedSessions(): Observable<string[]>;
   addSession(session: SessionEntity): Promise<void>;
   addSessions(sessions: SessionEntity[]): Promise<void>;
-  removeSession(id: string): Promise<void>;
+  removeSessions(ids: string[]): Promise<void>;
   updateSessions(changes: Update<SessionEntity>[]): Promise<void>;
 }
 

@@ -50,8 +50,8 @@ export class SessionsEffects {
   public removeSession$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.removeSession),
-        switchMap(action => this.handleRemoveSession(action.id)),
+        ofType(SessionsActions.removeSessions),
+        switchMap(action => this.handleRemoveSession(action.ids)),
       ),
   );
 
@@ -74,8 +74,8 @@ export class SessionsEffects {
     return this.wrapVoid(this.storage.updateSessions(changes), 'Cannot update session.');
   }
 
-  private handleRemoveSession(id: string): Observable<Action> {
-    return this.wrapVoid(this.storage.removeSession(id), 'Cannot remove session.');
+  private handleRemoveSession(ids: string[]): Observable<Action> {
+    return this.wrapVoid(this.storage.removeSessions(ids), 'Cannot remove session.');
   }
 
   private wrapVoid(promise: Promise<any>, msg: string): Observable<Action> {

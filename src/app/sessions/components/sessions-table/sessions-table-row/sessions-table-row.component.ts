@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, HostBinding } from '@angular/core';
-import { SessionRow } from '../session-table.model';
 import { Observable } from 'rxjs';
 import { Duration } from 'luxon';
 import { environment } from '../../../../../environments/environment';
+import { Session, getDuration } from '../../../models';
 
 @Component({
   selector: 'app-sessions-table-row',
@@ -11,7 +11,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class SessionsTableRowComponent implements OnInit, OnChanges {
 
-  @Input() public session: SessionRow;
+  @Input() public session: Session;
   @Input() public showDate = false;
 
   @HostBinding('class')
@@ -26,7 +26,7 @@ export class SessionsTableRowComponent implements OnInit, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
-      this.duration$ = this.session.duration$;
+      this.duration$ = getDuration(this.session.start, this.session.duration, environment.settings.durationRate);
     }
   }
 

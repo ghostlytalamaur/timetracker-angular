@@ -69,8 +69,8 @@ export class SessionsDexieStorageService implements SessionsStorage {
     return this.storage.addEntities(...sessions.map(session => toSessionStorageEntity(session)));
   }
 
-  public removeSession(id: string): Promise<void> {
-    return this.storage.deleteEntities(id);
+  public removeSessions(ids: string[]): Promise<void> {
+    return this.storage.deleteEntities(...ids);
   }
 
   public updateSessions(changes: Update<SessionEntity>[]): Promise<void> {
