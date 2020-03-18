@@ -1,11 +1,11 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
+import { DateTime } from 'luxon';
 
 import { clustering } from '../../../shared/utils';
-import { Session, SessionsGroup, SessionsGroupType, createGroup, getGroupId, SortType } from '../../models';
-import { getDualOrd, fromCompare, contramap } from 'fp-ts/es6/Ord';
-import { DateTime } from 'luxon';
+import { Session, SessionsGroup, SessionsGroupType, SortType, createGroup, getGroupId } from '../../models';
 
 export type TreeNode = SessionsGroup | Session;
 

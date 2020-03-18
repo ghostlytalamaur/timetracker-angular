@@ -184,11 +184,7 @@ export class ContextMenuService implements OnDestroy {
   }
 
   private createOverlay(overlayConfig: OverlayConfig): OverlayRef {
-    // this.subscribeToPositionChanges(config.positionStrategy as FlexibleConnectedPositionStrategy);
-    const overlayRef = this.overlay.create(overlayConfig);
-    // overlayRef.keydownEvents().subscribe();
-
-    return overlayRef;
+    return this.overlay.create(overlayConfig);
   }
 
   private getOverlayConfig(menu: MatMenu, config: ContextMenuConfig): OverlayConfig {
@@ -297,7 +293,7 @@ export class ContextMenuService implements OnDestroy {
 export class ContextMenuTriggerDirective implements OnDestroy {
 
   @Input('appContextMenuTriggerFor') public menu: MatMenu;
-  @Input('appContextMenuTriggerData') public menuData: unknown;
+  @Input() public appContextMenuTriggerData: unknown;
 
   private menuRef: ContextMenuRef | null = null;
 
@@ -313,7 +309,7 @@ export class ContextMenuTriggerDirective implements OnDestroy {
     event.preventDefault();
     this.menuRef = this.contextMenuService.open(this.menu, {
       position: { x: event.clientX, y: event.clientY },
-      context: this.menuData,
+      context: this.appContextMenuTriggerData,
       element: this.element,
       viewContainerRef: this.viewContainerRef,
     });

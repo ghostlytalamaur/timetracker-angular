@@ -2,8 +2,9 @@ import { DateTime, Duration } from 'luxon';
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SessionEntity, createSession } from './session-entity';
 import { environment } from '../../../environments/environment';
+
+import { SessionEntity, createSession } from './session-entity';
 import { SessionsGroupType } from './sessions-group';
 
 export class Session {

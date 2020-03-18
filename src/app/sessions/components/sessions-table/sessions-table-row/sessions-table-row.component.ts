@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, HostBinding } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Duration } from 'luxon';
+import { Observable } from 'rxjs';
+
 import { environment } from '../../../../../environments/environment';
 import { Session, getDuration } from '../../../models';
 
