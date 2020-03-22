@@ -1,40 +1,42 @@
-<form (ngSubmit)="onSubmit()" ngForm>
-  <div class="row">
-    <div class="col">
-      <mat-form-field>
-        <input
-          (dateChange)="onStartChange($event.value)"
-          [matDatepicker]="start"
-          [max]="range.end"
-          [value]="range.start"
-          matInput
-          placeholder="Start date"
-          required
-        >
-        <mat-datepicker-toggle [for]="start" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #start></mat-datepicker>
-      </mat-form-field>
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" ngForm>
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="outline" class="d-block">
+          <mat-label>Start</mat-label>
+          <input
+            (dateChange)="onStartChange($event.value)"
+            [matDatepicker]="start"
+            [max]="range.end"
+            [value]="range.start"
+            matInput
+            placeholder="Start date"
+            required
+          >
+          <mat-datepicker-toggle [for]="start" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #start></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="outline" class="d-block">
+          <mat-label>End</mat-label>
+          <input
+            (dateChange)="onEndChange($event.value)"
+            [matDatepicker]="end"
+            [min]="range.start"
+            [value]="range.end"
+            matInput
+            placeholder="End date"
+            required
+          >
+          <mat-datepicker-toggle [for]="end" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #end></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
-    <div class="col">
-      <mat-form-field>
-        <input
-          (dateChange)="onEndChange($event.value)"
-          [matDatepicker]="end"
-          [min]="range.start"
-          [value]="range.end"
-          matInput
-          placeholder="End date"
-          required
-        >
-        <mat-datepicker-toggle [for]="end" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #end></mat-datepicker>
-      </mat-form-field>
-    </div>
-  </div>
+  </form>
+</mat-dialog-content>
 
-  <div class="row">
-    <div class="col d-flex justify-content-end">
-      <button mat-button type="submit">Submit</button>
-    </div>
-  </div>
-</form>
+<mat-dialog-actions align="end">
+  <button mat-button type="submit">Submit</button>
+</mat-dialog-actions>
