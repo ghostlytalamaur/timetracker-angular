@@ -54,7 +54,7 @@ export class SessionDetailsComponent implements OnChanges {
             duration = withDate(start, DateTime.fromJSDate(data.end)).diff(start);
           }
 
-          return start ? getDuration(start, duration, environment.settings.durationRate) : of(null);
+          return start ? getDuration(start, duration) : of(null);
         }),
       );
   }

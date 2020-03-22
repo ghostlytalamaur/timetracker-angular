@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
-import { Observable, of, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, timer, ReplaySubject } from 'rxjs';
+import { map, share, tap, shareReplay, multicast, refCount } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
@@ -40,14 +40,20 @@ export function isRunning(session: Session): boolean {
   return !session.duration;
 }
 
-export function getDuration(start: DateTime, duration: Duration | null, rate: number): Observable<Duration>;
-export function getDuration(start: DateTime | null, duration: Duration | null, rate: number):
+const ticks$ = timer(0, environment.settings.durationRate)
+  .pipe(
+    multicast(() => new ReplaySubject(1)),
+    refCount(),
+  );
+
+export function getDuration(start: DateTime, duration: Duration | null): Observable<Duration>;
+export function getDuration(start: DateTime | null, duration: Duration | null):
   Observable<Duration | null> {
 
   if (!start) {
     return of(null);
   } else if (start && !duration) {
-    return timer(0, rate)
+    return ticks$
       .pipe(
         map(() => DateTime.local().diff(start)),
       );
@@ -70,7 +76,7 @@ export function getGroupDuration(sessions: Session[]): Observable<Duration> {
   if (!runningSessions.length) {
     return of(closedDuration);
   } else {
-    return timer(0, environment.settings.durationRate)
+    return ticks$
       .pipe(
         map(() => {
           const now = DateTime.local();

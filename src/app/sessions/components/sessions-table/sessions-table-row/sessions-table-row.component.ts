@@ -27,7 +27,7 @@ export class SessionsTableRowComponent implements OnInit, OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
-      this.duration$ = getDuration(this.session.start, this.session.duration, environment.settings.durationRate);
+      this.duration$ = getDuration(this.session.start, this.session.duration);
     }
   }
 
