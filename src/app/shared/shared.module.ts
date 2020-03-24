@@ -21,13 +21,13 @@ import { LuxonModule } from 'luxon-angular';
 
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import {
+  DateRangePickerComponent,
   DateRangePickerDialogComponent,
   DateRangePickerDialogDirective,
-} from './components/date-range-picker/date-range-picker-dialog.component';
-import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+} from './components';
 import { ContextMenuTriggerDirective } from './directives/context-menu-trigger.directive';
-import { DateTimeInputDirective } from './directives/date-time-input.directive';
 import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';
+import { TimePickerModule } from '../time-picker/module/time-picker.module';
 
 const materialModules = [
   ScrollingModule,
@@ -52,7 +52,6 @@ const materialModules = [
   imports: [...materialModules, CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [
     AlertDialogComponent,
-    DateTimeInputDirective,
     DateRangePickerComponent,
     DateRangePickerDialogComponent,
     DateRangePickerDialogDirective,
@@ -69,7 +68,6 @@ const materialModules = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DateTimeInputDirective,
     DateRangePickerComponent,
     DateRangePickerDialogComponent,
     DateRangePickerDialogDirective,
@@ -77,6 +75,7 @@ const materialModules = [
     DateTimeToEndOf,
     ContextMenuTriggerDirective,
     LuxonModule,
+    TimePickerModule,
   ],
 })
 export class SharedModule {

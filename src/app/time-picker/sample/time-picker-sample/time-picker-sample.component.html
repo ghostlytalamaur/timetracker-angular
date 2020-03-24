@@ -1,0 +1,23 @@
+<div>Time: {{ dateTime | dateTimeToFormat:timeFormat }}</div>
+
+
+<app-time-picker-view
+  [(dateTime)]="dateTime"
+></app-time-picker-view>
+
+<mat-form-field appearance="outline" class="d-block">
+  <mat-label>Start</mat-label>
+  <input [appDateTimeInput]="timeFormat"
+         [placeholder]="timeFormat"
+         [(value)]="jsDateTime"
+  >
+  <app-time-picker-toggle
+    matSuffix
+    [for]="timePicker"
+  ></app-time-picker-toggle>
+  <app-time-picker
+    [(dateTime)]="dateTime"
+    #timePicker
+  ></app-time-picker>
+</mat-form-field>
+<h1>Some content here</h1>

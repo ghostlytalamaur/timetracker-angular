@@ -1,0 +1,23 @@
+.time-picker {
+  height: 200px;
+
+
+  &__column {
+    width: 4em;
+    height: 100%;
+    overflow-y: hidden;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
+    &-line {
+      padding: 8px 16px;
+      user-select: none;
+    }
+  }
+}

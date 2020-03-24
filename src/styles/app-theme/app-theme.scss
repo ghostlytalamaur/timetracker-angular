@@ -1,9 +1,11 @@
 @use '~@angular/material/theming' as material;
 @use './custom-styles';
 @use './bootstrap';
+@use './src/app/time-picker/module/theme' as timePicker;
 
 @mixin components-themes($theme) {
   @include custom-styles.custom-styles($theme);
+  @include timePicker.time-picker-theme($theme);
 }
 
 @mixin app-theme($theme) {

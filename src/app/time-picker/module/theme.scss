@@ -1,0 +1,5 @@
+@use 'components/time-picker-view/time-picker-view.theme' as view;
+
+@mixin time-picker-theme($theme) {
+  @include view.time-picker-view-theme($theme);
+}

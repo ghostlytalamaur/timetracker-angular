@@ -11,6 +11,10 @@ import { environment } from '../../environments/environment';
 import { AuthModule } from './auth/auth.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import * as fromRoot from './store';
+import { UiPreviewComponent } from './ui-preview/ui-preview.component';
+import { SharedModule } from '../shared/shared.module';
+import { TimePickerModule } from '../time-picker/module/time-picker.module';
+import { TimePickerSampleModule } from '../time-picker/sample';
 
 const prodFirebaseOptions: FirebaseOptions = {
   apiKey: 'AIzaSyDMpoTmKsZfLBR2jDzHTJVnSLhkoMRObwg',
@@ -37,9 +41,11 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
 @NgModule({
   declarations: [
     PageNotFoundComponent,
+    UiPreviewComponent,
   ],
   exports: [
     AuthModule,
+    UiPreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +65,8 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
       logOnly: environment.production,
     }),
     AuthModule,
+    SharedModule,
+    TimePickerSampleModule,
   ],
 })
 export class CoreModule {

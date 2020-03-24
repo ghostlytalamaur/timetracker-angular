@@ -1,0 +1,30 @@
+<div class="time-picker d-flex flex-row">
+
+  <ul class="time-picker__column">
+    <li *ngFor="let hour of hours"
+         class="time-picker__column-line"
+        [ngClass]="{ 'time-picker__column-line_selected': dateTime?.hour === hour }"
+        (click)="onSelectHour(hour)"
+        #hoursEl
+    >{{ hour | number:'2.' }}</li>
+  </ul>
+
+  <ul class="time-picker__column">
+    <li *ngFor="let minute of minutes"
+         class="time-picker__column-line"
+        [ngClass]="{ 'time-picker__column-line_selected': dateTime?.minute === minute }"
+        (click)="onSelectMinute(minute)"
+        #minutesEl
+    >{{ minute | number:'2.' }}</li>
+  </ul>
+
+  <ul class="time-picker__column">
+    <li *ngFor="let second of seconds"
+         class="time-picker__column-line"
+        [ngClass]="{ 'time-picker__column-line_selected': dateTime?.second === second }"
+        (click)="onSelectSecond(second)"
+        #secondsEl
+    >{{ second | number:'2.' }}</li>
+  </ul>
+
+</div>

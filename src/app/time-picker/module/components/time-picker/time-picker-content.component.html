@@ -1,0 +1,5 @@
+<app-time-picker-view *ngIf="timePicker"
+                      class="time-picker-panel"
+                      [dateTime]="timePicker.dateTime"
+                      (dateTimeChange)="onChange($event)"
+></app-time-picker-view>

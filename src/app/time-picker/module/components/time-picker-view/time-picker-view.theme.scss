@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '~@angular/material/theming' as material;
+
+@mixin time-picker-view-theme($theme) {
+  $primary: map.get($theme, primary);
+  $foreground: map.get($theme, background);
+  $background: map.get($theme, background);
+
+  .time-picker {
+    background-color: material.mat-color($background, card);
+  }
+
+  .time-picker-panel {
+    @include material.mat-elevation(4);
+    background-color: material.mat-color($background, card);
+    color: material.mat-color($foreground, text);
+    padding: 8px;
+
+    border-radius: 4px;
+  }
+
+  .time-picker__column-line {
+
+    &:hover:not(&_selected) {
+      background-color: material.mat-color($background, hover);
+    }
+
+    &_selected {
+      background-color: material.mat-color($primary);
+      font-weight: bold;
+    }
+  }
+}
