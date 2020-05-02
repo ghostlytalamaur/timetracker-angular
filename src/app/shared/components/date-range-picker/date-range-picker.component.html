@@ -1,5 +1,6 @@
-<mat-dialog-content>
-  <form (ngSubmit)="onSubmit()" ngForm>
+<form (ngSubmit)="onSubmit()" ngForm>
+  <mat-dialog-content>
+
     <div class="row">
       <div class="col">
         <mat-form-field appearance="outline" class="d-block">
@@ -34,9 +35,10 @@
         </mat-form-field>
       </div>
     </div>
-  </form>
-</mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button type="submit">Submit</button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>
