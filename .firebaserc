@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "timetracker-1548352730517"
+  },
+  "targets": {
+    "timetracker-1548352730517": {
+      "hosting": {
+        "time-tracker": [
+          "timetracker-1548352730517"
+        ]
+      }
+    }
   }
 }
