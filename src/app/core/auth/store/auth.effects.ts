@@ -6,7 +6,7 @@ import { Action } from '@ngrx/store';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 
-import { createUser } from '../model/user';
+import { createUser } from '../model';
 
 import { AuthActions } from './actions';
 import UserCredential = firebase.auth.UserCredential;
@@ -62,12 +62,12 @@ export class AuthEffects {
   }
 
   private handleSignUp(credentials: { email: string, password: string }): Observable<Action> {
-    const auth = this.afa.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
+    const auth = this.afa.createUserWithEmailAndPassword(credentials.email, credentials.password);
     return this.handleAuth(auth);
   }
 
   private handleSignIn(credentials: { email: string, password: string }): Observable<Action> {
-    const auth = this.afa.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+    const auth = this.afa.signInWithEmailAndPassword(credentials.email, credentials.password);
     return this.handleAuth(auth);
   }
 
@@ -91,12 +91,13 @@ export class AuthEffects {
   }
 
   private handleSignOut(): Observable<Action> {
-    const res = this.afa.auth.signOut()
+    const res: Promise<Action> = this.afa.signOut()
       .then(() => AuthActions.signOutSuccess())
-      .catch(err => {
+      .catch((err: unknown) => {
         const errMsg = err instanceof Error ? err.message : 'Cannot sign out. Unknown error';
         return AuthActions.authError({ message: errMsg });
       });
+
     return from(res);
   }
 
