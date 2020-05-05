@@ -18,7 +18,9 @@ export class SessionsTableComponent implements OnInit, OnChanges {
   @Input() public sessions: Session[] = [];
   @Input() public groupType: SessionsGroupType = 'none';
   @Input() public sortType: SortType;
+  @Input() public expandedNodes: string[] = [];
   @Output() public deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() public toggleNode = new EventEmitter<string>();
 
   public constructor(
     public readonly model: SessionTreeModel,
@@ -29,27 +31,37 @@ export class SessionsTableComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    let shouldUpdate = false;
     if (changes.groupType) {
       this.model.setGroupType(this.groupType);
+      shouldUpdate = true;
     }
 
     if (changes.sessions) {
       this.model.setSessions(this.sessions);
+      shouldUpdate = true;
     }
 
     if (changes.sortType) {
       this.model.setSorting(this.sortType);
+      shouldUpdate = true;
     }
 
-    this.model.update();
+    if (shouldUpdate) {
+      this.model.update();
+    }
+
+    if (changes.expandedNodes) {
+      this.model.expandNodes(this.expandedNodes);
+    }
   }
 
   public hasChild(index: number, node: FlatNode): boolean {
     return node.expandable;
   }
 
-  public toggleNode(node: FlatNode): void {
-    this.model.treeControl.toggle(node);
+  public onToggleNode(node: FlatNode): void {
+    this.toggleNode.emit(node.node.id);
   }
 
   public onDeleteSessions(sessions: Session[]): void {

@@ -48,7 +48,9 @@
         [sessions]="sessions$ | async"
         [groupType]="groupType$ | async"
         [sortType]="sortType$ | async"
+        [expandedNodes]="expandedNodes$ | async"
         (deleteSessions)="onDeleteSessions($event)"
+        (toggleNode)="onToggleNode($event)"
       ></app-sessions-table>
     </div>
   </div>

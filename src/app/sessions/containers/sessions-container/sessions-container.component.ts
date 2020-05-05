@@ -7,6 +7,8 @@ import { Range } from '../../../shared/utils';
 import { Session, SessionsGroupType, SortType } from '../../models';
 import { SessionsService } from '../../services/sessions.service';
 
+import { SessionsTableService } from './sessions-table.service';
+
 @Component({
   selector: 'app-sessions-container',
   templateUrl: './sessions-container.component.html',
@@ -21,9 +23,11 @@ export class SessionsContainerComponent implements OnInit {
   public readonly groupType$: Observable<SessionsGroupType>;
   public readonly sortType$: Observable<SortType>;
   public readonly sessions$: Observable<Session[]>;
+  public readonly expandedNodes$: Observable<string[]>;
 
   public constructor(
     private readonly sessionsSrv: SessionsService,
+    private readonly tableSrv: SessionsTableService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
     this.displayRange$ = this.sessionsSrv.getDisplayRange()
@@ -37,6 +41,7 @@ export class SessionsContainerComponent implements OnInit {
     this.groupType$ = this.sessionsSrv.getGroupType();
     this.sortType$ = this.sessionsSrv.getSortType();
     this.sessions$ = this.sessionsSrv.getSessions();
+    this.expandedNodes$ = this.tableSrv.getExpandedNodes();
   }
 
   public ngOnInit() {
@@ -55,6 +60,7 @@ export class SessionsContainerComponent implements OnInit {
   }
 
   public onGroupTypeChange(groupType: SessionsGroupType): void {
+    this.tableSrv.clearExpandedNodes();
     this.sessionsSrv.changeGroupType(groupType);
   }
 
@@ -64,5 +70,9 @@ export class SessionsContainerComponent implements OnInit {
 
   public onDeleteSessions(sessionIds: string[]): void {
     this.sessionsSrv.removeSessions(sessionIds);
+  }
+
+  public onToggleNode(nodeId: string): void {
+    this.tableSrv.toggleNode(nodeId);
   }
 }

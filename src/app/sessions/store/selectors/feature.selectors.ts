@@ -5,7 +5,7 @@ import { fromSessionsFeature } from '../reducers';
 import * as SessionsSelectors from './sessions.selectors';
 import * as SettingsSelectors from './settings.selectors';
 
-const selectSessionsState = createFeatureSelector<fromSessionsFeature.SessionsState>(fromSessionsFeature.sessionsFeatureKey);
+export const selectSessionsState = createFeatureSelector<fromSessionsFeature.SessionsState>(fromSessionsFeature.sessionsFeatureKey);
 
 const selectSessionsEntityState = compose(
   state => state.entities,

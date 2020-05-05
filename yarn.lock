@@ -1325,6 +1325,11 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
+"@ngneat/until-destroy@^7.1.6":
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-7.1.6.tgz#e38fb56565588af68fd8612b6c5e47e774b5e1c1"
+  integrity sha512-sJDdoz5IEwv1pk4/ystOgPDHX0dK/EIda2yDXQe8DQzE/az88gElNLbGHbjMLUuo6cQgep5LA6Ecl/L6ltIlig==
+
 "@ngrx/effects@^9.0.0-rc.0":
   version "9.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-9.0.0-rc.0.tgz#5ef023ebe2fa04e5bf6b9391ac0bfc0392dd2cd4"

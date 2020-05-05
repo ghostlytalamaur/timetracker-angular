@@ -15,8 +15,7 @@ import {
 } from './components';
 import { SessionDetailsContainerComponent, SessionsComponent, SessionsContainerComponent, SessionsImportComponent, } from './containers';
 import { SessionsRoutingModule } from './sessions-routing.module';
-import { fromSessionsFeature } from './store';
-import { SessionsEffects, SettingsEffects } from './store/effects';
+import { SessionsEffects, SessionsTableEffects, SettingsEffects, fromSessionsFeature } from './store';
 
 
 @NgModule({
@@ -25,7 +24,7 @@ import { SessionsEffects, SettingsEffects } from './store/effects';
     SessionsRoutingModule,
     SharedModule,
     StoreModule.forFeature(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.reducers),
-    EffectsModule.forFeature([SessionsEffects, SettingsEffects]),
+    EffectsModule.forFeature([SessionsEffects, SettingsEffects, SessionsTableEffects]),
   ],
   declarations: [
     SessionDetailsComponent,

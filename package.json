@@ -36,7 +36,8 @@
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2",
     "uuid": "^3.3.3",
-    "fp-ts": "^2.5.3"
+    "fp-ts": "^2.5.3",
+    "@ngneat/until-destroy": "^7.1.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.5",

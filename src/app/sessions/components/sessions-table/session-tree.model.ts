@@ -126,4 +126,20 @@ export class SessionTreeModel {
     nodes.sort(this.sortType === 'asc' ? ordTreeNode.compare : getDualOrd(ordTreeNode).compare);
   }
 
+  public expandNodes(expandedNodes: string[]): void {
+    const nodes = this.treeControl.dataNodes;
+    const expandedIds = new Set<string>(expandedNodes);
+    for (const node of nodes) {
+      if (!this.treeControl.isExpandable(node)) {
+        continue;
+      }
+
+      const isExpanded = this.treeControl.isExpanded(node);
+      if (expandedIds.has(node.node.id) && !isExpanded) {
+        this.treeControl.expand(node);
+      } else if (!expandedIds.has(node.node.id) && isExpanded) {
+        this.treeControl.collapse(node);
+      }
+    }
+  }
 }

@@ -6,7 +6,7 @@ import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { Range } from '../../shared/utils';
-import { Session, SessionEntity, SessionsGroup, SessionsGroupType, SortType } from '../models';
+import { Session, SessionEntity, SessionsGroupType, SortType } from '../models';
 import { SessionsActions, SettingsActions } from '../store/actions';
 import { SessionsFeatureSelectors } from '../store/selectors';
 

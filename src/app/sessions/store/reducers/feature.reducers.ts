@@ -4,9 +4,9 @@ import * as fromRoot from '../../../core/store';
 import { isInRange } from '../../../shared/utils';
 import { SettingsActions } from '../actions';
 
+import * as fromTable from './sessions-table.reducer';
 import * as fromSessions from './sessions.reducers';
 import * as fromSettings from './settings.reducers';
-
 
 export const settingsKey = 'settings';
 export const sessionsFeatureKey = 'sessions';
@@ -14,6 +14,7 @@ export const sessionsFeatureKey = 'sessions';
 export interface SessionsState {
   readonly entities: fromSessions.SessionsEntityState;
   readonly [settingsKey]: fromSettings.SettingsState;
+  readonly table: fromTable.State,
 }
 
 export interface State extends fromRoot.State {
@@ -31,6 +32,7 @@ function onChangeDisplayRange(state: SessionsState, displayRange: ReturnType<typ
 const initialState: SessionsState = {
   entities: fromSessions.initialState,
   [settingsKey]: fromSettings.initialState,
+  table: fromTable.initialState,
 };
 
 const compositeReducer = createReducer<SessionsState>(initialState,
@@ -40,6 +42,7 @@ const compositeReducer = createReducer<SessionsState>(initialState,
 const combinedReducer = combineReducers<SessionsState>({
   entities: fromSessions.sessionsReducers,
   [settingsKey]: fromSettings.settingsReducers,
+  table: fromTable.reducer,
 });
 
 export function reducers(state: SessionsState | undefined, action: Action): SessionsState {
