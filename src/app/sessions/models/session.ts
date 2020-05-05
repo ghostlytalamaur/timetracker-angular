@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
-import { Observable, of, timer, ReplaySubject } from 'rxjs';
-import { map, share, tap, shareReplay, multicast, refCount } from 'rxjs/operators';
+import { Observable, ReplaySubject, of, timer } from 'rxjs';
+import { map, multicast, refCount, share, shareReplay, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 

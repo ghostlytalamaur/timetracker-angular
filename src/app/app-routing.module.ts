@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './core/page-not-found/page-not-found.comp
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/sessions' },
   { path: 'sessions', loadChildren: () => import('./sessions/sessions.module').then(mod => mod.SessionsModule) },
+  { path: 'tags', loadChildren: () => import('./sessions-tags/sessions-tags.module').then(m => m.SessionsTagsModule) },
   { path: '**', component: PageNotFoundComponent },
 ];
 
