@@ -12,7 +12,8 @@ import { SessionsTagsService } from '../../services';
 })
 export class SessionsTagsComponent implements OnInit {
 
-  public tags$: Observable<SessionTag[]>;
+  public readonly tags$: Observable<SessionTag[]>;
+  public selectedTag: SessionTag | null = null;
 
   public constructor(
     private readonly tagsService: SessionsTagsService,
@@ -21,6 +22,22 @@ export class SessionsTagsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.tagsService.loadTags();
   }
 
+  public onDeleteTag(tagId: string): void {
+    if (this.selectedTag?.id === tagId) {
+      this.selectedTag = null;
+    }
+
+    this.tagsService.deleteTag(tagId);
+  }
+
+  public onSaveTag(tag: SessionTag): void {
+    this.tagsService.saveTag(tag);
+  }
+
+  public onTagSelected(tag: SessionTag | null): void {
+    this.selectedTag = tag;
+  }
 }

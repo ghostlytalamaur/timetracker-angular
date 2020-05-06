@@ -1,1 +1,9 @@
-<app-tags-list [tags]="tags$ | async"></app-tags-list>
+<app-tags-editor
+  [tag]="selectedTag"
+  (saveTag)="onSaveTag($event)"
+></app-tags-editor>
+<app-tags-list
+  [tags]="tags$ | async"
+  (tagSelected)="onTagSelected($event)"
+  (deleteTag)="onDeleteTag($event)"
+></app-tags-list>

@@ -1,7 +1,28 @@
-<mat-list>
-  <mat-list-item
-    *ngFor="let tag of tags"
+<mat-selection-list
+  multiple="false"
+  (selectionChange)="onSelectionChange($event.option.value)"
+>
+  <mat-list-option
+    *ngFor="let tag of tags; let last = last; trackBy: trackById"
+    [value]="tag.id"
+    [appContextMenuTriggerFor]="tagMenu"
+    [appContextMenuTriggerData]="{ tag: tag }"
   >
-    {{ tag.id }} {{ tag.label }}
-  </mat-list-item>
-</mat-list>
+    <mat-icon mat-list-icon>label</mat-icon>
+    <div mat-line>{{ tag.label }}</div>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </mat-list-option>
+</mat-selection-list>
+
+<mat-menu
+  #tagMenu="matMenu"
+  hasBackdrop="false"
+>
+  <ng-template matMenuContent let-tag="tag">
+    <button
+      mat-menu-item
+      (click)="onDeleteTag(tag)"
+    >Delete
+    </button>
+  </ng-template>
+</mat-menu>
