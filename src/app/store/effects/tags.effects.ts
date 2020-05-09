@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
-import { SessionsTagsStorageService } from '../../services';
-import { SessionsTagsActions } from '../ations';
+import { SessionsTagsActions } from '../actions';
+import { SessionsTagsStorageService } from '../services';
 
 @Injectable()
 export class TagsEffects {

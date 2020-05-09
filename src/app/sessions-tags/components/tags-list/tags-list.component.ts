@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SessionTag } from '@app/store';
 
-import { SessionTag } from '../../models';
 
 @Component({
   selector: 'app-tags-list',

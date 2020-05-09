@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
+import { SessionsTagsActions } from '../actions';
 import { SessionTag } from '../models';
-import { SessionsTagsActions } from '../store/ations';
-import { SessionsTagsSelectors } from '../store/selectors';
+import { SessionsTagsSelectors } from '../selectors';
+
 
 @Injectable({
   providedIn: 'root',

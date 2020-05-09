@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { SessionTag, SessionsTagsService } from '@app/store';
 import { Observable } from 'rxjs';
 
-import { SessionTag } from '../../models';
-import { SessionsTagsService } from '../../services';
 
 @Component({
   selector: 'app-sessions-tags',

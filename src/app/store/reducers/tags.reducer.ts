@@ -1,14 +1,13 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
-import { SessionTag } from '../../models';
-import { SessionsTagsActions } from '../ations';
+import { SessionsTagsActions } from '../actions';
+import { SessionTag } from '../models';
 
 export interface State extends EntityState<SessionTag> {
 
 }
 
-export const featureKey = 'sessions-tags';
 export const adapter = createEntityAdapter<SessionTag>();
 
 const initialState = adapter.getInitialState({

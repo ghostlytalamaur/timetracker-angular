@@ -10,8 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SessionTag, createSessionTag } from '@app/store';
 
-import { SessionTag, createSessionTag } from '../../models';
 
 interface TypedSimpleChange<T> extends SimpleChange {
   previousValue: T;

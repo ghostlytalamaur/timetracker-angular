@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { SessionTag } from '../../models';
+import { SessionTag } from '../models';
 
 export const loadTags = createAction(
   '[Sessions Tags] Load Tags',
