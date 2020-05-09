@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, OnInitEffects, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { AuthActions } from './actions';
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable()
-export class AuthEffects {
+export class AuthEffects implements OnInitEffects {
 
   public autoSignIn$ = createEffect(() =>
     this.actions$
@@ -59,6 +59,10 @@ export class AuthEffects {
     private readonly afa: AngularFireAuth,
     private readonly router: Router,
   ) {
+  }
+
+  public ngrxOnInitEffects(): Action {
+    return AuthActions.autoSignIn();
   }
 
   private handleSignUp(credentials: { email: string, password: string }): Observable<Action> {

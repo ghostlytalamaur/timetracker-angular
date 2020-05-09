@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import { DbService } from '@app/core/db';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AuthService } from '../../core/auth/auth.service';
 import { Range } from '../../shared/utils';
-import { SessionEntity } from '../models';
+import { SessionEntity, Update } from '../models';
 
-import { EntityQuery, EntityStorage, QueryFunction, Update } from './entity-storage';
-import { FireEntityStorage } from './fire-entity-storage';
+import { DexieEntityStorage } from './dexie-entity-storage';
+import { EntityQuery, EntityStorage, QueryFunction } from './entity-storage';
 import { SessionsStorage } from './sessions-storage.service';
+
 
 export interface SessionStorageEntity {
   id: string;
-  start: firebase.firestore.Timestamp;
+  start: Date;
   duration: number | null;
 }
 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
   return {
     id: session.id,
-    start: firebase.firestore.Timestamp.fromDate(new Date(session.start)),
+    start: new Date(session.start),
     duration: session.duration,
   };
 }
@@ -31,18 +29,18 @@ function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
 function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity {
   return {
     id: session.id,
-    start: session.start.toDate().valueOf(),
+    start: session.start.valueOf(),
     duration: session.duration,
   };
 }
 
 @Injectable()
-export class SessionsFireStorageService implements SessionsStorage {
+export class SessionsDexieStorageService implements SessionsStorage {
 
   private storage: EntityStorage<SessionStorageEntity, EntityQuery<SessionStorageEntity>>;
 
-  public constructor(afs: AngularFirestore, auth: AuthService) {
-    this.storage = new FireEntityStorage(afs, auth, 'sessions');
+  public constructor(db: DbService) {
+    this.storage = new DexieEntityStorage(db, db.sessions)
   }
 
   public addedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
@@ -81,7 +79,7 @@ export class SessionsFireStorageService implements SessionsStorage {
         id: change.id,
       };
       if (change.start) {
-        stChange.start = firebase.firestore.Timestamp.fromDate(new Date(change.start));
+        stChange.start = new Date(change.start);
       }
       if (change.duration) {
         stChange.duration = change.duration;
@@ -93,8 +91,8 @@ export class SessionsFireStorageService implements SessionsStorage {
 
   private makeQueryFn(range: Range<DateTime>): QueryFunction<EntityQuery<SessionStorageEntity>> {
     return query =>
-      query.where('start', '>=', firebase.firestore.Timestamp.fromDate(range.start.toJSDate()))
-        .where('start', '<=', firebase.firestore.Timestamp.fromDate(range.end.toJSDate()));
+      query.where('start', '>=', range.start.toJSDate())
+        .where('start', '<=', range.end.toJSDate());
   }
 
 }

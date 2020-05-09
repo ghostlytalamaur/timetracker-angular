@@ -23,7 +23,12 @@
       "dom"
     ],
     "paths": {
-      "@app/store": ["src/app/store/index.ts"]
+      "@app/store": [
+        "src/app/store/index.ts"
+      ],
+      "@app/core/*": [
+        "src/app/core/*"
+      ]
     }
   },
   "angularCompilerOptions": {

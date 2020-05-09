@@ -1,50 +1,19 @@
-import { Action, combineReducers, createReducer, on } from '@ngrx/store';
-
-import * as fromRoot from '../../../core/store';
-import { isInRange } from '../../../shared/utils';
-import { SettingsActions } from '../actions';
+import { InjectionToken } from '@angular/core';
+import { ActionReducerMap } from '@ngrx/store';
 
 import * as fromTable from './sessions-table.reducer';
-import * as fromSessions from './sessions.reducers';
-import * as fromSettings from './settings.reducers';
 
-export const settingsKey = 'settings';
-export const sessionsFeatureKey = 'sessions';
+export const featureKey = 'sessions-ui';
 
-export interface SessionsState {
-  readonly entities: fromSessions.SessionsEntityState;
-  readonly [settingsKey]: fromSettings.SettingsState;
+export interface State {
   readonly table: fromTable.State,
 }
 
-export interface State extends fromRoot.State {
-  [sessionsFeatureKey]: SessionsState;
-}
-
-
-function onChangeDisplayRange(state: SessionsState, displayRange: ReturnType<typeof SettingsActions.setDisplayRange>): SessionsState {
-  return {
-    ...state,
-    entities: fromSessions.adapter.removeMany(e => !isInRange(e.start, displayRange), state.entities),
-  };
-}
-
-const initialState: SessionsState = {
-  entities: fromSessions.initialState,
-  [settingsKey]: fromSettings.initialState,
-  table: fromTable.initialState,
-};
-
-const compositeReducer = createReducer<SessionsState>(initialState,
-  on(SettingsActions.setDisplayRange, onChangeDisplayRange),
-);
-
-const combinedReducer = combineReducers<SessionsState>({
-  entities: fromSessions.sessionsReducers,
-  [settingsKey]: fromSettings.settingsReducers,
-  table: fromTable.reducer,
-});
-
-export function reducers(state: SessionsState | undefined, action: Action): SessionsState {
-  return compositeReducer(combinedReducer(state, action), action);
-}
+export const APP_STORE_REDUCERS = new InjectionToken<ActionReducerMap<State>>(
+  'App Store Reducers',
+  {
+    factory: () => ({
+      table: fromTable.reducer,
+    }),
+  },
+)

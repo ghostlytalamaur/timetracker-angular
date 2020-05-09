@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthService } from '@app/core/auth';
 import { Observable, from } from 'rxjs';
 
-import { AuthService } from '../../core/auth/auth.service';
-import { EntityQuery, EntityStorage } from '../../sessions/services/entity-storage';
-import { FireEntityStorage } from '../../sessions/services/fire-entity-storage';
 import { SessionTag } from '../models';
+
+import { EntityQuery, EntityStorage } from './entity-storage';
+import { FireEntityStorage } from './fire-entity-storage';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ export class SessionsTagsStorageService {
 
   private storage: EntityStorage<SessionTag, EntityQuery<SessionTag>>;
 
-  public constructor(afs: AngularFirestore, auth: AuthService) {
+  public constructor(
+    afs: AngularFirestore,
+    auth: AuthService,
+  ) {
     this.storage = new FireEntityStorage(afs, auth, 'sessions-tags');
   }
 

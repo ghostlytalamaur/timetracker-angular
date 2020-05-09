@@ -5,7 +5,6 @@ import { SessionsTagsActions } from '../actions';
 import { SessionTag } from '../models';
 
 export interface State extends EntityState<SessionTag> {
-
 }
 
 export const adapter = createEntityAdapter<SessionTag>();

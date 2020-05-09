@@ -6,11 +6,10 @@ import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { Range } from '../../shared/utils';
-import { Session, SessionEntity, SessionsGroupType, SortType } from '../models';
-import { SessionsActions, SettingsActions } from '../store/actions';
-import { SessionsFeatureSelectors } from '../store/selectors';
+import { SessionsActions, SettingsActions } from '../actions';
+import { Session, SessionEntity, SessionsGroupType, SortType, Update } from '../models';
+import { SessionsSelectors, SettingsSelectors } from '../selectors';
 
-import { Update } from './entity-storage';
 
 @Injectable({
   providedIn: 'root',
@@ -22,35 +21,35 @@ export class SessionsService {
   }
 
   public getSessions(): Observable<Session[]> {
-    return this.store.select(SessionsFeatureSelectors.getSessions);
+    return this.store.select(SessionsSelectors.selectSessions);
   }
 
   public getSession(id: string): Observable<Session | undefined> {
-    return this.store.select(SessionsFeatureSelectors.getSession(id));
+    return this.store.select(SessionsSelectors.selectSession(id));
   }
 
   public hasRunningSessions(): Observable<boolean> {
-    return this.store.select(SessionsFeatureSelectors.hasRunningSessions);
+    return this.store.select(SessionsSelectors.selectHasRunningSessions);
   }
 
   public isLoading(): Observable<boolean> {
-    return this.store.select(SessionsFeatureSelectors.isLoading);
+    return this.store.select(SessionsSelectors.selectIsLoading);
   }
 
   public getError(): Observable<string> {
-    return this.store.select(SessionsFeatureSelectors.getError);
+    return this.store.select(SessionsSelectors.selectError);
   }
 
   public getGroupType(): Observable<SessionsGroupType> {
-    return this.store.select(SessionsFeatureSelectors.getGroupType);
+    return this.store.select(SettingsSelectors.selectGroupType);
   }
 
   public getSortType(): Observable<SortType> {
-    return this.store.select(SessionsFeatureSelectors.getSortType);
+    return this.store.select(SettingsSelectors.selectSortType);
   }
 
   public loadSessions(): void {
-    this.store.select(SessionsFeatureSelectors.isLoaded)
+    this.store.select(SessionsSelectors.selectIsLoaded)
       .pipe(
         take(1),
       )
@@ -78,7 +77,7 @@ export class SessionsService {
   }
 
   public toggleSession(): void {
-    this.store.select(SessionsFeatureSelectors.getRunningSessions)
+    this.store.select(SessionsSelectors.selectRunningSessions)
       .pipe(
         take(1),
         map((sessions: Session[]) => {
@@ -107,7 +106,7 @@ export class SessionsService {
   }
 
   public getDisplayRange(): Observable<Range<DateTime>> {
-    return this.store.select(SessionsFeatureSelectors.getDisplayRange);
+    return this.store.select(SettingsSelectors.selectDisplayRange);
   }
 
   public setDisplayRange(range: Range<DateTime>): void {

@@ -1,6 +1,5 @@
+import { LocalStorageService } from '@app/core/services';
 import { ActionReducer, ActionReducerMap, INIT, MetaReducer, UPDATE } from '@ngrx/store';
-
-import { LocalStorageService } from '../local-storage.service';
 
 export type State = { }
 

@@ -1,38 +1,38 @@
 import { createReducer, on } from '@ngrx/store';
 import { DateTime } from 'luxon';
 
-import { Range } from '../../../shared/utils';
-import { SessionsGroupType, SortType } from '../../models';
+import { Range } from '../../shared/utils';
 import { SettingsActions } from '../actions';
+import { SessionsGroupType, SortType } from '../models';
 
-export interface SettingsState {
+export interface State {
   readonly displayRange: Range<number>;
   readonly groupType: SessionsGroupType;
   readonly sortType: SortType;
 }
 
-function onSetDisplayRange(state: SettingsState, displayRange: ReturnType<typeof SettingsActions.setDisplayRange>): SettingsState {
+function onSetDisplayRange(state: State, displayRange: ReturnType<typeof SettingsActions.setDisplayRange>): State {
   return {
     ...state,
     displayRange: { start: displayRange.start, end: displayRange.end },
   };
 }
 
-function onChangeGroupType(state: SettingsState, group: ReturnType<typeof SettingsActions.changeGroupType>): SettingsState {
+function onChangeGroupType(state: State, group: ReturnType<typeof SettingsActions.changeGroupType>): State {
   return {
     ...state,
     groupType: group.group,
   };
 }
 
-function onChangeSortType(state: SettingsState, sortType: ReturnType<typeof SettingsActions.changeSortType>): SettingsState {
+function onChangeSortType(state: State, sortType: ReturnType<typeof SettingsActions.changeSortType>): State {
   return {
     ...state,
     sortType: sortType.sortType,
   };
 }
 
-export const initialState: SettingsState = {
+export const initialState: State = {
   displayRange: {
     start: DateTime.local().startOf('month').valueOf(),
     end: DateTime.local().endOf('month').valueOf(),
@@ -41,7 +41,7 @@ export const initialState: SettingsState = {
   sortType: 'desc',
 };
 
-export const settingsReducers = createReducer<SettingsState>(initialState,
+export const reducer = createReducer<State>(initialState,
   on(SettingsActions.setDisplayRange, onSetDisplayRange),
   on(SettingsActions.changeGroupType, onChangeGroupType),
   on(SettingsActions.changeSortType, onChangeSortType),

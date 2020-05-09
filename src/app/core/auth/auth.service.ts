@@ -14,9 +14,7 @@ export class AuthService {
   public constructor(
     private readonly store: Store<fromAuth.State>,
   ) {
-    this.store.dispatch(AuthActions.autoSignIn());
   }
-
 
   public get user$(): Observable<User | undefined> {
     return this.store.select(fromAuth.getUser);

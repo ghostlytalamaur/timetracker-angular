@@ -5,12 +5,11 @@ import { DateTime } from 'luxon';
 import { Observable, from, merge, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { Range } from '../../../shared/utils';
-import { SessionEntity } from '../../models';
-import { SESSIONS_STORAGE, SessionsStorage } from '../../services';
-import { Update } from '../../services/entity-storage';
+import { Range } from '../../shared/utils';
 import { SessionsActions } from '../actions';
-import { SessionsFeatureSelectors } from '../selectors';
+import { SessionEntity, Update } from '../models';
+import { SettingsSelectors } from '../selectors';
+import { SESSIONS_STORAGE, SessionsStorage } from '../services';
 
 @Injectable()
 export class SessionsEffects {
@@ -87,7 +86,7 @@ export class SessionsEffects {
   }
 
   private getChangesActions(): Observable<Action> {
-    const changes$ = this.store.select(SessionsFeatureSelectors.getDisplayRange)
+    const changes$ = this.store.select(SettingsSelectors.selectDisplayRange)
       .pipe(
         switchMap(range => {
           return merge(

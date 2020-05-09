@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-
-import { Session, SessionsGroupType, SortType } from '../../models';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Session, SessionsGroupType, SortType } from '@app/store';
 
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 

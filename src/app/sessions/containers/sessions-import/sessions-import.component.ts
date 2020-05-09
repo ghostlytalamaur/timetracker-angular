@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Session, SessionEntity, SessionsService } from '@app/store';
 import { DateTime } from 'luxon';
 import { v4 as uuid } from 'uuid';
 
-import { Session, SessionEntity } from '../../models';
-import { SessionsService } from '../../services/sessions.service';
 
 interface DayBackup {
   id: number;

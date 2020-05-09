@@ -1,12 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Session, SessionEntity, getDuration } from '@app/store';
 import { DateTime, Duration } from 'luxon';
 import { Observable, defer, merge, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { environment } from '../../../../environments/environment';
-import { Session, SessionEntity, getDuration } from '../../models';
 
 interface FormData {
   date: Date | null;

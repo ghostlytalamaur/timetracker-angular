@@ -44,6 +44,7 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate {
         }),
       );
   }
+
 }
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
-import { SessionEntity } from '../../models';
-import { Update } from '../../services/entity-storage';
+import { SessionEntity, Update } from '../models';
+
 
 export const loadSessions = createAction(
   '[Sessions] Load Sessions',

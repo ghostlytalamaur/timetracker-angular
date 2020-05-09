@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Session, SessionsGroupType, SessionsService, SortType } from '@app/store';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Range } from '../../../shared/utils';
-import { Session, SessionsGroupType, SortType } from '../../models';
-import { SessionsService } from '../../services/sessions.service';
 
 import { SessionsTableService } from './sessions-table.service';
 

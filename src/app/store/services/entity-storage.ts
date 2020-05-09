@@ -1,10 +1,6 @@
 import { Observable } from 'rxjs';
 
-export interface EntityType {
-  id: string;
-}
-
-export type Update<T> = EntityType & Partial<T>;
+import { EntityType, Update } from '../models';
 
 export type WhereFilterOp = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
 export type OrderByDirection = 'desc' | 'asc';

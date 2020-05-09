@@ -1,10 +1,10 @@
 import { compose } from '@ngrx/store';
 
-import { selectSessionsState } from './feature.selectors';
+import { selectFeatureState } from './feature.selectors';
 
 export const selectSessionsTableState = compose(
   state => state.table,
-  selectSessionsState,
+  selectFeatureState,
 );
 
 export const selectExpandedNodes = compose(

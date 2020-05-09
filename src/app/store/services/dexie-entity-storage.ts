@@ -3,7 +3,9 @@ import { Observable, Subject, merge } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 
-import { EntityQuery, EntityStorage, EntityType, OrderByDirection, Update, WhereFilterOp } from './entity-storage';
+import { EntityType, Update } from '../models';
+
+import { EntityQuery, EntityStorage, OrderByDirection, WhereFilterOp } from './entity-storage';
 
 type QueryOperator<E> = (entity: E) => boolean;
 

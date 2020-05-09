@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AngularFireModule, FirebaseOptions } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AuthModule } from '@app/core/auth';
+import { AppStoreModule } from '@app/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../../environments/environment';
 
-import { AuthModule } from './auth/auth.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import * as fromRoot from './store';
 
@@ -59,6 +60,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
       logOnly: environment.production,
     }),
     AuthModule,
+    AppStoreModule,
   ],
 })
 export class CoreModule {

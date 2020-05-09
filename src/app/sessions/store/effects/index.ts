@@ -1,3 +1,5 @@
-export * from './sessions.effects';
-export * from './settings.effects';
-export * from './sessions-table.effects';
+import { SessionsTableEffects } from './sessions-table.effects';
+
+export const effects = [
+  SessionsTableEffects,
+];

@@ -13,18 +13,23 @@ import {
   SessionsTableComponent,
   SessionsTableRowComponent,
 } from './components';
-import { SessionDetailsContainerComponent, SessionsComponent, SessionsContainerComponent, SessionsImportComponent, } from './containers';
+import {
+  SessionDetailsContainerComponent,
+  SessionsComponent,
+  SessionsContainerComponent,
+  SessionsImportComponent,
+} from './containers';
 import { SessionsRoutingModule } from './sessions-routing.module';
-import { SessionsEffects, SessionsTableEffects, SettingsEffects, fromSessionsFeature } from './store';
-
+import { effects } from './store/effects';
+import * as fromFeature from './store/reducers';
 
 @NgModule({
   imports: [
     CommonModule,
     SessionsRoutingModule,
     SharedModule,
-    StoreModule.forFeature(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.reducers),
-    EffectsModule.forFeature([SessionsEffects, SettingsEffects, SessionsTableEffects]),
+    StoreModule.forFeature(fromFeature.featureKey, fromFeature.reducer),
+    EffectsModule.forFeature(effects),
   ],
   declarations: [
     SessionDetailsComponent,

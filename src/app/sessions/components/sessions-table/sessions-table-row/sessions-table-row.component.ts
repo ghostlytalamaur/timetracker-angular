@@ -1,9 +1,9 @@
 import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Session, getDuration } from '@app/store';
 import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../../../environments/environment';
-import { Session, getDuration } from '../../../models';
 
 @Component({
   selector: 'app-sessions-table-row',

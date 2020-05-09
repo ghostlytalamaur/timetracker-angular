@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageService } from '@app/core/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { tap, withLatestFrom } from 'rxjs/operators';
 
-import { LocalStorageService } from '../../../core/local-storage.service';
 import { SettingsActions } from '../actions';
-import { fromSessionsFeature, fromSettings } from '../reducers';
-import { selectSettings } from '../selectors/feature.selectors';
+import * as fromFeature from '../reducers';
+import { SettingsSelectors } from '../selectors';
 
 @Injectable()
 export class SettingsEffects {
@@ -18,7 +18,7 @@ export class SettingsEffects {
             SettingsActions.changeGroupType,
             SettingsActions.changeSortType,
           ),
-          withLatestFrom(this.store.select(selectSettings)),
+          withLatestFrom(this.store.select(SettingsSelectors.selectSettings)),
           tap(([ignored, settings]) => SettingsEffects.storeSettings(settings)),
         ),
     { dispatch: false },
@@ -30,7 +30,7 @@ export class SettingsEffects {
   ) {
   }
 
-  private static storeSettings(settings: fromSettings.SettingsState): void {
-    LocalStorageService.setItem(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.settingsKey, settings);
+  private static storeSettings(settings: fromFeature.fromSettings.State): void {
+    LocalStorageService.setItem(fromFeature.featureKey, 'settings', settings);
   }
 }

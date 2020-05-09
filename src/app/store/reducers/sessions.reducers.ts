@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { SessionEntity } from '../../models';
-import * as SessionsActions from '../actions/sessions.actions';
+import { SessionsActions } from '../actions';
+import { SessionEntity } from '../models';
 
 export interface LoadingStatus {
   type: 'loading';
@@ -15,7 +15,7 @@ export interface ErrorStatus {
 
 type Status = LoadingStatus | ErrorStatus;
 
-export interface SessionsEntityState extends EntityState<SessionEntity> {
+export interface State extends EntityState<SessionEntity> {
   readonly status: Status | undefined;
   readonly loaded: boolean;
 }
@@ -23,14 +23,14 @@ export interface SessionsEntityState extends EntityState<SessionEntity> {
 export const adapter = createEntityAdapter<SessionEntity>();
 
 
-function onLoadSessions(state: SessionsEntityState): SessionsEntityState {
+function onLoadSessions(state: State): State {
   return {
     ...state,
     status: { type: 'loading' },
   };
 }
 
-function onSessionsAdded(state: SessionsEntityState, { sessions }: ReturnType<typeof SessionsActions.sessionsAdded>): SessionsEntityState {
+function onSessionsAdded(state: State, { sessions }: ReturnType<typeof SessionsActions.sessionsAdded>): State {
   return {
     ...adapter.addMany(sessions, state),
     loaded: true,
@@ -38,37 +38,37 @@ function onSessionsAdded(state: SessionsEntityState, { sessions }: ReturnType<ty
   };
 }
 
-function onSessionsModified(state: SessionsEntityState,
-                            { sessions }: ReturnType<typeof SessionsActions.sessionsModified>): SessionsEntityState {
+function onSessionsModified(state: State,
+                            { sessions }: ReturnType<typeof SessionsActions.sessionsModified>): State {
   return adapter.upsertMany(sessions, state);
 }
 
-function onSessionsRemoved(state: SessionsEntityState, { ids }: ReturnType<typeof SessionsActions.sessionsRemoved>): SessionsEntityState {
+function onSessionsRemoved(state: State, { ids }: ReturnType<typeof SessionsActions.sessionsRemoved>): State {
   return adapter.removeMany(ids, state);
 }
 
-function onSessionsError(state: SessionsEntityState, { message }: ReturnType<typeof SessionsActions.sessionsError>): SessionsEntityState {
+function onSessionsError(state: State, { message }: ReturnType<typeof SessionsActions.sessionsError>): State {
   return {
     ...state,
     status: { type: 'error', message },
   };
 }
 
-function onClearError(state: SessionsEntityState): SessionsEntityState {
+function onClearError(state: State): State {
   return {
     ...state,
     status: undefined,
   };
 }
 
-export const initialState: SessionsEntityState = adapter.getInitialState<SessionsEntityState>({
+export const initialState: State = adapter.getInitialState<State>({
   ids: [],
-  entities: { },
+  entities: {},
   status: undefined,
   loaded: false,
 });
 
-export const sessionsReducers = createReducer<SessionsEntityState>(initialState,
+export const reducer = createReducer<State>(initialState,
   on(SessionsActions.loadSessions, onLoadSessions),
   on(SessionsActions.sessionsAdded, onSessionsAdded),
   on(SessionsActions.sessionsModified, onSessionsModified),
