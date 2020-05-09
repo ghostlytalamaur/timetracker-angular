@@ -32,7 +32,7 @@ const initialState: AuthState = {
   status: undefined,
 };
 
-const authReducers: ActionReducer<AuthState, Action> = createReducer<AuthState>(initialState,
+const authReducers: ActionReducer<AuthState> = createReducer<AuthState>(initialState,
   on(AuthActions.signIn, AuthActions.signUp, AuthActions.signOut, AuthActions.autoSignIn, (state): AuthState => {
     return {
       ...state,

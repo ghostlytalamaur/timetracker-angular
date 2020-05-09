@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '@app/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-
-import { SharedModule } from '../../shared/shared.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components';

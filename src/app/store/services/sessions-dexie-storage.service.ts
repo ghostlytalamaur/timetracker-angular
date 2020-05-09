@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { DbService } from '@app/core/db';
+import { Range } from '@app/shared/utils';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Range } from '../../shared/utils';
 import { SessionEntity, Update } from '../models';
 
 import { DexieEntityStorage } from './dexie-entity-storage';
 import { EntityQuery, EntityStorage, QueryFunction } from './entity-storage';
+// noinspection ES6PreferShortImport
 import { SessionsStorage } from './sessions-storage.service';
 
 

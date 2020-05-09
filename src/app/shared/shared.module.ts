@@ -19,12 +19,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { LuxonModule } from 'luxon-angular';
 
-import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import {
   DateRangePickerDialogComponent,
   DateRangePickerDialogDirective,
 } from './components/date-range-picker/date-range-picker-dialog.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { AlertDialogComponent } from './dialogs/alert-dialog.component';
 import { ContextMenuTriggerDirective } from './directives/context-menu-trigger.directive';
 import { DateTimeInputDirective } from './directives/date-time-input.directive';
 import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';

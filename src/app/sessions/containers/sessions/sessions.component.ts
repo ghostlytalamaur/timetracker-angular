@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { routerAnimation } from '@app/shared/animations';
+import { DialogsService } from '@app/shared/dialogs';
 import { SessionsService } from '@app/store';
 import { Observable, Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-
-import { routerAnimation } from '../../../app/animations';
-import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
 
 @Component({
   selector: 'app-sessions',

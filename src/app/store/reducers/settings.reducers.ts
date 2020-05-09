@@ -1,7 +1,7 @@
+import { Range } from '@app/shared/utils';
 import { createReducer, on } from '@ngrx/store';
 import { DateTime } from 'luxon';
 
-import { Range } from '../../shared/utils';
 import { SettingsActions } from '../actions';
 import { SessionsGroupType, SortType } from '../models';
 

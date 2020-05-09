@@ -4,8 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@app/shared';
 
 import { TagsEditorComponent, TagsListComponent } from './components';
 import { SessionsTagsComponent } from './containers';

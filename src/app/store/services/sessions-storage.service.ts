@@ -2,12 +2,12 @@ import { InjectionToken, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '@app/core/auth';
 import { DbService } from '@app/core/db';
+import { Range } from '@app/shared/utils';
 import 'firebase/firestore';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Range } from '../../shared/utils';
 import { SessionEntity, Update } from '../models';
 
 import { SessionsDexieStorageService } from './sessions-dexie-storage.service';

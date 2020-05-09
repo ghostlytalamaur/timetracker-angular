@@ -1,4 +1,4 @@
-import { generateUUID } from '../../shared/utils';
+import { generateUUID } from '@app/shared/utils';
 
 export interface SessionTag {
   readonly id: string;

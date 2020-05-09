@@ -26,7 +26,7 @@ export class SettingsEffects {
 
   public constructor(
     private readonly actions$: Actions,
-    private readonly store: Store<object>,
+    private readonly store: Store,
   ) {
   }
 

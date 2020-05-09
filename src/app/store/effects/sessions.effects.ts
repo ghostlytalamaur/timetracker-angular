@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
+import { Range } from '@app/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
 import { Observable, from, merge, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { Range } from '../../shared/utils';
 import { SessionsActions } from '../actions';
 import { SessionEntity, Update } from '../models';
 import { SettingsSelectors } from '../selectors';
+// noinspection ES6PreferShortImport
 import { SESSIONS_STORAGE, SessionsStorage } from '../services';
 
 @Injectable()
@@ -56,7 +57,7 @@ export class SessionsEffects {
 
   public constructor(
     private readonly actions$: Actions,
-    private readonly store: Store<object>,
+    private readonly store: Store,
     @Inject(SESSIONS_STORAGE) private readonly storage: SessionsStorage,
   ) {
   }

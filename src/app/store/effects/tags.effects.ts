@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { SessionsTagsActions } from '../actions';
+// noinspection ES6PreferShortImport
 import { SessionsTagsStorageService } from '../services';
 
 @Injectable()

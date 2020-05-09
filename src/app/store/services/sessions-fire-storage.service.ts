@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '@app/core/auth';
+import { Range } from '@app/shared/utils';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Range } from '../../shared/utils';
 import { SessionEntity, Update } from '../models';
 
 import { EntityQuery, EntityStorage, QueryFunction } from './entity-storage';
 import { FireEntityStorage } from './fire-entity-storage';
+// noinspection ES6PreferShortImport
 import { SessionsStorage } from './sessions-storage.service';
 
 export interface SessionStorageEntity {

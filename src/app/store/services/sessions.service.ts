@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Range } from '@app/shared/utils';
 import { Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
-import { Range } from '../../shared/utils';
 import { SessionsActions, SettingsActions } from '../actions';
 import { Session, SessionEntity, SessionsGroupType, SortType, Update } from '../models';
 import { SessionsSelectors, SettingsSelectors } from '../selectors';
@@ -16,7 +16,7 @@ import { SessionsSelectors, SettingsSelectors } from '../selectors';
 })
 export class SessionsService {
   public constructor(
-    private readonly store: Store<object>,
+    private readonly store: Store,
   ) {
   }
 
