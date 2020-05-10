@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Status } from '@app/shared/types';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -19,6 +20,10 @@ export class SessionsTagsService {
 
   public getTags(): Observable<SessionTag[]> {
     return this.store.select(SessionsTagsSelectors.selectSessionsTags);
+  }
+
+  public getStatus(): Observable<Status> {
+    return this.store.select(SessionsTagsSelectors.selectStatus);
   }
 
   public requestTags(): void {

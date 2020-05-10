@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { getErrorMessage } from '@app/shared/types';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { Observable, merge, of } from 'rxjs';
-import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
+import { EMPTY, Observable, merge, of } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, switchMapTo } from 'rxjs/operators';
 
 import { SessionsTagsActions } from '../actions';
 // noinspection ES6PreferShortImport
@@ -19,22 +20,32 @@ export class TagsEffects {
       ),
   );
 
-  public addTags$ = createEffect(() =>
+  public saveTags$ = createEffect(() =>
     this.actions
       .pipe(
         ofType(SessionsTagsActions.saveTag),
-        mergeMap(( { tag }) => this.storage.addTags([tag])),
+        mergeMap(({ tag }) =>
+          this.storage.addTags([tag])
+            .pipe(
+              switchMapTo(EMPTY),
+              catchError(err => of(SessionsTagsActions.tagsError({ message: getErrorMessage(err) }))),
+            ),
+        ),
       ),
-    { dispatch: false },
   );
 
   public deleteTags$ = createEffect(() =>
       this.actions
         .pipe(
           ofType(SessionsTagsActions.deleteTag),
-          mergeMap(({ id }) => this.storage.deleteTags([id])),
+          mergeMap(({ id }) => {
+            return this.storage.deleteTags([id])
+              .pipe(
+                switchMapTo(EMPTY),
+                catchError(err => of(SessionsTagsActions.tagsError({ message: getErrorMessage(err) }))),
+              )
+          }),
         ),
-    { dispatch: false },
   );
 
   public constructor(
@@ -62,11 +73,7 @@ export class TagsEffects {
 
     return merge(tagsAdded$, tagsDeleted$, tagsModified$)
       .pipe(
-        catchError((err) => {
-          const message = err instanceof Error ? err.message : JSON.stringify(err);
-
-          return of(SessionsTagsActions.tagsError({ message }));
-        }),
+        catchError((err) => of(SessionsTagsActions.tagsError({ message: getErrorMessage(err) }))),
       )
   }
 }

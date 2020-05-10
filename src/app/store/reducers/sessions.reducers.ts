@@ -1,11 +1,12 @@
+import { Status, errorStatus, initialStatus, loadingStatus, successStatus } from '@app/shared/types';
+import { SessionEntity } from '@app/store';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { SessionsActions } from '../actions';
-import { SessionEntity, Status, errorStatus, loadingStatus } from '../models';
 
 export interface State extends EntityState<SessionEntity> {
-  readonly status: Status | undefined;
+  readonly status: Status;
   readonly loaded: boolean;
 }
 
@@ -15,7 +16,7 @@ export const adapter = createEntityAdapter<SessionEntity>();
 function onLoadSessions(state: State): State {
   return {
     ...state,
-    status: loadingStatus(),
+    status: loadingStatus(state.status ?? initialStatus()),
   };
 }
 
@@ -23,7 +24,7 @@ function onSessionsAdded(state: State, { sessions }: ReturnType<typeof SessionsA
   return {
     ...adapter.addMany(sessions, state),
     loaded: true,
-    status: undefined,
+    status: successStatus(state.status),
   };
 }
 
@@ -39,21 +40,21 @@ function onSessionsRemoved(state: State, { ids }: ReturnType<typeof SessionsActi
 function onSessionsError(state: State, { message }: ReturnType<typeof SessionsActions.sessionsError>): State {
   return {
     ...state,
-    status: errorStatus(message),
+    status: errorStatus(state.status, message),
   };
 }
 
 function onClearError(state: State): State {
   return {
     ...state,
-    status: undefined,
+    status: initialStatus(),
   };
 }
 
 export const initialState: State = adapter.getInitialState<State>({
   ids: [],
   entities: {},
-  status: undefined,
+  status: initialStatus(),
   loaded: false,
 });
 

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Status } from '@app/shared/types';
 import { SessionTag, SessionsTagsService } from '@app/store';
 import { Observable } from 'rxjs';
 
@@ -11,12 +12,14 @@ import { Observable } from 'rxjs';
 export class SessionsTagsComponent implements OnInit {
 
   public readonly tags$: Observable<SessionTag[]>;
+  public readonly status$: Observable<Status>;
   public selectedTag: SessionTag | null = null;
 
   public constructor(
     private readonly tagsService: SessionsTagsService,
   ) {
     this.tags$ = this.tagsService.getTags();
+    this.status$ = this.tagsService.getStatus();
   }
 
   public ngOnInit(): void {

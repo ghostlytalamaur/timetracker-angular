@@ -1,4 +1,4 @@
-import { createSelector } from '@ngrx/store';
+import { compose, createSelector } from '@ngrx/store';
 
 import { Session, isRunning } from '../models';
 import { fromSessions } from '../reducers';
@@ -39,17 +39,12 @@ export const selectSession = (id: string) => createSelector(
     return e && Session.fromEntity(e);
   });
 
-export const selectIsLoading = createSelector(
+export const selectStatus = compose(
+  state => state.status,
   selectSessionsState,
-  state => !!(state.status && state.status.type === 'loading'),
 );
 
 export const selectIsLoaded = createSelector(
   selectSessionsState,
   state => state.loaded,
-);
-
-export const selectError = createSelector(
-  selectSessionsState,
-  state => state.status && state.status.type === 'error' ? state.status.message : '',
 );

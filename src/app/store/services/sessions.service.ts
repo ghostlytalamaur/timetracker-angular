@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Status } from '@app/shared/types';
 import { Range } from '@app/shared/utils';
 import { Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
@@ -32,12 +33,8 @@ export class SessionsService {
     return this.store.select(SessionsSelectors.selectHasRunningSessions);
   }
 
-  public isLoading(): Observable<boolean> {
-    return this.store.select(SessionsSelectors.selectIsLoading);
-  }
-
-  public getError(): Observable<string> {
-    return this.store.select(SessionsSelectors.selectError);
+  public getStatus(): Observable<Status> {
+    return this.store.select(SessionsSelectors.selectStatus);
   }
 
   public getGroupType(): Observable<SessionsGroupType> {

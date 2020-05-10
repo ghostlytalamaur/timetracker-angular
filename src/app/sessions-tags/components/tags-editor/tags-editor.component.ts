@@ -6,22 +6,11 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { hasChange } from '@app/shared/utils';
 import { SessionTag, createSessionTag } from '@app/store';
-
-
-interface TypedSimpleChange<T> extends SimpleChange {
-  previousValue: T;
-  currentValue: T;
-}
-
-function hasChange<T, K extends keyof T>(directive: T, key: K, changes: SimpleChanges):
-  changes is SimpleChanges & { [p in K]: TypedSimpleChange<T[K]> } {
-  return key in changes;
-}
 
 @Component({
   selector: 'app-tags-editor',

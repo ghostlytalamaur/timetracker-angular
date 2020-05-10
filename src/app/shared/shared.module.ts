@@ -24,6 +24,7 @@ import {
   DateRangePickerDialogDirective,
 } from './components/date-range-picker/date-range-picker-dialog.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { StatusContainerComponent } from './components/status-container/status-container.component';
 import { AlertDialogComponent } from './dialogs/alert-dialog.component';
 import { ContextMenuTriggerDirective } from './directives/context-menu-trigger.directive';
 import { DateTimeInputDirective } from './directives/date-time-input.directive';
@@ -59,6 +60,7 @@ const materialModules = [
     DateTimeToStartOf,
     DateTimeToEndOf,
     ContextMenuTriggerDirective,
+    StatusContainerComponent,
   ],
   entryComponents: [
     AlertDialogComponent,
@@ -77,6 +79,7 @@ const materialModules = [
     DateTimeToEndOf,
     ContextMenuTriggerDirective,
     LuxonModule,
+    StatusContainerComponent,
   ],
 })
 export class SharedModule {

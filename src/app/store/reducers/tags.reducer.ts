@@ -1,8 +1,9 @@
+import { Status, errorStatus, initialStatus, isInitialStatus, loadingStatus, successStatus } from '@app/shared/types';
+import { SessionTag } from '@app/store';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { SessionsTagsActions } from '../actions';
-import { SessionTag, Status, StatusCode, errorStatus, initialStatus, loadingStatus, successStatus } from '../models';
 
 export interface State extends EntityState<SessionTag> {
   status: Status;
@@ -19,20 +20,20 @@ const initialState = adapter.getInitialState<State>({
 export const reducer = createReducer(
   initialState,
   on(SessionsTagsActions.requestTags, (state) => {
-    if (state.status.type === StatusCode.Initial) {
+    if (isInitialStatus(state.status)) {
       return {
         ...state,
-        status: loadingStatus(),
+        status: loadingStatus(state.status),
       }
-    } else {
-      return state;
     }
+
+    return state;
   }),
 
   on(SessionsTagsActions.tagsAdded, (state, { tags }) => {
     return adapter.upsertMany(tags, {
       ...state,
-      status: successStatus(),
+      status: successStatus(state.status),
     });
   }),
 
@@ -43,7 +44,8 @@ export const reducer = createReducer(
   on(SessionsTagsActions.tagsError, (state, { message }) => {
     return {
       ...state,
-      status: errorStatus(message),
+      status: errorStatus(state.status, message),
     };
   }),
-);
+  )
+;

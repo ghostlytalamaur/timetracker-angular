@@ -4,11 +4,16 @@ import { fromTags } from '../reducers';
 
 import { selectStoreFeature } from './feature.selectors';
 
-const selectTags = compose(
+const selectTagsState = compose(
   state => state.tags,
   selectStoreFeature,
 )
 
 export const {
   selectAll: selectSessionsTags,
-} = fromTags.adapter.getSelectors(selectTags);
+} = fromTags.adapter.getSelectors(selectTagsState);
+
+export const selectStatus = compose(
+  state => state.status,
+  selectTagsState,
+)
