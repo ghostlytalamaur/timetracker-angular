@@ -21,8 +21,8 @@ export class SessionsTagsService {
     return this.store.select(SessionsTagsSelectors.selectSessionsTags);
   }
 
-  public loadTags(): void {
-    this.store.dispatch(SessionsTagsActions.loadTags());
+  public requestTags(): void {
+    this.store.dispatch(SessionsTagsActions.requestTags());
   }
 
   public saveTag(tag: SessionTag): void {

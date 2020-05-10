@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SessionTag, SessionsTagsService } from '@app/store';
 import { Observable } from 'rxjs';
 
-
 @Component({
   selector: 'app-sessions-tags',
   templateUrl: './sessions-tags.component.html',
@@ -21,7 +20,7 @@ export class SessionsTagsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.tagsService.loadTags();
+    this.tagsService.requestTags();
   }
 
   public onDeleteTag(tagId: string): void {

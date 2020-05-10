@@ -2,18 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { SessionsActions } from '../actions';
-import { SessionEntity } from '../models';
-
-export interface LoadingStatus {
-  type: 'loading';
-}
-
-export interface ErrorStatus {
-  type: 'error';
-  message: string;
-}
-
-type Status = LoadingStatus | ErrorStatus;
+import { SessionEntity, Status, errorStatus, loadingStatus } from '../models';
 
 export interface State extends EntityState<SessionEntity> {
   readonly status: Status | undefined;
@@ -26,7 +15,7 @@ export const adapter = createEntityAdapter<SessionEntity>();
 function onLoadSessions(state: State): State {
   return {
     ...state,
-    status: { type: 'loading' },
+    status: loadingStatus(),
   };
 }
 
@@ -50,7 +39,7 @@ function onSessionsRemoved(state: State, { ids }: ReturnType<typeof SessionsActi
 function onSessionsError(state: State, { message }: ReturnType<typeof SessionsActions.sessionsError>): State {
   return {
     ...state,
-    status: { type: 'error', message },
+    status: errorStatus(message),
   };
 }
 

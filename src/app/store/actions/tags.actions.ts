@@ -2,13 +2,27 @@ import { createAction, props } from '@ngrx/store';
 
 import { SessionTag } from '../models';
 
-export const loadTags = createAction(
-  '[Sessions Tags] Load Tags',
+export const requestTags = createAction(
+  '[Sessions Tags] Request Tags',
 );
 
-export const loadTagsSuccess = createAction(
-  '[Sessions Tags] Load Tags Success',
+export const tagsError = createAction(
+  '[Sessions Tags] Error',
+  props<{ message: string; }>(),
+)
+export const tagsAdded = createAction(
+  '[Sessions Tags] Tags Added',
   props<{ tags: SessionTag[] }>(),
+);
+
+export const tagsModified = createAction(
+  '[Sessions Tags] Tags Modified',
+  props<{ tags: SessionTag[] }>(),
+);
+
+export const tagsDeleted = createAction(
+  '[Sessions Tags] Tags Deleted',
+  props<{ ids: string[] }>(),
 );
 
 export const saveTag = createAction(
