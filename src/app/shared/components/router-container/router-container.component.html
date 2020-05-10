@@ -1,0 +1,8 @@
+<div (@routerAnimation.done)="logAnimation($event)"
+     (@routerAnimation.start)="logAnimation($event)"
+     [@routerAnimation]="o.isActivated ? o.activatedRoute : ''"
+     class="router-container"
+
+>
+  <router-outlet #o="outlet"></router-outlet>
+</div>
