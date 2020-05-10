@@ -11,9 +11,4 @@ import { routerAnimation } from '../../animations';
 })
 export class RouterContainerComponent {
 
-
-  public logAnimation(event: any): void {
-    console.log(event);
-  }
-
 }
