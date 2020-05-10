@@ -12,22 +12,26 @@ import { AuthActions } from './store/actions';
 })
 export class AuthService {
   public constructor(
-    private readonly store: Store<fromAuth.State>,
+    private readonly store: Store,
   ) {
   }
 
-  public get user$(): Observable<User | undefined> {
-    return this.store.select(fromAuth.getUser);
+  public get user$(): Observable<User | null> {
+    return this.store.select(fromAuth.selectUser);
   }
 
-  public get user(): Promise<User | undefined> {
+  public get user(): Promise<User | null> {
     return this.user$
       .pipe(first())
       .toPromise();
   }
 
   public isSignedIn(): Observable<boolean> {
-    return this.store.select(fromAuth.isSignedIn);
+    return this.store.select(fromAuth.selectIsSignedIn);
+  }
+
+  public getStatus$(): Observable<fromAuth.AuthStatus> {
+    return this.store.select(fromAuth.selectStatus);
   }
 
   public autoSignIn(): void {
@@ -47,10 +51,10 @@ export class AuthService {
   }
 
   public isLoading(): Observable<boolean> {
-    return this.store.select(fromAuth.isLoading);
+    return this.store.select(fromAuth.selectIsLoading);
   }
 
   public getError(): Observable<string | undefined> {
-    return this.store.select(fromAuth.getError);
+    return this.store.select(fromAuth.selectError);
   }
 }

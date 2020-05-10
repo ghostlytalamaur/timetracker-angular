@@ -1,49 +1,70 @@
-import { Action, ActionReducer, Selector, compose, createFeatureSelector, createReducer, on } from '@ngrx/store';
+import { Action, compose, createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 
-import * as fromRoot from '../../store';
 import { User } from '../model';
 
 import { AuthActions } from './actions';
 
 export const authFeatureKey = 'auth';
 
+
+const enum AuthStatusCode {
+  Process = 'process',
+  AutoSignInFailed = 'auto-sign-in-failed',
+  SignedIn = 'signed-in',
+  SignedOut = 'signed-out',
+  Error = 'error',
+}
+
 interface ErrorStatus {
-  type: 'error';
+  type: AuthStatusCode.Error;
   message: string;
 }
 
-interface LoadingStatus {
-  type: 'loading';
+interface SignedIn {
+  type: AuthStatusCode.SignedIn,
 }
 
-type Status = ErrorStatus | LoadingStatus;
+interface SignedOut {
+  type: AuthStatusCode.SignedOut;
+}
+
+interface LoadingStatus {
+  type: AuthStatusCode.Process;
+}
+
+interface AutoSignInFailed {
+  type: AuthStatusCode.AutoSignInFailed;
+}
+
+export type AuthStatus = SignedOut | SignedIn | AutoSignInFailed | ErrorStatus | LoadingStatus;
 
 export interface AuthState {
-  user: User | undefined;
-  status: Status | undefined;
-}
-
-export interface State extends fromRoot.State {
-  [authFeatureKey]: AuthState;
+  user: User | null;
+  status: AuthStatus;
 }
 
 const initialState: AuthState = {
-  user: undefined,
-  status: undefined,
+  user: null,
+  status: { type: AuthStatusCode.SignedOut },
 };
 
-const authReducers: ActionReducer<AuthState> = createReducer<AuthState>(initialState,
-  on(AuthActions.signIn, AuthActions.signUp, AuthActions.signOut, AuthActions.autoSignIn, (state): AuthState => {
-    return {
-      ...state,
-      status: { type: 'loading' },
-    };
-  }),
+const authReducers = createReducer<AuthState>(initialState,
+  on(AuthActions.signIn, AuthActions.signUp, AuthActions.signOut, AuthActions.autoSignIn,
+    (state): AuthState => {
+      return {
+        ...state,
+        status: { type: AuthStatusCode.Process },
+      };
+    }),
 
   on(AuthActions.authError, (state, { message }) => {
     return {
       ...state,
-      status: { type: 'error', message },
+      user: null,
+      status: {
+        type: AuthStatusCode.Error,
+        message,
+      },
     };
   }),
 
@@ -51,22 +72,23 @@ const authReducers: ActionReducer<AuthState> = createReducer<AuthState>(initialS
     return {
       ...state,
       user,
-      status: undefined,
+      status: { type: AuthStatusCode.SignedIn },
     };
   }),
 
   on(AuthActions.autoSignInFailed, (state) => {
     return {
       ...state,
-      status: undefined,
+      user: null,
+      status: { type: AuthStatusCode.AutoSignInFailed },
     };
   }),
 
   on(AuthActions.signOutSuccess, (state) => {
     return {
       ...state,
-      user: undefined,
-      status: undefined,
+      user: null,
+      status: { type: AuthStatusCode.SignedOut },
     };
   }),
 );
@@ -75,23 +97,28 @@ export function reducers(state: AuthState, action: Action): AuthState {
   return authReducers(state, action);
 }
 
-const selectAuthState: Selector<State, AuthState> = createFeatureSelector(authFeatureKey);
-export const getUser: Selector<State, User | undefined> = compose(
+const selectAuthState = createFeatureSelector<AuthState>(authFeatureKey);
+export const selectUser = compose(
   state => state.user,
   selectAuthState,
 );
 
-export const isSignedIn: Selector<State, boolean> = compose(
+export const selectIsSignedIn = compose(
   user => !!user,
-  getUser,
+  selectUser,
 );
 
-export const isLoading: Selector<State, boolean> = compose(
-  state => !!(state.status && state.status.type === 'loading'),
+export const selectStatus = createSelector(
+  selectAuthState,
+  state => state.status,
+)
+
+export const selectIsLoading = compose(
+  state => state.status.type === AuthStatusCode.Process,
   selectAuthState,
 );
 
-export const getError: Selector<State, string | undefined> = compose(
-  state => state.status && state.status.type === 'error' ? state.status.message : undefined,
+export const selectError = compose(
+  state => state.status.type === AuthStatusCode.Error ? state.status.message : undefined,
   selectAuthState,
 );

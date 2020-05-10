@@ -29,7 +29,7 @@ export function appInitializerFactory(): () => Promise<void> {
   return () => {
     splashScreenService.setInfo('Signing in...');
 
-    const isSignedIn = authService.isSignedIn()
+    const isSignedIn = authService.getStatus$()
       .pipe(
         skip(1),
         take(1),
