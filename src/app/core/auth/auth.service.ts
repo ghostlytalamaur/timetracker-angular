@@ -30,6 +30,10 @@ export class AuthService {
     return this.store.select(fromAuth.isSignedIn);
   }
 
+  public autoSignIn(): void {
+    this.store.dispatch(AuthActions.autoSignIn());
+  }
+
   public signUp(credentials: Credentials): void {
     this.store.dispatch(AuthActions.signUp(credentials));
   }

@@ -26,7 +26,6 @@ import { CoreModule } from './core/core.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatListModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {

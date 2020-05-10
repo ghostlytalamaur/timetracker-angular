@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AngularFireModule, FirebaseOptions } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthModule } from '@app/core/auth';
@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { appInitializerFactory } from './services';
 import * as fromRoot from './store';
 
 const prodFirebaseOptions: FirebaseOptions = {
@@ -61,6 +62,9 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
     }),
     AuthModule,
     AppStoreModule,
+  ],
+  providers: [
+    { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },
   ],
 })
 export class CoreModule {
