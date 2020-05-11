@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from '@app/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -29,6 +31,8 @@ import * as fromFeature from './store/reducers';
     SharedModule,
     StoreModule.forFeature(fromFeature.featureKey, fromFeature.reducer),
     EffectsModule.forFeature(effects),
+    MatCheckboxModule,
+    MatChipsModule,
   ],
   declarations: [
     SessionDetailsComponent,

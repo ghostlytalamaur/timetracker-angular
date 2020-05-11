@@ -45,7 +45,7 @@ export class SessionsService {
     return this.store.select(SettingsSelectors.selectSortType);
   }
 
-  public loadSessions(): void {
+  public requestSessions(): void {
     this.store.select(SessionsSelectors.selectIsLoaded)
       .pipe(
         take(1),
@@ -119,5 +119,9 @@ export class SessionsService {
 
   public changeSortType(sortType: SortType) {
     this.store.dispatch(SettingsActions.changeSortType({ sortType }));
+  }
+
+  public toggleSessionTag(sessionId: string, tagId: string): void {
+    this.store.dispatch(SessionsActions.toggleSessionTag({ sessionId, tagId }));
   }
 }

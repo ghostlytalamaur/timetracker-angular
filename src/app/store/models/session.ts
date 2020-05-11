@@ -5,6 +5,7 @@ import { map, multicast, refCount } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 import { SessionEntity, createSession } from './session-entity';
+import { SessionTag } from './session-tag';
 import { SessionsGroupType } from './sessions-group';
 
 export class Session {
@@ -12,26 +13,34 @@ export class Session {
     public readonly id: string,
     public readonly start: DateTime,
     public readonly duration: Duration | null,
+    public readonly tags: SessionTag[],
   ) {
   }
 
-  public static fromEntity(entity: SessionEntity): Session {
+  public static fromEntity(entity: SessionEntity, tags: SessionTag[]): Session {
     return new Session(entity.id,
       DateTime.fromMillis(entity.start),
       entity.duration ? Duration.fromMillis(entity.duration) : null,
+      tags,
     );
   }
 
   public static fromNow(id: string): Session {
     const date = DateTime.local();
-    return new Session(id, date, null);
+    return new Session(id, date, null, []);
+  }
+
+  public hasTag(tagId: string): boolean {
+    return this.tags.some(tag => tag.id === tagId);
   }
 
   public toEntity(): SessionEntity {
     return createSession(
       this.id,
       this.start.valueOf(),
-      this.duration ? this.duration.valueOf() : null);
+      this.duration ? this.duration.valueOf() : null,
+      this.tags.map(tag => tag.id),
+    );
   }
 
 }

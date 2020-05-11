@@ -1,9 +1,11 @@
+import { Dictionary } from '@ngrx/entity';
 import { compose, createSelector } from '@ngrx/store';
 
-import { Session, isRunning } from '../models';
+import { Session, SessionTag, isRunning } from '../models';
 import { fromSessions } from '../reducers';
 
 import { selectStoreFeature } from './feature.selectors';
+import * as TagsSelectors from './tags.selectors';
 
 const selectSessionsState = createSelector(
   selectStoreFeature,
@@ -15,11 +17,26 @@ const {
   selectAll,
 } = fromSessions.adapter.getSelectors(selectSessionsState);
 
+function getTags(tagsDict: Dictionary<SessionTag>, ids: string[]): SessionTag[] {
+  return ids
+    .reduce((acc, tagId) => {
+      const tag = tagsDict[tagId];
+      if (tag) {
+        acc.push(tag);
+      }
+
+      return acc;
+    }, new Array<SessionTag>());
+}
+
 export const selectSessions = createSelector(
   selectAll,
-  entities => entities
-    .map(e => Session.fromEntity(e))
-    .sort((a, b) => a.start.valueOf() - b.start.valueOf()),
+  TagsSelectors.selectTagsEntities,
+  (entities, tagsDict) => {
+    return entities
+      .map(e => Session.fromEntity(e, getTags(tagsDict, e.tags)))
+      .sort((a, b) => a.start.valueOf() - b.start.valueOf())
+  },
 );
 
 export const selectRunningSessions = createSelector(
@@ -34,9 +51,10 @@ export const selectHasRunningSessions = createSelector(
 
 export const selectSession = (id: string) => createSelector(
   selectEntities,
-  entities => {
+  TagsSelectors.selectTagsEntities,
+  (entities, tagsDict) => {
     const e = entities[id];
-    return e && Session.fromEntity(e);
+    return e && Session.fromEntity(e, getTags(tagsDict, e.tags));
   });
 
 export const selectStatus = compose(

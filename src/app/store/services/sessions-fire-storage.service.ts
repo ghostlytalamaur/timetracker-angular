@@ -19,6 +19,7 @@ export interface SessionStorageEntity {
   id: string;
   start: firebase.firestore.Timestamp;
   duration: number | null;
+  tags?: string[];
 }
 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
@@ -26,6 +27,7 @@ function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
     id: session.id,
     start: firebase.firestore.Timestamp.fromDate(new Date(session.start)),
     duration: session.duration,
+    tags: session.tags,
   };
 }
 
@@ -34,6 +36,7 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
     id: session.id,
     start: session.start.toDate().valueOf(),
     duration: session.duration,
+    tags: session.tags ?? [],
   };
 }
 
@@ -86,6 +89,9 @@ export class SessionsFireStorageService implements SessionsStorage {
       }
       if (change.duration) {
         stChange.duration = change.duration;
+      }
+      if (change.tags) {
+        stChange.tags = change.tags;
       }
       return stChange;
     });

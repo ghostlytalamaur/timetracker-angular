@@ -52,8 +52,31 @@
           hasBackdrop="false"
 >
   <ng-template matMenuContent let-node="node">
+
+    <button
+      [matMenuTriggerData]="{ session: node.node }"
+      [matMenuTriggerFor]="tagsMenu"
+      mat-menu-item
+    >Tags
+    </button>
+
+    <mat-divider></mat-divider>
     <button mat-menu-item
             (click)="onDeleteSessions([node.node])"
-    >Delete</button>
+    >Delete
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #tagsMenu>
+  <ng-template let-session="session" matMenuContent>
+    <button
+      (click)="onToggleSessionTag(session.id, tag.id)"
+      *ngFor="let tag of tags"
+      mat-menu-item>
+      <mat-checkbox
+        [checked]="session.hasTag(tag.id)"
+      >{{ tag.label }}</mat-checkbox>
+    </button>
   </ng-template>
 </mat-menu>

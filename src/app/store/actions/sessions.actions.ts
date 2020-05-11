@@ -50,3 +50,20 @@ export const sessionsError = createAction(
 export const clearError = createAction(
   '[Sessions] Clear Error',
 );
+
+export const toggleSessionTag = createAction(
+  '[Sessions] Toggle Tag',
+  props<{
+    sessionId: string;
+    tagId: string;
+  }>(),
+);
+
+export const toggleSessionTagFailure = createAction(
+  '[Sessions] Toggle Tag Failure',
+  props<{
+    sessionId: string;
+    tagId: string;
+  }>(),
+)
+

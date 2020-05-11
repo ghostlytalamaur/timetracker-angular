@@ -11,6 +11,7 @@ const selectTagsState = compose(
 
 export const {
   selectAll: selectSessionsTags,
+  selectEntities: selectTagsEntities,
 } = fromTags.adapter.getSelectors(selectTagsState);
 
 export const selectStatus = compose(

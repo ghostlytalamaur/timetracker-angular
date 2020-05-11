@@ -3,12 +3,12 @@ import { Range } from '@app/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
-import { Observable, from, merge, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { EMPTY, Observable, from, merge, of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { SessionsActions } from '../actions';
 import { SessionEntity, Update } from '../models';
-import { SettingsSelectors } from '../selectors';
+import { SessionsSelectors, SettingsSelectors } from '../selectors';
 // noinspection ES6PreferShortImport
 import { SESSIONS_STORAGE, SessionsStorage } from '../services';
 
@@ -44,6 +44,30 @@ export class SessionsEffects {
       .pipe(
         ofType(SessionsActions.updateSessions),
         switchMap(action => this.handleUpdateSessions(action.changes)),
+      ),
+  );
+
+  public toggleSessionTags$ = createEffect(() =>
+    this.actions$
+      .pipe(
+        ofType(SessionsActions.toggleSessionTag),
+        mergeMap(({ sessionId, tagId }) => {
+          return this.store.select(SessionsSelectors.selectSession(sessionId))
+            .pipe(
+              take(1),
+              switchMap(session => {
+                if (session) {
+                  return this.handleUpdateSessions([{
+                    id: session.id,
+                    tags: session.tags.map(t => t.id),
+                  }]);
+                } else {
+                  return EMPTY;
+                }
+              }),
+              catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
+            );
+        }),
       ),
   );
 

@@ -23,7 +23,6 @@ export class SessionsTagsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.tagsService.requestTags();
   }
 
   public onDeleteTag(tagId: string): void {

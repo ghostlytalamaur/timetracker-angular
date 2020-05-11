@@ -97,7 +97,7 @@ export class SessionsImportComponent implements OnInit {
     for (const s of backup.sessions) {
       const start = DateTime.fromMillis(s.start * 1000);
       const end = DateTime.fromMillis(s.end * 1000);
-      sessions.push(new Session(uuid(), start, end.diff(start)).toEntity());
+      sessions.push(new Session(uuid(), start, end.diff(start), []).toEntity());
     }
     this.sessionsSrv.addSessions(sessions);
   }

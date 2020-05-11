@@ -85,6 +85,7 @@ export class SessionDetailsComponent implements OnChanges {
       id: this.session && this.session.id || uuid(),
       start: start.valueOf(),
       duration: end ? end.valueOf() - start.valueOf() : null,
+      tags: this.session ? this.session.tags.map(t => t.id) : [],
     };
     this.saveSession.emit(sessionEntity);
   }

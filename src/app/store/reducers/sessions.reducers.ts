@@ -51,6 +51,21 @@ function onClearError(state: State): State {
   };
 }
 
+function onToggleSessionTag(state: State, action: ReturnType<typeof SessionsActions.toggleSessionTag>): State {
+  const session = state.entities[action.sessionId];
+  if (!session) {
+    return state;
+  }
+  const tags = session.tags;
+
+  return adapter.updateOne({
+    id: action.sessionId,
+    changes: {
+      tags: tags.includes(action.tagId) ? tags.filter(id => id !== action.tagId) : tags.concat(action.tagId),
+    },
+  }, state);
+}
+
 export const initialState: State = adapter.getInitialState<State>({
   ids: [],
   entities: {},
@@ -65,4 +80,7 @@ export const reducer = createReducer<State>(initialState,
   on(SessionsActions.sessionsRemoved, onSessionsRemoved),
   on(SessionsActions.sessionsError, onSessionsError),
   on(SessionsActions.clearError, onClearError),
+  on(SessionsActions.toggleSessionTag,
+    // on failure tags already in session
+    SessionsActions.toggleSessionTagFailure, onToggleSessionTag),
 );

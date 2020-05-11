@@ -22,7 +22,6 @@ export class SessionsComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.sessionsSrv.loadSessions();
   }
 
 }

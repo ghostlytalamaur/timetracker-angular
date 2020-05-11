@@ -17,6 +17,7 @@ export interface SessionStorageEntity {
   id: string;
   start: Date;
   duration: number | null;
+  tags: string[]
 }
 
 function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
@@ -24,6 +25,7 @@ function toSessionStorageEntity(session: SessionEntity): SessionStorageEntity {
     id: session.id,
     start: new Date(session.start),
     duration: session.duration,
+    tags: session.tags,
   };
 }
 
@@ -32,6 +34,7 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
     id: session.id,
     start: session.start.valueOf(),
     duration: session.duration,
+    tags: session.tags,
   };
 }
 
@@ -84,6 +87,9 @@ export class SessionsDexieStorageService implements SessionsStorage {
       }
       if (change.duration) {
         stChange.duration = change.duration;
+      }
+      if (change.tags) {
+        stChange.tags = change.tags;
       }
       return stChange;
     });
