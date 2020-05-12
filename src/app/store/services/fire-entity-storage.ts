@@ -10,7 +10,6 @@ import { AuthService, User } from '@app/core/auth';
 import { isDefined } from '@app/shared/utils/guards';
 import { Observable, merge, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { ObservableInput } from 'rxjs/src/internal/types';
 
 import { EntityType, Update } from '../models';
 
@@ -113,7 +112,7 @@ export class FireEntityStorage<Entity extends EntityType> {
     });
   }
 
-  private withUser<T>(fn: (user: User) => ObservableInput<T>): Observable<T> {
+  private withUser<T>(fn: (user: User) => Observable<T> | Promise<T>): Observable<T> {
     return this.authService.user$
       .pipe(
         switchMap(user => user ? fn(user) : throwError(new Error('Not authenticated'))),
