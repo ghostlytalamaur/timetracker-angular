@@ -7,14 +7,18 @@ import {
   QueryFn,
 } from '@angular/fire/firestore';
 import { AuthService, User } from '@app/core/auth';
-import { NEVER, Observable, merge, of } from 'rxjs';
+import { isDefined } from '@app/shared/utils/guards';
+import { Observable, merge, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { ObservableInput } from 'rxjs/src/internal/types';
 
 import { EntityType, Update } from '../models';
 
-import { EntityQuery, EntityStorage, OrderByDirection, QueryFunction, WhereFilterOp } from './entity-storage';
+export type WhereFilterOp = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
+export type OrderByDirection = 'desc' | 'asc';
+export type QueryFunction<Q extends FireStoreQuery<unknown>> = (query: Q) => Q;
 
-class FireStoreQuery<E> implements EntityQuery<E> {
+export class FireStoreQuery<E> {
   public constructor(
     public ref: Query,
   ) {
@@ -37,7 +41,7 @@ class FireStoreQuery<E> implements EntityQuery<E> {
 
 }
 
-export class FireEntityStorage<Entity extends EntityType> implements EntityStorage<Entity, FireStoreQuery<Entity>> {
+export class FireEntityStorage<Entity extends EntityType> {
 
   public constructor(
     private readonly afs: AngularFirestore,
@@ -46,27 +50,23 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   ) {
   }
 
-  public addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
+  protected addedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return merge(
       this.loadEntities(queryFn),
       this.changedEntities('added', queryFn),
     );
   }
 
-  public modifiedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
+  protected modifiedEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
     return this.changedEntities('modified', queryFn);
   }
 
-  public deletedEntities(): Observable<string[]> {
-    return this.authService.user$
-      .pipe(
-        switchMap(user => user ? this.deletedEntitiesForUser(user) : NEVER),
-      );
+  protected deletedEntities(): Observable<string[]> {
+    return this.withUser(user => this.deletedEntitiesForUser(user));
   }
 
-  public async deleteEntities(...ids: string[]): Promise<void> {
-    const user = await this.authService.user;
-    if (user) {
+  protected deleteEntities(...ids: string[]): Observable<void> {
+    return this.withUser((user) => {
       const promises: Promise<void>[] = [];
       for (const id of ids) {
         const promise = this.afs
@@ -75,15 +75,13 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
           .delete();
         promises.push(promise);
       }
+
       return Promise.all(promises).then();
-    } else {
-      return Promise.reject(new Error('Not authenticated'));
-    }
+    });
   }
 
-  public async updateEntities(...changes: Update<Entity>[]): Promise<void> {
-    const user = await this.authService.user;
-    if (user) {
+  protected updateEntities(...changes: Update<Entity>[]): Observable<void> {
+    return this.withUser((user) => {
       const promises: Promise<void>[] = [];
       const collection = this.getCollectionPath(user.id);
       for (const change of changes) {
@@ -92,15 +90,13 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
           .update(change);
         promises.push(res);
       }
+
       return Promise.all(promises).then();
-    } else {
-      return Promise.reject(new Error('Not authenticated'));
-    }
+    });
   }
 
-  public async addEntities(...entities: Entity[]): Promise<void> {
-    const user = await this.authService.user;
-    if (user) {
+  protected addEntities(...entities: Entity[]): Observable<void> {
+    return this.withUser((user) => {
       const promises: Promise<void>[] = [];
       const collection = this.getCollectionPath(user.id);
       for (const entity of entities) {
@@ -112,36 +108,35 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
           .set(entity);
         promises.push(res);
       }
+
       return Promise.all(promises).then();
-    } else {
-      return Promise.reject(new Error('Not authenticated'));
-    }
+    });
+  }
+
+  private withUser<T>(fn: (user: User) => ObservableInput<T>): Observable<T> {
+    return this.authService.user$
+      .pipe(
+        switchMap(user => user ? fn(user) : throwError(new Error('Not authenticated'))),
+      )
   }
 
   private changedEntities(type: 'added' | 'modified', queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
-    return this.authService.user$
-      .pipe(
-        switchMap(user => user ? this.changedEntitiesForUser(user, type, queryFn) : NEVER),
-      );
+    return this.withUser(user => this.changedEntitiesForUser(user, type, queryFn));
   }
 
   private loadEntities(queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {
-    return this.authService.user$
-      .pipe(
-        switchMap(user => {
-          if (user) {
-            const collection = this.afs.collection<Entity>(this.getCollectionPath(user.id));
-            return this.afs.collection<Entity>(collection.ref, this.wrapQuery(queryFn))
-              .get()
-              .pipe(
-                map(snapshot => snapshot.docs.map(doc => this.createEntityFromDoc(doc as QueryDocumentSnapshot<Entity>))),
-                map(entities => entities.filter(entity => !!entity) as Entity[]),
-              );
-          } else {
-            return of([]);
-          }
-        }),
-      );
+    return this.withUser(user => {
+      const collection = this.afs.collection<Entity>(this.getCollectionPath(user.id));
+      return this.afs.collection<Entity>(collection.ref, this.wrapQuery(queryFn))
+        .get()
+        .pipe(
+          map(snapshot =>
+            snapshot.docs
+              .map(doc => this.createEntityFromDoc(doc as QueryDocumentSnapshot<Entity>))
+              .filter(isDefined),
+          ),
+        );
+    });
   }
 
   private changedEntitiesForUser(user: User, type: 'added' | 'modified',
@@ -154,8 +149,12 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
   private createEntitiesForUser(action$: Observable<DocumentChangeAction<Entity>[]>): Observable<Entity[]> {
     return action$
       .pipe(
-        switchMap(changes => Promise.all(changes.map(doc => this.createEntityFromDoc(doc.payload.doc)))),
-        map(entities => entities.filter(entity => !!entity) as Entity[]),
+        switchMap(changes => Promise.all(
+          changes
+            .map(doc => this.createEntityFromDoc(doc.payload.doc))
+            .filter(isDefined),
+          ),
+        ),
       );
   }
 
@@ -166,12 +165,11 @@ export class FireEntityStorage<Entity extends EntityType> implements EntityStora
       );
   }
 
-  private createEntityFromDoc(doc: QueryDocumentSnapshot<Entity> | DocumentSnapshot<Entity>): Entity | undefined {
-
+  private createEntityFromDoc(doc: QueryDocumentSnapshot<Entity> | DocumentSnapshot<Entity>): Entity | null {
     if (doc.exists) {
       return doc.data();
     } else {
-      return undefined;
+      return null;
     }
   }
 

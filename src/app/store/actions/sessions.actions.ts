@@ -3,8 +3,12 @@ import { createAction, props } from '@ngrx/store';
 import { SessionEntity, Update } from '../models';
 
 
-export const loadSessions = createAction(
-  '[Sessions] Load Sessions',
+export const requestSessions = createAction(
+  '[Sessions] Request Sessions',
+);
+
+export const cancelRequestSessions = createAction(
+  '[Sessions] Cancel Request Sessions',
 );
 
 export const addSession = createAction(

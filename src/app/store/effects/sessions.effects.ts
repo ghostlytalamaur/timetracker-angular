@@ -1,16 +1,33 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { getErrorMessage } from '@app/shared/types';
 import { Range } from '@app/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
-import { EMPTY, Observable, from, merge, of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { EMPTY, Observable, OperatorFunction, merge, of } from 'rxjs';
+import { catchError, finalize, map, mergeMap, switchMap, switchMapTo, take, takeUntil } from 'rxjs/operators';
 
 import { SessionsActions } from '../actions';
-import { SessionEntity, Update } from '../models';
 import { SessionsSelectors, SettingsSelectors } from '../selectors';
 // noinspection ES6PreferShortImport
-import { SESSIONS_STORAGE, SessionsStorage } from '../services';
+import { SessionsStorageService } from '../services';
+
+function isAction(value: unknown): value is Action {
+  return typeof value === 'object' && value !== null && 'type' in value && typeof (value as any).type === 'string';
+}
+
+function handleSessionError<T>(msg: string): OperatorFunction<T, Action> {
+  return source => source
+    .pipe(
+      switchMap(maybeAction => isAction(maybeAction) ? of(maybeAction) : EMPTY),
+      catchError(err => {
+        const message = msg ? `${msg}\n${getErrorMessage(err)}` : getErrorMessage(err);
+
+        return of(SessionsActions.sessionsError({ message }));
+      }),
+      finalize(() => console.log('unsubscribe')),
+    );
+}
 
 @Injectable()
 export class SessionsEffects {
@@ -18,8 +35,19 @@ export class SessionsEffects {
   public loadEffect$ = createEffect(() =>
     this.actions$
       .pipe(
-        ofType(SessionsActions.loadSessions),
-        switchMap(ignored => this.getChangesActions()),
+        ofType(SessionsActions.requestSessions),
+        switchMap(() => {
+            const requested$ = this.actions$
+              .pipe(
+                ofType(SessionsActions.cancelRequestSessions),
+              );
+
+            return this.getChangesActions()
+              .pipe(
+                takeUntil<Action>(requested$),
+              )
+          },
+        ),
       ),
   );
 
@@ -27,7 +55,12 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.addSession),
-        switchMap(action => this.handleAddSession(action.session)),
+        switchMap(action =>
+          this.storage.addSession(action.session)
+            .pipe(
+              handleSessionError('Cannot add session'),
+            ),
+        ),
       ),
   );
 
@@ -35,7 +68,12 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.addSessions),
-        switchMap(action => this.handleAddSessions(action.sessions)),
+        switchMap(action =>
+          this.storage.addSessions(action.sessions)
+            .pipe(
+              handleSessionError('Cannot add sessions'),
+            ),
+        ),
       ),
   );
 
@@ -43,7 +81,12 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.updateSessions),
-        switchMap(action => this.handleUpdateSessions(action.changes)),
+        switchMap(action =>
+          this.storage.updateSessions(action.changes)
+            .pipe(
+              handleSessionError('Cannot update sessions'),
+            ),
+        ),
       ),
   );
 
@@ -57,15 +100,18 @@ export class SessionsEffects {
               take(1),
               switchMap(session => {
                 if (session) {
-                  return this.handleUpdateSessions([{
+                  return this.storage.updateSessions([{
                     id: session.id,
                     tags: session.tags.map(t => t.id),
-                  }]);
+                  }])
+                    .pipe(
+                      switchMapTo(EMPTY),
+                      catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
+                    );
                 } else {
                   return EMPTY;
                 }
               }),
-              catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
             );
         }),
       ),
@@ -75,63 +121,34 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.removeSessions),
-        switchMap(action => this.handleRemoveSession(action.ids)),
+        switchMap(action =>
+          this.storage.removeSessions(action.ids)
+            .pipe(
+              handleSessionError('Cannot remove session'),
+            ),
+        ),
       ),
   );
 
   public constructor(
     private readonly actions$: Actions,
     private readonly store: Store,
-    @Inject(SESSIONS_STORAGE) private readonly storage: SessionsStorage,
+    private readonly storage: SessionsStorageService,
   ) {
   }
 
-  private handleAddSessions(sessions: SessionEntity[]): Observable<Action> {
-    return this.wrapVoid(this.storage.addSessions(sessions), 'Cannot add sessions.');
-  }
-
-  private handleAddSession(session: SessionEntity): Observable<Action> {
-    return this.wrapVoid(this.storage.addSession(session), 'Cannot add session.');
-  }
-
-  private handleUpdateSessions(changes: Update<SessionEntity>[]): Observable<Action> {
-    return this.wrapVoid(this.storage.updateSessions(changes), 'Cannot update session.');
-  }
-
-  private handleRemoveSession(ids: string[]): Observable<Action> {
-    return this.wrapVoid(this.storage.removeSessions(ids), 'Cannot remove session.');
-  }
-
-  private wrapVoid(promise: Promise<any>, msg: string): Observable<Action> {
-    const stream$ = from(promise)
-      .pipe(
-        map(() => ({ type: 'DUMMY ACTION' })),
-      );
-    return this.catchError(stream$, msg);
-  }
-
   private getChangesActions(): Observable<Action> {
-    const changes$ = this.store.select(SettingsSelectors.selectDisplayRange)
+    return this.store.select(SettingsSelectors.selectDisplayRange)
       .pipe(
         switchMap(range => {
           return merge(
             this.getAddedSessions(range),
             this.getRemovedSessions(),
             this.getModifiedSessions(range),
-          );
-        }),
-      );
-
-    return this.catchError(changes$, '');
-  }
-
-  private catchError(stream: Observable<Action>, msg: string): Observable<Action> {
-    return stream
-      .pipe(
-        catchError(err => {
-          console.log(err);
-          const message = err instanceof Error ? err.message : msg + JSON.stringify(err);
-          return of(SessionsActions.sessionsError({ message }));
+          )
+            .pipe(
+              handleSessionError(''),
+            );
         }),
       );
   }

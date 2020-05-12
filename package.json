@@ -23,7 +23,6 @@
     "@angular/service-worker": "~9.1.4",
     "luxon": "^1.24.1",
     "luxon-angular": "^3.0.0",
-    "dexie": "^3.0.0",
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",

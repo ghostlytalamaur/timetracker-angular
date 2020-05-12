@@ -6,6 +6,10 @@ export const requestTags = createAction(
   '[Sessions Tags] Request Tags',
 );
 
+export const cancelRequestTags = createAction(
+  '[Sessions Tags] Cancel Request Tags',
+);
+
 export const tagsError = createAction(
   '[Sessions Tags] Error',
   props<{ message: string; }>(),

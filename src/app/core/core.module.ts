@@ -3,6 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AngularFireModule, FirebaseOptions } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthModule } from '@app/core/auth';
+import { SharedModule } from '@app/shared';
 import { AppStoreModule } from '@app/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -10,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../../environments/environment';
 
+import { AppDataContainerComponent } from './containers';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { appInitializerFactory } from './services';
 import * as fromRoot from './store';
@@ -39,6 +41,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
 @NgModule({
   declarations: [
     PageNotFoundComponent,
+    AppDataContainerComponent,
   ],
   exports: [
     AuthModule,
@@ -62,6 +65,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
     }),
     AuthModule,
     AppStoreModule,
+    SharedModule,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },

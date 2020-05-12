@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 import { Credentials, User } from './model';
 import * as fromAuth from './store';
@@ -18,12 +17,6 @@ export class AuthService {
 
   public get user$(): Observable<User | null> {
     return this.store.select(fromAuth.selectUser);
-  }
-
-  public get user(): Promise<User | null> {
-    return this.user$
-      .pipe(first())
-      .toPromise();
   }
 
   public isSignedIn(): Observable<boolean> {

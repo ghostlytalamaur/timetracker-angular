@@ -31,7 +31,7 @@ export function appInitializerFactory(): () => Promise<void> {
 
     const isSignedIn = authService.getStatus$()
       .pipe(
-        skip(1),
+        skip(2), // skip initial signed-out, skip process
         take(1),
         mapTo(void 0),
       )

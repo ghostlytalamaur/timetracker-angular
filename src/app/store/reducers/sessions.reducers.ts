@@ -74,7 +74,8 @@ export const initialState: State = adapter.getInitialState<State>({
 });
 
 export const reducer = createReducer<State>(initialState,
-  on(SessionsActions.loadSessions, onLoadSessions),
+  on(SessionsActions.requestSessions, onLoadSessions),
+  on(SessionsActions.cancelRequestSessions, () => initialState),
   on(SessionsActions.sessionsAdded, onSessionsAdded),
   on(SessionsActions.sessionsModified, onSessionsModified),
   on(SessionsActions.sessionsRemoved, onSessionsRemoved),

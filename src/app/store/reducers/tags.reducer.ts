@@ -30,6 +30,8 @@ export const reducer = createReducer(
     return state;
   }),
 
+  on(SessionsTagsActions.cancelRequestTags, () => initialState),
+
   on(SessionsTagsActions.tagsAdded, (state, { tags }) => {
     return adapter.upsertMany(tags, {
       ...state,

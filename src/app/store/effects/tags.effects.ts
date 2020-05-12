@@ -3,7 +3,7 @@ import { getErrorMessage } from '@app/shared/types';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY, Observable, merge, of } from 'rxjs';
-import { catchError, exhaustMap, map, mergeMap, switchMapTo } from 'rxjs/operators';
+import { catchError, exhaustMap, map, mergeMap, switchMapTo, takeUntil } from 'rxjs/operators';
 
 import { SessionsTagsActions } from '../actions';
 // noinspection ES6PreferShortImport
@@ -16,7 +16,17 @@ export class TagsEffects {
     this.actions
       .pipe(
         ofType(SessionsTagsActions.requestTags),
-        exhaustMap(() => this.getChanges()),
+        exhaustMap(() => {
+          const requested$ = this.actions
+            .pipe(
+              ofType(SessionsTagsActions.cancelRequestTags),
+            );
+
+          return this.getChanges()
+            .pipe(
+              takeUntil(requested$),
+            );
+        }),
       ),
   );
 

@@ -4023,11 +4023,6 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dexie@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.0.tgz#6f468fa30b5c53343bbbfb1659ddede202e1a67c"
-  integrity sha512-wOS7Og4NzXYG2OZPkzmgNTR+WSocu3O6bQSU22s30g3I2g32By/tbaTMoCVFKd55p+oTlxZY8YAMkhJs4vj0sw==
-
 dezalgo@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/dezalgo/-/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"

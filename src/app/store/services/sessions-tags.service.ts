@@ -30,6 +30,10 @@ export class SessionsTagsService {
     this.store.dispatch(SessionsTagsActions.requestTags());
   }
 
+  public cancelRequestTags(): void {
+    this.store.dispatch(SessionsTagsActions.cancelRequestTags());
+  }
+
   public saveTag(tag: SessionTag): void {
     this.store.dispatch(SessionsTagsActions.saveTag({ tag }));
   }

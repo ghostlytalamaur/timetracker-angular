@@ -52,9 +52,13 @@ export class SessionsService {
       )
       .subscribe(isLoaded => {
         if (!isLoaded) {
-          this.store.dispatch(SessionsActions.loadSessions());
+          this.store.dispatch(SessionsActions.requestSessions());
         }
       });
+  }
+
+  public cancelRequestSessions(): void {
+    this.store.dispatch(SessionsActions.cancelRequestSessions());
   }
 
   public addSession(session: SessionEntity): void {
