@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { SessionsService, SessionsTagsService } from '@app/store';
 
 @Component({
@@ -12,7 +13,14 @@ export class AppDataContainerComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly sessionsService: SessionsService,
     private readonly tagsService: SessionsTagsService,
+    private readonly afunc: AngularFireFunctions,
   ) {
+    afunc.httpsCallable('testCallable')({ param1: 'value1', obj2: { prop2: 'value2' }})
+      .subscribe({
+        next: res => console.log('functions response', res),
+        error: err => console.log(err),
+        complete: () => console.log('function completed'),
+      });
   }
 
   public ngOnInit(): void {

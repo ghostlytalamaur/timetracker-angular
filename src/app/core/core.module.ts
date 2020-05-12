@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AngularFireModule, FirebaseOptions } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { AuthModule } from '@app/core/auth';
 import { SharedModule } from '@app/shared';
 import { AppStoreModule } from '@app/store';
@@ -50,6 +51,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
     CommonModule,
     AngularFireModule.initializeApp(firebaseOptions),
     AngularFirestoreModule,
+    AngularFireFunctionsModule,
     StoreModule.forRoot(fromRoot.reducers, {
       metaReducers: fromRoot.metaReducers,
       runtimeChecks: {

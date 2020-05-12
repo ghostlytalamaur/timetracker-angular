@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthService } from '@app/core/auth';
 import { routerAnimation } from '@app/shared/animations';
 import { Observable } from 'rxjs';
+import { AngularFireFunctions } from '@angular/fire/functions/functions';
 
 
 @Component({
