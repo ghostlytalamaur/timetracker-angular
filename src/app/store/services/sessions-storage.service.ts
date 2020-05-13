@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { AuthService } from '@app/core/auth';
 import { Range } from '@app/shared/utils';
 import * as firebase from 'firebase/app';
@@ -37,13 +38,26 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
   };
 }
 
+export interface UpdateSessionTagsParams {
+  sessionId: string;
+  tagId: string;
+  append: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class SessionsStorageService extends FireEntityStorage<SessionStorageEntity> {
 
-  public constructor(afs: AngularFirestore, auth: AuthService) {
+  private updateSessionTagsFunc: (options: UpdateSessionTagsParams) => Observable<void>;
+
+  public constructor(
+    afs: AngularFirestore,
+    auth: AuthService,
+    private readonly functions: AngularFireFunctions,
+  ) {
     super(afs, auth, 'sessions');
+    this.updateSessionTagsFunc = this.functions.httpsCallable('updateSessionTags');
   }
 
   public addedSessions(range: Range<DateTime>): Observable<SessionEntity[]> {
@@ -74,6 +88,10 @@ export class SessionsStorageService extends FireEntityStorage<SessionStorageEnti
 
   public removeSessions(ids: string[]): Observable<void> {
     return this.deleteEntities(...ids);
+  }
+
+  public updateSessionTags(options: { sessionId: string; tagId: string; append: boolean; }): Observable<void> {
+    return this.updateSessionTagsFunc(options);
   }
 
   public updateSessions(changes: Update<SessionEntity>[]): Observable<void> {

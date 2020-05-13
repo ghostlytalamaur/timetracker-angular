@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DateTime } from 'luxon';
 import { EMPTY, Observable, OperatorFunction, merge, of } from 'rxjs';
-import { catchError, finalize, map, mergeMap, switchMap, switchMapTo, take, takeUntil } from 'rxjs/operators';
+import { catchError, finalize, map, mergeMap, switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
 
 import { SessionsActions } from '../actions';
 import { SessionsSelectors, SettingsSelectors } from '../selectors';
@@ -95,16 +95,17 @@ export class SessionsEffects {
       .pipe(
         ofType(SessionsActions.toggleSessionTag),
         mergeMap(({ sessionId, tagId }) => {
-          return this.store.select(SessionsSelectors.selectSession(sessionId))
+          return this.store.select(SessionsSelectors.selectSessionEntity(sessionId))
             .pipe(
               take(1),
               switchMap(session => {
                 if (session) {
-                  return this.storage.updateSessions([{
-                    id: session.id,
-                    tags: session.tags.map(t => t.id),
-                  }])
+                  return this.storage.updateSessionTags({
+                    sessionId, tagId,
+                    append: session.tags.includes(tagId),
+                  })
                     .pipe(
+                      tap(v => console.log('response', v)),
                       switchMapTo(EMPTY),
                       catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
                     );

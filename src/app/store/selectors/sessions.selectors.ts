@@ -49,6 +49,11 @@ export const selectHasRunningSessions = createSelector(
   sessions => sessions.length > 0,
 );
 
+export const selectSessionEntity = (id: string) => createSelector(
+  selectEntities,
+  entities => entities[id] ?? null,
+  );
+
 export const selectSession = (id: string) => createSelector(
   selectEntities,
   TagsSelectors.selectTagsEntities,
