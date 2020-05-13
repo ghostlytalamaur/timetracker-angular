@@ -1,2 +1,2 @@
-export * from './app';
+export * from './on-remove-tag';
 export * from './update-session-tags';

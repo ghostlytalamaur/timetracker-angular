@@ -5,13 +5,14 @@ import { FireCollections, FireSessionEntity, FireTagEntity, getCollectionPath } 
 import { fireApp } from './app';
 
 export const onRemoveTag = functions.firestore
-  .document(`users/{userId}/${FireCollections.Tags}/tagId`)
+  .document(`users/{userId}/${FireCollections.Tags}/{tagId}`)
   .onDelete(async (snapshot, context) => {
     const userId = context.params.userId;
     const tagId = context.params.tagId;
 
     const tag = snapshot.data() as FireTagEntity;
     if (!tag) {
+      console.log('tag data does not exists');
       return;
     }
 
@@ -22,7 +23,7 @@ export const onRemoveTag = functions.firestore
       .get();
 
     const promises: Promise<any>[] = [];
-    sessionsDocs.forEach((sessionSnap) => {
+    for (const sessionSnap of sessionsDocs.docs) {
       if (!sessionSnap.exists) {
         return;
       }
@@ -37,7 +38,7 @@ export const onRemoveTag = functions.firestore
           tags: (session.tags ?? []).filter((id) => id !== tagId),
         }),
       );
-    });
+    }
 
-    await Promise.all(promises);
+    return Promise.all(promises);
   });
