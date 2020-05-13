@@ -54,13 +54,13 @@
   <ng-template matMenuContent let-node="node">
 
     <button
+      *ngIf="tags.length"
       [matMenuTriggerData]="{ session: node.node }"
       [matMenuTriggerFor]="tagsMenu"
       mat-menu-item
     >Tags
     </button>
 
-    <mat-divider></mat-divider>
     <button mat-menu-item
             (click)="onDeleteSessions([node.node])"
     >Delete
