@@ -9,6 +9,7 @@ import { AppStoreModule } from '@app/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ToastrModule } from 'ngx-toastr';
 
 import { environment } from '../../environments/environment';
 
@@ -68,6 +69,8 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
     AuthModule,
     AppStoreModule,
     SharedModule,
+
+    ToastrModule.forRoot(),
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },

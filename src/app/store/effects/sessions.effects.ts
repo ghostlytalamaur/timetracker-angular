@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationsService } from '@app/core/services';
 import { getErrorMessage } from '@app/shared/types';
 import { Range } from '@app/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -100,13 +101,23 @@ export class SessionsEffects {
               take(1),
               switchMap(session => {
                 if (session) {
+                  const notificationId = this.notifications.info('Updating session...');
                   return this.storage.updateSessionTags({
                     sessionId, tagId,
                     append: session.tags.includes(tagId),
                   })
                     .pipe(
+                      tap(() => {
+                        this.notifications.clear(notificationId);
+                        this.notifications.success('Session was updated')
+                      }),
                       switchMapTo(EMPTY),
-                      catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
+                      catchError(() => {
+                        this.notifications.clear(notificationId);
+                        this.notifications.error('Unable to update session');
+
+                        return of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }));
+                      }),
                     );
                 } else {
                   return EMPTY;
@@ -134,6 +145,7 @@ export class SessionsEffects {
     private readonly actions$: Actions,
     private readonly store: Store,
     private readonly storage: SessionsStorageService,
+    private readonly notifications: NotificationsService,
   ) {
   }
 
