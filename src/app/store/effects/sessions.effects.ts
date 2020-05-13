@@ -105,7 +105,6 @@ export class SessionsEffects {
                     append: session.tags.includes(tagId),
                   })
                     .pipe(
-                      tap(v => console.log('response', v)),
                       switchMapTo(EMPTY),
                       catchError(() => of(SessionsActions.toggleSessionTagFailure({ sessionId, tagId }))),
                     );

@@ -9,7 +9,9 @@ export interface State extends EntityState<SessionTag> {
   status: Status;
 }
 
-export const adapter = createEntityAdapter<SessionTag>();
+export const adapter = createEntityAdapter<SessionTag>({
+  sortComparer: (a, b) => a.id.localeCompare(b.id),
+});
 
 const initialState = adapter.getInitialState<State>({
   ids: [],

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from '@app/core/auth';
+import { FireCollections } from '@app/storage/models';
 import { Observable } from 'rxjs';
 
 import { SessionTag } from '../models';
@@ -16,7 +17,7 @@ export class SessionsTagsStorageService extends FireEntityStorage<SessionTag> {
     afs: AngularFirestore,
     auth: AuthService,
   ) {
-    super(afs, auth, 'sessions-tags');
+    super(afs, auth, FireCollections.Tags);
   }
 
   public addedTags(): Observable<SessionTag[]> {

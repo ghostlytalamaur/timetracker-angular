@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { AuthService } from '@app/core/auth';
 import { Range } from '@app/shared/utils';
+import { FireCollections, UpdateSessionTagsParams } from '@app/storage/models';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { DateTime } from 'luxon';
@@ -38,12 +39,6 @@ function fromSessionStorageEntity(session: SessionStorageEntity): SessionEntity 
   };
 }
 
-export interface UpdateSessionTagsParams {
-  sessionId: string;
-  tagId: string;
-  append: boolean;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -56,7 +51,7 @@ export class SessionsStorageService extends FireEntityStorage<SessionStorageEnti
     auth: AuthService,
     private readonly functions: AngularFireFunctions,
   ) {
-    super(afs, auth, 'sessions');
+    super(afs, auth, FireCollections.Sessions);
     this.updateSessionTagsFunc = this.functions.httpsCallable('updateSessionTags');
   }
 
