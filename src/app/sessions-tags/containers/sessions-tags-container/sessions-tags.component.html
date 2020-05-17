@@ -2,12 +2,12 @@
   [status]="status$ | async"
 >
   <app-tags-editor
-    (saveTag)="onSaveTag($event)"
     [tag]="selectedTag"
+    (saveTag)="onSaveTag($event)"
   ></app-tags-editor>
   <app-tags-list
-    (deleteTag)="onDeleteTag($event)"
-    (tagSelected)="onTagSelected($event)"
+    [(selectedTag)]="selectedTag"
     [tags]="tags$ | async"
+    (deleteTag)="onDeleteTag($event)"
   ></app-tags-list>
 </app-status-container>

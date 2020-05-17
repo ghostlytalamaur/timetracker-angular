@@ -134,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "time-tracker"
+  "defaultProject": "time-tracker",
+  "cli": {
+    "analytics": false
+  }
 }

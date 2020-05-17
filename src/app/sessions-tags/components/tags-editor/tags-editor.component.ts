@@ -50,6 +50,17 @@ export class TagsEditorComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.saveTag.emit(createSessionTag(this.form.value.label));
+    let newTag: SessionTag;
+    if (this.tag) {
+      newTag = {
+        ...this.tag,
+        label: this.form.value.label,
+      };
+    } else {
+      newTag = createSessionTag(this.form.value.label);
+      this.form.reset();
+    }
+
+    this.saveTag.emit(newTag);
   }
 }

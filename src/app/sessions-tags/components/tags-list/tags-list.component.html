@@ -1,12 +1,13 @@
 <mat-selection-list
   multiple="false"
-  (selectionChange)="onSelectionChange($event.option.value)"
 >
   <mat-list-option
     *ngFor="let tag of tags; let last = last; trackBy: trackById"
     [value]="tag.id"
+    (click)="onSelectionChange(tag.id)"
     [appContextMenuTriggerFor]="tagMenu"
     [appContextMenuTriggerData]="{ tag: tag }"
+    [selected]="tag.id === selectedTag?.id"
   >
     <mat-icon mat-list-icon>label</mat-icon>
     <div mat-line>{{ tag.label }}</div>

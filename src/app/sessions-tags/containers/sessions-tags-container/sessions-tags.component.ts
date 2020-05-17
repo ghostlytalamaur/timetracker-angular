@@ -37,7 +37,4 @@ export class SessionsTagsComponent implements OnInit {
     this.tagsService.saveTag(tag);
   }
 
-  public onTagSelected(tag: SessionTag | null): void {
-    this.selectedTag = tag;
-  }
 }

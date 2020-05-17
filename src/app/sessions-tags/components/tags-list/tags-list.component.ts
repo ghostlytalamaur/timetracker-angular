@@ -14,8 +14,10 @@ export class TagsListComponent implements OnInit {
   public tags: SessionTag[] = [];
   @Output()
   public deleteTag = new EventEmitter<string>();
+  @Input()
+  public selectedTag: SessionTag | null = null;
   @Output()
-  public tagSelected = new EventEmitter<SessionTag | null>();
+  public readonly selectedTagChange = new EventEmitter<SessionTag | null>();
 
   public ngOnInit(): void {
   }
@@ -29,6 +31,11 @@ export class TagsListComponent implements OnInit {
   }
 
   public onSelectionChange(id: string): void {
-    this.tagSelected.emit(this.tags.find(t => t.id === id) ?? null);
+    if (id === this.selectedTag?.id) {
+      this.selectedTag = null;
+    } else {
+      this.selectedTag = this.tags.find(t => t.id === id) ?? null;
+    }
+    this.selectedTagChange.emit(this.selectedTag);
   }
 }
