@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AuthService } from '@app/core/auth';
+import { routerAnimation } from '@app/shared/animations';
 import { Observable } from 'rxjs';
 
-import { AuthService } from '../core/auth/auth.service';
-
-import { routerAnimation } from './animations';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +11,7 @@ import { routerAnimation } from './animations';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerAnimation],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   public isSignedIn$: Observable<boolean>;
 
@@ -20,6 +19,9 @@ export class AppComponent {
     private readonly authService: AuthService,
   ) {
     this.isSignedIn$ = this.authService.isSignedIn();
+  }
+
+  public ngOnInit(): void {
   }
 
   public onSignOut(): void {

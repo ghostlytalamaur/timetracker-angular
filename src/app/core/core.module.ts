@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AngularFireModule, FirebaseOptions } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AuthModule } from '@app/core/auth';
+import { SharedModule } from '@app/shared';
+import { AppStoreModule } from '@app/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ToastrModule } from 'ngx-toastr';
 
 import { environment } from '../../environments/environment';
 
-import { AuthModule } from './auth/auth.module';
+import { AppDataContainerComponent } from './containers';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { appInitializerFactory } from './services';
 import * as fromRoot from './store';
 
 const prodFirebaseOptions: FirebaseOptions = {
@@ -37,6 +43,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
 @NgModule({
   declarations: [
     PageNotFoundComponent,
+    AppDataContainerComponent,
   ],
   exports: [
     AuthModule,
@@ -45,6 +52,7 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
     CommonModule,
     AngularFireModule.initializeApp(firebaseOptions),
     AngularFirestoreModule,
+    AngularFireFunctionsModule,
     StoreModule.forRoot(fromRoot.reducers, {
       metaReducers: fromRoot.metaReducers,
       runtimeChecks: {
@@ -59,6 +67,13 @@ const firebaseOptions: FirebaseOptions = environment.production ? prodFirebaseOp
       logOnly: environment.production,
     }),
     AuthModule,
+    AppStoreModule,
+    SharedModule,
+
+    ToastrModule.forRoot(),
+  ],
+  providers: [
+    { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },
   ],
 })
 export class CoreModule {

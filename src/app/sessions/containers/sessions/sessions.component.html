@@ -1,17 +1,9 @@
-<ng-container *ngIf="!(isLoading$ | async); else loadingTemplate">
+<app-status-container
+  [status]="status$ | async"
+>
   <div class="row h-100">
-    <div class="col"
-         [@routerAnimation]="o.isActivated ? o.activatedRoute : ''"
-    >
-      <router-outlet #o="outlet"></router-outlet>
-    </div>
-  </div>
-</ng-container>
-
-<ng-template #loadingTemplate>
-  <div class="row h-100 align-items-center">
     <div class="col">
-      <mat-spinner class="mx-auto"></mat-spinner>
+      <app-router-container></app-router-container>
     </div>
   </div>
-</ng-template>
+</app-status-container>

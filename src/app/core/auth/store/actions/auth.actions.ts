@@ -31,9 +31,9 @@ export const authSuccess = createAction(
 );
 
 export const autoSignIn = createAction(
-  '[Auth] Auth Auto Sign In',
+  '[Auth] Auto Sign In',
 );
 
 export const autoSignInFailed = createAction(
-  '[Auth] Auth Auto Sign In Failed',
+  '[Auth] Auto Sign In Failed',
 );

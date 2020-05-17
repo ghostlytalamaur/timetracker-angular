@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { SharedModule } from '@app/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-
-import { SharedModule } from '../shared/shared.module';
 
 import {
   GroupTableRowComponent,
@@ -13,18 +14,25 @@ import {
   SessionsTableComponent,
   SessionsTableRowComponent,
 } from './components';
-import { SessionDetailsContainerComponent, SessionsComponent, SessionsContainerComponent, SessionsImportComponent, } from './containers';
+import {
+  SessionDetailsContainerComponent,
+  SessionsComponent,
+  SessionsContainerComponent,
+  SessionsImportComponent,
+} from './containers';
 import { SessionsRoutingModule } from './sessions-routing.module';
-import { SessionsEffects, SessionsTableEffects, SettingsEffects, fromSessionsFeature } from './store';
-
+import { effects } from './store/effects';
+import * as fromFeature from './store/reducers';
 
 @NgModule({
   imports: [
     CommonModule,
     SessionsRoutingModule,
     SharedModule,
-    StoreModule.forFeature(fromSessionsFeature.sessionsFeatureKey, fromSessionsFeature.reducers),
-    EffectsModule.forFeature([SessionsEffects, SettingsEffects, SessionsTableEffects]),
+    StoreModule.forFeature(fromFeature.featureKey, fromFeature.reducer),
+    EffectsModule.forFeature(effects),
+    MatCheckboxModule,
+    MatChipsModule,
   ],
   declarations: [
     SessionDetailsComponent,

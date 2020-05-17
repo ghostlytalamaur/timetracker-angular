@@ -14,4 +14,13 @@
       <app-session-duration [duration]="duration$ | async"></app-session-duration>
     </div>
   </div>
+  <div *ngIf="session.tags.length" class="row">
+    <div class="col">
+      <mat-chip-list>
+        <mat-chip
+          *ngFor="let tag of session.tags"
+        >{{ tag.label }}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
 </div>

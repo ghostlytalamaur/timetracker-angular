@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Session, SessionEntity, SessionsService } from '@app/store';
 import { DateTime } from 'luxon';
 import { v4 as uuid } from 'uuid';
 
-import { Session, SessionEntity } from '../../models';
-import { SessionsService } from '../../services/sessions.service';
 
 interface DayBackup {
   id: number;
@@ -98,7 +97,7 @@ export class SessionsImportComponent implements OnInit {
     for (const s of backup.sessions) {
       const start = DateTime.fromMillis(s.start * 1000);
       const end = DateTime.fromMillis(s.end * 1000);
-      sessions.push(new Session(uuid(), start, end.diff(start)).toEntity());
+      sessions.push(new Session(uuid(), start, end.diff(start), []).toEntity());
     }
     this.sessionsSrv.addSessions(sessions);
   }

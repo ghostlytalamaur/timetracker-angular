@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Range } from '@app/shared/utils';
+import { Session, SessionTag, SessionsGroupType, SessionsService, SessionsTagsService, SortType } from '@app/store';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { Range } from '../../../shared/utils';
-import { Session, SessionsGroupType, SortType } from '../../models';
-import { SessionsService } from '../../services/sessions.service';
 
 import { SessionsTableService } from './sessions-table.service';
 
@@ -24,9 +22,11 @@ export class SessionsContainerComponent implements OnInit {
   public readonly sortType$: Observable<SortType>;
   public readonly sessions$: Observable<Session[]>;
   public readonly expandedNodes$: Observable<string[]>;
+  public readonly tags$: Observable<SessionTag[]>;
 
   public constructor(
     private readonly sessionsSrv: SessionsService,
+    private readonly tagsService: SessionsTagsService,
     private readonly tableSrv: SessionsTableService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
@@ -42,6 +42,7 @@ export class SessionsContainerComponent implements OnInit {
     this.sortType$ = this.sessionsSrv.getSortType();
     this.sessions$ = this.sessionsSrv.getSessions();
     this.expandedNodes$ = this.tableSrv.getExpandedNodes();
+    this.tags$ = this.tagsService.getTags();
   }
 
   public ngOnInit() {
@@ -74,5 +75,9 @@ export class SessionsContainerComponent implements OnInit {
 
   public onToggleNode(nodeId: string): void {
     this.tableSrv.toggleNode(nodeId);
+  }
+
+  public onToggleSessionTag(event: { sessionId: string; tagId: string }): void {
+    this.sessionsSrv.toggleSessionTag(event.sessionId, event.tagId);
   }
 }

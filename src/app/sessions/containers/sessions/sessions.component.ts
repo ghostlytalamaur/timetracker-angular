@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
-
-import { routerAnimation } from '../../../app/animations';
-import { DialogsService } from '../../../shared/alert-dialog/dialogs.service';
-import { SessionsService } from '../../services/sessions.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { routerAnimation } from '@app/shared/animations';
+import { Status } from '@app/shared/types';
+import { SessionsService } from '@app/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sessions',
@@ -13,34 +11,17 @@ import { SessionsService } from '../../services/sessions.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerAnimation],
 })
-export class SessionsComponent implements OnInit, OnDestroy {
+export class SessionsComponent implements OnInit {
 
-  public readonly isLoading$: Observable<boolean>;
-  public readonly error$: Observable<string>;
-  public subscription: Subscription;
+  public readonly status$: Observable<Status>;
 
   public constructor(
     private sessionsSrv: SessionsService,
-    private dialogs: DialogsService,
   ) {
-    this.isLoading$ = this.sessionsSrv.isLoading();
-    this.error$ = this.sessionsSrv.getError();
+    this.status$ = this.sessionsSrv.getStatus();
   }
 
   public ngOnInit() {
-    this.sessionsSrv.loadSessions();
-    this.subscription = this.error$
-      .pipe(
-        filter(message => !!message),
-        switchMap(message => this.dialogs.showAlert({ title: 'Error', message })),
-      )
-      .subscribe(() => this.sessionsSrv.clearError());
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
 }

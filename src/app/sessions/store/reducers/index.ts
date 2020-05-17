@@ -1,11 +1,17 @@
-import * as fromSessionsFeature from './feature.reducers';
+import { combineReducers } from '@ngrx/store';
+
 import * as fromSessionsTable from './sessions-table.reducer';
-import * as fromSessions from './sessions.reducers';
-import * as fromSettings from './settings.reducers';
+
+export const featureKey = 'sessions-ui';
+
+export interface State {
+  readonly table: fromSessionsTable.State,
+}
+
+export const reducer = combineReducers<State>({
+  table: fromSessionsTable.reducer,
+})
 
 export {
-  fromSessionsFeature,
-  fromSettings,
-  fromSessions,
   fromSessionsTable,
 };

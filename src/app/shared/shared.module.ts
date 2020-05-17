@@ -17,14 +17,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
+import { RouterModule } from '@angular/router';
 import { LuxonModule } from 'luxon-angular';
 
-import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import {
   DateRangePickerDialogComponent,
   DateRangePickerDialogDirective,
 } from './components/date-range-picker/date-range-picker-dialog.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
+import { RouterContainerComponent } from './components/router-container/router-container.component';
+import { StatusContainerComponent } from './components/status-container/status-container.component';
+import { AlertDialogComponent } from './dialogs/alert-dialog.component';
 import { ContextMenuTriggerDirective } from './directives/context-menu-trigger.directive';
 import { DateTimeInputDirective } from './directives/date-time-input.directive';
 import { DateTimeToEndOf, DateTimeToStartOf } from './pipes/date-time.pipe';
@@ -49,7 +52,7 @@ const materialModules = [
 ];
 
 @NgModule({
-  imports: [...materialModules, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [...materialModules, CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   declarations: [
     AlertDialogComponent,
     DateTimeInputDirective,
@@ -59,6 +62,8 @@ const materialModules = [
     DateTimeToStartOf,
     DateTimeToEndOf,
     ContextMenuTriggerDirective,
+    StatusContainerComponent,
+    RouterContainerComponent,
   ],
   entryComponents: [
     AlertDialogComponent,
@@ -77,6 +82,8 @@ const materialModules = [
     DateTimeToEndOf,
     ContextMenuTriggerDirective,
     LuxonModule,
+    StatusContainerComponent,
+    RouterContainerComponent,
   ],
 })
 export class SharedModule {

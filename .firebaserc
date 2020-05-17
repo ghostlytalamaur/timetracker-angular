@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "timetracker-1548352730517"
+    "prod": "timetracker-1548352730517",
+    "dev": "timetracker-dev-8cae3"
   },
   "targets": {
     "timetracker-1548352730517": {

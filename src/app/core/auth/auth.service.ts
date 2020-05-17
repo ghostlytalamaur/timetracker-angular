@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 import { Credentials, User } from './model';
 import * as fromAuth from './store';
@@ -12,24 +11,24 @@ import { AuthActions } from './store/actions';
 })
 export class AuthService {
   public constructor(
-    private readonly store: Store<fromAuth.State>,
+    private readonly store: Store,
   ) {
-    this.store.dispatch(AuthActions.autoSignIn());
   }
 
-
-  public get user$(): Observable<User | undefined> {
-    return this.store.select(fromAuth.getUser);
-  }
-
-  public get user(): Promise<User | undefined> {
-    return this.user$
-      .pipe(first())
-      .toPromise();
+  public get user$(): Observable<User | null> {
+    return this.store.select(fromAuth.selectUser);
   }
 
   public isSignedIn(): Observable<boolean> {
-    return this.store.select(fromAuth.isSignedIn);
+    return this.store.select(fromAuth.selectIsSignedIn);
+  }
+
+  public getStatus$(): Observable<fromAuth.AuthStatus> {
+    return this.store.select(fromAuth.selectStatus);
+  }
+
+  public autoSignIn(): void {
+    this.store.dispatch(AuthActions.autoSignIn());
   }
 
   public signUp(credentials: Credentials): void {
@@ -45,10 +44,10 @@ export class AuthService {
   }
 
   public isLoading(): Observable<boolean> {
-    return this.store.select(fromAuth.isLoading);
+    return this.store.select(fromAuth.selectIsLoading);
   }
 
   public getError(): Observable<string | undefined> {
-    return this.store.select(fromAuth.getError);
+    return this.store.select(fromAuth.selectError);
   }
 }

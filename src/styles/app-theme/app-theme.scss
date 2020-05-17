@@ -1,6 +1,7 @@
 @use '~@angular/material/theming' as material;
 @use './custom-styles';
 @use './bootstrap';
+@use './toastr';
 
 @mixin components-themes($theme) {
   @include custom-styles.custom-styles($theme);

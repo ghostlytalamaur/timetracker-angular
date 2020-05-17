@@ -11,10 +11,20 @@ import {
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, Injectable, Input, OnDestroy, Optional, ViewContainerRef, } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Inject,
+  Injectable,
+  Input,
+  OnDestroy,
+  Optional,
+  ViewContainerRef,
+} from '@angular/core';
 import { MAT_MENU_SCROLL_STRATEGY, MatMenu, MenuPositionX, MenuPositionY } from '@angular/material/menu';
-import { Observable, Subject, Subscription, fromEvent, merge, of } from 'rxjs';
-import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, Subscription, fromEvent, merge, of } from 'rxjs';
+import { filter, map, mapTo, take, takeUntil, tap } from 'rxjs/operators';
 
 interface ContextMenuConfig {
   element: ElementRef<HTMLElement>;
@@ -27,30 +37,25 @@ function log(...args: any[]): void {
   // console.log(performance.now(), ...args);
 }
 
-const enum ContextMenuStatus {
-  Default,
-  Opening,
-  Opened,
-  Closing,
-  Closed,
-}
-
 class ContextMenuRef {
 
-  private status: ContextMenuStatus = ContextMenuStatus.Default;
+  private menuClosingActionsSubscription: Subscription | null = null;
   private closed: Subject<void> = new Subject<void>();
 
   private subscription = new Subscription();
+  private overlayRef: OverlayRef | null;
 
   public constructor(
     private readonly menu: MatMenu,
     private readonly config: ContextMenuConfig,
-    private readonly overlayRef: OverlayRef,
+    overlayRef: OverlayRef,
+    private readonly doc: Document,
   ) {
+    this.overlayRef = overlayRef;
   }
 
   public show(): void {
-    if (this.status === ContextMenuStatus.Opened || this.status === ContextMenuStatus.Opening) {
+    if (!this.overlayRef) {
       return;
     }
 
@@ -61,18 +66,13 @@ class ContextMenuRef {
     }
 
     this.setupSubscriptions();
-    // this.menu.focusFirstItem('program');
+
     this.menu._resetAnimation();
     this.menu._startAnimation();
   }
 
   public close(): void {
-    if (this.status === ContextMenuStatus.Closed || this.status === ContextMenuStatus.Closing) {
-      return;
-    }
-
-    log('menu: emit closed');
-    this.status = ContextMenuStatus.Closing;
+    log('menu: close');
     this.menu.closed.emit();
   }
 
@@ -80,12 +80,79 @@ class ContextMenuRef {
     return this.closed;
   }
 
-  public hasElement(node: Node): boolean {
-    return this.overlayRef.overlayElement.contains(node) || this.config.element.nativeElement.contains(node);
+  public dispose(): void {
+    log('menu: dispose');
+    this.overlayRef?.dispose();
+    this.overlayRef = null;
+
+    this.doDispose();
+  }
+
+  public doDispose(): void {
+    log('menu: doDispose');
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+
+    this.subscription.unsubscribe();
+    this.closed.next();
+    this.closed.complete();
+  }
+
+  private menuClosingActions(): Observable<void> {
+    if (!this.overlayRef) {
+      return EMPTY;
+    }
+
+    const docClick$ = fromEvent(this.doc, 'click', { passive: true })
+      .pipe(
+        filter(event => {
+          if (event.target instanceof Node) {
+            return !this.overlayRef?.overlayElement?.contains(event.target)
+          }
+
+          return false;
+        }),
+        mapTo('docClick'),
+      );
+
+    const docContextMenu$ = fromEvent(this.doc, 'contextmenu', { passive: true })
+      .pipe(
+        filter(event => {
+          if (event.target instanceof Node) {
+            return !(this.overlayRef?.overlayElement?.contains(event.target) || this.config.element.nativeElement?.contains(event.target))
+          }
+
+          return false;
+        }),
+        mapTo('docContextMenu'),
+      );
+
+    const detachments$ = this.overlayRef.detachments()
+      .pipe(
+        mapTo('detachments'),
+      );
+    return merge(docClick$, docContextMenu$, detachments$)
+      .pipe(
+        map(reason => log('menu: closing action', reason)),
+      );
+  }
+
+  private unsubscribeClosingActions(): void {
+    if (this.menuClosingActionsSubscription) {
+      log('menu: unsubscribe from closing actions');
+      this.menuClosingActionsSubscription.unsubscribe();
+      this.menuClosingActionsSubscription = null;
+    }
   }
 
   private setupSubscriptions(): void {
+    if (!this.overlayRef) {
+      return;
+    }
+
     this.subscription.add(this.overlayRef.keydownEvents().subscribe());
+    this.menuClosingActionsSubscription = this.menuClosingActions().subscribe(() => this.close());
 
     const position = this.overlayRef.getConfig().positionStrategy;
     if (this.menu.setPositionClasses && position instanceof FlexibleConnectedPositionStrategy) {
@@ -99,47 +166,39 @@ class ContextMenuRef {
           }));
     }
 
-    this.subscription.add(
-      this.menu.closed.asObservable()
-        .subscribe(() => {
-          log('menu: closing');
-          this.overlayRef.detach();
-          const menu = this.menu;
-          menu._resetAnimation();
-          if (menu.lazyContent) {
-            // Wait for the exit animation to finish before detaching the content.
-            menu._animationDone
-              .pipe(
-                tap(event => log('menu: animation event', {
-                  toState: event.toState,
-                  fromState: event.fromState,
-                  phaseName: event.phaseName,
-                  triggerName: event.triggerName,
-                  totalTime: event.totalTime,
-                })),
-                filter(event => event.toState === 'void'),
-                take(1),
-                // Interrupt if the content got re-attached.
-                takeUntil(menu.lazyContent._attached),
-              )
-              .subscribe({
-                next: () => menu.lazyContent?.detach(),
-                complete: () => this.dispose(),
-              })
-            ;
-          } else {
-            this.dispose();
-          }
-        }));
+    this.subscription.add(this.menu.closed.asObservable().subscribe(() => this.destroyMenu()));
   }
 
-  private dispose(): void {
-    log('menu: closed');
-    this.status = ContextMenuStatus.Closed;
-    this.overlayRef.dispose();
-    this.subscription.unsubscribe();
-    this.closed.next();
-    this.closed.complete();
+  private destroyMenu(): void {
+    log('menu: destroyMenu');
+    this.unsubscribeClosingActions();
+    this.overlayRef?.detach();
+    const menu = this.menu;
+    menu._resetAnimation();
+    if (menu.lazyContent) {
+      // Wait for the exit animation to finish before detaching the content.
+      menu._animationDone
+        .pipe(
+          tap(event => log('menu: animation event', {
+            toState: event.toState,
+            fromState: event.fromState,
+            phaseName: event.phaseName,
+            triggerName: event.triggerName,
+            totalTime: event.totalTime,
+          })),
+          filter(event => event.toState === 'void'),
+          take(1),
+          // Interrupt if the content got re-attached.
+          takeUntil(menu.lazyContent._attached),
+        )
+        .subscribe({
+          next: () => menu.lazyContent?.detach(),
+          complete: () => this.doDispose(),
+        })
+      ;
+    } else {
+      this.dispose();
+    }
   }
 }
 
@@ -148,7 +207,6 @@ class ContextMenuRef {
 })
 export class ContextMenuService implements OnDestroy {
   private activeMenu: ContextMenuRef | null = null;
-  private menuClosingActionsSubscription: Subscription | null = null;
 
   public constructor(
     private readonly overlay: Overlay,
@@ -159,7 +217,8 @@ export class ContextMenuService implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.unsubscribeClosingActions();
+    this.activeMenu?.dispose();
+    this.activeMenu = null;
   }
 
   public open(menu: MatMenu, config: ContextMenuConfig): ContextMenuRef {
@@ -167,7 +226,7 @@ export class ContextMenuService implements OnDestroy {
     const overlayConfig = this.getOverlayConfig(menu, config);
     const overlayRef = this.createOverlay(overlayConfig);
 
-    const menuRef = new ContextMenuRef(menu, config, overlayRef);
+    const menuRef = new ContextMenuRef(menu, config, overlayRef, this.doc);
     this.activeMenu?.close();
 
     // Show new menu only when activeMenu gets closed
@@ -243,48 +302,17 @@ export class ContextMenuService implements OnDestroy {
   private setActiveMenu(menuRef: ContextMenuRef | null): void {
     this.activeMenu = menuRef;
 
-    if (this.activeMenu) {
-      if (!this.menuClosingActionsSubscription) {
-        this.menuClosingActionsSubscription = this.menuClosingActions()
-          .subscribe(() => this.activeMenu?.close());
-      }
-    } else {
-      this.unsubscribeClosingActions();
-    }
-
     if (menuRef) {
       menuRef.afterClosed()
         .subscribe(() => {
           log('srv: menu closed');
           if (this.activeMenu === menuRef) {
-            this.setActiveMenu(null);
+            this.activeMenu = null;
           }
         });
     }
   }
 
-  private menuClosingActions(): Observable<void> {
-    const docClick$ = fromEvent(this.doc, 'click', { passive: true })
-      .pipe(
-        filter(event => !this.activeMenu?.hasElement(event.target as Node)),
-      );
-    const docContextMenu$ = fromEvent(this.doc, 'contextmenu', { passive: true })
-      .pipe(filter(event => !this.activeMenu?.hasElement(event.target as Node)),
-      );
-
-    return merge(docClick$, docContextMenu$)
-      .pipe(map(() => {
-        log('srv: closing action');
-      }));
-  }
-
-  private unsubscribeClosingActions(): void {
-    if (this.menuClosingActionsSubscription) {
-      log('srv: unsubscribe from closing actions');
-      this.menuClosingActionsSubscription.unsubscribe();
-      this.menuClosingActionsSubscription = null;
-    }
-  }
 }
 
 @Directive({
@@ -317,7 +345,7 @@ export class ContextMenuTriggerDirective implements OnDestroy {
 
   public ngOnDestroy(): void {
     if (this.menuRef) {
-      this.menuRef.close();
+      this.menuRef.dispose();
       this.menuRef = null;
     }
   }

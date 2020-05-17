@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { SessionsGroup, SessionsGroupType, getGroupDuration } from '@app/store';
 import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../../../environments/environment';
-import { SessionsGroup, SessionsGroupType, getGroupDuration } from '../../../models';
 
 @Component({
   selector: 'app-group-table-row',

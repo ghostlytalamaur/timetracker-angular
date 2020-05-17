@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
 
@@ -28,7 +35,7 @@ export class BaseAuthGuard {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard extends BaseAuthGuard implements CanActivate {
+export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivateChild {
 
   public canActivate(route: ActivatedRouteSnapshot,
                      state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -44,6 +51,12 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate {
         }),
       );
   }
+
+  public canActivateChild(childRoute: ActivatedRouteSnapshot,
+                          state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.canActivate(childRoute, state);
+  }
+
 }
 
 @Injectable({

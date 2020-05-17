@@ -3,7 +3,10 @@
 >
 
   <mat-sidenav #sidenav mode="push">
-    Side navigation content
+    <mat-nav-list>
+      <a mat-list-item routerLink="/sessions">Sessions</a>
+      <a mat-list-item routerLink="/tags">Tags</a>
+    </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -24,11 +27,7 @@
 
     <div class="content mt-3">
       <div class="container-xl h-100">
-        <div
-          class="h-100"
-          [@routerAnimation]="o.isActivated ? o.activatedRoute : ''">
-          <router-outlet #o="outlet"></router-outlet>
-        </div>
+        <app-router-container></app-router-container>
       </div>
     </div>
 

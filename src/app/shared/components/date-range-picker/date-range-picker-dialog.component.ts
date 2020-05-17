@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { DialogsService } from '../../alert-dialog/dialogs.service';
+import { DialogsService } from '../../dialogs';
 import { Range } from '../../utils';
 
 @Component({

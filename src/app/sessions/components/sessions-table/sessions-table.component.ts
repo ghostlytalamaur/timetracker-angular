@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-
-import { Session, SessionsGroupType, SortType } from '../../models';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Session, SessionTag, SessionsGroupType, SortType } from '@app/store';
 
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 
@@ -19,6 +27,8 @@ export class SessionsTableComponent implements OnInit, OnChanges {
   @Input() public groupType: SessionsGroupType = 'none';
   @Input() public sortType: SortType;
   @Input() public expandedNodes: string[] = [];
+  @Input() public tags: SessionTag[] = [];
+  @Output() public toggleSessionTag = new EventEmitter<{ sessionId: string; tagId: string; }>();
   @Output() public deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() public toggleNode = new EventEmitter<string>();
 
@@ -66,5 +76,9 @@ export class SessionsTableComponent implements OnInit, OnChanges {
 
   public onDeleteSessions(sessions: Session[]): void {
     this.deleteSessions.emit(sessions.map(s => s.id));
+  }
+
+  public onToggleSessionTag(sessionId: string, tagId: string): void {
+    this.toggleSessionTag.emit({ sessionId, tagId });
   }
 }

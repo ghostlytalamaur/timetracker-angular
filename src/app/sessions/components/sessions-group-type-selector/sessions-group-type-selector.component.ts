@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { SessionsGroupType } from '../../models';
+import { SessionsGroupType } from '@app/store';
 
 @Component({
   selector: 'app-sessions-group-type-selector',
