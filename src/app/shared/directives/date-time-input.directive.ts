@@ -65,7 +65,6 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   private mPlaceholder!: string;
   private mFocused = false;
   private mAutoFilled = false;
-  private mFormat!: string;
 
   constructor(
     private readonly focusMonitor: FocusMonitor,
@@ -79,18 +78,6 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     }
     this.stateChangesSubj = new Subject();
     this.stateChanges = this.stateChangesSubj.asObservable();
-  }
-
-  get format(): string {
-    return this.mFormat;
-  }
-
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('appDateTimeInput')
-  set format(fmt: string) {
-    this.mFormat = fmt;
-    this.input.nativeElement.value = isValidDate(this.value) && this.format ? DateTime.fromJSDate(this.value).toFormat(this.format) : '';
-    this.stateChangesSubj.next();
   }
 
   @Input()
@@ -165,7 +152,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   @HostListener('input')
   onInputChange() {
     const value = this.input.nativeElement.value;
-    this.date = value ? DateTime.fromFormat(value, this.format).toJSDate() : null;
+    this.date = value ? DateTime.fromISO(value).toJSDate() : null;
 
     if (!isValidDate(this.date)) {
       this.date = null;
@@ -186,7 +173,13 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     }
     this.date = isValidDate(value) ? value : null;
 
-    this.input.nativeElement.value = isValidDate(this.value) && this.format ? DateTime.fromJSDate(this.value).toFormat(this.format) : '';
+    this.input.nativeElement.value = isValidDate(this.value)
+        ? DateTime.fromJSDate(this.value).set({ millisecond: 0 }).toISOTime({
+          includeOffset: false,
+          suppressSeconds: false,
+          suppressMilliseconds: true,
+        })
+        : '';
     this.valueChange.emit(this.date);
     this.stateChangesSubj.next();
   }
