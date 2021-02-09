@@ -5,7 +5,7 @@ import { Session } from './session';
 export type SessionsGroupType = 'none' | 'day' | 'week' | 'month' | 'year';
 
 export class SessionsGroup {
-  public constructor(
+  constructor(
     readonly id: string,
     readonly type: SessionsGroupType,
     readonly date: DateTime,

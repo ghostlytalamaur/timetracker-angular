@@ -13,15 +13,15 @@ import { Observable } from 'rxjs';
 })
 export class SessionsComponent implements OnInit {
 
-  public readonly status$: Observable<Status>;
+  readonly status$: Observable<Status>;
 
-  public constructor(
+  constructor(
     private sessionsSrv: SessionsService,
   ) {
     this.status$ = this.sessionsSrv.getStatus();
   }
 
-  public ngOnInit() {
+  ngOnInit() {
   }
 
 }

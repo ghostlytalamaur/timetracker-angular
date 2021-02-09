@@ -15,16 +15,16 @@ import { SessionsTableService } from './sessions-table.service';
 })
 export class SessionsContainerComponent implements OnInit {
 
-  public readonly hasRunning$: Observable<boolean>;
-  public readonly displayRange$: Observable<Range<Date>>;
-  public readonly isTodayInvisible$: Observable<boolean>;
-  public readonly groupType$: Observable<SessionsGroupType>;
-  public readonly sortType$: Observable<SortType>;
-  public readonly sessions$: Observable<Session[]>;
-  public readonly expandedNodes$: Observable<string[]>;
-  public readonly tags$: Observable<SessionTag[]>;
+  readonly hasRunning$: Observable<boolean>;
+  readonly displayRange$: Observable<Range<Date>>;
+  readonly isTodayInvisible$: Observable<boolean>;
+  readonly groupType$: Observable<SessionsGroupType>;
+  readonly sortType$: Observable<SortType>;
+  readonly sessions$: Observable<Session[]>;
+  readonly expandedNodes$: Observable<string[]>;
+  readonly tags$: Observable<SessionTag[]>;
 
-  public constructor(
+  constructor(
     private readonly sessionsSrv: SessionsService,
     private readonly tagsService: SessionsTagsService,
     private readonly tableSrv: SessionsTableService,
@@ -45,39 +45,39 @@ export class SessionsContainerComponent implements OnInit {
     this.tags$ = this.tagsService.getTags();
   }
 
-  public ngOnInit() {
+  ngOnInit() {
   }
 
 
-  public onToggleSession(): void {
+  onToggleSession(): void {
     this.sessionsSrv.toggleSession();
   }
 
-  public onDisplayRangeChange(range: Range<Date>): void {
+  onDisplayRangeChange(range: Range<Date>): void {
     this.sessionsSrv.setDisplayRange({
       start: DateTime.fromJSDate(range.start),
       end: DateTime.fromJSDate(range.end),
     });
   }
 
-  public onGroupTypeChange(groupType: SessionsGroupType): void {
+  onGroupTypeChange(groupType: SessionsGroupType): void {
     this.tableSrv.clearExpandedNodes();
     this.sessionsSrv.changeGroupType(groupType);
   }
 
-  public onSetSortType(sortType: SortType): void {
+  onSetSortType(sortType: SortType): void {
     this.sessionsSrv.changeSortType(sortType);
   }
 
-  public onDeleteSessions(sessionIds: string[]): void {
+  onDeleteSessions(sessionIds: string[]): void {
     this.sessionsSrv.removeSessions(sessionIds);
   }
 
-  public onToggleNode(nodeId: string): void {
+  onToggleNode(nodeId: string): void {
     this.tableSrv.toggleNode(nodeId);
   }
 
-  public onToggleSessionTag(event: { sessionId: string; tagId: string }): void {
+  onToggleSessionTag(event: { sessionId: string; tagId: string }): void {
     this.sessionsSrv.toggleSessionTag(event.sessionId, event.tagId);
   }
 }

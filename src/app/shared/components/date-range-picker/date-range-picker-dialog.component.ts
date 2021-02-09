@@ -10,13 +10,13 @@ import { Range } from '../../utils';
   template: '<app-date-range-picker [range]="range" (rangeChange)="onRangeChange($event)"></app-date-range-picker>',
 })
 export class DateRangePickerDialogComponent {
-  public constructor(
+  constructor(
     private readonly dialogRef: MatDialogRef<DateRangePickerDialogComponent, Range<Date>>,
-    @Inject(MAT_DIALOG_DATA) public readonly range: Range<Date>,
+    @Inject(MAT_DIALOG_DATA) readonly range: Range<Date>,
   ) {
   }
 
-  public onRangeChange(range: Range<Date>): void {
+  onRangeChange(range: Range<Date>): void {
     this.dialogRef.close(range);
   }
 }
@@ -27,23 +27,18 @@ export class DateRangePickerDialogComponent {
 export class DateRangePickerDialogDirective implements OnDestroy {
 
   @Input('appDateRangePicker')
-  public range: Range<Date>;
+  range!: Range<Date>;
   @Output()
-  public rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
+  rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
   private alive$: Subject<void> = new Subject<void>();
 
-  public constructor(
+  constructor(
     private readonly dialogs: DialogsService,
   ) {
   }
 
-  public ngOnDestroy(): void {
-    this.alive$.next();
-    this.alive$.complete();
-  }
-
   @HostListener('click')
-  public onSelectRange(): void {
+  onSelectRange(): void {
     this.dialogs.component<Range<Date>, Range<Date>>(DateRangePickerDialogComponent, this.range)
       .pipe(
         take(1),
@@ -56,5 +51,10 @@ export class DateRangePickerDialogDirective implements OnDestroy {
           }
         },
       );
+  }
+
+  ngOnDestroy(): void {
+    this.alive$.next();
+    this.alive$.complete();
   }
 }

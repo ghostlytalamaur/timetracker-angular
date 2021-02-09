@@ -11,26 +11,26 @@ import { SessionTag } from '@app/store';
 export class TagsListComponent implements OnInit {
 
   @Input()
-  public tags: SessionTag[] = [];
+  tags: SessionTag[] = [];
   @Output()
-  public deleteTag = new EventEmitter<string>();
+  deleteTag = new EventEmitter<string>();
   @Input()
-  public selectedTag: SessionTag | null = null;
+  selectedTag: SessionTag | null = null;
   @Output()
-  public readonly selectedTagChange = new EventEmitter<SessionTag | null>();
+  readonly selectedTagChange = new EventEmitter<SessionTag | null>();
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public onDeleteTag(tag: SessionTag): void {
+  onDeleteTag(tag: SessionTag): void {
     this.deleteTag.emit(tag.id);
   }
 
-  public trackById(index: number, value: SessionTag): string {
+  trackById(index: number, value: SessionTag): string {
     return value.id;
   }
 
-  public onSelectionChange(id: string): void {
+  onSelectionChange(id: string): void {
     if (id === this.selectedTag?.id) {
       this.selectedTag = null;
     } else {

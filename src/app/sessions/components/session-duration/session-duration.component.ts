@@ -17,9 +17,10 @@ import { environment } from '../../../../environments/environment';
 })
 export class SessionDurationComponent {
 
-  public readonly timeFormat = environment.settings.durationFormat;
-
   @Input()
-  public duration: Duration | undefined | null;
+  duration: Duration | undefined | null;
+
+  readonly timeFormat = environment.settings.durationFormat;
+
 
 }

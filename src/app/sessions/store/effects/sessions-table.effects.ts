@@ -11,7 +11,7 @@ import { SessionsTableSelectors } from '../selectors';
 @Injectable()
 export class SessionsTableEffects {
 
-  public persistTableState$ = createEffect(() =>
+  persistTableState$ = createEffect(() =>
       this.actions
         .pipe(
           ofType(
@@ -29,7 +29,7 @@ export class SessionsTableEffects {
     { dispatch: false },
   );
 
-  public constructor(
+  constructor(
     private readonly actions: Actions,
     private readonly store: Store,
   ) {

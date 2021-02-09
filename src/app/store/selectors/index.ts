@@ -6,4 +6,4 @@ export {
   SessionsSelectors,
   SettingsSelectors,
   SessionsTagsSelectors,
-}
+};

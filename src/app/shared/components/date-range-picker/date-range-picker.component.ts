@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DateTime } from 'luxon';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { Range, withEnd, withStart } from '../../utils';
+import { Range } from '../../utils';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -9,25 +9,32 @@ import { Range, withEnd, withStart } from '../../utils';
   styleUrls: ['./date-range-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DateRangePickerComponent {
+export class DateRangePickerComponent implements OnChanges {
 
   @Input()
-  public range: Range<Date>;
+  range!: Range<Date>;
 
   @Output()
-  public rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
+  rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
 
-  public onSubmit() {
-    if (this.range) {
-      this.rangeChange.emit(this.range);
+  readonly rangeGroup = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.range) {
+      this.rangeGroup.setValue({
+        start: this.range.start,
+        end: this.range.end,
+      });
     }
   }
 
-  public onStartChange(start: Date) {
-    this.range = withStart(this.range, DateTime.fromJSDate(start).startOf('day').toJSDate());
+  onSubmit() {
+    if (this.range) {
+      this.rangeChange.emit(this.rangeGroup.value);
+    }
   }
 
-  public onEndChange(end: Date) {
-    this.range = withEnd(this.range, DateTime.fromJSDate(end).endOf('day').toJSDate());
-  }
 }

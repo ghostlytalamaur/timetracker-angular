@@ -26,7 +26,7 @@ export const reducer = createReducer(
       return {
         ...state,
         status: loadingStatus(state.status),
-      }
+      };
     }
 
     return state;
@@ -34,22 +34,18 @@ export const reducer = createReducer(
 
   on(SessionsTagsActions.cancelRequestTags, () => initialState),
 
-  on(SessionsTagsActions.tagsAdded, (state, { tags }) => {
-    return adapter.upsertMany(tags, {
+  on(SessionsTagsActions.tagsAdded, (state, { tags }) => adapter.upsertMany(tags, {
       ...state,
       status: successStatus(state.status),
-    });
-  }),
+    })),
 
   on(SessionsTagsActions.tagsModified, (state, { tags }) => adapter.upsertMany(tags, state)),
 
   on(SessionsTagsActions.tagsDeleted, (state, { ids }) => adapter.removeMany(ids, state)),
 
-  on(SessionsTagsActions.tagsError, (state, { message }) => {
-    return {
+  on(SessionsTagsActions.tagsError, (state, { message }) => ({
       ...state,
       status: errorStatus(state.status, message),
-    };
-  }),
+    })),
   )
 ;

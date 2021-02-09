@@ -7,7 +7,7 @@ import { selectStoreFeature } from './feature.selectors';
 const selectTagsState = compose(
   state => state.tags,
   selectStoreFeature,
-)
+);
 
 export const {
   selectAll: selectSessionsTags,
@@ -17,4 +17,4 @@ export const {
 export const selectStatus = compose(
   state => state.status,
   selectTagsState,
-)
+);

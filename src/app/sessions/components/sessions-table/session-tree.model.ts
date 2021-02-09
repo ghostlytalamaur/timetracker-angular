@@ -28,16 +28,18 @@ const ordTreeNode = contramap<DateTime, TreeNode>(a => a instanceof SessionsGrou
 
 @Injectable()
 export class SessionTreeModel {
+
+  readonly treeControl: FlatTreeControl<FlatNode>;
+  readonly dataSource: MatTreeFlatDataSource<TreeNode, FlatNode>;
+
   private nodes: TreeNode[] = [];
-  public readonly treeControl: FlatTreeControl<FlatNode>;
-  public readonly dataSource: MatTreeFlatDataSource<TreeNode, FlatNode>;
-  private groupType: SessionsGroupType;
-  private sessions: Session[];
+  private groupType!: SessionsGroupType;
+  private sessions!: Session[];
 
   private readonly nodeToFlatNode: Map<string, FlatNode>;
   private sortType: SortType = 'asc';
 
-  public constructor() {
+  constructor() {
     this.nodeToFlatNode = new Map<string, FlatNode>();
 
     const flattener = new MatTreeFlattener<TreeNode, FlatNode>(
@@ -63,26 +65,26 @@ export class SessionTreeModel {
     this.dataSource = new MatTreeFlatDataSource<TreeNode, FlatNode>(this.treeControl, flattener);
   }
 
-  public setGroupType(type: SessionsGroupType): this {
+  setGroupType(type: SessionsGroupType): this {
     this.groupType = type;
     this.nodeToFlatNode.clear();
 
     return this;
   }
 
-  public setSessions(sessions: Session[]): this {
+  setSessions(sessions: Session[]): this {
     this.sessions = sessions;
 
     return this;
   }
 
-  public setSorting(type: SortType): this {
+  setSorting(type: SortType): this {
     this.sortType = type;
 
     return this;
   }
 
-  public update(): this {
+  update(): this {
     if (this.groupType === 'none') {
       this.updateSessions();
     } else {
@@ -101,6 +103,23 @@ export class SessionTreeModel {
     retainKeys(this.nodeToFlatNode, allNodes);
 
     return this;
+  }
+
+  expandNodes(expandedNodes: string[]): void {
+    const nodes = this.treeControl.dataNodes;
+    const expandedIds = new Set<string>(expandedNodes);
+    for (const node of nodes) {
+      if (!this.treeControl.isExpandable(node)) {
+        continue;
+      }
+
+      const isExpanded = this.treeControl.isExpanded(node);
+      if (expandedIds.has(node.node.id) && !isExpanded) {
+        this.treeControl.expand(node);
+      } else if (!expandedIds.has(node.node.id) && isExpanded) {
+        this.treeControl.collapse(node);
+      }
+    }
   }
 
   private updateSessions(): void {
@@ -125,20 +144,4 @@ export class SessionTreeModel {
     nodes.sort(this.sortType === 'asc' ? ordTreeNode.compare : getDualOrd(ordTreeNode).compare);
   }
 
-  public expandNodes(expandedNodes: string[]): void {
-    const nodes = this.treeControl.dataNodes;
-    const expandedIds = new Set<string>(expandedNodes);
-    for (const node of nodes) {
-      if (!this.treeControl.isExpandable(node)) {
-        continue;
-      }
-
-      const isExpanded = this.treeControl.isExpanded(node);
-      if (expandedIds.has(node.node.id) && !isExpanded) {
-        this.treeControl.expand(node);
-      } else if (!expandedIds.has(node.node.id) && isExpanded) {
-        this.treeControl.collapse(node);
-      }
-    }
-  }
 }

@@ -7,8 +7,8 @@ import * as fromTags from './tags.reducer';
 export const featureKey = 'sessions-store';
 
 export interface State {
-  sessions: fromSessions.State
-  settings: fromSettings.State,
+  sessions: fromSessions.State;
+  settings: fromSettings.State;
   tags: fromTags.State;
 }
 

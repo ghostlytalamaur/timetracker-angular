@@ -10,44 +10,44 @@ import { AuthActions } from './store/actions';
   providedIn: 'root',
 })
 export class AuthService {
-  public constructor(
+  constructor(
     private readonly store: Store,
   ) {
   }
 
-  public get user$(): Observable<User | null> {
+  get user$(): Observable<User | null> {
     return this.store.select(fromAuth.selectUser);
   }
 
-  public isSignedIn(): Observable<boolean> {
+  isSignedIn(): Observable<boolean> {
     return this.store.select(fromAuth.selectIsSignedIn);
   }
 
-  public getStatus$(): Observable<fromAuth.AuthStatus> {
+  getStatus$(): Observable<fromAuth.AuthStatus> {
     return this.store.select(fromAuth.selectStatus);
   }
 
-  public autoSignIn(): void {
+  autoSignIn(): void {
     this.store.dispatch(AuthActions.autoSignIn());
   }
 
-  public signUp(credentials: Credentials): void {
+  signUp(credentials: Credentials): void {
     this.store.dispatch(AuthActions.signUp(credentials));
   }
 
-  public signIn(credentials: Credentials): void {
+  signIn(credentials: Credentials): void {
     this.store.dispatch(AuthActions.signIn(credentials));
   }
 
-  public logout(): void {
+  logout(): void {
     this.store.dispatch(AuthActions.signOut());
   }
 
-  public isLoading(): Observable<boolean> {
+  isLoading(): Observable<boolean> {
     return this.store.select(fromAuth.selectIsLoading);
   }
 
-  public getError(): Observable<string | undefined> {
+  getError(): Observable<string | undefined> {
     return this.store.select(fromAuth.selectError);
   }
 }

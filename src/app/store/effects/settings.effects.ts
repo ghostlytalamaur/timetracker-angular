@@ -10,7 +10,7 @@ import { SettingsSelectors } from '../selectors';
 
 @Injectable()
 export class SettingsEffects {
-  public persistSettings$ = createEffect(() =>
+  persistSettings$ = createEffect(() =>
       this.actions$
         .pipe(
           ofType(
@@ -24,7 +24,7 @@ export class SettingsEffects {
     { dispatch: false },
   );
 
-  public constructor(
+  constructor(
     private readonly actions$: Actions,
     private readonly store: Store,
   ) {

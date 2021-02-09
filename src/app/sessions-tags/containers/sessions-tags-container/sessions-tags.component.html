@@ -1,5 +1,5 @@
 <app-status-container
-  [status]="status$ | async"
+  [status]="(status$ | async)!"
 >
   <app-tags-editor
     (saveTag)="onSaveTag($event)"
@@ -8,6 +8,6 @@
   <app-tags-list
     (deleteTag)="onDeleteTag($event)"
     [(selectedTag)]="selectedTag"
-    [tags]="tags$ | async"
+    [tags]="(tags$ | async)!"
   ></app-tags-list>
 </app-status-container>

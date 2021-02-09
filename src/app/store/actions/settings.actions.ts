@@ -4,7 +4,7 @@ import { SessionsGroupType, SortType } from '../models';
 
 export const setDisplayRange = createAction(
   '[Sessions] Set Display Range',
-  props<{ start: number, end: number }>(),
+  props<{ start: number; end: number }>(),
 );
 
 export const changeGroupType = createAction(

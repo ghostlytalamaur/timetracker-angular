@@ -20,10 +20,10 @@ export const reducer = createReducer(
     return {
       ...state,
       expandedNodes,
-    }
+    };
   }),
   on(SessionsTableActions.clearExpandedNodes, state => ({
     ...state,
     expandedNodes: [],
   })),
-)
+);

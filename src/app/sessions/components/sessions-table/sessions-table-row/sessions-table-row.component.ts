@@ -12,20 +12,20 @@ import { environment } from '../../../../../environments/environment';
 })
 export class SessionsTableRowComponent implements OnInit, OnChanges {
 
-  @Input() public session: Session;
-  @Input() public showDate = false;
+  @Input() session!: Session;
+  @Input() showDate = false;
 
   @HostBinding('class')
-  public readonly class = 'd-block bg-card bg-hover cursor-pointer';
+  readonly class = 'd-block bg-card bg-hover cursor-pointer';
 
-  public readonly dateFormat = environment.settings.dateFormat;
-  public readonly timeFormat = environment.settings.timeFormat;
-  public duration$: Observable<Duration>;
+  readonly dateFormat = environment.settings.dateFormat;
+  readonly timeFormat = environment.settings.timeFormat;
+  duration$!: Observable<Duration>;
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
       this.duration$ = getDuration(this.session.start, this.session.duration);
     }

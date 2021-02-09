@@ -12,8 +12,8 @@ export const cancelRequestTags = createAction(
 
 export const tagsError = createAction(
   '[Sessions Tags] Error',
-  props<{ message: string; }>(),
-)
+  props<{ message: string }>(),
+);
 export const tagsAdded = createAction(
   '[Sessions Tags] Tags Added',
   props<{ tags: SessionTag[] }>(),
@@ -32,9 +32,9 @@ export const tagsDeleted = createAction(
 export const saveTag = createAction(
   '[Sessions Tags] Add Tag',
   props<{ tag: SessionTag }>(),
-)
+);
 
 export const deleteTag = createAction(
   '[Sessions Tags] Delete Tag',
   props<{ id: string }>(),
-)
+);

@@ -11,21 +11,21 @@ import { Observable } from 'rxjs';
 })
 export class SessionsTagsComponent implements OnInit {
 
-  public readonly tags$: Observable<SessionTag[]>;
-  public readonly status$: Observable<Status>;
-  public selectedTag: SessionTag | null = null;
+  readonly tags$: Observable<SessionTag[]>;
+  readonly status$: Observable<Status>;
+  selectedTag: SessionTag | null = null;
 
-  public constructor(
+  constructor(
     private readonly tagsService: SessionsTagsService,
   ) {
     this.tags$ = this.tagsService.getTags();
     this.status$ = this.tagsService.getStatus();
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public onDeleteTag(tagId: string): void {
+  onDeleteTag(tagId: string): void {
     if (this.selectedTag?.id === tagId) {
       this.selectedTag = null;
     }
@@ -33,7 +33,7 @@ export class SessionsTagsComponent implements OnInit {
     this.tagsService.deleteTag(tagId);
   }
 
-  public onSaveTag(tag: SessionTag): void {
+  onSaveTag(tag: SessionTag): void {
     this.tagsService.saveTag(tag);
   }
 

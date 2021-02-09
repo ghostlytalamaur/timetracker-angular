@@ -11,24 +11,24 @@ import { Credentials } from '../../model';
 })
 export class LoginContainerComponent implements OnInit {
 
-  public isLoading$: Observable<boolean>;
-  public error$: Observable<string | undefined>;
+  isLoading$: Observable<boolean>;
+  error$: Observable<string | undefined>;
 
-  public constructor(
+  constructor(
     private readonly authService: AuthService,
   ) {
     this.isLoading$ = this.authService.isLoading();
     this.error$ = this.authService.getError();
   }
 
-  public ngOnInit() {
+  ngOnInit() {
   }
 
-  public onSignIn(credentials: Credentials) {
+  onSignIn(credentials: Credentials) {
     this.authService.signIn(credentials);
   }
 
-  public onSignUp(credentials: Credentials) {
+  onSignUp(credentials: Credentials) {
     this.authService.signUp(credentials);
   }
 

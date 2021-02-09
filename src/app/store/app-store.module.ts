@@ -12,7 +12,7 @@ import * as fromFeature from './reducers';
   ],
 })
 export class AppStoreModule {
-  public constructor(@Optional() @SkipSelf() parent: AppStoreModule) {
+  constructor(@Optional() @SkipSelf() parent: AppStoreModule) {
     if (parent) {
       throw new Error('Import AppStoreModule only once');
     }

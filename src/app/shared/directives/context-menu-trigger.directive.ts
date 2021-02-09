@@ -45,7 +45,7 @@ class ContextMenuRef {
   private subscription = new Subscription();
   private overlayRef: OverlayRef | null;
 
-  public constructor(
+  constructor(
     private readonly menu: MatMenu,
     private readonly config: ContextMenuConfig,
     overlayRef: OverlayRef,
@@ -54,7 +54,7 @@ class ContextMenuRef {
     this.overlayRef = overlayRef;
   }
 
-  public show(): void {
+  show(): void {
     if (!this.overlayRef) {
       return;
     }
@@ -71,16 +71,16 @@ class ContextMenuRef {
     this.menu._startAnimation();
   }
 
-  public close(): void {
+  close(): void {
     log('menu: close');
     this.menu.closed.emit();
   }
 
-  public afterClosed(): Observable<void> {
+  afterClosed(): Observable<void> {
     return this.closed;
   }
 
-  public dispose(): void {
+  dispose(): void {
     log('menu: dispose');
     this.overlayRef?.dispose();
     this.overlayRef = null;
@@ -88,7 +88,7 @@ class ContextMenuRef {
     this.doDispose();
   }
 
-  public doDispose(): void {
+  doDispose(): void {
     log('menu: doDispose');
     if (this.overlayRef) {
       this.overlayRef.dispose();
@@ -108,7 +108,7 @@ class ContextMenuRef {
       .pipe(
         filter(event => {
           if (event.target instanceof Node) {
-            return !this.overlayRef?.overlayElement?.contains(event.target)
+            return !this.overlayRef?.overlayElement?.contains(event.target);
           }
 
           return false;
@@ -120,7 +120,7 @@ class ContextMenuRef {
       .pipe(
         filter(event => {
           if (event.target instanceof Node) {
-            return !(this.overlayRef?.overlayElement?.contains(event.target) || this.config.element.nativeElement?.contains(event.target))
+            return !(this.overlayRef?.overlayElement?.contains(event.target) || this.config.element.nativeElement?.contains(event.target));
           }
 
           return false;
@@ -208,7 +208,7 @@ class ContextMenuRef {
 export class ContextMenuService implements OnDestroy {
   private activeMenu: ContextMenuRef | null = null;
 
-  public constructor(
+  constructor(
     private readonly overlay: Overlay,
     @Inject(MAT_MENU_SCROLL_STRATEGY) private readonly scrollStrategy: () => ScrollStrategy,
     @Optional() private readonly dir: Directionality,
@@ -216,12 +216,12 @@ export class ContextMenuService implements OnDestroy {
   ) {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.activeMenu?.dispose();
     this.activeMenu = null;
   }
 
-  public open(menu: MatMenu, config: ContextMenuConfig): ContextMenuRef {
+  open(menu: MatMenu, config: ContextMenuConfig): ContextMenuRef {
     log('srv: open new menu');
     const overlayConfig = this.getOverlayConfig(menu, config);
     const overlayRef = this.createOverlay(overlayConfig);
@@ -320,12 +320,12 @@ export class ContextMenuService implements OnDestroy {
 })
 export class ContextMenuTriggerDirective implements OnDestroy {
 
-  @Input('appContextMenuTriggerFor') public menu: MatMenu;
-  @Input() public appContextMenuTriggerData: unknown;
+  @Input('appContextMenuTriggerFor') menu!: MatMenu;
+  @Input() appContextMenuTriggerData: unknown;
 
   private menuRef: ContextMenuRef | null = null;
 
-  public constructor(
+  constructor(
     private readonly element: ElementRef<HTMLElement>,
     private readonly viewContainerRef: ViewContainerRef,
     private readonly contextMenuService: ContextMenuService,
@@ -333,7 +333,7 @@ export class ContextMenuTriggerDirective implements OnDestroy {
   }
 
   @HostListener('contextmenu', ['$event'])
-  public onContextMenu(event: MouseEvent): void {
+  onContextMenu(event: MouseEvent): void {
     event.preventDefault();
     this.menuRef = this.contextMenuService.open(this.menu, {
       position: { x: event.clientX, y: event.clientY },
@@ -343,7 +343,7 @@ export class ContextMenuTriggerDirective implements OnDestroy {
     });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.menuRef) {
       this.menuRef.dispose();
       this.menuRef = null;

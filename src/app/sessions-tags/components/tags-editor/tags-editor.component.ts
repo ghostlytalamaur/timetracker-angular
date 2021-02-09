@@ -21,23 +21,23 @@ import { SessionTag, createSessionTag } from '@app/store';
 export class TagsEditorComponent implements OnInit, OnChanges {
 
   @Input()
-  public tag: SessionTag | null = null;
+  tag: SessionTag | null = null;
 
   @Output()
-  public saveTag = new EventEmitter<SessionTag>();
+  saveTag = new EventEmitter<SessionTag>();
 
-  public readonly form: FormGroup;
+  readonly form: FormGroup;
 
-  public constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder) {
     this.form = fb.group({
       label: fb.control('', [Validators.required, Validators.min(1)]),
     });
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if (hasChange(this, 'tag', changes)) {
       this.form.setValue({
         label: changes.tag.currentValue?.label ?? '',
@@ -45,7 +45,7 @@ export class TagsEditorComponent implements OnInit, OnChanges {
     }
   }
 
-  public onSubmit(): void {
+  onSubmit(): void {
     if (!this.form.valid) {
       return;
     }

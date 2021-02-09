@@ -6,7 +6,7 @@ import * as fromTable from './sessions-table.reducer';
 export const featureKey = 'sessions-ui';
 
 export interface State {
-  readonly table: fromTable.State,
+  readonly table: fromTable.State;
 }
 
 export const APP_STORE_REDUCERS = new InjectionToken<ActionReducerMap<State>>(
@@ -16,4 +16,4 @@ export const APP_STORE_REDUCERS = new InjectionToken<ActionReducerMap<State>>(
       table: fromTable.reducer,
     }),
   },
-)
+);

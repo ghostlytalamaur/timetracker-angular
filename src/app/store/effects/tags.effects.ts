@@ -12,7 +12,7 @@ import { SessionsTagsStorageService } from '../services';
 @Injectable()
 export class TagsEffects {
 
-  public loadTags$ = createEffect(() =>
+  loadTags$ = createEffect(() =>
     this.actions
       .pipe(
         ofType(SessionsTagsActions.requestTags),
@@ -30,7 +30,7 @@ export class TagsEffects {
       ),
   );
 
-  public saveTags$ = createEffect(() =>
+  saveTags$ = createEffect(() =>
     this.actions
       .pipe(
         ofType(SessionsTagsActions.saveTag),
@@ -44,21 +44,19 @@ export class TagsEffects {
       ),
   );
 
-  public deleteTags$ = createEffect(() =>
+  deleteTags$ = createEffect(() =>
     this.actions
       .pipe(
         ofType(SessionsTagsActions.deleteTag),
-        mergeMap(({ id }) => {
-          return this.storage.deleteTags([id])
+        mergeMap(({ id }) => this.storage.deleteTags([id])
             .pipe(
               switchMapTo(EMPTY),
               catchError(err => of(SessionsTagsActions.tagsError({ message: getErrorMessage(err) }))),
-            )
-        }),
+            )),
       ),
   );
 
-  public constructor(
+  constructor(
     private readonly actions: Actions,
     private readonly store: Store,
     private readonly storage: SessionsTagsStorageService,
@@ -74,16 +72,16 @@ export class TagsEffects {
     const tagsDeleted$ = this.storage.deletedTags()
       .pipe(
         map(ids => SessionsTagsActions.tagsDeleted({ ids })),
-      )
+      );
 
     const tagsModified$ = this.storage.modifiedTags()
       .pipe(
         map(tags => SessionsTagsActions.tagsModified({ tags })),
-      )
+      );
 
     return merge(tagsAdded$, tagsDeleted$, tagsModified$)
       .pipe(
         catchError((err) => of(SessionsTagsActions.tagsError({ message: getErrorMessage(err) }))),
-      )
+      );
   }
 }

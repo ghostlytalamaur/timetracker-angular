@@ -9,15 +9,15 @@ import { SessionTag } from './session-tag';
 import { SessionsGroupType } from './sessions-group';
 
 export class Session {
-  public constructor(
-    public readonly id: string,
-    public readonly start: DateTime,
-    public readonly duration: Duration | null,
-    public readonly tags: SessionTag[],
+  constructor(
+    readonly id: string,
+    readonly start: DateTime,
+    readonly duration: Duration | null,
+    readonly tags: SessionTag[],
   ) {
   }
 
-  public static fromEntity(entity: SessionEntity, tags: SessionTag[]): Session {
+  static fromEntity(entity: SessionEntity, tags: SessionTag[]): Session {
     return new Session(entity.id,
       DateTime.fromMillis(entity.start),
       entity.duration ? Duration.fromMillis(entity.duration) : null,
@@ -25,16 +25,16 @@ export class Session {
     );
   }
 
-  public static fromNow(id: string): Session {
+  static fromNow(id: string): Session {
     const date = DateTime.local();
     return new Session(id, date, null, []);
   }
 
-  public hasTag(tagId: string): boolean {
+  hasTag(tagId: string): boolean {
     return this.tags.some(tag => tag.id === tagId);
   }
 
-  public toEntity(): SessionEntity {
+  toEntity(): SessionEntity {
     return createSession(
       this.id,
       this.start.valueOf(),

@@ -63,15 +63,15 @@ function isSessionsBackup(backup: any): backup is SessionsBackup {
 })
 export class SessionsImportComponent implements OnInit {
 
-  public constructor(
+  constructor(
     private readonly sessionsSrv: SessionsService,
   ) {
   }
 
-  public ngOnInit() {
+  ngOnInit() {
   }
 
-  public onImport(files: FileList) {
+  onImport(files: FileList | null) {
     if (!files || !files.length) {
       return;
     }

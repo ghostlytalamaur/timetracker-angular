@@ -5,12 +5,12 @@ import { mapTo, skip, take } from 'rxjs/operators';
 import { AuthService } from '../auth';
 
 class SplashScreenService {
-  public constructor(
+  constructor(
     private readonly doc: Document,
   ) {
   }
 
-  public setInfo(info: string): void {
+  setInfo(info: string): void {
     const infoNode = this.getInfoNode();
     if (infoNode) {
       infoNode.innerText = info;
@@ -39,5 +39,5 @@ export function appInitializerFactory(): () => Promise<void> {
     authService.autoSignIn();
 
     return isSignedIn;
-  }
+  };
 }

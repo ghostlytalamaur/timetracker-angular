@@ -9,4 +9,4 @@ export const toggleNode = createAction(
 
 export const clearExpandedNodes = createAction(
   '[Sessions Table] Clear Expanded Nodes',
-)
+);

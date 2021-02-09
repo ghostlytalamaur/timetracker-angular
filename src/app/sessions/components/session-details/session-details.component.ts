@@ -37,14 +37,14 @@ function withDate(date: DateTime, time: DateTime): DateTime {
 })
 export class SessionDetailsComponent implements OnChanges {
 
-  @Input() public session: Session;
-  @Output() public saveSession: EventEmitter<SessionEntity>;
+  @Input() session!: Session;
+  @Output() saveSession: EventEmitter<SessionEntity>;
 
-  public readonly timeFormat = environment.settings.timeFormat;
-  public readonly form: FormGroup;
-  public readonly duration$: Observable<Duration | null>;
+  readonly timeFormat = environment.settings.timeFormat;
+  readonly form: FormGroup;
+  readonly duration$: Observable<Duration | null>;
 
-  public constructor() {
+  constructor() {
     this.saveSession = new EventEmitter<SessionEntity>();
     const now = DateTime.local();
     this.form = new FormGroup({
@@ -67,13 +67,13 @@ export class SessionDetailsComponent implements OnChanges {
       );
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
       this.form.setValue(this.sessionToFormData());
     }
   }
 
-  public onSubmit() {
+  onSubmit() {
     if (!this.form.valid) {
       return;
     }
@@ -90,7 +90,7 @@ export class SessionDetailsComponent implements OnChanges {
     this.saveSession.emit(sessionEntity);
   }
 
-  public resetForm() {
+  resetForm() {
     this.form.reset(this.sessionToFormData());
   }
 

@@ -6,4 +6,4 @@ export const effects = [
   SessionsEffects,
   SettingsEffects,
   TagsEffects,
-]
+];

@@ -4,12 +4,12 @@ import { User } from '../../model';
 
 export const signUp = createAction(
   '[Auth] Sign Up',
-  props<{ email: string, password: string }>(),
+  props<{ email: string; password: string }>(),
 );
 
 export const signIn = createAction(
   '[Auth] Sign In',
-  props<{ email: string, password: string }>(),
+  props<{ email: string; password: string }>(),
 );
 
 export const signOut = createAction(

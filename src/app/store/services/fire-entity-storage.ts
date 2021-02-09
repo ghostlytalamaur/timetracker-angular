@@ -18,22 +18,22 @@ export type OrderByDirection = 'desc' | 'asc';
 export type QueryFunction<Q extends FireStoreQuery<unknown>> = (query: Q) => Q;
 
 export class FireStoreQuery<E> {
-  public constructor(
+  constructor(
     public ref: Query,
   ) {
   }
 
-  public limit(limit: number): this {
+  limit(limit: number): this {
     this.ref = this.ref.limit(limit);
     return this;
   }
 
-  public orderBy<K extends keyof E & string>(field: K, direction?: OrderByDirection): this {
+  orderBy<K extends keyof E & string>(field: K, direction?: OrderByDirection): this {
     this.ref = this.ref.orderBy(field, direction);
     return this;
   }
 
-  public where<K extends keyof E & string>(field: K, operation: WhereFilterOp, value: E[K]): this {
+  where<K extends keyof E & string>(field: K, operation: WhereFilterOp, value: E[K]): this {
     this.ref = this.ref.where(field, operation, value);
     return this;
   }
@@ -42,7 +42,7 @@ export class FireStoreQuery<E> {
 
 export class FireEntityStorage<Entity extends EntityType> {
 
-  public constructor(
+  constructor(
     private readonly afs: AngularFirestore,
     protected readonly authService: AuthService,
     private readonly collection: string,
@@ -116,7 +116,7 @@ export class FireEntityStorage<Entity extends EntityType> {
     return this.authService.user$
       .pipe(
         switchMap(user => user ? fn(user) : throwError(new Error('Not authenticated'))),
-      )
+      );
   }
 
   private changedEntities(type: 'added' | 'modified', queryFn?: QueryFunction<FireStoreQuery<Entity>>): Observable<Entity[]> {

@@ -13,30 +13,30 @@ import { FireEntityStorage } from './fire-entity-storage';
 })
 export class SessionsTagsStorageService extends FireEntityStorage<SessionTag> {
 
-  public constructor(
+  constructor(
     afs: AngularFirestore,
     auth: AuthService,
   ) {
     super(afs, auth, FireCollections.Tags);
   }
 
-  public addedTags(): Observable<SessionTag[]> {
+  addedTags(): Observable<SessionTag[]> {
     return this.addedEntities();
   }
 
-  public modifiedTags(): Observable<SessionTag[]> {
+  modifiedTags(): Observable<SessionTag[]> {
     return this.modifiedEntities();
   }
 
-  public deletedTags(): Observable<string[]> {
+  deletedTags(): Observable<string[]> {
     return this.deletedEntities();
   }
 
-  public deleteTags(ids: string[]): Observable<void> {
+  deleteTags(ids: string[]): Observable<void> {
     return this.deleteEntities(...ids);
   }
 
-  public addTags(tags: SessionTag[]): Observable<void> {
+  addTags(tags: SessionTag[]): Observable<void> {
     return this.addEntities(...tags);
   }
 

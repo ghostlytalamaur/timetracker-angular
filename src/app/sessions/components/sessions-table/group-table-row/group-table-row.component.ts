@@ -12,15 +12,15 @@ import { environment } from '../../../../../environments/environment';
 })
 export class GroupTableRowComponent implements OnInit, OnChanges {
 
-  @Input() public group: SessionsGroup;
+  @Input() group!: SessionsGroup;
 
-  public duration$: Observable<Duration>;
-  public text: string;
+  duration$!: Observable<Duration>;
+  text!: string;
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.group) {
       this.duration$ = getGroupDuration(this.group.sessions);
       this.updateText();
@@ -37,7 +37,8 @@ export class GroupTableRowComponent implements OnInit, OnChanges {
     };
 
     if (this.group.type === 'week') {
-      this.text = `${this.group.date.startOf('week').toFormat(dateFormat[this.group.type])} - ${this.group.date.endOf('week').toFormat(dateFormat[this.group.type])}`;
+      this.text = `${this.group.date.startOf('week').toFormat(dateFormat[this.group.type])} -
+          ${this.group.date.endOf('week').toFormat(dateFormat[this.group.type])}`;
     } else {
       this.text = this.group.date.toFormat(dateFormat[this.group.type]);
     }

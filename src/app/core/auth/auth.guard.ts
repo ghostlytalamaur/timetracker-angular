@@ -15,7 +15,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class BaseAuthGuard {
 
-  public constructor(
+  constructor(
     private readonly authService: AuthService,
     protected readonly router: Router,
   ) {
@@ -37,7 +37,7 @@ export class BaseAuthGuard {
 })
 export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivateChild {
 
-  public canActivate(route: ActivatedRouteSnapshot,
+  canActivate(route: ActivatedRouteSnapshot,
                      state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()
@@ -52,7 +52,7 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivate
       );
   }
 
-  public canActivateChild(childRoute: ActivatedRouteSnapshot,
+  canActivateChild(childRoute: ActivatedRouteSnapshot,
                           state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.canActivate(childRoute, state);
   }
@@ -64,7 +64,7 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivate
 })
 export class AnonymousGuard extends BaseAuthGuard implements CanActivate {
 
-  public canActivate(route: ActivatedRouteSnapshot,
+  canActivate(route: ActivatedRouteSnapshot,
                      state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()

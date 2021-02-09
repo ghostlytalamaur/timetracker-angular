@@ -32,11 +32,9 @@ function getTags(tagsDict: Dictionary<SessionTag>, ids: string[]): SessionTag[] 
 export const selectSessions = createSelector(
   selectAll,
   TagsSelectors.selectTagsEntities,
-  (entities, tagsDict) => {
-    return entities
+  (entities, tagsDict) => entities
       .map(e => Session.fromEntity(e, getTags(tagsDict, e.tags)))
-      .sort((a, b) => a.start.valueOf() - b.start.valueOf())
-  },
+      .sort((a, b) => a.start.valueOf() - b.start.valueOf()),
 );
 
 export const selectRunningSessions = createSelector(

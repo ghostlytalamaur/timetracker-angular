@@ -10,19 +10,19 @@ import { Credentials } from '../../model';
 })
 export class LoginComponent implements OnInit {
 
-  @Output() public signUp: EventEmitter<Credentials> = new EventEmitter<Credentials>();
-  @Output() public signIn: EventEmitter<Credentials> = new EventEmitter<Credentials>();
+  @Output() signUp: EventEmitter<Credentials> = new EventEmitter<Credentials>();
+  @Output() signIn: EventEmitter<Credentials> = new EventEmitter<Credentials>();
 
-  public isSignInMode = true;
+  isSignInMode = true;
 
-  public constructor(
+  constructor(
   ) {
   }
 
-  public ngOnInit() {
+  ngOnInit() {
   }
 
-  public onSubmit(form: NgForm) {
+  onSubmit(form: NgForm) {
     const credentials = {
       email: form.value.email,
       password: form.value.password,
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public onSwitchMode() {
+  onSwitchMode() {
     this.isSignInMode = !this.isSignInMode;
   }
 }

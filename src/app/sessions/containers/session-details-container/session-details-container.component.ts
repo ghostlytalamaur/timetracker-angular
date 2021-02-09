@@ -13,24 +13,24 @@ import { map, switchMap, tap } from 'rxjs/operators';
 })
 export class SessionDetailsContainerComponent implements OnInit {
 
-  public error: string;
-  public session$: Observable<Session | null>;
+  error!: string;
+  session$!: Observable<Session | null>;
 
-  public constructor(
+  constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly sessionsSrv: SessionsService,
   ) {
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.session$ = this.route.params
       .pipe(
         switchMap(params => params.id ? this.getSession(params.id) : of(null)),
       );
   }
 
-  public onSaveSession(session: SessionEntity): void {
+  onSaveSession(session: SessionEntity): void {
     this.sessionsSrv.updateSession(session);
     this.router.navigate(['../'], { relativeTo: this.route }).catch(console.log);
   }

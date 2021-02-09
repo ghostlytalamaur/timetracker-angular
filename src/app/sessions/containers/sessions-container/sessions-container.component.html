@@ -16,7 +16,7 @@
       <div class="align-self-center">
         <app-sessions-group-type-selector
           (groupTypeChange)="onGroupTypeChange($event)"
-          [groupType]="groupType$ | async"
+          [groupType]="(groupType$ | async)!"
         ></app-sessions-group-type-selector>
       </div>
 
@@ -45,14 +45,14 @@
   <div class="row flex-grow-1">
     <div class="col">
       <app-sessions-table
-        [sessions]="sessions$ | async"
+        [sessions]="(sessions$ | async)!"
         (toggleSessionTag)="onToggleSessionTag($event)"
-        [groupType]="groupType$ | async"
-        [sortType]="sortType$ | async"
-        [expandedNodes]="expandedNodes$ | async"
+        [groupType]="(groupType$ | async)!"
+        [sortType]="(sortType$ | async)!"
+        [expandedNodes]="(expandedNodes$ | async)!"
         (deleteSessions)="onDeleteSessions($event)"
         (toggleNode)="onToggleNode($event)"
-        [tags]="tags$ | async"
+        [tags]="(tags$ | async)!"
       ></app-sessions-table>
     </div>
   </div>

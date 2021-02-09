@@ -6,15 +6,15 @@ import { Action } from '@ngrx/store';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 
+import firebase from 'firebase/app';
 import { createUser } from '../model';
 
 import { AuthActions } from './actions';
-import UserCredential = firebase.auth.UserCredential;
 
 @Injectable()
 export class AuthEffects {
 
-  public autoSignIn$ = createEffect(() =>
+  autoSignIn$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.autoSignIn),
@@ -22,7 +22,7 @@ export class AuthEffects {
       ),
   );
 
-  public signUp$ = createEffect(() =>
+  signUp$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signUp),
@@ -30,7 +30,7 @@ export class AuthEffects {
       ),
   );
 
-  public signIn$ = createEffect(() =>
+  signIn$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signIn),
@@ -38,7 +38,7 @@ export class AuthEffects {
       ),
   );
 
-  public signOut$ = createEffect(() =>
+  signOut$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(AuthActions.signOut),
@@ -46,7 +46,7 @@ export class AuthEffects {
       ),
   );
 
-  public signOutSuccess$ = createEffect(() =>
+  signOutSuccess$ = createEffect(() =>
       this.actions$
         .pipe(
           ofType(AuthActions.signOutSuccess),
@@ -54,24 +54,24 @@ export class AuthEffects {
         ),
     { dispatch: false });
 
-  public constructor(
+  constructor(
     private readonly actions$: Actions,
     private readonly afa: AngularFireAuth,
     private readonly router: Router,
   ) {
   }
 
-  private handleSignUp(credentials: { email: string, password: string }): Observable<Action> {
+  private handleSignUp(credentials: { email: string; password: string }): Observable<Action> {
     const auth = this.afa.createUserWithEmailAndPassword(credentials.email, credentials.password);
     return this.handleAuth(auth);
   }
 
-  private handleSignIn(credentials: { email: string, password: string }): Observable<Action> {
+  private handleSignIn(credentials: { email: string; password: string }): Observable<Action> {
     const auth = this.afa.signInWithEmailAndPassword(credentials.email, credentials.password);
     return this.handleAuth(auth);
   }
 
-  private handleAuth(fireUser: Promise<UserCredential>): Observable<Action> {
+  private handleAuth(fireUser: Promise<firebase.auth.UserCredential>): Observable<Action> {
     const maybeUser = fireUser.then(userCredential => {
       if (userCredential.user && userCredential.user.email) {
         return createUser(userCredential.user.uid, userCredential.user.email);

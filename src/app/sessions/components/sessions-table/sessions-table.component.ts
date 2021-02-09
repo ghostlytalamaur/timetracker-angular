@@ -23,24 +23,24 @@ import { FlatNode, SessionTreeModel } from './session-tree.model';
 })
 export class SessionsTableComponent implements OnInit, OnChanges {
 
-  @Input() public sessions: Session[] = [];
-  @Input() public groupType: SessionsGroupType = 'none';
-  @Input() public sortType: SortType;
-  @Input() public expandedNodes: string[] = [];
-  @Input() public tags: SessionTag[] = [];
-  @Output() public toggleSessionTag = new EventEmitter<{ sessionId: string; tagId: string; }>();
-  @Output() public deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
-  @Output() public toggleNode = new EventEmitter<string>();
+  @Input() sessions: Session[] = [];
+  @Input() groupType: SessionsGroupType = 'none';
+  @Input() sortType!: SortType;
+  @Input() expandedNodes: string[] = [];
+  @Input() tags: SessionTag[] = [];
+  @Output() toggleSessionTag = new EventEmitter<{ sessionId: string; tagId: string }>();
+  @Output() deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() toggleNode = new EventEmitter<string>();
 
-  public constructor(
-    public readonly model: SessionTreeModel,
+  constructor(
+    readonly model: SessionTreeModel,
   ) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     let shouldUpdate = false;
     if (changes.groupType) {
       this.model.setGroupType(this.groupType);
@@ -66,19 +66,19 @@ export class SessionsTableComponent implements OnInit, OnChanges {
     }
   }
 
-  public hasChild(index: number, node: FlatNode): boolean {
+  hasChild(index: number, node: FlatNode): boolean {
     return node.expandable;
   }
 
-  public onToggleNode(node: FlatNode): void {
+  onToggleNode(node: FlatNode): void {
     this.toggleNode.emit(node.node.id);
   }
 
-  public onDeleteSessions(sessions: Session[]): void {
+  onDeleteSessions(sessions: Session[]): void {
     this.deleteSessions.emit(sessions.map(s => s.id));
   }
 
-  public onToggleSessionTag(sessionId: string, tagId: string): void {
+  onToggleSessionTag(sessionId: string, tagId: string): void {
     this.toggleSessionTag.emit({ sessionId, tagId });
   }
 }

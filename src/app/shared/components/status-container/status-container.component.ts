@@ -11,14 +11,14 @@ import { hasChange } from '../../utils';
 export class StatusContainerComponent implements OnChanges {
 
   @Input()
-  public status: Status = initialStatus();
+  status: Status = initialStatus();
 
-  public showContent = false;
-  public showLoadingIndicator = false;
-  public showError = false;
-  public error: string | null = null;
+  showContent = false;
+  showLoadingIndicator = false;
+  showError = false;
+  error: string | null = null;
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (hasChange(this, 'status', changes)) {
       this.showContent = isResolvedStatus(this.status);
       this.showLoadingIndicator = isLoadingStatus(this.status);

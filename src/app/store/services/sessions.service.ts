@@ -16,36 +16,36 @@ import { SessionsSelectors, SettingsSelectors } from '../selectors';
   providedIn: 'root',
 })
 export class SessionsService {
-  public constructor(
+  constructor(
     private readonly store: Store,
   ) {
   }
 
-  public getSessions(): Observable<Session[]> {
+  getSessions(): Observable<Session[]> {
     return this.store.select(SessionsSelectors.selectSessions);
   }
 
-  public getSession(id: string): Observable<Session | undefined> {
+  getSession(id: string): Observable<Session | undefined> {
     return this.store.select(SessionsSelectors.selectSession(id));
   }
 
-  public hasRunningSessions(): Observable<boolean> {
+  hasRunningSessions(): Observable<boolean> {
     return this.store.select(SessionsSelectors.selectHasRunningSessions);
   }
 
-  public getStatus(): Observable<Status> {
+  getStatus(): Observable<Status> {
     return this.store.select(SessionsSelectors.selectStatus);
   }
 
-  public getGroupType(): Observable<SessionsGroupType> {
+  getGroupType(): Observable<SessionsGroupType> {
     return this.store.select(SettingsSelectors.selectGroupType);
   }
 
-  public getSortType(): Observable<SortType> {
+  getSortType(): Observable<SortType> {
     return this.store.select(SettingsSelectors.selectSortType);
   }
 
-  public requestSessions(): void {
+  requestSessions(): void {
     this.store.select(SessionsSelectors.selectIsLoaded)
       .pipe(
         take(1),
@@ -57,27 +57,27 @@ export class SessionsService {
       });
   }
 
-  public cancelRequestSessions(): void {
+  cancelRequestSessions(): void {
     this.store.dispatch(SessionsActions.cancelRequestSessions());
   }
 
-  public addSession(session: SessionEntity): void {
+  addSession(session: SessionEntity): void {
     this.store.dispatch(SessionsActions.addSession({ session }));
   }
 
-  public addSessions(sessions: SessionEntity[]): void {
+  addSessions(sessions: SessionEntity[]): void {
     this.store.dispatch(SessionsActions.addSessions({ sessions }));
   }
 
-  public updateSession(changes: Update<SessionEntity>): void {
+  updateSession(changes: Update<SessionEntity>): void {
     this.store.dispatch(SessionsActions.updateSessions({ changes: [changes] }));
   }
 
-  public removeSessions(ids: string[]): void {
+  removeSessions(ids: string[]): void {
     this.store.dispatch(SessionsActions.removeSessions({ ids }));
   }
 
-  public toggleSession(): void {
+  toggleSession(): void {
     this.store.select(SessionsSelectors.selectRunningSessions)
       .pipe(
         take(1),
@@ -102,30 +102,30 @@ export class SessionsService {
       );
   }
 
-  public clearError() {
+  clearError() {
     this.store.dispatch(SessionsActions.clearError());
   }
 
-  public getDisplayRange(): Observable<Range<DateTime>> {
+  getDisplayRange(): Observable<Range<DateTime>> {
     return this.store.select(SettingsSelectors.selectDisplayRange);
   }
 
-  public setDisplayRange(range: Range<DateTime>): void {
+  setDisplayRange(range: Range<DateTime>): void {
     this.store.dispatch(SettingsActions.setDisplayRange({
       start: range.start.valueOf(),
       end: range.end.valueOf(),
     }));
   }
 
-  public changeGroupType(group: SessionsGroupType) {
+  changeGroupType(group: SessionsGroupType) {
     this.store.dispatch(SettingsActions.changeGroupType({ group }));
   }
 
-  public changeSortType(sortType: SortType) {
+  changeSortType(sortType: SortType) {
     this.store.dispatch(SettingsActions.changeSortType({ sortType }));
   }
 
-  public toggleSessionTag(sessionId: string, tagId: string): void {
+  toggleSessionTag(sessionId: string, tagId: string): void {
     this.store.dispatch(SessionsActions.toggleSessionTag({ sessionId, tagId }));
   }
 }

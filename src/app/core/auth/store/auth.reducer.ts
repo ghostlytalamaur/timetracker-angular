@@ -21,7 +21,7 @@ interface ErrorStatus {
 }
 
 interface SignedIn {
-  type: AuthStatusCode.SignedIn,
+  type: AuthStatusCode.SignedIn;
 }
 
 interface SignedOut {
@@ -50,47 +50,37 @@ const initialState: AuthState = {
 
 const authReducers = createReducer<AuthState>(initialState,
   on(AuthActions.signIn, AuthActions.signUp, AuthActions.signOut, AuthActions.autoSignIn,
-    (state): AuthState => {
-      return {
+    (state): AuthState => ({
         ...state,
         status: { type: AuthStatusCode.Process },
-      };
-    }),
+      })),
 
-  on(AuthActions.authError, (state, { message }) => {
-    return {
+  on(AuthActions.authError, (state, { message }) => ({
       ...state,
       user: null,
       status: {
         type: AuthStatusCode.Error,
         message,
       },
-    };
-  }),
+    })),
 
-  on(AuthActions.authSuccess, (state, { user }) => {
-    return {
+  on(AuthActions.authSuccess, (state, { user }) => ({
       ...state,
       user,
       status: { type: AuthStatusCode.SignedIn },
-    };
-  }),
+    })),
 
-  on(AuthActions.autoSignInFailed, (state) => {
-    return {
+  on(AuthActions.autoSignInFailed, (state) => ({
       ...state,
       user: null,
       status: { type: AuthStatusCode.AutoSignInFailed },
-    };
-  }),
+    })),
 
-  on(AuthActions.signOutSuccess, (state) => {
-    return {
+  on(AuthActions.signOutSuccess, (state) => ({
       ...state,
       user: null,
       status: { type: AuthStatusCode.SignedOut },
-    };
-  }),
+    })),
 );
 
 export function reducers(state: AuthState, action: Action): AuthState {
@@ -111,7 +101,7 @@ export const selectIsSignedIn = compose(
 export const selectStatus = createSelector(
   selectAuthState,
   state => state.status,
-)
+);
 
 export const selectIsLoading = compose(
   state => state.status.type === AuthStatusCode.Process,

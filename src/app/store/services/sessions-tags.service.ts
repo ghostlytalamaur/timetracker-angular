@@ -13,32 +13,32 @@ import { SessionsTagsSelectors } from '../selectors';
 })
 export class SessionsTagsService {
 
-  public constructor(
+  constructor(
     private readonly store: Store,
   ) {
   }
 
-  public getTags(): Observable<SessionTag[]> {
+  getTags(): Observable<SessionTag[]> {
     return this.store.select(SessionsTagsSelectors.selectSessionsTags);
   }
 
-  public getStatus(): Observable<Status> {
+  getStatus(): Observable<Status> {
     return this.store.select(SessionsTagsSelectors.selectStatus);
   }
 
-  public requestTags(): void {
+  requestTags(): void {
     this.store.dispatch(SessionsTagsActions.requestTags());
   }
 
-  public cancelRequestTags(): void {
+  cancelRequestTags(): void {
     this.store.dispatch(SessionsTagsActions.cancelRequestTags());
   }
 
-  public saveTag(tag: SessionTag): void {
+  saveTag(tag: SessionTag): void {
     this.store.dispatch(SessionsTagsActions.saveTag({ tag }));
   }
 
-  public deleteTag(id: string): void {
+  deleteTag(id: string): void {
     this.store.dispatch(SessionsTagsActions.deleteTag({ id }));
   }
 }

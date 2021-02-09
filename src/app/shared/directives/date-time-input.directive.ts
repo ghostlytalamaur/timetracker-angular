@@ -43,30 +43,31 @@ export function dateValidator(control: AbstractControl): ValidationErrors | null
 export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, MatFormFieldControl<Date> {
 
   @HostBinding('attr.aria-describedby')
-  public describedBy = '';
+  describedBy = '';
 
   @HostBinding('class')
-  public readonly class = 'mat-input-element mat-form-field-autofill-control';
+  readonly class = 'mat-input-element mat-form-field-autofill-control';
 
-  public readonly ngControl: NgControl | null;
-  public readonly stateChanges: Observable<void>;
-  public readonly controlType = 'date-time-input';
+  @Output()
+  readonly valueChange: EventEmitter<Date | null> = new EventEmitter<any>();
+
+  readonly ngControl: NgControl | null;
+  readonly stateChanges: Observable<void>;
+  readonly controlType = 'date-time-input';
 
   private readonly stateChangesSubj: Subject<void>;
-  @Output()
-  public readonly valueChange: EventEmitter<Date | null> = new EventEmitter<any>();
   private readonly uid = uuid();
   private mRequired = false;
   private mDisabled = false;
-  private subscription: Subscription;
-  private date: Date | null;
-  private mId: string;
-  private mPlaceholder: string;
+  private subscription!: Subscription;
+  private date!: Date | null;
+  private mId!: string;
+  private mPlaceholder!: string;
   private mFocused = false;
   private mAutoFilled = false;
-  private mFormat: string;
+  private mFormat!: string;
 
-  public constructor(
+  constructor(
     private readonly focusMonitor: FocusMonitor,
     private readonly autoFillMonitor: AutofillMonitor,
     private readonly input: ElementRef<HTMLInputElement>,
@@ -80,43 +81,44 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChanges = this.stateChangesSubj.asObservable();
   }
 
-  public get format(): string {
+  get format(): string {
     return this.mFormat;
   }
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('appDateTimeInput')
-  public set format(fmt: string) {
+  set format(fmt: string) {
     this.mFormat = fmt;
     this.input.nativeElement.value = isValidDate(this.value) && this.format ? DateTime.fromJSDate(this.value).toFormat(this.format) : '';
     this.stateChangesSubj.next();
   }
 
   @Input()
-  public get value(): Date | null {
+  get value(): Date | null {
     return this.date;
   }
 
-  public set value(date: Date | null) {
+  set value(date: Date | null) {
     this.writeValue(date);
   }
 
   @Input()
   @HostBinding('attr.id')
-  public get id(): string {
+  get id(): string {
     return this.mId ? this.mId : this.uid;
   }
 
-  public set id(value: string) {
+  set id(value: string) {
     this.mId = value;
   }
 
   @Input()
   @HostBinding('attr.placeholder')
-  public get placeholder(): string {
+  get placeholder(): string {
     return this.mPlaceholder;
   }
 
-  public set placeholder(value: string) {
+  set placeholder(value: string) {
     this.mPlaceholder = value;
     this.stateChangesSubj.next();
   }
@@ -124,22 +126,22 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
 
   @Input()
   @HostBinding('required')
-  public get required(): boolean {
+  get required(): boolean {
     return this.mRequired;
   }
 
-  public set required(value: boolean) {
+  set required(value: boolean) {
     this.mRequired = coerceBooleanProperty(value);
     this.stateChangesSubj.next();
   }
 
   @Input()
   @HostBinding('disabled')
-  public get disabled(): boolean {
+  get disabled(): boolean {
     return this.mDisabled;
   }
 
-  public set disabled(value: boolean) {
+  set disabled(value: boolean) {
     this.mDisabled = coerceBooleanProperty(value);
     if (this.focused) {
       this.mFocused = false;
@@ -147,23 +149,38 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     }
   }
 
-  public get focused(): boolean {
+  get focused(): boolean {
     return this.mFocused;
   }
 
-  public get empty(): boolean {
+  get empty(): boolean {
     return !this.input.nativeElement.value;
   }
 
-  public get shouldLabelFloat(): boolean {
+  get shouldLabelFloat(): boolean {
     return this.focused || !this.empty;
   }
 
-  public setDisabledState(isDisabled: boolean): void {
+  @HostListener('change')
+  @HostListener('input')
+  onInputChange() {
+    const value = this.input.nativeElement.value;
+    this.date = value ? DateTime.fromFormat(value, this.format).toJSDate() : null;
+
+    if (!isValidDate(this.date)) {
+      this.date = null;
+    }
+
+    this.onChange(this.value);
+    this.valueChange.emit(this.date);
+    this.stateChangesSubj.next();
+  }
+
+  setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
 
-  public writeValue(value: any): void {
+  writeValue(value: any): void {
     if (!value || value === this.date) {
       return;
     }
@@ -174,25 +191,25 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChangesSubj.next();
   }
 
-  public get errorState(): boolean {
+  get errorState(): boolean {
     return !!this.ngControl && !!this.ngControl.errors;
   }
 
-  public get autofilled(): boolean {
+  get autofilled(): boolean {
     return this.mAutoFilled;
   }
 
-  public setDescribedByIds(ids: string[]): void {
+  setDescribedByIds(ids: string[]): void {
     this.describedBy = ids.join(' ');
   }
 
-  public onContainerClick(event: MouseEvent): void {
+  onContainerClick(event: MouseEvent): void {
     if ((event.target as Element).tagName.toLowerCase() !== 'input') {
       this.input.nativeElement.focus();
     }
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.subscription = new Subscription();
     this.subscription.add(
       this.autoFillMonitor.monitor(this.input).subscribe(event => {
@@ -211,38 +228,23 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     );
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.autoFillMonitor.stopMonitoring(this.input);
     this.focusMonitor.stopMonitoring(this.input);
     this.subscription.unsubscribe();
     this.stateChangesSubj.complete();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.stateChangesSubj.next();
   }
 
-  public registerOnChange(fn: (value: Date | null) => void): void {
+  registerOnChange(fn: (value: Date | null) => void): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  @HostListener('change')
-  @HostListener('input')
-  public onInputChange() {
-    const value = this.input.nativeElement.value;
-    this.date = value ? DateTime.fromFormat(value, this.format).toJSDate() : null;
-
-    if (!isValidDate(this.date)) {
-      this.date = null;
-    }
-
-    this.onChange(this.value);
-    this.valueChange.emit(this.date);
-    this.stateChangesSubj.next();
   }
 
   private onTouched: () => void = () => {

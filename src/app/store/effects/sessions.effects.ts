@@ -33,7 +33,7 @@ function handleSessionError<T>(msg: string): OperatorFunction<T, Action> {
 @Injectable()
 export class SessionsEffects {
 
-  public loadEffect$ = createEffect(() =>
+  loadEffect$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.requestSessions),
@@ -46,13 +46,13 @@ export class SessionsEffects {
             return this.getChangesActions()
               .pipe(
                 takeUntil<Action>(requested$),
-              )
+              );
           },
         ),
       ),
   );
 
-  public addSession$ = createEffect(() =>
+  addSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSession),
@@ -65,7 +65,7 @@ export class SessionsEffects {
       ),
   );
 
-  public addSessions$ = createEffect(() =>
+  addSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.addSessions),
@@ -78,7 +78,7 @@ export class SessionsEffects {
       ),
   );
 
-  public updateSessions$ = createEffect(() =>
+  updateSessions$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.updateSessions),
@@ -91,12 +91,11 @@ export class SessionsEffects {
       ),
   );
 
-  public toggleSessionTags$ = createEffect(() =>
+  toggleSessionTags$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.toggleSessionTag),
-        mergeMap(({ sessionId, tagId }) => {
-          return this.store.select(SessionsSelectors.selectSessionEntity(sessionId))
+        mergeMap(({ sessionId, tagId }) => this.store.select(SessionsSelectors.selectSessionEntity(sessionId))
             .pipe(
               take(1),
               switchMap(session => {
@@ -109,7 +108,7 @@ export class SessionsEffects {
                     .pipe(
                       tap(() => {
                         this.notifications.clear(notificationId);
-                        this.notifications.success('Session was updated')
+                        this.notifications.success('Session was updated');
                       }),
                       switchMapTo(EMPTY),
                       catchError(() => {
@@ -123,12 +122,11 @@ export class SessionsEffects {
                   return EMPTY;
                 }
               }),
-            );
-        }),
+            )),
       ),
   );
 
-  public removeSession$ = createEffect(() =>
+  removeSession$ = createEffect(() =>
     this.actions$
       .pipe(
         ofType(SessionsActions.removeSessions),
@@ -141,7 +139,7 @@ export class SessionsEffects {
       ),
   );
 
-  public constructor(
+  constructor(
     private readonly actions$: Actions,
     private readonly store: Store,
     private readonly storage: SessionsStorageService,
@@ -152,16 +150,14 @@ export class SessionsEffects {
   private getChangesActions(): Observable<Action> {
     return this.store.select(SettingsSelectors.selectDisplayRange)
       .pipe(
-        switchMap(range => {
-          return merge(
+        switchMap(range => merge(
             this.getAddedSessions(range),
             this.getRemovedSessions(),
             this.getModifiedSessions(range),
           )
             .pipe(
               handleSessionError(''),
-            );
-        }),
+            )),
       );
   }
 

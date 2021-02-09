@@ -13,18 +13,18 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  public isSignedIn$: Observable<boolean>;
+  isSignedIn$: Observable<boolean>;
 
-  public constructor(
+  constructor(
     private readonly authService: AuthService,
   ) {
     this.isSignedIn$ = this.authService.isSignedIn();
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
   }
 
-  public onSignOut(): void {
+  onSignOut(): void {
     this.authService.logout();
   }
 }

@@ -9,18 +9,18 @@ import { SessionsService, SessionsTagsService } from '@app/store';
 })
 export class AppDataContainerComponent implements OnInit, OnDestroy {
 
-  public constructor(
+  constructor(
     private readonly sessionsService: SessionsService,
     private readonly tagsService: SessionsTagsService,
   ) {
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.tagsService.requestTags();
     this.sessionsService.requestSessions();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.tagsService.cancelRequestTags();
     this.sessionsService.cancelRequestSessions();
   }

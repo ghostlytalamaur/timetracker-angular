@@ -10,20 +10,20 @@ import { SessionsTableSelectors } from '../../store/selectors';
 })
 export class SessionsTableService {
 
-  public constructor(
+  constructor(
     private readonly store: Store,
   ) {
   }
 
-  public getExpandedNodes(): Observable<string[]> {
+  getExpandedNodes(): Observable<string[]> {
     return this.store.select(SessionsTableSelectors.selectExpandedNodes);
   }
 
-  public clearExpandedNodes(): void {
+  clearExpandedNodes(): void {
     this.store.dispatch(SessionsTableActions.clearExpandedNodes());
   }
 
-  public toggleNode(nodeId: string): void {
+  toggleNode(nodeId: string): void {
     this.store.dispatch(SessionsTableActions.toggleNode({ nodeId }));
   }
 }

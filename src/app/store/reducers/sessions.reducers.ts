@@ -51,7 +51,9 @@ function onClearError(state: State): State {
   };
 }
 
-function onToggleSessionTag(state: State, action: ReturnType<typeof SessionsActions.toggleSessionTag>): State {
+function onToggleSessionTag(state: State, action: ReturnType<typeof SessionsActions.toggleSessionTag> |
+  ReturnType<typeof SessionsActions.toggleSessionTagFailure>): State {
+
   const session = state.entities[action.sessionId];
   if (!session) {
     return state;

@@ -69,5 +69,5 @@ export const toggleSessionTagFailure = createAction(
     sessionId: string;
     tagId: string;
   }>(),
-)
+);
 

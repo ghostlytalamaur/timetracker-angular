@@ -1,5 +1,5 @@
 <app-status-container
-  [status]="status$ | async"
+  [status]="(status$ | async)!"
 >
   <div class="row h-100">
     <div class="col">
