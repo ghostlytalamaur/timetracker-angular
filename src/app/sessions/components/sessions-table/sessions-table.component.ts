@@ -61,9 +61,7 @@ export class SessionsTableComponent implements OnInit, OnChanges {
       this.model.update();
     }
 
-    if (changes.expandedNodes) {
-      this.model.expandNodes(this.expandedNodes);
-    }
+    this.model.expandNodes(this.expandedNodes);
   }
 
   hasChild(index: number, node: FlatNode): boolean {
