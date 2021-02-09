@@ -97,10 +97,7 @@ export class SessionsStorageService extends FireEntityStorage<SessionStorageEnti
           start: firebase.firestore.Timestamp.fromDate(new Date(change.start)),
         };
       } else {
-        return {
-          ...change,
-          start: undefined,
-        };
+        return { ...change } as Update<SessionStorageEntity>;
       }
     });
 
