@@ -46,13 +46,15 @@
     <div class="col">
       <app-sessions-table
         [sessions]="(sessions$ | async)!"
-        (toggleSessionTag)="onToggleSessionTag($event)"
         [groupType]="(groupType$ | async)!"
         [sortType]="(sortType$ | async)!"
+        [tags]="(tags$ | async)!"
         [expandedNodes]="(expandedNodes$ | async)!"
+        (toggleSessionTag)="onToggleSessionTag($event)"
         (deleteSessions)="onDeleteSessions($event)"
         (toggleNode)="onToggleNode($event)"
-        [tags]="(tags$ | async)!"
+        (copyToClipboard)="onCopyToClipboard($event)"
+
       ></app-sessions-table>
     </div>
   </div>

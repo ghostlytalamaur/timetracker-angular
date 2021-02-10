@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Session, SessionTag, SessionsGroupType, SortType } from '@app/store';
+import { Session, SessionTag, SessionsGroupType, SortType, SessionsGroup, ClipboardContent } from '@app/store';
 
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 
@@ -31,6 +31,7 @@ export class SessionsTableComponent implements OnInit, OnChanges {
   @Output() toggleSessionTag = new EventEmitter<{ sessionId: string; tagId: string }>();
   @Output() deleteSessions: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() toggleNode = new EventEmitter<string>();
+  @Output() copyToClipboard = new EventEmitter<ClipboardContent>();
 
   constructor(
     readonly model: SessionTreeModel,
@@ -78,5 +79,15 @@ export class SessionsTableComponent implements OnInit, OnChanges {
 
   onToggleSessionTag(sessionId: string, tagId: string): void {
     this.toggleSessionTag.emit({ sessionId, tagId });
+  }
+
+  onCopyToClipboard(content: ClipboardContent): void {
+    this.copyToClipboard.emit(content);
+  }
+
+  onCopyGroupToClipboard(group: SessionsGroup): void {
+    this.copyToClipboard.emit({
+      'text/plain': group.toClipboardString(),
+    });
   }
 }

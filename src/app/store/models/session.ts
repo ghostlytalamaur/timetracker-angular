@@ -1,12 +1,11 @@
 import { DateTime, Duration } from 'luxon';
-import { Observable, ReplaySubject, of, timer } from 'rxjs';
-import { map, multicast, refCount } from 'rxjs/operators';
-
-import { environment } from '../../../environments/environment';
-
-import { SessionEntity, createSession } from './session-entity';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { createSession, SessionEntity } from './session-entity';
 import { SessionTag } from './session-tag';
 import { SessionsGroupType } from './sessions-group';
+
+
 
 export class Session {
   constructor(
@@ -43,59 +42,21 @@ export class Session {
     );
   }
 
+  calculateDuration(): Duration {
+    return this.duration ?? DateTime.local().diff(this.start);
+  }
+
 }
 
 export function isRunning(session: Session): boolean {
   return !session.duration;
 }
 
-const ticks$ = timer(0, environment.settings.durationRate)
-  .pipe(
-    multicast(() => new ReplaySubject(1)),
-    refCount(),
+export function getDuration$(ticks$: Observable<number>, calculate: () => Duration | null): Observable<Duration | null> {
+  return ticks$.pipe(
+    map(calculate),
+    distinctUntilChanged((a, b) => a?.valueOf() === b?.valueOf()),
   );
-
-export function getDuration(start: DateTime, duration: Duration | null): Observable<Duration>;
-export function getDuration(start: DateTime | null, duration: Duration | null):
-  Observable<Duration | null> {
-
-  if (!start) {
-    return of(null);
-  } else if (start && !duration) {
-    return ticks$
-      .pipe(
-        map(() => DateTime.local().diff(start)),
-      );
-  } else {
-    return of(duration);
-  }
-}
-
-export function getGroupDuration(sessions: Session[]): Observable<Duration> {
-  const runningSessions: Session[] = [];
-  let closedDuration: Duration = Duration.fromMillis(0);
-  for (const session of sessions) {
-    if (!session.duration) {
-      runningSessions.push(session);
-    } else {
-      closedDuration = closedDuration.plus(session.duration);
-    }
-  }
-
-  if (!runningSessions.length) {
-    return of(closedDuration);
-  } else {
-    return ticks$
-      .pipe(
-        map(() => {
-          const now = DateTime.local();
-          const sumDuration = runningSessions.reduce((acc, session) =>
-            acc.plus(now.diff(session.start)), Duration.fromMillis(0),
-          );
-          return closedDuration.plus(sumDuration);
-        }),
-      );
-  }
 }
 
 export function getGroupId(session: Session, groupType: SessionsGroupType): string {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationsService } from '@app/core/services';
+import { DialogsService } from '@app/shared/dialogs';
 import { getErrorMessage } from '@app/shared/types';
 import { Range } from '@app/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -130,12 +131,18 @@ export class SessionsEffects {
     this.actions$
       .pipe(
         ofType(SessionsActions.removeSessions),
-        switchMap(action =>
-          this.storage.removeSessions(action.ids)
+        switchMap(action => this.dialogs.confirmation({
+            title: 'Confirmation',
+            message: action.ids.length > 1 ? `Remove ${action.ids.length} sessions?` : 'Remove session?',
+            positiveText: 'Remove',
+          })
             .pipe(
-              handleSessionError('Cannot remove session'),
-            ),
-        ),
+              switchMap(() => this.storage.removeSessions(action.ids)
+              .pipe(
+                handleSessionError('Cannot remove session'),
+              )),
+              catchError(() => EMPTY),
+            )),
       ),
   );
 
@@ -144,6 +151,7 @@ export class SessionsEffects {
     private readonly store: Store,
     private readonly storage: SessionsStorageService,
     private readonly notifications: NotificationsService,
+    private readonly dialogs: DialogsService,
   ) {
   }
 

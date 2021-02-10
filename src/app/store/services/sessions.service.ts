@@ -77,6 +77,10 @@ export class SessionsService {
     this.store.dispatch(SessionsActions.removeSessions({ ids }));
   }
 
+  copyGroupToClipboard(groupId: string): void {
+    this.store.dispatch(SessionsActions.copyGroupToClipboard({ groupId }));
+  }
+
   toggleSession(): void {
     this.store.select(SessionsSelectors.selectRunningSessions)
       .pipe(

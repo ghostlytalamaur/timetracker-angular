@@ -38,9 +38,15 @@
           hasBackdrop="false"
 >
   <ng-template matMenuContent let-node="node">
+    <button mat-menu-item (click)="onCopyGroupToClipboard(node.node)">
+      <mat-icon>content_copy</mat-icon>
+      Copy to Clipboard
+    </button>
     <button mat-menu-item
             (click)="onDeleteSessions(node.node.sessions)"
-    >Delete {{ node.node.sessions.length }} {{ node.node.sessions.length | i18nPlural:{
+    >
+    <mat-icon>delete</mat-icon>
+    Delete {{ node.node.sessions.length }} {{ node.node.sessions.length | i18nPlural:{
       '=1': 'session',
       'other': 'sessions'
     } }}

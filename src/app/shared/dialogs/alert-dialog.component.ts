@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface AlertDialogData {
@@ -11,6 +11,7 @@ export interface ConfirmationDialogData {
   type: 'confirmation';
   title?: string;
   message: string;
+  positiveText?: string;
 }
 
 type DialogData = AlertDialogData | ConfirmationDialogData;
@@ -18,6 +19,7 @@ export type DialogResult = 'ok' | 'cancel' | 'close';
 
 @Component({
   templateUrl: './alert-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertDialogComponent implements OnInit {
 

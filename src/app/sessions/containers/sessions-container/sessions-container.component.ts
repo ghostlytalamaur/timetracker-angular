@@ -1,6 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Range } from '@app/shared/utils';
-import { Session, SessionTag, SessionsGroupType, SessionsService, SessionsTagsService, SortType } from '@app/store';
+import {
+  Session,
+  SessionTag,
+  SessionsGroupType,
+  SessionsService,
+  SessionsTagsService,
+  SortType,
+  ClipboardContent,
+  ClipboardService,
+} from '@app/store';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,6 +37,7 @@ export class SessionsContainerComponent implements OnInit {
     private readonly sessionsSrv: SessionsService,
     private readonly tagsService: SessionsTagsService,
     private readonly tableSrv: SessionsTableService,
+    private readonly clipboard: ClipboardService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions();
     this.displayRange$ = this.sessionsSrv.getDisplayRange()
@@ -75,6 +85,10 @@ export class SessionsContainerComponent implements OnInit {
 
   onToggleNode(nodeId: string): void {
     this.tableSrv.toggleNode(nodeId);
+  }
+
+  onCopyToClipboard(content: ClipboardContent): void {
+    this.clipboard.copyToClipboard(content);
   }
 
   onToggleSessionTag(event: { sessionId: string; tagId: string }): void {

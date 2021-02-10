@@ -1,9 +1,11 @@
-import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Session, getDuration } from '@app/store';
+import { Component, HostBinding, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { TICKS_TIMER } from '@app/core/services';
+import { getDuration$, Session } from '@app/store';
 import { Duration } from 'luxon';
-import { Observable } from 'rxjs';
-
+import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
+
 
 @Component({
   selector: 'app-sessions-table-row',
@@ -20,14 +22,24 @@ export class SessionsTableRowComponent implements OnInit, OnChanges {
 
   readonly dateFormat = environment.settings.dateFormat;
   readonly timeFormat = environment.settings.timeFormat;
-  duration$!: Observable<Duration>;
+  duration$!: Observable<Duration | null>;
+  private readonly session$$ = new BehaviorSubject<Session | null>(null);
+
+  constructor(
+    @Inject(TICKS_TIMER)
+    private readonly ticks$: Observable<number>,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.duration$ = this.session$$.pipe(
+      switchMap(session => getDuration$(this.ticks$, () => session?.calculateDuration() ?? null)),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.session) {
-      this.duration$ = getDuration(this.session.start, this.session.duration);
+      this.session$$.next(this.session);
     }
   }
 

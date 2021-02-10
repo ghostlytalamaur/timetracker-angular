@@ -1,9 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { SessionsGroup, SessionsGroupType, getGroupDuration } from '@app/store';
+import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { TICKS_TIMER } from '@app/core/services';
+import { getDuration$, SessionsGroup, SessionsGroupType } from '@app/store';
 import { Duration } from 'luxon';
-import { Observable } from 'rxjs';
-
+import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
+
 
 @Component({
   selector: 'app-group-table-row',
@@ -14,15 +16,26 @@ export class GroupTableRowComponent implements OnInit, OnChanges {
 
   @Input() group!: SessionsGroup;
 
-  duration$!: Observable<Duration>;
+  duration$!: Observable<Duration | null>;
   text!: string;
 
+  private readonly group$$ = new BehaviorSubject<SessionsGroup | null>(null);
+
+  constructor(
+    @Inject(TICKS_TIMER)
+    private readonly ticks$: Observable<number>,
+  ) {
+  }
+
   ngOnInit(): void {
+    this.duration$ = this.group$$.pipe(
+      switchMap(group => getDuration$(this.ticks$, () => group?.calculateDuration() ?? null)),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.group) {
-      this.duration$ = getGroupDuration(this.group.sessions);
+      this.group$$.next(this.group);
       this.updateText();
     }
   }

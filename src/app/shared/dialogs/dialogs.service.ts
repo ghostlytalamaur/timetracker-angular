@@ -14,7 +14,7 @@ export class DialogsService {
   readonly defaultConfig: MatDialogConfig = {
     minWidth: 300,
     role: 'alertdialog',
-    panelClass: 'custom-mat-dialog',
+    // panelClass: 'custom-mat-dialog',
   };
 
   constructor(

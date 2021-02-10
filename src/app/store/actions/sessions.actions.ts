@@ -71,3 +71,9 @@ export const toggleSessionTagFailure = createAction(
   }>(),
 );
 
+export const copyGroupToClipboard = createAction(
+  '[Sessions] Copy Group To Clipboard',
+  props<{
+    groupId: string;
+  }>(),
+);

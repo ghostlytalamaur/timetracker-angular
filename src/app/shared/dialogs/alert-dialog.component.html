@@ -6,8 +6,8 @@
 <mat-dialog-actions align="end">
 
   <ng-container *ngIf="data.type === confirmationType">
-    <button [matDialogClose]="okResult" mat-flat-button>Ok</button>
-    <button [matDialogClose]="cancelResult" mat-flat-button>Cancel</button>
+    <button [matDialogClose]="okResult" mat-flat-button>{{ data.positiveText || 'Ok' }}</button>
+    <button [matDialogClose]="cancelResult" mat-flat-button cdkFocusInitial>Cancel</button>
   </ng-container>
 
   <ng-container *ngIf="data.type === alertType">

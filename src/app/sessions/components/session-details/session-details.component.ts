@@ -2,16 +2,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Session, SessionEntity, getDuration } from '@app/store';
+import { TICKS_TIMER } from '@app/core/services';
+import { getDuration$, Session, SessionEntity } from '@app/store';
 import { DateTime, Duration } from 'luxon';
-import { Observable, defer, merge, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { environment } from '../../../../environments/environment';
@@ -44,27 +45,27 @@ export class SessionDetailsComponent implements OnChanges {
   readonly form: FormGroup;
   readonly duration$: Observable<Duration | null>;
 
-  constructor() {
+  constructor(
+    @Inject(TICKS_TIMER)
+    private readonly ticks$: Observable<number>,
+  ) {
     this.saveSession = new EventEmitter<SessionEntity>();
-    const now = DateTime.local();
+    const now = new Date();
     this.form = new FormGroup({
       date: new FormControl(now, [Validators.required]),
       start: new FormControl(now, [Validators.required]),
       end: new FormControl(now),
     });
 
-    this.duration$ = defer(() => merge(of(this.form.value), this.form.valueChanges))
-      .pipe(
-        switchMap((data: FormData) => {
-          const start = data.start ? DateTime.fromJSDate(data.start) : null;
-          let duration: Duration | null = null;
-          if (start && data.end) {
-            duration = withDate(start, DateTime.fromJSDate(data.end)).diff(start);
-          }
-
-          return start ? getDuration(start, duration) : of(null);
-        }),
-      );
+    this.duration$ = getDuration$(this.ticks$, () => {
+      const start = this.form.value.start;
+      const end = this.form.value.end ?? new Date();
+      if (start && end) {
+        return DateTime.fromJSDate(end).diff(DateTime.fromJSDate(start));
+      } else {
+        return null;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
