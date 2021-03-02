@@ -1,5 +1,6 @@
 {
-  "name": "functions",
+  "name": "@timetracker/functions",
+  "version": "1.0.0",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
@@ -8,9 +9,6 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "8"
   },
   "main": "lib/index.js",
   "dependencies": {
