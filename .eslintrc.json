@@ -8,16 +8,29 @@
       "files": [
         "*.ts"
       ],
+      "extends": [
+        "plugin:@typescript-eslint/recommended"
+      ],
       "parserOptions": {
         "project": [
           "tsconfig.json",
           "e2e/tsconfig.json"
         ],
+        "sourceType": "module",
         "createDefaultProgram": true
       },
+      "plugins": [
+        "@typescript-eslint/eslint-plugin",
+        "prefer-arrow",
+        "import"
+      ],
       "rules": {
         "no-shadow": "off",
         "no-underscore-dangle": ["error"],
+        "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-shadow": ["error"],
         "@typescript-eslint/naming-convention": [
           "error",
