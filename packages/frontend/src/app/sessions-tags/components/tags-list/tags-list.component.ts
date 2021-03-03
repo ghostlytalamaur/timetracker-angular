@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { SessionTag } from '@app/store';
 
 
@@ -8,7 +8,7 @@ import { SessionTag } from '@app/store';
   styleUrls: ['./tags-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TagsListComponent implements OnInit {
+export class TagsListComponent {
 
   @Input()
   tags: SessionTag[] = [];
@@ -18,9 +18,6 @@ export class TagsListComponent implements OnInit {
   selectedTag: SessionTag | null = null;
   @Output()
   readonly selectedTagChange = new EventEmitter<SessionTag | null>();
-
-  ngOnInit(): void {
-  }
 
   onDeleteTag(tag: SessionTag): void {
     this.deleteTag.emit(tag.id);

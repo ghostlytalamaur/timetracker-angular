@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
   Router,
-  RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
-
 import { AuthService } from './auth.service';
+
 
 @Injectable()
 export class BaseAuthGuard {
@@ -25,7 +23,7 @@ export class BaseAuthGuard {
     return this.authService.isLoading()
       .pipe(
         filter(isLoading => !isLoading),
-        switchMap(ignored => this.authService.isSignedIn()),
+        switchMap(() => this.authService.isSignedIn()),
         take(1),
       );
   }
@@ -37,8 +35,7 @@ export class BaseAuthGuard {
 })
 export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivateChild {
 
-  canActivate(route: ActivatedRouteSnapshot,
-                     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()
       .pipe(
@@ -52,9 +49,8 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivate
       );
   }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot,
-                          state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.canActivate(childRoute, state);
+  canActivateChild(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.canActivate();
   }
 
 }
@@ -64,8 +60,7 @@ export class AuthGuard extends BaseAuthGuard implements CanActivate, CanActivate
 })
 export class AnonymousGuard extends BaseAuthGuard implements CanActivate {
 
-  canActivate(route: ActivatedRouteSnapshot,
-                     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.isSignedIn()
       .pipe(

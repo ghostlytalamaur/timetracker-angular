@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -18,7 +17,7 @@ import { SessionTag, createSessionTag } from '@app/store';
   styleUrls: ['./tags-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TagsEditorComponent implements OnInit, OnChanges {
+export class TagsEditorComponent implements OnChanges {
 
   @Input()
   tag: SessionTag | null = null;
@@ -32,9 +31,6 @@ export class TagsEditorComponent implements OnInit, OnChanges {
     this.form = fb.group({
       label: fb.control('', [Validators.required, Validators.min(1)]),
     });
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges) {

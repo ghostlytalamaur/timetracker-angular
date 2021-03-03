@@ -82,7 +82,7 @@ export class AuthEffects {
     return from(maybeUser)
       .pipe(
         map(user => AuthActions.authSuccess({ user })),
-        tap(ignored => this.router.navigate(['/'])),
+        tap(() => this.router.navigate(['/'])),
         catchError(err => {
           const errMsg = err instanceof Error ? err.message : 'Authentication failed. Unknown error.';
           return of(AuthActions.authError({ message: errMsg }));

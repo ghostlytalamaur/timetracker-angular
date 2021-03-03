@@ -29,11 +29,11 @@ export function initialStatus(): Status {
 }
 
 export function loadingStatus(status: Status): Status {
-  return { type: StatusCode.Loading };
+  return { ...status, type: StatusCode.Loading };
 }
 
 export function successStatus(status: Status): Status {
-  return { type: StatusCode.Success };
+  return { ...status, type: StatusCode.Success };
 }
 
 export function errorStatus(status: Status, message: string): Status {

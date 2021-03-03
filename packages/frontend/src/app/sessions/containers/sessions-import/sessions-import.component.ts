@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Session, SessionEntity, SessionsService } from '@app/store';
 import { DateTime } from 'luxon';
 import { v4 as uuid } from 'uuid';
@@ -61,14 +61,11 @@ function isSessionsBackup(backup: any): backup is SessionsBackup {
   templateUrl: './sessions-import.component.html',
   styleUrls: ['./sessions-import.component.scss'],
 })
-export class SessionsImportComponent implements OnInit {
+export class SessionsImportComponent {
 
   constructor(
     private readonly sessionsSrv: SessionsService,
   ) {
-  }
-
-  ngOnInit() {
   }
 
   onImport(files: FileList | null) {

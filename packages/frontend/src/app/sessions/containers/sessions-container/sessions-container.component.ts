@@ -1,20 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Range } from '@app/shared/utils';
 import {
-  Session,
-  SessionTag,
+  ClipboardContent,
+  ClipboardService, Session,
+
   SessionsGroupType,
   SessionsService,
-  SessionsTagsService,
+  SessionsTagsService, SessionTag,
+
+
+
   SortType,
-  ClipboardContent,
-  ClipboardService,
 } from '@app/store';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { SessionsTableService } from './sessions-table.service';
+
 
 @Component({
   selector: 'app-sessions-container',
@@ -22,7 +24,7 @@ import { SessionsTableService } from './sessions-table.service';
   styleUrls: ['./sessions-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SessionsContainerComponent implements OnInit {
+export class SessionsContainerComponent {
 
   readonly hasRunning$: Observable<boolean>;
   readonly displayRange$: Observable<Range<Date>>;
@@ -54,10 +56,6 @@ export class SessionsContainerComponent implements OnInit {
     this.expandedNodes$ = this.tableSrv.getExpandedNodes();
     this.tags$ = this.tagsService.getTags();
   }
-
-  ngOnInit() {
-  }
-
 
   onToggleSession(): void {
     this.sessionsSrv.toggleSession();

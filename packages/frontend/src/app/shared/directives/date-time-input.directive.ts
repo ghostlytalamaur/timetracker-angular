@@ -14,9 +14,8 @@ import {
   Optional,
   Output,
   Self,
-  SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NgControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NgControl, NG_VALIDATORS, ValidationErrors } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { DateTime } from 'luxon';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -65,6 +64,8 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   private mPlaceholder!: string;
   private mFocused = false;
   private mAutoFilled = false;
+  private onTouched!: () => void;
+  private onChange!: (value: Date | null) => void;
 
   constructor(
     private readonly focusMonitor: FocusMonitor,
@@ -228,7 +229,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChangesSubj.complete();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.stateChangesSubj.next();
   }
 
@@ -239,10 +240,5 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-
-  private onTouched: () => void = () => {
-  };
-  private onChange: (value: Date | null) => void = (ignored: Date | null) => {
-  };
 
 }

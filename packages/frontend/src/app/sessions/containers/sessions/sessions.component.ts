@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { routerAnimation } from '@app/shared/animations';
 import { Status } from '@app/shared/types';
 import { SessionsService } from '@app/store';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerAnimation],
 })
-export class SessionsComponent implements OnInit {
+export class SessionsComponent {
 
   readonly status$: Observable<Status>;
 
@@ -19,9 +19,6 @@ export class SessionsComponent implements OnInit {
     private sessionsSrv: SessionsService,
   ) {
     this.status$ = this.sessionsSrv.getStatus();
-  }
-
-  ngOnInit() {
   }
 
 }

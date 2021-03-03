@@ -19,7 +19,7 @@ export class SettingsEffects {
             SettingsActions.changeSortType,
           ),
           withLatestFrom(this.store.select(SettingsSelectors.selectSettings)),
-          tap(([ignored, settings]) => SettingsEffects.storeSettings(settings)),
+          tap(([, settings]) => SettingsEffects.storeSettings(settings)),
         ),
     { dispatch: false },
   );

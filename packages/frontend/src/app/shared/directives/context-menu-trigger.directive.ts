@@ -22,19 +22,15 @@ import {
   Optional,
   ViewContainerRef,
 } from '@angular/core';
-import { MAT_MENU_SCROLL_STRATEGY, MatMenu, MenuPositionX, MenuPositionY } from '@angular/material/menu';
-import { EMPTY, Observable, Subject, Subscription, fromEvent, merge, of } from 'rxjs';
-import { filter, map, mapTo, take, takeUntil, tap } from 'rxjs/operators';
+import { MatMenu, MAT_MENU_SCROLL_STRATEGY, MenuPositionX, MenuPositionY } from '@angular/material/menu';
+import { EMPTY, fromEvent, merge, Observable, of, Subject, Subscription } from 'rxjs';
+import { filter, mapTo, take, takeUntil } from 'rxjs/operators';
 
 interface ContextMenuConfig {
   element: ElementRef<HTMLElement>;
   position: Point;
   viewContainerRef: ViewContainerRef;
   context: unknown;
-}
-
-function log(...args: any[]): void {
-  // console.log(performance.now(), ...args);
 }
 
 class ContextMenuRef {
@@ -72,7 +68,6 @@ class ContextMenuRef {
   }
 
   close(): void {
-    log('menu: close');
     this.menu.closed.emit();
   }
 
@@ -81,7 +76,6 @@ class ContextMenuRef {
   }
 
   dispose(): void {
-    log('menu: dispose');
     this.overlayRef?.dispose();
     this.overlayRef = null;
 
@@ -89,7 +83,6 @@ class ContextMenuRef {
   }
 
   doDispose(): void {
-    log('menu: doDispose');
     if (this.overlayRef) {
       this.overlayRef.dispose();
     }
@@ -132,15 +125,11 @@ class ContextMenuRef {
       .pipe(
         mapTo('detachments'),
       );
-    return merge(docClick$, docContextMenu$, detachments$)
-      .pipe(
-        map(reason => log('menu: closing action', reason)),
-      );
+    return merge(docClick$, docContextMenu$, detachments$);
   }
 
   private unsubscribeClosingActions(): void {
     if (this.menuClosingActionsSubscription) {
-      log('menu: unsubscribe from closing actions');
       this.menuClosingActionsSubscription.unsubscribe();
       this.menuClosingActionsSubscription = null;
     }
@@ -170,7 +159,6 @@ class ContextMenuRef {
   }
 
   private destroyMenu(): void {
-    log('menu: destroyMenu');
     this.unsubscribeClosingActions();
     this.overlayRef?.detach();
     const menu = this.menu;
@@ -179,13 +167,6 @@ class ContextMenuRef {
       // Wait for the exit animation to finish before detaching the content.
       menu._animationDone
         .pipe(
-          tap(event => log('menu: animation event', {
-            toState: event.toState,
-            fromState: event.fromState,
-            phaseName: event.phaseName,
-            triggerName: event.triggerName,
-            totalTime: event.totalTime,
-          })),
           filter(event => event.toState === 'void'),
           take(1),
           // Interrupt if the content got re-attached.
@@ -222,7 +203,6 @@ export class ContextMenuService implements OnDestroy {
   }
 
   open(menu: MatMenu, config: ContextMenuConfig): ContextMenuRef {
-    log('srv: open new menu');
     const overlayConfig = this.getOverlayConfig(menu, config);
     const overlayRef = this.createOverlay(overlayConfig);
 
@@ -233,7 +213,6 @@ export class ContextMenuService implements OnDestroy {
     (this.activeMenu?.afterClosed() || of(undefined))
       .subscribe(
         () => {
-          log('srv: activating menu');
           menuRef.show();
           this.setActiveMenu(menuRef);
         },
@@ -305,7 +284,6 @@ export class ContextMenuService implements OnDestroy {
     if (menuRef) {
       menuRef.afterClosed()
         .subscribe(() => {
-          log('srv: menu closed');
           if (this.activeMenu === menuRef) {
             this.activeMenu = null;
           }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Status } from '@app/shared/types';
 import { SessionTag, SessionsTagsService } from '@app/store';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./sessions-tags.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SessionsTagsComponent implements OnInit {
+export class SessionsTagsComponent {
 
   readonly tags$: Observable<SessionTag[]>;
   readonly status$: Observable<Status>;
@@ -20,9 +20,6 @@ export class SessionsTagsComponent implements OnInit {
   ) {
     this.tags$ = this.tagsService.getTags();
     this.status$ = this.tagsService.getStatus();
-  }
-
-  ngOnInit(): void {
   }
 
   onDeleteTag(tagId: string): void {

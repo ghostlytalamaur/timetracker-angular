@@ -55,5 +55,5 @@ export class GroupTableRowComponent implements OnInit, OnChanges {
     } else {
       this.text = this.group.date.toFormat(dateFormat[this.group.type]);
     }
-  };
+  }
 }

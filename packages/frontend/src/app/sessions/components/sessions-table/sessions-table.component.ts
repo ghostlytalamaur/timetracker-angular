@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -21,7 +20,7 @@ import { FlatNode, SessionTreeModel } from './session-tree.model';
     SessionTreeModel,
   ],
 })
-export class SessionsTableComponent implements OnInit, OnChanges {
+export class SessionsTableComponent implements OnChanges {
 
   @Input() sessions: Session[] = [];
   @Input() groupType: SessionsGroupType = 'none';
@@ -36,9 +35,6 @@ export class SessionsTableComponent implements OnInit, OnChanges {
   constructor(
     readonly model: SessionTreeModel,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

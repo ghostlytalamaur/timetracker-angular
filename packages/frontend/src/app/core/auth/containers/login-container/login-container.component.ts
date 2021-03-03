@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { AuthService } from '../../auth.service';
 import { Credentials } from '../../model';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login-container.component.html',
   styleUrls: ['./login-container.component.scss'],
 })
-export class LoginContainerComponent implements OnInit {
+export class LoginContainerComponent {
 
   isLoading$: Observable<boolean>;
   error$: Observable<string | undefined>;
@@ -19,9 +19,6 @@ export class LoginContainerComponent implements OnInit {
   ) {
     this.isLoading$ = this.authService.isLoading();
     this.error$ = this.authService.getError();
-  }
-
-  ngOnInit() {
   }
 
   onSignIn(credentials: Credentials) {
