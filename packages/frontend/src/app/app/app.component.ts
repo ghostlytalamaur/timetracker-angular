@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthService } from '@app/core/auth';
 import { routerAnimation } from '@app/shared/animations';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerAnimation],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   isSignedIn$: Observable<boolean>;
 

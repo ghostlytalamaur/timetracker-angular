@@ -106,7 +106,7 @@ class ContextMenuRef {
 
           return false;
         }),
-        mapTo('docClick'),
+        mapTo(undefined),
       );
 
     const docContextMenu$ = fromEvent(this.doc, 'contextmenu', { passive: true })
@@ -118,12 +118,12 @@ class ContextMenuRef {
 
           return false;
         }),
-        mapTo('docContextMenu'),
+        mapTo(undefined),
       );
 
     const detachments$ = this.overlayRef.detachments()
       .pipe(
-        mapTo('detachments'),
+        mapTo(undefined),
       );
     return merge(docClick$, docContextMenu$, detachments$);
   }

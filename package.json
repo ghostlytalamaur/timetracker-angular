@@ -4,7 +4,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "build": "yarn workspace @timetracker/frontend build",
-    "start": "yarn workspace @timetracker/frontend tart",
+    "start": "yarn workspace @timetracker/frontend start",
     "lint": "yarn workspace @timetracker/frontend lint"
   }
 }
