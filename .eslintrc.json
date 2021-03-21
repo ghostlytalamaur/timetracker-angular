@@ -1,77 +1,32 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:@typescript-eslint/recommended"
-      ],
-      "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
-        "sourceType": "module",
-        "createDefaultProgram": true
-      },
-      "plugins": [
-        "@typescript-eslint/eslint-plugin",
-        "prefer-arrow",
-        "import"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "no-shadow": "off",
-        "no-underscore-dangle": ["error"],
-        "@typescript-eslint/interface-name-prefix": "off",
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-shadow": ["error"],
-        "@typescript-eslint/naming-convention": [
+        "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
-            "selector": ["enumMember"],
-            "format": ["PascalCase"]
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }
+            ]
           }
-        ],
-        "prefer-arrow/prefer-arrow-functions": [
-          "warn",
-          {
-            "allowStandaloneDeclarations": true
-          }
-        ],
-        "@typescript-eslint/explicit-member-accessibility": [
-          "error",
-          {
-            "accessibility": "no-public",
-            "overrides": {
-              "accessors": "no-public",
-              "constructors": "no-public"
-            }
-          }
-        ],
-        "arrow-parens": [
-          "off",
-          "always"
-        ],
-        "comma-dangle": [
-          "error",
-          {
-            "arrays": "always-multiline",
-            "exports": "always-multiline",
-            "functions": "always-multiline",
-            "imports": "always-multiline",
-            "objects": "always-multiline"
-          }
-        ],
-        "import/order": "error",
-        "no-duplicate-imports": "error"
+        ]
       }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
     }
   ]
 }
