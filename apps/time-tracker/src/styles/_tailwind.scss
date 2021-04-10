@@ -1,0 +1,16 @@
+@import 'tailwindcss/base';
+@layer base {
+  button:focus {
+    outline: none;
+  }
+}
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer comopnents {
+
+  .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {
+    @apply bg-black font-normal #{!important};
+  }
+
+}

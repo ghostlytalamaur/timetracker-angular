@@ -1,0 +1,18 @@
+<app-status-container
+  [status]="(status$ | async)!"
+>
+
+  <ng-container *appResolved>
+    <app-tags-editor
+      (addTag)="onAddTag($event)"
+      (saveTag)="onSaveTag($event)"
+      [tag]="selectedTag"
+    ></app-tags-editor>
+    <app-tags-list
+      (deleteTag)="onDeleteTag($event)"
+      [(selectedTag)]="selectedTag"
+      [tags]="tags$ | async"
+    ></app-tags-list>
+  </ng-container>
+
+</app-status-container>

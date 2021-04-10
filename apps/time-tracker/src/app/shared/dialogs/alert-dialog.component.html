@@ -1,0 +1,17 @@
+<h4 *ngIf="data.title" mat-dialog-title>{{ data.title }}</h4>
+<mat-dialog-content>
+  <div>{{ data.message }}</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <ng-container *ngIf="data.type === confirmationType">
+    <button [matDialogClose]="okResult" mat-flat-button>{{ data.positiveText || 'Ok' }}</button>
+    <button [matDialogClose]="cancelResult" mat-flat-button cdkFocusInitial>Cancel</button>
+  </ng-container>
+
+  <ng-container *ngIf="data.type === alertType">
+    <button [matDialogClose]="closeResult" mat-flat-button>Close</button>
+  </ng-container>
+
+</mat-dialog-actions>

@@ -1,0 +1,10 @@
+$padding: 16px;
+
+.container {
+  margin-top: $padding;
+  height: calc(100% - 16px);
+}
+
+.content {
+  height: calc(100% - 52px);
+}

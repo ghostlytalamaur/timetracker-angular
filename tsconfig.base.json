@@ -14,7 +14,27 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "paths": {
+      "@app/store": ["apps/time-tracker/src/app/store/index.ts"],
+      "@app/core/*": ["apps/time-tracker/src/app/core/*"],
+      "@app/shared": ["apps/time-tracker/src/app/shared/index.ts"],
+      "@app/shared/*": ["apps/time-tracker/src/app/shared/*"],
+      "@app/storage/models": ["apps/time-tracker/src/app/interfaces/index.ts"],
+      "@timetracker/shared": ["libs/shared/src/index.ts"]
+    }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp"],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true,
+    "strictTemplates": true
+  }
 }

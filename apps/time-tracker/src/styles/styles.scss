@@ -1,0 +1,10 @@
+@use './tailwind';
+@use '~@angular/material/theming' as material;
+@use './theme-dark' as theme;
+@use './app-theme';
+
+@include material.mat-core();
+@include app-theme.app-theme(theme.$app-dark-theme);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

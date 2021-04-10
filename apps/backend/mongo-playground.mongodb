@@ -1,0 +1,352 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('mongodbVSCodePlaygroundDB');
+
+// The drop() command destroys all data from a collection.
+// Make sure you run it against the correct database and collection.
+db.sales.drop();
+
+// Insert a few documents into the sales collection.
+db.sales.insertMany([
+{
+  "userId": "test",
+  "events": [
+    {
+      "eventType": "sessionsModified",
+      "eventData": null,
+      "eventId": 666
+    }
+  ]
+},
+{
+  "userId": "google-oauth2|107540855936877376287",
+  "events": [
+    {
+      "eventType": "sessionsModified",
+      "eventData": null,
+      "eventId": 27
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec1d6021b5dcc304974"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec0d6021b5dcc304971"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec1d6021b5dcc304973"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec0d6021b5dcc304970"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec0d6021b5dcc30496f"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fec1d6021b5dcc304972"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febed6021b5dcc30496b"
+        ]
+      },
+      "eventId": 2
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febfd6021b5dcc30496d"
+        ]
+      },
+      "eventId": 3
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febfd6021b5dcc30496c"
+        ]
+      },
+      "eventId": 4
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febfd6021b5dcc30496e"
+        ]
+      },
+      "eventId": 5
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febed6021b5dcc30496a"
+        ]
+      },
+      "eventId": 6
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fe3d13923d17301c8d5a"
+        ]
+      },
+      "eventId": 7
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febdd6021b5dcc304968"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058f09eba346e7264739890"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058febed6021b5dcc304969"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058fcf894de2680a0f3d1bc"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058edd86be1738e2cbb9be1"
+        ]
+      },
+      "eventId": 321
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e9819c079f49c80fe9f6"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058f94e1bc6cd6de8d65ad2"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058f95d1bc6cd6de8d65ad3"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a6edede45b186647f4"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e92bd67e549f7c48ca3e"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e92ad67e549f7c48ca3d"
+        ]
+      },
+      "eventId": 2
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a5edede45b186647f3"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a5edede45b186647f2"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a4edede45b186647f1"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a4edede45b186647f0"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e8a3edede45b186647ef"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e89cedede45b186647ee"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e826d9e5476330b173eb"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e7020d2ba21c18829ccd"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e6c79c000e1c5c986b2b"
+        ]
+      },
+      "eventId": 1
+    },
+    {
+      "eventType": "sessionsDeleted",
+      "eventData": {
+        "ids": [
+          "6058e696581d3319e0d1165b"
+        ]
+      },
+      "eventId": 1
+    }
+  ]
+}]);
+
+// Run a find command to view items sold on April 4th, 2014.
+db.sales.find({ date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') } });
+
+// Build an aggregation to view total sales for each product in 2014.
+const aggregation = [
+  { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
+  { $group: { _id: '$item', totalSaleAmount: { $sum: { $multiply: [ '$price', '$quantity' ] } } } }
+];
+
+// Run the aggregation and open a cursor to the results.
+// Use toArray() to exhaust the cursor to return the whole result set.
+// You can use hasNext()/next() to iterate through the cursor page by page.
+const userId = 'google-oauth2|107540855936877376287';
+const lastEventId = 20;
+db.sales.aggregate([
+  { $match: { userId } },
+  { $unwind: { path: '$events' }},
+  { $group: { _id: null, lastEventId: { $max: '$events.eventId'}}},
+  { $project: { _id: 0, lastEventId: 1 } }
+]);

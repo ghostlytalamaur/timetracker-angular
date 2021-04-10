@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+
+  server:
+    container_name: timetracker-server-container
+    image: timetracker-server-image
+    ports:
+      - 3000:3000
+    environment:
+      - TIMETRACKER_SERVER_MONGODB_URI
+      - TIMETRACKER_SERVER_PORT
+      - TIMETRACKER_SERVER_AUTH0_ISSUER_URL
+      - TIMETRACKER_SERVER_AUTH0_AUDIENCE
+      - NODE_ENV=production
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+      args:
+        BUILD_FLAG: --prod
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  web:
+    container_name: timetracker-web-container
+    image: timetracker-web-image
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+      args:
+        BUILD_FLAG: --prod
+    ports:
+      - 80:80
+    environment:
+      - TIMETRACKER_WEB_SERVER_URL
+      - TIMETRACKER_WEB_AUTH0_DOMAIN
+      - TIMETRACKER_WEB_AUTH0_CLIEND_ID
+      - TIMETRACKER_WEB_AUTH0_AUDIENCE
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:

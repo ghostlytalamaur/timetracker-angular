@@ -1,0 +1,10 @@
+<app-status-container
+  [status]="status$ | async"
+>
+  <div class="row h-100" *appResolved>
+    <div class="col">
+      <app-router-container></app-router-container>
+    </div>
+  </div>
+
+</app-status-container>

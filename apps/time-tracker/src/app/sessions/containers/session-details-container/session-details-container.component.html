@@ -1,0 +1,10 @@
+<ng-container *ngIf="session$ | async as session; else errorTemplate">
+  <app-session-details
+    (saveSession)="onSaveSession($event)"
+    [session]="session"
+  ></app-session-details>
+</ng-container>
+
+<ng-template #errorTemplate>
+  <h4 class="mat-h4">{{ error }}</h4>
+</ng-template>
