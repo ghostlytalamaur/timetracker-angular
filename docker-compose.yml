@@ -47,6 +47,7 @@ services:
       - TIMETRACKER_WEB_AUTH0_DOMAIN
       - TIMETRACKER_WEB_AUTH0_CLIEND_ID
       - TIMETRACKER_WEB_AUTH0_AUDIENCE
+      - TIMETRACKER_WEB_API
     depends_on:
       - server
 

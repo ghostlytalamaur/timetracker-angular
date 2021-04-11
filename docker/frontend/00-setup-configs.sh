@@ -3,6 +3,7 @@
 echo "Set nginx port to $PORT"
 
 sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
+sed -i 's|$TIMETRACKER_WEB_API|'"$TIMETRACKER_WEB_API"'|g' /etc/nginx/conf.d/default.conf
 
 cp /usr/share/nginx/html/assets/config.template.json /usr/share/nginx/html/assets/config.json
 
