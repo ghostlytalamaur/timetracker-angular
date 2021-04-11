@@ -12,4 +12,3 @@ export const commonEnvironment = {
     durationRate: 1000,
   },
 };
-

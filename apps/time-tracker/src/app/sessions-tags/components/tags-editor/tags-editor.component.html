@@ -1,11 +1,6 @@
-<form
-  (ngSubmit)="onSubmit()"
-  [formGroup]="form">
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Label</mat-label>
-    <input formControlName="label"
-           matInput
-           placeholder="Sample Tag"
-           type="text">
+    <input formControlName="label" matInput placeholder="Sample Tag" type="text" />
   </mat-form-field>
 </form>

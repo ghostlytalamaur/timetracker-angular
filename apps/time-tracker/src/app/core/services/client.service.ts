@@ -10,16 +10,10 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ClientService {
-
-  constructor(
-    private readonly http: HttpClient,
-  ) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   getSessions$(from: Date, to: Date): Observable<ISession[]> {
-    const params = new HttpParams()
-      .set('from', from.toISOString())
-      .set('to', to.toISOString());
+    const params = new HttpParams().set('from', from.toISOString()).set('to', to.toISOString());
 
     return this.http.get<ISession[]>(`${environment.serverUrl}/sessions`, { params });
   }
@@ -30,23 +24,27 @@ export class ClientService {
 
   addSessions$(sessions: CreateSessionDto[]): Observable<void> {
     return forkJoin(
-      sessions.map(session => this.http.post<void>(`${environment.serverUrl}/sessions`, session))
-    )
-      .pipe(mapTo(undefined));
+      sessions.map((session) => this.http.post<void>(`${environment.serverUrl}/sessions`, session)),
+    ).pipe(mapTo(undefined));
   }
 
   deleteSessions$(ids: string[]): Observable<void> {
-    return forkJoin(ids.map(id => {
-      return this.http.delete<void>(`${environment.serverUrl}/sessions/${id}`);
-    }))
-      .pipe(mapTo(undefined));
+    return forkJoin(
+      ids.map((id) => {
+        return this.http.delete<void>(`${environment.serverUrl}/sessions/${id}`);
+      }),
+    ).pipe(mapTo(undefined));
   }
 
   updateSessions$(changes: Update<ISession>[]): Observable<void> {
-    return forkJoin(changes.map(change => {
-      return this.http.patch<void>(`${environment.serverUrl}/sessions/${change.id}`, change.changes)
-    }))
-      .pipe(mapTo(undefined));
+    return forkJoin(
+      changes.map((change) => {
+        return this.http.patch<void>(
+          `${environment.serverUrl}/sessions/${change.id}`,
+          change.changes,
+        );
+      }),
+    ).pipe(mapTo(undefined));
   }
 
   getSessionTags$(): Observable<ISessionTag[]> {
@@ -58,16 +56,18 @@ export class ClientService {
   }
 
   deleteSessionTags$(ids: string[]): Observable<void> {
-    return forkJoin(ids.map(id => {
-      return this.http.delete<void>(`${environment.serverUrl}/tags/${id}`);
-    }))
-      .pipe(mapTo(undefined));
+    return forkJoin(
+      ids.map((id) => {
+        return this.http.delete<void>(`${environment.serverUrl}/tags/${id}`);
+      }),
+    ).pipe(mapTo(undefined));
   }
 
   updateSessionTagss$(changes: Update<ISessionTag>[]): Observable<void> {
-    return forkJoin(changes.map(change => {
-      return this.http.patch<void>(`${environment.serverUrl}/tags/${change.id}`, change.changes)
-    }))
-      .pipe(mapTo(undefined));
+    return forkJoin(
+      changes.map((change) => {
+        return this.http.patch<void>(`${environment.serverUrl}/tags/${change.id}`, change.changes);
+      }),
+    ).pipe(mapTo(undefined));
   }
 }

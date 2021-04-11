@@ -1,11 +1,27 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Directive, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+} from '@angular/core';
 
-import { IStatus, getStatusError, initialStatus, isErrorStatus, isLoadingStatus, isResolvedStatus, Nullable } from '@app/shared/utils';
+import {
+  IStatus,
+  getStatusError,
+  initialStatus,
+  isErrorStatus,
+  isLoadingStatus,
+  isResolvedStatus,
+  Nullable,
+} from '@app/shared/utils';
 import { hasChange } from '../../utils';
 
-
 @Directive({
-  selector: '[appResolved]'
+  selector: '[appResolved]',
 })
 export class ResolvedTemplateDirective {
   constructor(public readonly template: TemplateRef<void>) {}
@@ -18,7 +34,6 @@ export class ResolvedTemplateDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatusContainerComponent implements OnChanges {
-
   @Input()
   status: Nullable<IStatus>;
 
@@ -39,5 +54,4 @@ export class StatusContainerComponent implements OnChanges {
       this.showContent = isResolvedStatus(this.status) && !this.error;
     }
   }
-
 }

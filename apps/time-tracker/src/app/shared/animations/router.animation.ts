@@ -1,4 +1,12 @@
-import { AnimationTriggerMetadata, animate, query, sequence, style, transition, trigger } from '@angular/animations';
+import {
+  AnimationTriggerMetadata,
+  animate,
+  query,
+  sequence,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 export const routerAnimation: AnimationTriggerMetadata = trigger('routerAnimation', [
   transition('* => *', [
@@ -11,10 +19,7 @@ export const routerAnimation: AnimationTriggerMetadata = trigger('routerAnimatio
         ':leave > *',
         [
           style({ transform: 'translateY(0%)', opacity: 1 }),
-          animate(
-            '0.2s ease-in-out',
-            style({ transform: 'translateY(0%)', opacity: 0 }),
-          ),
+          animate('0.2s ease-in-out', style({ transform: 'translateY(0%)', opacity: 0 })),
           style({ position: 'fixed' }),
         ],
         { optional: true },
@@ -27,10 +32,7 @@ export const routerAnimation: AnimationTriggerMetadata = trigger('routerAnimatio
             opacity: 0,
             position: 'static',
           }),
-          animate(
-            '0.5s ease-in-out',
-            style({ transform: 'translateY(0%)', opacity: 1 }),
-          ),
+          animate('0.5s ease-in-out', style({ transform: 'translateY(0%)', opacity: 1 })),
         ],
         { optional: true },
       ),

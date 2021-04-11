@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Nullable } from '@app/shared/utils';
 import { ISessionTag } from '@timetracker/shared';
 
-
 @Component({
   selector: 'app-tags-list',
   templateUrl: './tags-list.component.html',
@@ -10,7 +9,6 @@ import { ISessionTag } from '@timetracker/shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsListComponent {
-
   @Input()
   tags: Nullable<ISessionTag[]>;
   @Input()
@@ -33,7 +31,7 @@ export class TagsListComponent {
     if (id === this.selectedTag?.id) {
       this.selectedTag = null;
     } else {
-      this.selectedTag = this.tags?.find(t => t.id === id) ?? null;
+      this.selectedTag = this.tags?.find((t) => t.id === id) ?? null;
     }
     this.selectedTagChange.emit(this.selectedTag);
   }

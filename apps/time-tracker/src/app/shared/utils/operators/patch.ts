@@ -7,6 +7,7 @@ export function patchObject<T extends object>(state: T, patchSpec: PatchSpec<T>)
 export type PatchSpec<T> = { [P in keyof T]?: T[P] | StateOperator<NonNullable<T[P]>> };
 
 type PatchValues<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly [P in keyof T]?: T[P] extends (...args: any[]) => infer R ? R : T[P];
 };
 
@@ -18,11 +19,11 @@ export function patch<T>(patchObject: PatchSpec<T>): PatchOperator<T> {
     for (const k in patchObject) {
       const newValue = patchObject[k];
       const existingPropValue = existing[k];
-      const newPropValue = isStateOperator(newValue)
-        ? newValue(<any>existingPropValue)
-        : newValue;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const newPropValue = isStateOperator(newValue) ? newValue(<any>existingPropValue) : newValue;
       if (newPropValue !== existingPropValue) {
         if (!clone) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           clone = { ...(<any>existing) };
         }
         clone[k] = newPropValue;

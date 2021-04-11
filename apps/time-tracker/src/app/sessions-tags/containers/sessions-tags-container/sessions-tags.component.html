@@ -1,7 +1,4 @@
-<app-status-container
-  [status]="(status$ | async)!"
->
-
+<app-status-container [status]="(status$ | async)!">
   <ng-container *appResolved>
     <app-tags-editor
       (addTag)="onAddTag($event)"
@@ -14,5 +11,4 @@
       [tags]="tags$ | async"
     ></app-tags-list>
   </ng-container>
-
 </app-status-container>

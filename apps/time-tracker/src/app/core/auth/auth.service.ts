@@ -9,19 +9,15 @@ import { User } from './model';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private readonly auth0: Auth0Service,
-  ) {
-  }
+  constructor(private readonly auth0: Auth0Service) {}
 
   get accessToken$(): Observable<string> {
-    return this.auth0.getAccessTokenSilently()
-      .pipe(distinctUntilChanged());
+    return this.auth0.getAccessTokenSilently().pipe(distinctUntilChanged());
   }
 
   get user$(): Observable<User | null> {
     return this.auth0.user$.pipe(
-      map(user => {
+      map((user) => {
         return {
           id: user.sub,
           name: `${user.given_name} ${user.family_name}`.trim(),
@@ -47,10 +43,7 @@ export class AuthService {
   }
 
   getError(): Observable<string | undefined> {
-    return this.auth0.error$
-      .pipe(
-        map(error => error.message)
-      );
+    return this.auth0.error$.pipe(map((error) => error.message));
   }
 
   getToken$(): Observable<string | null> {

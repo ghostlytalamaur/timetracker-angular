@@ -1,4 +1,3 @@
-
 export interface IEvent<T extends string> {
   readonly type: T;
 }
@@ -18,13 +17,13 @@ export const enum EventType {
 }
 
 export type ISessionsModifiedEvent = IEvent<EventType.SessionsModified>;
-export type ISessionsDeletedEvent = IDataEvent<EventType.SessionsDeleted, { ids: string[]; }>;
+export type ISessionsDeletedEvent = IDataEvent<EventType.SessionsDeleted, { ids: string[] }>;
 
 export type ISessionTagsModifiedEvent = IEvent<EventType.SessionTagsModified>;
-export type ISessionTagsDeletedEvent = IDataEvent<EventType.SessionTagsDeleted, { ids: string[]; }>;
+export type ISessionTagsDeletedEvent = IDataEvent<EventType.SessionTagsDeleted, { ids: string[] }>;
 
 export type IEvents =
-    ISessionsDeletedEvent
+  | ISessionsDeletedEvent
   | ISessionsModifiedEvent
   | ISessionTagsModifiedEvent
   | ISessionTagsDeletedEvent;

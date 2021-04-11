@@ -2,7 +2,14 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { Nullable, clustering } from '@app/shared/utils';
-import { Session, SessionsGroup, SessionsGroupType, SortType, createGroup, getGroupId } from '@app/store';
+import {
+  Session,
+  SessionsGroup,
+  SessionsGroupType,
+  SortType,
+  createGroup,
+  getGroupId,
+} from '@app/store';
 import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
 import { DateTime } from 'luxon';
 
@@ -23,12 +30,13 @@ export interface FlatNode {
   node: TreeNode;
 }
 
-const ordDateTime = fromCompare<DateTime>((d1, d2) => d1 < d2 ? -1 : d1 > d2 ? 1 : 0);
-const ordTreeNode = contramap<DateTime, TreeNode>(a => a instanceof SessionsGroup ? a.date : a.start)(ordDateTime);
+const ordDateTime = fromCompare<DateTime>((d1, d2) => (d1 < d2 ? -1 : d1 > d2 ? 1 : 0));
+const ordTreeNode = contramap<DateTime, TreeNode>((a) =>
+  a instanceof SessionsGroup ? a.date : a.start,
+)(ordDateTime);
 
 @Injectable()
 export class SessionTreeModel {
-
   readonly treeControl: FlatTreeControl<FlatNode>;
   readonly dataSource: MatTreeFlatDataSource<TreeNode, FlatNode>;
 
@@ -44,7 +52,7 @@ export class SessionTreeModel {
 
     const flattener = new MatTreeFlattener<TreeNode, FlatNode>(
       (node, level) => {
-        const flatNode: FlatNode = this.nodeToFlatNode.get(node.id) || { } as FlatNode;
+        const flatNode: FlatNode = this.nodeToFlatNode.get(node.id) || ({} as FlatNode);
         this.nodeToFlatNode.set(node.id, flatNode);
 
         flatNode.level = level;
@@ -53,14 +61,14 @@ export class SessionTreeModel {
 
         return flatNode;
       },
-      flatNode => flatNode.level,
-      flatNode => flatNode.expandable,
-      node => node instanceof SessionsGroup ? node.sessions : null,
+      (flatNode) => flatNode.level,
+      (flatNode) => flatNode.expandable,
+      (node) => (node instanceof SessionsGroup ? node.sessions : null),
     );
 
     this.treeControl = new FlatTreeControl<FlatNode>(
-      flatNode => flatNode.level,
-      flatNode => flatNode.expandable,
+      (flatNode) => flatNode.level,
+      (flatNode) => flatNode.expandable,
     );
     this.dataSource = new MatTreeFlatDataSource<TreeNode, FlatNode>(this.treeControl, flattener);
   }
@@ -100,7 +108,7 @@ export class SessionTreeModel {
     this.dataSource.data = this.nodes;
     const allNodes = this.nodes.reduce((acc, node) => {
       if (node instanceof SessionsGroup) {
-        node.sessions.forEach(session => acc.add(session.id));
+        node.sessions.forEach((session) => acc.add(session.id));
       }
       acc.add(node.id);
 
@@ -137,11 +145,14 @@ export class SessionTreeModel {
 
   private updateGroups(): void {
     this.nodes = [];
-    const clusters = clustering(this.sessions, session => getGroupId(session, this.groupType));
+    const clusters = clustering(this.sessions, (session) => getGroupId(session, this.groupType));
 
     for (const cluster of clusters) {
       const groupId = getGroupId(cluster[0], this.groupType);
-      const date = cluster.reduce((min, session) => session.start < min ? session.start : min, cluster[0].start);
+      const date = cluster.reduce(
+        (min, session) => (session.start < min ? session.start : min),
+        cluster[0].start,
+      );
       this.sortNodes(cluster);
       this.nodes.push(createGroup(groupId, this.groupType, date, cluster));
     }
@@ -151,5 +162,4 @@ export class SessionTreeModel {
   private sortNodes(nodes: TreeNode[]) {
     nodes.sort(this.sortType === 'asc' ? ordTreeNode.compare : getDualOrd(ordTreeNode).compare);
   }
-
 }

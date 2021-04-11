@@ -14,7 +14,6 @@ interface IMongoSessionTag {
 
 @Injectable()
 export class TagsService {
-
   constructor(
     private readonly mongo: MongoService,
     private readonly events: EventsService,
@@ -29,7 +28,7 @@ export class TagsService {
 
     const values = await results.toArray();
 
-    return values.map(s => ({
+    return values.map((s) => ({
       id: s._id.toHexString(),
       label: s.label,
     }));
@@ -48,14 +47,17 @@ export class TagsService {
     return id;
   }
 
-  async addSessionTags(userId: string, tags: ImportDataDto['tags']): Promise<Record<string, string>> {
+  async addSessionTags(
+    userId: string,
+    tags: ImportDataDto['tags'],
+  ): Promise<Record<string, string>> {
     const collection = this.getCollection();
-    const data = tags.map(tag => ({
+    const data = tags.map((tag) => ({
       userId,
       label: tag.label,
     }));
     const insertResult = await collection.insertMany(data);
-    const idsMap: Record<string, string> = { };
+    const idsMap: Record<string, string> = {};
     for (let i = 0; i < tags.length; i++) {
       idsMap[tags[i].id] = insertResult.insertedIds[i].toHexString();
     }
@@ -63,8 +65,12 @@ export class TagsService {
     return idsMap;
   }
 
-  async updateSessionTag(userId: string, id: string, tag: Partial<CreateSessionTagDto>): Promise<number> {
-    const changes: Partial<IMongoSessionTag> = { };
+  async updateSessionTag(
+    userId: string,
+    id: string,
+    tag: Partial<CreateSessionTagDto>,
+  ): Promise<number> {
+    const changes: Partial<IMongoSessionTag> = {};
     let hasChanges = false;
     if (tag.label) {
       changes.label = tag.label;
@@ -98,7 +104,7 @@ export class TagsService {
       userId,
     });
     if (result.deletedCount) {
-      this.events.push(userId, { type: EventType.SessionTagsDeleted, data: { ids: [id] }})
+      this.events.push(userId, { type: EventType.SessionTagsDeleted, data: { ids: [id] } });
       await this.sessions.deleteTagSessionsFromSession(userId, id);
     }
   }
@@ -110,5 +116,4 @@ export class TagsService {
 
     return tags;
   }
-
 }

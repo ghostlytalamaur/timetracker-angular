@@ -9,8 +9,6 @@ import { SessionsGroupType } from '@app/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupTypeSelectorComponent {
-
-
   @Input()
   groupType: Nullable<SessionsGroupType>;
 
@@ -28,5 +26,4 @@ export class SessionsGroupTypeSelectorComponent {
   onChangeGroupType(group: SessionsGroupType): void {
     this.groupTypeChange.emit(group);
   }
-
 }

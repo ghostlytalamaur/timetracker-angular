@@ -12,13 +12,9 @@ import { Observable } from 'rxjs';
   animations: [routerAnimation],
 })
 export class SessionsComponent {
-
   readonly status$: Observable<IStatus>;
 
-  constructor(
-    private sessionsSrv: SessionsService,
-  ) {
+  constructor(private sessionsSrv: SessionsService) {
     this.status$ = this.sessionsSrv.getStatus$();
   }
-
 }

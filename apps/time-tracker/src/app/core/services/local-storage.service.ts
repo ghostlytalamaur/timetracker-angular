@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const APP_KEY = 'TIME_TRACKER.';
 
 export class LocalStorageService {
-
   static loadState(feature: string, initialState: any): Record<string, unknown> {
     feature = `${APP_KEY}${feature}`;
     return Object.keys(localStorage).reduce((state: any, key: string) => {
@@ -11,10 +11,7 @@ export class LocalStorageService {
           return state;
         }
 
-        const keys = key
-          .replace(APP_KEY, '')
-          .toLowerCase()
-          .split('.');
+        const keys = key.replace(APP_KEY, '').toLowerCase().split('.');
 
         state = { ...state };
         let curState = state;
@@ -23,12 +20,15 @@ export class LocalStorageService {
           if (keyData) {
             curState[keys[i]] = { ...keyData };
           } else {
-            curState[keys[i]] = { };
+            curState[keys[i]] = {};
           }
           curState = curState[keys[i]];
         }
 
-        curState[keys[keys.length - 1]] = { ...curState[keys[keys.length - 1]], ...JSON.parse(value) };
+        curState[keys[keys.length - 1]] = {
+          ...curState[keys[keys.length - 1]],
+          ...JSON.parse(value),
+        };
       }
       return state;
     }, initialState);
@@ -37,5 +37,4 @@ export class LocalStorageService {
   static setItem(feature: string, key: string, value: any) {
     localStorage.setItem(`${APP_KEY}${feature}.${key}`, JSON.stringify(value));
   }
-
 }

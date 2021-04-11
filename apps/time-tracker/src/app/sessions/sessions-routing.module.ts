@@ -3,11 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../core/auth/auth.guard';
 
-import { SessionDetailsContainerComponent, SessionsComponent, SessionsContainerComponent, SessionsImportComponent } from './containers';
+import {
+  SessionDetailsContainerComponent,
+  SessionsComponent,
+  SessionsContainerComponent,
+  SessionsImportComponent,
+} from './containers';
 
 const routes: Routes = [
   {
-    path: '', component: SessionsComponent, canActivate: [AuthGuard],
+    path: '',
+    component: SessionsComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', pathMatch: 'full', component: SessionsContainerComponent },
       { path: 'import', component: SessionsImportComponent },
@@ -17,12 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class SessionsRoutingModule {
-}
+export class SessionsRoutingModule {}

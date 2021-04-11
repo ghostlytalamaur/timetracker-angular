@@ -6,24 +6,20 @@ import { SessionsService } from './sessions.service';
 import { TagsService } from './tags.service';
 
 @Controller({
-  path: '/import'
+  path: '/import',
 })
 export class ImportController {
-
-  constructor(
-    private readonly tags: TagsService,
-    private readonly sessions: SessionsService,
-  ) {}
+  constructor(private readonly tags: TagsService, private readonly sessions: SessionsService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async importData(@UserId() userId: string, @Body() body: ImportDataDto): Promise<void> {
     const tagsMap = await this.tags.addSessionTags(userId, body.tags);
-    const sessions: CreateSessionDto[] = body.sessions.map(session => {
+    const sessions: CreateSessionDto[] = body.sessions.map((session) => {
       return {
         start: session.start,
         duration: session.duration,
-        tags: session.tags.map(id => tagsMap[id]),
+        tags: session.tags.map((id) => tagsMap[id]),
       };
     });
 

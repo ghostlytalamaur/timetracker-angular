@@ -11,12 +11,9 @@ import { Observable } from 'rxjs';
   animations: [routerAnimation],
 })
 export class AppComponent {
-
   isSignedIn$: Observable<boolean>;
 
-  constructor(
-    private readonly authService: AuthService,
-  ) {
+  constructor(private readonly authService: AuthService) {
     this.isSignedIn$ = this.authService.isSignedIn();
   }
 
@@ -24,4 +21,3 @@ export class AppComponent {
     this.authService.logout();
   }
 }
-

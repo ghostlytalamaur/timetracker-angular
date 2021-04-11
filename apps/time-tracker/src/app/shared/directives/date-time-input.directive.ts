@@ -15,7 +15,13 @@ import {
   Output,
   Self,
 } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NgControl, NG_VALIDATORS, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  NgControl,
+  NG_VALIDATORS,
+  ValidationErrors,
+} from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { DateTime } from 'luxon';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -39,8 +45,8 @@ export function dateValidator(control: AbstractControl): ValidationErrors | null
     { provide: NG_VALIDATORS, useValue: dateValidator, multi: true },
   ],
 })
-export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, MatFormFieldControl<Date> {
-
+export class DateTimeInputDirective
+  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, MatFormFieldControl<Date> {
   @HostBinding('attr.aria-describedby')
   describedBy = '';
 
@@ -48,6 +54,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   readonly class = 'mat-input-element mat-form-field-autofill-control';
 
   @Output()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly valueChange: EventEmitter<Date | null> = new EventEmitter<any>();
 
   readonly ngControl: NgControl | null;
@@ -111,7 +118,6 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.stateChangesSubj.next();
   }
 
-
   @Input()
   @HostBinding('required')
   get required(): boolean {
@@ -168,6 +174,7 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.disabled = isDisabled;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   writeValue(value: any): void {
     if (!value || value === this.date) {
       return;
@@ -175,12 +182,12 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
     this.date = isValidDate(value) ? value : null;
 
     this.input.nativeElement.value = isValidDate(this.value)
-        ? DateTime.fromJSDate(this.value).set({ millisecond: 0 }).toISOTime({
+      ? DateTime.fromJSDate(this.value).set({ millisecond: 0 }).toISOTime({
           includeOffset: false,
           suppressSeconds: false,
           suppressMilliseconds: true,
         })
-        : '';
+      : '';
     this.valueChange.emit(this.date);
     this.stateChangesSubj.next();
   }
@@ -206,19 +213,18 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   ngOnInit() {
     this.subscription = new Subscription();
     this.subscription.add(
-      this.autoFillMonitor.monitor(this.input).subscribe(event => {
+      this.autoFillMonitor.monitor(this.input).subscribe((event) => {
         this.mAutoFilled = event.isAutofilled;
         this.stateChangesSubj.next();
       }),
     );
 
     this.subscription.add(
-      this.subscription = this.focusMonitor.monitor(this.input, true)
-        .subscribe(origin => {
-          this.mFocused = !!origin;
-          this.onTouched();
-          this.stateChangesSubj.next();
-        }),
+      (this.subscription = this.focusMonitor.monitor(this.input, true).subscribe((origin) => {
+        this.mFocused = !!origin;
+        this.onTouched();
+        this.stateChangesSubj.next();
+      })),
     );
   }
 
@@ -240,5 +246,4 @@ export class DateTimeInputDirective implements OnInit, OnDestroy, OnChanges, Con
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-
 }

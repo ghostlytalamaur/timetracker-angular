@@ -9,23 +9,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { appInitializerFactory } from './services';
 
 @NgModule({
-  declarations: [
-    PageNotFoundComponent,
-    AppDataContainerComponent,
-  ],
-  exports: [
-    AuthModule,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    AuthModule,
-    SharedModule,
-    ToastrModule.forRoot(),
-  ],
-  providers: [
-    { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },
-  ],
+  declarations: [PageNotFoundComponent, AppDataContainerComponent],
+  exports: [AuthModule],
+  imports: [CommonModule, HttpClientModule, AuthModule, SharedModule, ToastrModule.forRoot()],
+  providers: [{ provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true }],
 })
-export class CoreModule {
-}
+export class CoreModule {}

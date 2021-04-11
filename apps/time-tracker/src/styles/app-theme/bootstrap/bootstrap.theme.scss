@@ -28,7 +28,7 @@
   $warn: map-get($theme, warn);
 
   @include meta.load-css(
-      './app-theme/bootstrap/bootstrap-app.scss',
+    './app-theme/bootstrap/bootstrap-app.scss',
     $with: (
       'body-bg': material.mat-color($background),
       'body-color': material.mat-color($foreground, text),
@@ -41,12 +41,11 @@
       'link-hover-color': currentColor,
       'link-hover-decoration': none,
       'label-margin-bottom': 0,
-
       // list-group
       'list-group-color': material.mat-color($foreground, text),
       'list-group-bg': material.mat-color($background),
       'list-group-border-color': material.mat-color($foreground, divider),
-      'list-group-hover-bg': material.mat-color($foreground, divider),
+      'list-group-hover-bg': material.mat-color($foreground, divider)
     )
   );
 

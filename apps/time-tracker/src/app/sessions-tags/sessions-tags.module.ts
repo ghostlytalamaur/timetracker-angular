@@ -23,5 +23,4 @@ import { SessionsTagsRoutingModule } from './sessions-tags-routing.module';
     SharedModule,
   ],
 })
-export class SessionsTagsModule {
-}
+export class SessionsTagsModule {}

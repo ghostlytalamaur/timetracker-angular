@@ -10,5 +10,4 @@ const routes: Routes = [{ path: '', component: SessionsTagsComponent, canActivat
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SessionsTagsRoutingModule {
-}
+export class SessionsTagsRoutingModule {}

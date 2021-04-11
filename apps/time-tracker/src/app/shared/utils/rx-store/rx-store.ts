@@ -4,7 +4,14 @@ import { catchError, map, repeatWhen, switchMap } from 'rxjs/operators';
 import { Nullable } from '../nullable';
 import { applyStateOperator, StateOperator } from '../operators';
 import { select$ } from './rx-select';
-import { errorStatus, getErrorMessage, isRequestedStatus, IStatus, requestedStatus, successStatus } from './status';
+import {
+  errorStatus,
+  getErrorMessage,
+  isRequestedStatus,
+  IStatus,
+  requestedStatus,
+  successStatus,
+} from './status';
 
 export interface LoadableState<T> {
   readonly data: Nullable<T>;
@@ -12,7 +19,6 @@ export interface LoadableState<T> {
 }
 
 export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxState<S> {
-
   protected constructor(initialState: S) {
     super();
     this.set(initialState);
@@ -28,14 +34,14 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
   }
 
   request(): void {
-    this.set(state => ({
+    this.set((state) => ({
       ...state,
       status: requestedStatus(state.status, true),
     }));
   }
 
   cancelRequest(): void {
-    this.set(state => ({
+    this.set((state) => ({
       ...state,
       status: requestedStatus(this.get('status'), false),
     }));
@@ -51,22 +57,21 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
   private loadEffect$(): Observable<StateOperator<S>> {
     const load$ = defer(() => this.loadData$()).pipe(
       repeatWhen(() => this.invalidate$()),
-      map(data => (state: S) => ({
+      map((data) => (state: S) => ({
         ...state,
         status: successStatus(state.status),
         data,
-     })),
-      catchError(err => of((state: S) => ({
-        ...state,
-        status: errorStatus(state.status, getErrorMessage(err)),
-      }))),
+      })),
+      catchError((err) =>
+        of((state: S) => ({
+          ...state,
+          status: errorStatus(state.status, getErrorMessage(err)),
+        })),
+      ),
     );
 
-    return this.isRequested$().pipe(
-      switchMap(isRequested => isRequested ? load$ : EMPTY),
-    );
+    return this.isRequested$().pipe(switchMap((isRequested) => (isRequested ? load$ : EMPTY)));
   }
-
 }
 
 export function idendity<T>(value: T): T {

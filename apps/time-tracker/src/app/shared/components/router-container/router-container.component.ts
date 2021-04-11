@@ -9,6 +9,4 @@ import { routerAnimation } from '../../animations';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerAnimation],
 })
-export class RouterContainerComponent {
-
-}
+export class RouterContainerComponent {}

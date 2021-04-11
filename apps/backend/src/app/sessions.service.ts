@@ -16,12 +16,7 @@ interface IMongoSession {
 
 @Injectable()
 export class SessionsService {
-
-  constructor(
-    private readonly mongo: MongoService,
-    private readonly events: EventsService,
-  ) {
-  }
+  constructor(private readonly mongo: MongoService, private readonly events: EventsService) {}
 
   async getSessions(userId: string, from: Date, to: Date): Promise<ISession[]> {
     const sessions = this.getCollection();
@@ -38,14 +33,15 @@ export class SessionsService {
     });
 
     const values = await results.toArray();
-    console.log(`Loaded ${values.length} sessions between ${from.toISOString()} and ${to.toISOString()}`)
+    console.log(
+      `Loaded ${values.length} sessions between ${from.toISOString()} and ${to.toISOString()}`,
+    );
 
-
-    return values.map(s => ({
+    return values.map((s) => ({
       id: s._id.toHexString(),
       start: s.start.toISOString(),
       duration: s.duration,
-      tags: s.tags?.map(id => id.toHexString()) ?? [],
+      tags: s.tags?.map((id) => id.toHexString()) ?? [],
     }));
   }
 
@@ -66,17 +62,21 @@ export class SessionsService {
 
   async addSessions(userId: string, data: CreateSessionDto[]): Promise<void> {
     const sessions = this.getCollection();
-    const list = data.map(session => ({
+    const list = data.map((session) => ({
       userId,
       start: new Date(session.start),
       duration: session.duration,
       tags: session.tags?.map(toObjectId) ?? [],
     }));
-    await sessions.insertMany(list)
+    await sessions.insertMany(list);
   }
 
-  async updateSession(userId: string, id: string, session: Partial<CreateSessionDto>): Promise<number> {
-    const changes: Partial<IMongoSession> = { };
+  async updateSession(
+    userId: string,
+    id: string,
+    session: Partial<CreateSessionDto>,
+  ): Promise<number> {
+    const changes: Partial<IMongoSession> = {};
     let hasChanges = false;
     if (typeof session.duration === 'number' || session.duration === null) {
       changes.duration = session.duration;
@@ -119,7 +119,7 @@ export class SessionsService {
       userId,
     });
     if (result.deletedCount) {
-      this.events.push(userId, { type: EventType.SessionsDeleted, data: { ids: [id] }})
+      this.events.push(userId, { type: EventType.SessionsDeleted, data: { ids: [id] } });
     }
 
     return result.deletedCount ?? 0;
@@ -135,8 +135,8 @@ export class SessionsService {
         $pull: {
           tags: toObjectId(tagId),
         },
-      }
-    )
+      },
+    );
 
     if (result.modifiedCount) {
       this.events.push(userId, { type: EventType.SessionsModified });
@@ -150,5 +150,4 @@ export class SessionsService {
 
     return sessions;
   }
-
 }

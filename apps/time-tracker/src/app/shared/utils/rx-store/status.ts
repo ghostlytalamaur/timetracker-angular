@@ -25,7 +25,6 @@ export function loadingStatus(status: IStatus): IStatus {
   return patchObject(status, { pending: true });
 }
 
-
 export function successStatus(): StateOperator<IStatus>;
 export function successStatus(status: IStatus): IStatus;
 export function successStatus(status?: IStatus): IStatus | StateOperator<IStatus> {
@@ -40,11 +39,14 @@ export function successStatus(status?: IStatus): IStatus | StateOperator<IStatus
 
 export function errorStatus(message: string): StateOperator<IStatus>;
 export function errorStatus(status: IStatus, message: string): IStatus;
-export function errorStatus(statusOrMsg: IStatus | string, message?: string): IStatus | StateOperator<IStatus> {
+export function errorStatus(
+  statusOrMsg: IStatus | string,
+  message?: string,
+): IStatus | StateOperator<IStatus> {
   const op = patch<IStatus>({
     error: {
       message: message ?? (typeof statusOrMsg === 'string' ? statusOrMsg : ''),
-    }
+    },
   });
 
   return typeof statusOrMsg === 'string' ? op : op(statusOrMsg);

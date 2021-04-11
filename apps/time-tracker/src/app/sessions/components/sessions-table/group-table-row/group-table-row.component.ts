@@ -6,14 +6,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 
-
 @Component({
   selector: 'app-group-table-row',
   templateUrl: './group-table-row.component.html',
   styleUrls: ['./group-table-row.component.scss'],
 })
 export class GroupTableRowComponent implements OnInit, OnChanges {
-
   @Input() group!: SessionsGroup;
 
   duration$!: Observable<Duration | null>;
@@ -24,12 +22,11 @@ export class GroupTableRowComponent implements OnInit, OnChanges {
   constructor(
     @Inject(TICKS_TIMER)
     private readonly ticks$: Observable<number>,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.duration$ = this.group$$.pipe(
-      switchMap(group => getDuration$(this.ticks$, () => group?.calculateDuration() ?? null)),
+      switchMap((group) => getDuration$(this.ticks$, () => group?.calculateDuration() ?? null)),
     );
   }
 

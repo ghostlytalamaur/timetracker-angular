@@ -1,12 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ClientService } from '@app/core/services';
-import { Session, SessionsService } from '@app/store';
-import { ImportDataDto, ISession } from '@timetracker/shared';
+import { ImportDataDto } from '@timetracker/shared';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { environment } from 'apps/time-tracker/src/environments/environment';
-import { DateTime, Duration } from 'luxon';
-import { v4 as uuid } from 'uuid';
-
+import { Duration } from 'luxon';
 
 interface SessionsBackup {
   readonly sessions: {
@@ -28,11 +25,7 @@ interface SessionsBackup {
   styleUrls: ['./sessions-import.component.scss'],
 })
 export class SessionsImportComponent {
-
-  constructor(
-    private readonly http: HttpClient,
-  ) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   onImport(files: FileList | null) {
     if (!files || !files.length) {
@@ -64,7 +57,7 @@ export class SessionsImportComponent {
         duration: Duration.fromISO(s.duration).valueOf(),
         start: s.start,
         tags: s.tags,
-      })
+      });
     }
     this.http.post<void>(`${environment.serverUrl}/import`, sessions).subscribe();
   }

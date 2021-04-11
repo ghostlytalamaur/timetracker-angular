@@ -5,7 +5,6 @@ import { AppDataContainerComponent } from '@app/core/containers';
 
 import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
 
-
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/sessions' },
   {
@@ -14,10 +13,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     children: [
-      { path: 'sessions', loadChildren: () => import('./sessions/sessions.module').then(mod => mod.SessionsModule) },
+      {
+        path: 'sessions',
+        loadChildren: () => import('./sessions/sessions.module').then((mod) => mod.SessionsModule),
+      },
       {
         path: 'tags',
-        loadChildren: () => import('./sessions-tags/sessions-tags.module').then(m => m.SessionsTagsModule),
+        loadChildren: () =>
+          import('./sessions-tags/sessions-tags.module').then((m) => m.SessionsTagsModule),
       },
     ],
   },
@@ -28,4 +31,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -10,21 +10,8 @@ import { TagsService } from './tags.service';
 import { ImportController } from './import.controller';
 
 @Module({
-  imports: [
-    AuthModule,
-  ],
-  controllers: [
-    SessionsController,
-    EventsController,
-    TagsController,
-    ImportController,
-  ],
-  providers: [
-    MongoService,
-    EventsService,
-    SessionsService,
-    TagsService,
-    Logger,
-  ],
+  imports: [AuthModule],
+  controllers: [SessionsController, EventsController, TagsController, ImportController],
+  providers: [MongoService, EventsService, SessionsService, TagsService, Logger],
 })
 export class AppModule {}

@@ -8,12 +8,10 @@ import { SessionsService, SessionsTagsService } from '@app/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppDataContainerComponent implements OnInit, OnDestroy {
-
   constructor(
     private readonly sessionsService: SessionsService,
     private readonly tagsService: SessionsTagsService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.tagsService.request();
@@ -24,5 +22,4 @@ export class AppDataContainerComponent implements OnInit, OnDestroy {
     this.tagsService.cancelRequest();
     this.sessionsService.cancelRequest();
   }
-
 }

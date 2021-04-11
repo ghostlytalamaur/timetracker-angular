@@ -22,7 +22,12 @@ import {
   Optional,
   ViewContainerRef,
 } from '@angular/core';
-import { MatMenu, MAT_MENU_SCROLL_STRATEGY, MenuPositionX, MenuPositionY } from '@angular/material/menu';
+import {
+  MatMenu,
+  MAT_MENU_SCROLL_STRATEGY,
+  MenuPositionX,
+  MenuPositionY,
+} from '@angular/material/menu';
 import { EMPTY, fromEvent, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, mapTo, take, takeUntil } from 'rxjs/operators';
 
@@ -34,7 +39,6 @@ interface ContextMenuConfig {
 }
 
 class ContextMenuRef {
-
   private menuClosingActionsSubscription: Subscription | null = null;
   private closed: Subject<void> = new Subject<void>();
 
@@ -97,34 +101,32 @@ class ContextMenuRef {
       return EMPTY;
     }
 
-    const docClick$ = fromEvent(this.doc, 'click', { passive: true })
-      .pipe(
-        filter(event => {
-          if (event.target instanceof Node) {
-            return !this.overlayRef?.overlayElement?.contains(event.target);
-          }
+    const docClick$ = fromEvent(this.doc, 'click', { passive: true }).pipe(
+      filter((event) => {
+        if (event.target instanceof Node) {
+          return !this.overlayRef?.overlayElement?.contains(event.target);
+        }
 
-          return false;
-        }),
-        mapTo(undefined),
-      );
+        return false;
+      }),
+      mapTo(undefined),
+    );
 
-    const docContextMenu$ = fromEvent(this.doc, 'contextmenu', { passive: true })
-      .pipe(
-        filter(event => {
-          if (event.target instanceof Node) {
-            return !(this.overlayRef?.overlayElement?.contains(event.target) || this.config.element.nativeElement?.contains(event.target));
-          }
+    const docContextMenu$ = fromEvent(this.doc, 'contextmenu', { passive: true }).pipe(
+      filter((event) => {
+        if (event.target instanceof Node) {
+          return !(
+            this.overlayRef?.overlayElement?.contains(event.target) ||
+            this.config.element.nativeElement?.contains(event.target)
+          );
+        }
 
-          return false;
-        }),
-        mapTo(undefined),
-      );
+        return false;
+      }),
+      mapTo(undefined),
+    );
 
-    const detachments$ = this.overlayRef.detachments()
-      .pipe(
-        mapTo(undefined),
-      );
+    const detachments$ = this.overlayRef.detachments().pipe(mapTo(undefined));
     return merge(docClick$, docContextMenu$, detachments$);
   }
 
@@ -146,13 +148,14 @@ class ContextMenuRef {
     const position = this.overlayRef.getConfig().positionStrategy;
     if (this.menu.setPositionClasses && position instanceof FlexibleConnectedPositionStrategy) {
       this.subscription.add(
-        position.positionChanges
-          .subscribe(change => {
-            const posX: MenuPositionX = change.connectionPair.overlayX === 'start' ? 'after' : 'before';
-            const posY: MenuPositionY = change.connectionPair.overlayY === 'top' ? 'below' : 'above';
+        position.positionChanges.subscribe((change) => {
+          const posX: MenuPositionX =
+            change.connectionPair.overlayX === 'start' ? 'after' : 'before';
+          const posY: MenuPositionY = change.connectionPair.overlayY === 'top' ? 'below' : 'above';
 
-            this.menu.setPositionClasses(posX, posY);
-          }));
+          this.menu.setPositionClasses(posX, posY);
+        }),
+      );
     }
 
     this.subscription.add(this.menu.closed.asObservable().subscribe(() => this.destroyMenu()));
@@ -167,7 +170,7 @@ class ContextMenuRef {
       // Wait for the exit animation to finish before detaching the content.
       menu._animationDone
         .pipe(
-          filter(event => event.toState === 'void'),
+          filter((event) => event.toState === 'void'),
           take(1),
           // Interrupt if the content got re-attached.
           takeUntil(menu.lazyContent._attached),
@@ -175,8 +178,7 @@ class ContextMenuRef {
         .subscribe({
           next: () => menu.lazyContent?.detach(),
           complete: () => this.doDispose(),
-        })
-      ;
+        });
     } else {
       this.dispose();
     }
@@ -194,8 +196,7 @@ export class ContextMenuService implements OnDestroy {
     @Inject(MAT_MENU_SCROLL_STRATEGY) private readonly scrollStrategy: () => ScrollStrategy,
     @Optional() private readonly dir: Directionality,
     @Inject(DOCUMENT) private readonly doc: Document,
-  ) {
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.activeMenu?.dispose();
@@ -210,13 +211,10 @@ export class ContextMenuService implements OnDestroy {
     this.activeMenu?.close();
 
     // Show new menu only when activeMenu gets closed
-    (this.activeMenu?.afterClosed() || of(undefined))
-      .subscribe(
-        () => {
-          menuRef.show();
-          this.setActiveMenu(menuRef);
-        },
-      );
+    (this.activeMenu?.afterClosed() || of(undefined)).subscribe(() => {
+      menuRef.show();
+      this.setActiveMenu(menuRef);
+    });
 
     return menuRef;
   }
@@ -226,7 +224,8 @@ export class ContextMenuService implements OnDestroy {
   }
 
   private getOverlayConfig(menu: MatMenu, config: ContextMenuConfig): OverlayConfig {
-    const position = this.overlay.position()
+    const position = this.overlay
+      .position()
       .flexibleConnectedTo(config.element)
       .withLockedPosition()
       .withTransformOriginOn('.mat-menu-panel');
@@ -241,7 +240,11 @@ export class ContextMenuService implements OnDestroy {
     });
   }
 
-  private setPosition(positionStrategy: FlexibleConnectedPositionStrategy, menu: MatMenu, config: ContextMenuConfig) {
+  private setPosition(
+    positionStrategy: FlexibleConnectedPositionStrategy,
+    menu: MatMenu,
+    config: ContextMenuConfig,
+  ) {
     const [originX, originFallbackX]: HorizontalConnectionPos[] =
       menu.xPosition === 'before' ? ['end', 'start'] : ['start', 'end'];
 
@@ -282,22 +285,19 @@ export class ContextMenuService implements OnDestroy {
     this.activeMenu = menuRef;
 
     if (menuRef) {
-      menuRef.afterClosed()
-        .subscribe(() => {
-          if (this.activeMenu === menuRef) {
-            this.activeMenu = null;
-          }
-        });
+      menuRef.afterClosed().subscribe(() => {
+        if (this.activeMenu === menuRef) {
+          this.activeMenu = null;
+        }
+      });
     }
   }
-
 }
 
 @Directive({
   selector: '[appContextMenuTriggerFor]',
 })
 export class ContextMenuTriggerDirective implements OnDestroy {
-
   @Input('appContextMenuTriggerFor') menu!: MatMenu;
   @Input() appContextMenuTriggerData: unknown;
 
@@ -307,8 +307,7 @@ export class ContextMenuTriggerDirective implements OnDestroy {
     private readonly element: ElementRef<HTMLElement>,
     private readonly viewContainerRef: ViewContainerRef,
     private readonly contextMenuService: ContextMenuService,
-  ) {
-  }
+  ) {}
 
   @HostListener('contextmenu', ['$event'])
   onContextMenu(event: MouseEvent): void {

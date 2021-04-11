@@ -18,7 +18,6 @@ import { ISessionTag } from '@timetracker/shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsEditorComponent implements OnChanges {
-
   @Input()
   tag: Nullable<ISessionTag>;
 
@@ -59,6 +58,5 @@ export class TagsEditorComponent implements OnChanges {
       this.addTag.emit(this.form.value.label);
       this.form.reset();
     }
-
   }
 }

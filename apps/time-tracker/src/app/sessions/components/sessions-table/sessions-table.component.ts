@@ -18,12 +18,9 @@ import { FlatNode, SessionTreeModel } from './session-tree.model';
   templateUrl: './sessions-table.component.html',
   styleUrls: ['./sessions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    SessionTreeModel,
-  ],
+  providers: [SessionTreeModel],
 })
 export class SessionsTableComponent implements OnChanges {
-
   @Input()
   sessions: Nullable<Session[]>;
 
@@ -44,10 +41,7 @@ export class SessionsTableComponent implements OnChanges {
   @Output() toggleNode = new EventEmitter<string>();
   @Output() copyToClipboard = new EventEmitter<ClipboardContent>();
 
-  constructor(
-    readonly model: SessionTreeModel,
-  ) {
-  }
+  constructor(readonly model: SessionTreeModel) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     let shouldUpdate = false;
@@ -82,7 +76,7 @@ export class SessionsTableComponent implements OnChanges {
   }
 
   onDeleteSessions(sessions: Session[]): void {
-    this.deleteSessions.emit(sessions.map(s => s.id));
+    this.deleteSessions.emit(sessions.map((s) => s.id));
   }
 
   onToggleSessionTag(sessionId: string, tagId: string): void {

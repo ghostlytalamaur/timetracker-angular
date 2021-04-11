@@ -5,10 +5,7 @@ import { filter, mapTo, take } from 'rxjs/operators';
 import { AuthService } from '../auth';
 
 class SplashScreenService {
-  constructor(
-    private readonly doc: Document,
-  ) {
-  }
+  constructor(private readonly doc: Document) {}
 
   setInfo(info: string): void {
     const infoNode = this.getInfoNode();
@@ -29,9 +26,10 @@ export function appInitializerFactory(): () => Promise<void> {
   return async () => {
     splashScreenService.setInfo('Signing in...');
 
-    const isSignedIn = authService.isLoading$()
+    const isSignedIn = authService
+      .isLoading$()
       .pipe(
-        filter(isLoading => !isLoading),
+        filter((isLoading) => !isLoading),
         take(1),
         mapTo(undefined),
       )

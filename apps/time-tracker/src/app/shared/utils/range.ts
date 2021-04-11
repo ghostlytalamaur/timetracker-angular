@@ -12,5 +12,5 @@ export function withEnd<T>(base: Range<T>, end: T): Range<T> {
 }
 
 export function isInRange<T>(value: T, range: Range<T>): boolean {
-  return (range.start <= value) && (value <= range.end);
+  return range.start <= value && value <= range.end;
 }

@@ -5,7 +5,10 @@ export interface TypedSimpleChange<T> extends SimpleChange {
   currentValue: T;
 }
 
-export function hasChange<T, K extends keyof T>(directive: T, key: K, changes: SimpleChanges):
-  changes is SimpleChanges & { [p in K]: TypedSimpleChange<T[K]> } {
+export function hasChange<T, K extends keyof T>(
+  directive: T,
+  key: K,
+  changes: SimpleChanges,
+): changes is SimpleChanges & { [p in K]: TypedSimpleChange<T[K]> } {
   return key in changes;
 }

@@ -17,34 +17,28 @@ interface IMongoUserEvents {
 
 @Injectable()
 export class EventsService {
+  private readonly events$$: Subject<{ userId: string; id: number; event: IEvents }>;
 
-  private readonly events$$: Subject<{ userId: string; id: number; event: IEvents; }>;
-
-  constructor(
-    private readonly mongo: MongoService,
-    private readonly logger: Logger,
-  ) {
+  constructor(private readonly mongo: MongoService, private readonly logger: Logger) {
     this.events$$ = new Subject();
   }
 
-  getEvents$(userId: string, lastEventId: number): Observable<{ id: number; event: IEvents}> {
+  getEvents$(userId: string, lastEventId: number): Observable<{ id: number; event: IEvents }> {
     return defer(() => {
       const userEvents$ = this.events$$.pipe(
-        filter(e => e.userId === userId),
-        map(e => ({ id: e.id, event: e.event })),
+        filter((e) => e.userId === userId),
+        map((e) => ({ id: e.id, event: e.event })),
       );
       if (lastEventId) {
         this.logger.debug(`Load events for user ${userId} starting from ${lastEventId}`);
-        const storedEvents$ = from(this.loadEvents(userId, lastEventId))
-          .pipe(
-            tap(events => this.logger.debug(`Loaded events: ${JSON.stringify(events, undefined, 4)}`)),
-            switchMap(events => events),
-          );
-
-        return merge(
-          storedEvents$,
-          userEvents$,
+        const storedEvents$ = from(this.loadEvents(userId, lastEventId)).pipe(
+          tap((events) =>
+            this.logger.debug(`Loaded events: ${JSON.stringify(events, undefined, 4)}`),
+          ),
+          switchMap((events) => events),
         );
+
+        return merge(storedEvents$, userEvents$);
       } else {
         return userEvents$;
       }
@@ -63,11 +57,11 @@ export class EventsService {
 
   private async loadLastEventId(userId: string): Promise<number> {
     const events = this.getCollection();
-    const cursor = events.aggregate<{ lastEventId: number; }>([
+    const cursor = events.aggregate<{ lastEventId: number }>([
       { $match: { userId } },
-      { $unwind: { path: '$events' }},
-      { $group: { _id: null, lastEventId: { $max: '$events.eventId'}}},
-      { $project: { _id: 0, lastEventId: 1 } }
+      { $unwind: { path: '$events' } },
+      { $group: { _id: null, lastEventId: { $max: '$events.eventId' } } },
+      { $project: { _id: 0, lastEventId: 1 } },
     ]);
     if (await cursor.hasNext()) {
       const doc = await cursor.next();
@@ -78,18 +72,23 @@ export class EventsService {
     return 0;
   }
 
-  private async loadEvents(userId: string, lastEventId: number): Promise<{ id: number; event: IEvents}[]> {
+  private async loadEvents(
+    userId: string,
+    lastEventId: number,
+  ): Promise<{ id: number; event: IEvents }[]> {
     const events = this.getCollection();
-    const result = await events.aggregate<{ eventType: string, eventData: object | null, eventId: number}>([
-      { $match: { userId } },
-      { $unwind: { path: '$events' }},
-      { $match: { 'events.eventId': { $gt: lastEventId }}},
-      { $project: { _id: 0, 'events.eventType': 1, 'events.eventData': 1, 'events.eventId': 1 }},
-      { $replaceRoot: { newRoot: "$events" }},
-    ]).toArray();
+    const result = await events
+      .aggregate<{ eventType: string; eventData: object | null; eventId: number }>([
+        { $match: { userId } },
+        { $unwind: { path: '$events' } },
+        { $match: { 'events.eventId': { $gt: lastEventId } } },
+        { $project: { _id: 0, 'events.eventType': 1, 'events.eventData': 1, 'events.eventId': 1 } },
+        { $replaceRoot: { newRoot: '$events' } },
+      ])
+      .toArray();
 
-    return result.map(data => {
-      return <{ id: number; event: IEvents}>{
+    return result.map((data) => {
+      return <{ id: number; event: IEvents }>{
         event: {
           type: data.eventType,
           data: data.eventData,
@@ -109,26 +108,28 @@ export class EventsService {
           update: {
             $setOnInsert: {
               userId,
-              events: [{
-                eventType: event.type,
-                eventData,
-                eventId,
-              }],
-            }
+              events: [
+                {
+                  eventType: event.type,
+                  eventData,
+                  eventId,
+                },
+              ],
+            },
           },
           upsert: true,
-        }
+        },
       },
       {
         updateOne: {
-          filter: { userId, events: { $elemMatch: { eventType: event.type, eventData }} },
+          filter: { userId, events: { $elemMatch: { eventType: event.type, eventData } } },
           update: {
             $set: {
-              "events.$.eventData": eventData,
-              "events.$.eventId": eventId,
-            }
+              'events.$.eventData': eventData,
+              'events.$.eventId': eventId,
+            },
           },
-        }
+        },
       },
       {
         updateOne: {
@@ -139,11 +140,11 @@ export class EventsService {
                 eventType: event.type,
                 eventData,
                 eventId,
-              }
-            }
+              },
+            },
           },
-        }
-      }
+        },
+      },
     ]);
   }
 
@@ -154,5 +155,4 @@ export class EventsService {
 
     return events;
   }
-
 }

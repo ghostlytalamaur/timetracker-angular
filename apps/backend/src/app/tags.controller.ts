@@ -5,14 +5,10 @@ import { UserId } from './auth/user-decorator';
 import { TagsService } from './tags.service';
 
 @Controller({
-  path: '/tags'
+  path: '/tags',
 })
 export class TagsController {
-
-  constructor(
-    private readonly tags: TagsService,
-  ) {}
-
+  constructor(private readonly tags: TagsService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
@@ -22,14 +18,20 @@ export class TagsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  async addSessionTag(@UserId() userId: string, @Body() body: CreateSessionTagDto): Promise<{ id: string; }> {
-    return this.tags.addSessionTag(userId, body)
-      .then(id => ({ id }));
+  async addSessionTag(
+    @UserId() userId: string,
+    @Body() body: CreateSessionTagDto,
+  ): Promise<{ id: string }> {
+    return this.tags.addSessionTag(userId, body).then((id) => ({ id }));
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  async updateSessionTag(@UserId() userId: string, @Param('id') id: string, @Body() body: Partial<CreateSessionTagDto>): Promise<number> {
+  async updateSessionTag(
+    @UserId() userId: string,
+    @Param('id') id: string,
+    @Body() body: Partial<CreateSessionTagDto>,
+  ): Promise<number> {
     return this.tags.updateSessionTag(userId, id, body);
   }
 
@@ -38,5 +40,4 @@ export class TagsController {
   async deleteSessionTag(@UserId() userId: string, @Param('id') id: string): Promise<void> {
     this.tags.deleteSessionTag(userId, id);
   }
-
 }

@@ -22,7 +22,6 @@ export type DialogResult = 'ok' | 'cancel' | 'close';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertDialogComponent {
-
   readonly confirmationType = 'confirmation';
   readonly alertType = 'alert';
 
@@ -30,9 +29,5 @@ export class AlertDialogComponent {
   readonly cancelResult: DialogResult = 'cancel';
   readonly closeResult: DialogResult = 'close';
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) readonly data: DialogData,
-  ) {
-  }
-
+  constructor(@Inject(MAT_DIALOG_DATA) readonly data: DialogData) {}
 }

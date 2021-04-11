@@ -5,10 +5,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class NotificationsService {
-  constructor(
-    private readonly toastr: ToastrService,
-  ) {
-  }
+  constructor(private readonly toastr: ToastrService) {}
 
   info(message: string): number {
     return this.toastr.info(message).toastId;

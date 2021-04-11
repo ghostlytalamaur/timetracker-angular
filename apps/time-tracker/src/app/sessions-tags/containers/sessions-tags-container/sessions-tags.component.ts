@@ -11,14 +11,11 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsTagsComponent {
-
   readonly tags$: Observable<Nullable<ISessionTag[]>>;
   readonly status$: Observable<IStatus>;
   selectedTag: ISessionTag | null = null;
 
-  constructor(
-    private readonly tagsService: SessionsTagsService,
-  ) {
+  constructor(private readonly tagsService: SessionsTagsService) {
     this.tags$ = this.tagsService.getTags$();
     this.status$ = this.tagsService.getStatus$();
   }
@@ -38,5 +35,4 @@ export class SessionsTagsComponent {
   onSaveTag(tag: ISessionTag): void {
     this.tagsService.saveTag(tag);
   }
-
 }

@@ -1,7 +1,4 @@
-<mat-sidenav-container
-  class="h-100 w-100"
->
-
+<mat-sidenav-container class="h-100 w-100">
   <mat-sidenav #sidenav mode="push">
     <mat-nav-list>
       <a mat-list-item routerLink="/sessions">Sessions</a>
@@ -10,7 +7,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-
     <mat-toolbar color="primary">
       <button (click)="sidenav.open()" mat-button>
         <mat-icon>menu</mat-icon>
@@ -22,7 +18,6 @@
       <ng-container *ngIf="isSignedIn$ | async; else loginBtnTemplate">
         <button (click)="onSignOut()" mat-button>Sign Out</button>
       </ng-container>
-
     </mat-toolbar>
 
     <div class="content mt-3">
@@ -30,10 +25,8 @@
         <app-router-container></app-router-container>
       </div>
     </div>
-
   </mat-sidenav-content>
 </mat-sidenav-container>
-
 
 <ng-template #loginBtnTemplate>
   <a mat-button routerLink="/login" routerLinkActive="active">Sign In</a>

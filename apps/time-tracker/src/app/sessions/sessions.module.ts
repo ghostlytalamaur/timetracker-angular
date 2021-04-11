@@ -10,16 +10,15 @@ import {
   SessionDurationComponent,
   SessionsGroupTypeSelectorComponent,
   SessionsTableComponent,
-  SessionsTableRowComponent
+  SessionsTableRowComponent,
 } from './components';
 import {
   SessionDetailsContainerComponent,
   SessionsComponent,
   SessionsContainerComponent,
-  SessionsImportComponent
+  SessionsImportComponent,
 } from './containers';
 import { SessionsRoutingModule } from './sessions-routing.module';
-
 
 @NgModule({
   imports: [
@@ -43,5 +42,4 @@ import { SessionsRoutingModule } from './sessions-routing.module';
     GroupTableRowComponent,
   ],
 })
-export class SessionsModule {
-}
+export class SessionsModule {}

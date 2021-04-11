@@ -34,6 +34,11 @@ export interface ImportDataDto {
   }[];
 }
 
-export function createSession(id: string, start: string, duration: number | null, tags: string[]): ISession {
+export function createSession(
+  id: string,
+  start: string,
+  duration: number | null,
+  tags: string[],
+): ISession {
   return { id, start, duration, tags };
 }

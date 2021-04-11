@@ -26,8 +26,13 @@ interface FormData {
 
 function withDate(date: DateTime, time: DateTime): DateTime {
   return DateTime.local(
-    date.year, date.month, date.day,
-    time.hour, time.minute, time.second, time.millisecond,
+    date.year,
+    date.month,
+    date.day,
+    time.hour,
+    time.minute,
+    time.second,
+    time.millisecond,
   );
 }
 
@@ -38,7 +43,6 @@ function withDate(date: DateTime, time: DateTime): DateTime {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionDetailsComponent implements OnChanges {
-
   @Input() session!: Session;
   @Output() saveSession: EventEmitter<ISession>;
 
@@ -82,12 +86,14 @@ export class SessionDetailsComponent implements OnChanges {
 
     const date: DateTime = DateTime.fromJSDate(this.form.value.date);
     const start: DateTime = withDate(date, DateTime.fromJSDate(this.form.value.start));
-    const end: DateTime | null = this.form.value.end ? withDate(date, DateTime.fromJSDate(this.form.value.end)) : null;
+    const end: DateTime | null = this.form.value.end
+      ? withDate(date, DateTime.fromJSDate(this.form.value.end))
+      : null;
     const sessionEntity: ISession = {
-      id: this.session && this.session.id || uuid(),
+      id: (this.session && this.session.id) || uuid(),
       start: start.toISO(),
       duration: end ? end.valueOf() - start.valueOf() : null,
-      tags: this.session ? this.session.tags.map(t => t.id) : [],
+      tags: this.session ? this.session.tags.map((t) => t.id) : [],
     };
     this.saveSession.emit(sessionEntity);
   }
@@ -100,9 +106,10 @@ export class SessionDetailsComponent implements OnChanges {
     return {
       date: this.session && this.session.start ? this.session.start.toJSDate() : null,
       start: this.session && this.session.start ? this.session.start.toJSDate() : null,
-      end: this.session && this.session.start && this.session.duration ? this.session.start.plus(this.session.duration).toJSDate() : null,
+      end:
+        this.session && this.session.start && this.session.duration
+          ? this.session.start.plus(this.session.duration).toJSDate()
+          : null,
     };
   }
-
-
 }

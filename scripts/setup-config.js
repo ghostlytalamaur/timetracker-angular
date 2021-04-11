@@ -5,7 +5,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 async function setup() {
-  const templateConfigFileName = path.resolve('./apps/time-tracker/src/assets/config.template.json');
+  const templateConfigFileName = path.resolve(
+    './apps/time-tracker/src/assets/config.template.json',
+  );
 
   console.log('Setup config file');
   const config = JSON.parse((await fs.promises.readFile(templateConfigFileName)).toString());
@@ -18,6 +20,4 @@ async function setup() {
   await fs.promises.writeFile(configFileName, JSON.stringify(config));
 }
 
-
-setup()
-  .catch(err => console.log(err));
+setup().catch((err) => console.log(err));

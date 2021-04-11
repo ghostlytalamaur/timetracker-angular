@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Nullable, Range } from '@app/shared/utils';
 import {
   ClipboardContent,
-  ClipboardService, Session,
+  ClipboardService,
+  Session,
   SessionsGroupType,
   SessionsService,
   SessionsTagsService,
@@ -14,7 +15,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SessionsTableService } from './sessions-table.service';
 
-
 @Component({
   selector: 'app-sessions-container',
   templateUrl: './sessions-container.component.html',
@@ -22,7 +22,6 @@ import { SessionsTableService } from './sessions-table.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsContainerComponent {
-
   readonly hasRunning$: Observable<boolean>;
   readonly displayRange$: Observable<Range<Date>>;
   readonly isTodayInvisible$: Observable<boolean>;
@@ -39,14 +38,12 @@ export class SessionsContainerComponent {
     private readonly clipboard: ClipboardService,
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions$();
-    this.displayRange$ = this.sessionsSrv.getDisplayRange()
-      .pipe(
-        map(range => ({ start: range.start.toJSDate(), end: range.end.toJSDate() })),
-      );
-    this.isTodayInvisible$ = this.sessionsSrv.getDisplayRange()
-      .pipe(
-        map(range => DateTime.local().diff(range.end).valueOf() > 0),
-      );
+    this.displayRange$ = this.sessionsSrv
+      .getDisplayRange()
+      .pipe(map((range) => ({ start: range.start.toJSDate(), end: range.end.toJSDate() })));
+    this.isTodayInvisible$ = this.sessionsSrv
+      .getDisplayRange()
+      .pipe(map((range) => DateTime.local().diff(range.end).valueOf() > 0));
     this.groupType$ = this.sessionsSrv.getGroupType$();
     this.sortType$ = this.sessionsSrv.getSortType$();
     this.sessions$ = this.sessionsSrv.getSessions$();

@@ -5,5 +5,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './page-not-found.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PageNotFoundComponent {
-}
+export class PageNotFoundComponent {}

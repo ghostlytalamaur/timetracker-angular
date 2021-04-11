@@ -5,12 +5,9 @@ const URI = process.env.TIMETRACKER_SERVER_MONGODB_URI || '';
 
 @Injectable()
 export class MongoService implements OnModuleInit, OnModuleDestroy {
-
   readonly client: MongoClient;
 
-  constructor(
-    private readonly logger: Logger,
-  ) {
+  constructor(private readonly logger: Logger) {
     this.client = new MongoClient(URI, {
       useUnifiedTopology: true,
     });
@@ -19,7 +16,7 @@ export class MongoService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit(): Promise<void> {
     console.log('Connect to database');
     try {
-        await this.client.connect();
+      await this.client.connect();
     } catch (e) {
       this.logger.error(e);
     }

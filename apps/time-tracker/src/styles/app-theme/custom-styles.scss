@@ -5,7 +5,8 @@
   $background: map.get($theme, background);
   $warn: map.get($theme, warn);
 
-  html, body {
+  html,
+  body {
     height: 100%;
   }
 

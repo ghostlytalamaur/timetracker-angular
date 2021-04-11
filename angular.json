@@ -111,10 +111,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/time-tracker/src/**/*.ts",
-              "apps/time-tracker/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/time-tracker/src/**/*.ts", "apps/time-tracker/src/**/*.html"]
           }
         },
         "test": {

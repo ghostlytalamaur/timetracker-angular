@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Range } from '../../utils';
@@ -10,7 +18,6 @@ import { Range } from '../../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateRangePickerComponent implements OnChanges {
-
   @Input()
   range!: Range<Date>;
 
@@ -36,5 +43,4 @@ export class DateRangePickerComponent implements OnChanges {
       this.rangeChange.emit(this.rangeGroup.value);
     }
   }
-
 }

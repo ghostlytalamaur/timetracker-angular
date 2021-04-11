@@ -6,7 +6,9 @@ export function isPredicate<T>(value: unknown): value is Predicate<T> {
   return typeof value === 'function';
 }
 
-export function isStateOperator<T>(value: T | StateOperator<T> | undefined): value is StateOperator<T> {
+export function isStateOperator<T>(
+  value: T | StateOperator<T> | undefined,
+): value is StateOperator<T> {
   return typeof value === 'function';
 }
 

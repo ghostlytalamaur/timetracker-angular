@@ -5,11 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ClipboardService {
-
-  constructor(
-    private readonly clipboard: Clipboard,
-  ) {
-  }
+  constructor(private readonly clipboard: Clipboard) {}
 
   copyToClipboard(content: Record<string, string>): void {
     const text = content['text/plain'];
@@ -18,5 +14,4 @@ export class ClipboardService {
       this.clipboard.copy(text);
     }
   }
-
 }

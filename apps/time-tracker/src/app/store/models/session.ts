@@ -4,19 +4,17 @@ import { Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { SessionsGroupType } from './sessions-group';
 
-
-
 export class Session {
   constructor(
     readonly id: string,
     readonly start: DateTime,
     readonly duration: Duration | null,
     readonly tags: ISessionTag[],
-  ) {
-  }
+  ) {}
 
   static fromEntity(entity: ISession, tags: ISessionTag[]): Session {
-    return new Session(entity.id,
+    return new Session(
+      entity.id,
       DateTime.fromISO(entity.start),
       entity.duration ? Duration.fromMillis(entity.duration) : null,
       tags,
@@ -29,7 +27,7 @@ export class Session {
   }
 
   hasTag(tagId: string): boolean {
-    return this.tags.some(tag => tag.id === tagId);
+    return this.tags.some((tag) => tag.id === tagId);
   }
 
   toEntity(): ISession {
@@ -37,21 +35,23 @@ export class Session {
       this.id,
       this.start.toJSDate().toISOString(),
       this.duration ? this.duration.valueOf() : null,
-      this.tags.map(tag => tag.id),
-      );
+      this.tags.map((tag) => tag.id),
+    );
   }
 
   calculateDuration(): Duration {
     return this.duration ?? DateTime.local().diff(this.start);
   }
-
 }
 
 export function isRunning(session: Session): boolean {
   return !session.duration;
 }
 
-export function getDuration$(ticks$: Observable<number>, calculate: () => Duration | null): Observable<Duration | null> {
+export function getDuration$(
+  ticks$: Observable<number>,
+  calculate: () => Duration | null,
+): Observable<Duration | null> {
   return ticks$.pipe(
     map(calculate),
     distinctUntilChanged((a, b) => a?.valueOf() === b?.valueOf()),

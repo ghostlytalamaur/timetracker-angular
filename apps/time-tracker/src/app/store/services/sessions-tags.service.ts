@@ -4,19 +4,13 @@ import { initialStatus, Nullable, LoadableState, LoadableStore } from '@app/shar
 import { EventType, ISessionTag } from '@timetracker/shared';
 import { merge, Observable } from 'rxjs';
 
-
 type ISessionsTagsState = LoadableState<ISessionTag[]>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionsTagsService extends LoadableStore<ISessionTag[], ISessionsTagsState> {
-
-
-  constructor(
-    private readonly client: ClientService,
-    private readonly events: EventsService,
-  ) {
+  constructor(private readonly client: ClientService, private readonly events: EventsService) {
     super({
       data: undefined,
       status: initialStatus(),
@@ -32,10 +26,14 @@ export class SessionsTagsService extends LoadableStore<ISessionTag[], ISessionsT
   }
 
   saveTag(tag: ISessionTag): void {
-    this.hold(this.client.updateSessionTagss$([{
-      id: tag.id,
-      changes: tag,
-    }]));
+    this.hold(
+      this.client.updateSessionTagss$([
+        {
+          id: tag.id,
+          changes: tag,
+        },
+      ]),
+    );
   }
 
   deleteTag(id: string): void {
@@ -49,8 +47,7 @@ export class SessionsTagsService extends LoadableStore<ISessionTag[], ISessionsT
   protected invalidate$(): Observable<unknown> {
     return merge(
       this.events.on$(EventType.SessionTagsModified),
-      this.events.on$(EventType.SessionTagsDeleted)
+      this.events.on$(EventType.SessionTagsDeleted),
     );
   }
-
 }

@@ -1,5 +1,4 @@
 <div class="d-flex flex-column h-100">
-
   <div class="row mb-3">
     <div class="col">
       <button
@@ -8,7 +7,7 @@
         [disabled]="isTodayInvisible$ | async"
         (click)="onToggleSession()"
       >
-        {{ (hasRunning$ | async) ? "Stop" : "Start" }}
+        {{ (hasRunning$ | async) ? 'Stop' : 'Start' }}
       </button>
     </div>
 
@@ -31,9 +30,7 @@
       </ng-container>
 
       <ng-container *ngIf="sortType$ | async as sortType">
-        <button
-          mat-icon-button
-          (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')">
+        <button mat-icon-button (click)="onSetSortType(sortType === 'asc' ? 'desc' : 'asc')">
           <mat-icon>
             {{ sortType === 'asc' ? 'arrow_downward' : 'arrow_upward' }}
           </mat-icon>
@@ -54,7 +51,6 @@
         (deleteSessions)="onDeleteSessions($event)"
         (toggleNode)="onToggleNode($event)"
         (copyToClipboard)="onCopyToClipboard($event)"
-
       ></app-sessions-table>
     </div>
   </div>

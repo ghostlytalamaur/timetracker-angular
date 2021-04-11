@@ -1,5 +1,12 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
-import { asapScheduler, BehaviorSubject, Observable, queueScheduler, scheduled, Subject } from 'rxjs';
+import {
+  asapScheduler,
+  BehaviorSubject,
+  Observable,
+  queueScheduler,
+  scheduled,
+  Subject,
+} from 'rxjs';
 import { concatMap, debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { StateOperator } from '../operators';
 import { patch, PatchSpec } from '../operators/patch';
@@ -12,7 +19,6 @@ const LOG_STATE_CHANGES = true;
 
 @Injectable()
 export class LocalStore<T extends object> implements OnDestroy {
-
   private readonly destroy$$: Subject<void>;
   private readonly state$$: BehaviorSubject<T>;
   private readonly modifications$$: Subject<StateOperator<T>>;
@@ -55,36 +61,34 @@ export class LocalStore<T extends object> implements OnDestroy {
   public select<R>(selector: Selector<T, R>): Observable<R> {
     return this.state$$.pipe(
       debounceTime(0, asapScheduler),
-      map(value => selector(value)),
+      map((value) => selector(value)),
       distinctUntilChanged(),
     );
   }
 
   protected hold(effect$: Observable<unknown>): void {
-    effect$
-      .pipe(takeUntil(this.destroy$$))
-      .subscribe();
+    effect$.pipe(takeUntil(this.destroy$$)).subscribe();
   }
 
   public connect(effect$: Observable<StateOperator<T>>): void {
     effect$
       .pipe(takeUntil(this.destroy$$))
-      .subscribe(operator => this.modifications$$.next(operator));
+      .subscribe((operator) => this.modifications$$.next(operator));
   }
 
   private watchModifications(): void {
     this.modifications$$
       .pipe(
-        concatMap(operator => scheduled([operator], queueScheduler)),
+        concatMap((operator) => scheduled([operator], queueScheduler)),
         takeUntil(this.destroy$$),
       )
-      .subscribe(operator => {
+      .subscribe((operator) => {
         const prevState = this.state$$.value;
         const newState = operator(prevState);
         if (LOG_STATE_CHANGES) {
           console.group('State changes');
           console.log('prev state', prevState);
-          console.log('new state', newState)
+          console.log('new state', newState);
           console.groupEnd();
         }
         this.state$$.next(newState);

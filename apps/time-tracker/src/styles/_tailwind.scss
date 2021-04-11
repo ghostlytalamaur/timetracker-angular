@@ -8,9 +8,10 @@
 @import 'tailwindcss/utilities';
 
 @layer comopnents {
-
-  .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {
+  .mat-button,
+  .mat-icon-button,
+  .mat-stroked-button,
+  .mat-flat-button {
     @apply bg-black font-normal #{!important};
   }
-
 }
