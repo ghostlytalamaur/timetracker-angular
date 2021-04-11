@@ -1,24 +1,25 @@
+function guessProductionMode() {
+  const argv = process.argv.join(' ').toLowerCase();
+  const isBuild = argv.includes(" build");
+  const isBuildAlias = argv.includes("ng b");
+  const isFlag = argv.includes("--prod");
+  const isProdEnv = process.env.NODE_ENV === 'production';
+
+  return isBuild || isFlag || isProdEnv || isBuildAlias;
+}
+
+process.env.TAILWIND_MODE =  guessProductionMode() ? 'build' : 'watch';
+
 module.exports = {
+  prefix: '',
+  mode: 'jit',
   purge: {
-    enabled: false,
     content: [
-      './apps/**/*.html',
-      './apps/**/*.ts',
-      './apps/**/*.scss',
-      './apps/**/*.css',
-      './libs/**/*.html',
-      './libs/**/*.ts',
-      './libs/**/*.scss',
-      './libs/**/*.css',
-    ],
-    // PurgeCSS options
-    // Reference: https://purgecss.com/
-    options: {
-      rejected: true,
-      printRejected: true,
-    },
+      './apps/**/*.{html,ts,css,scss,sass,less,styl}',
+      './libs/**/*.{html,ts,css,scss,sass,less,styl}',
+    ]
   },
-  darkMode: 'media', // or 'media' or 'class'
+  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
   },
@@ -26,4 +27,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
+};
