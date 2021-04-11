@@ -1,60 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ClientService } from '@app/core/services';
 import { Session, SessionsService } from '@app/store';
-import { ISession } from '@timetracker/shared';
-import { DateTime } from 'luxon';
+import { ImportDataDto, ISession } from '@timetracker/shared';
+import { environment } from 'apps/time-tracker/src/environments/environment';
+import { DateTime, Duration } from 'luxon';
 import { v4 as uuid } from 'uuid';
 
 
-interface DayBackup {
-  id: number;
-  date: number;
-  isWorkingDay: boolean;
-  targetDuration: number;
-}
-
-interface SessionBackup {
-  id: string;
-  start: number;
-  end: number;
-}
-
 interface SessionsBackup {
-  days: DayBackup[];
-  sessions: SessionBackup[];
-}
-
-function isDayBackup(day: any): day is DayBackup {
-  // noinspection SuspiciousTypeOfGuard
-  return typeof day.id === 'number' &&
-    typeof day.date === 'number' &&
-    typeof day.isWorkingDay === 'boolean' &&
-    typeof day.targetDuration === 'number';
-
-}
-
-function isSessionBackup(session: any): session is SessionBackup {
-  return typeof session.id === 'number' &&
-    typeof session.start === 'number' &&
-    typeof session.end === 'number';
-}
-
-function isSessionsBackup(backup: any): backup is SessionsBackup {
-  if (Array.isArray(backup.days) && Array.isArray(backup.sessions)) {
-    for (const day of backup.days) {
-      if (!isDayBackup(day)) {
-        return false;
-      }
-    }
-
-    for (const s of backup.sessions) {
-      if (!isSessionBackup(s)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-  return false;
+  readonly sessions: {
+    id: string;
+    start: string; // ISO Date "2021-04-02T08:10:12.312+03:00"
+    duration: string; //ISO Duration "PT35122.878S",
+    tags: string[]; // tags ids
+  }[];
+  readonly tags: {
+    id: string;
+    label: string;
+    sessions: string[]; // sessions ids
+  }[];
 }
 
 @Component({
@@ -65,7 +30,7 @@ function isSessionsBackup(backup: any): backup is SessionsBackup {
 export class SessionsImportComponent {
 
   constructor(
-    private readonly sessionsSrv: SessionsService,
+    private readonly http: HttpClient,
   ) {
   }
 
@@ -83,20 +48,24 @@ export class SessionsImportComponent {
     reader.onloadend = () => {
       const json = reader.result as string;
       const sessions = JSON.parse(json);
-      if (isSessionsBackup(sessions)) {
-        this.importSessions(sessions);
-      }
+      this.importSessions(sessions);
     };
     reader.readAsText(file);
   }
 
   private importSessions(backup: SessionsBackup) {
-    const sessions: ISession[] = [];
+    const sessions: ImportDataDto = {
+      sessions: [],
+      tags: backup.tags,
+    };
     for (const s of backup.sessions) {
-      const start = DateTime.fromMillis(s.start * 1000);
-      const end = DateTime.fromMillis(s.end * 1000);
-      sessions.push(new Session(uuid(), start, end.diff(start), []).toEntity());
+      sessions.sessions.push({
+        id: s.id,
+        duration: Duration.fromISO(s.duration).valueOf(),
+        start: s.start,
+        tags: s.tags,
+      })
     }
-    this.sessionsSrv.addSessions(sessions);
+    this.http.post<void>(`${environment.serverUrl}/import`, sessions).subscribe();
   }
 }

@@ -55,6 +55,17 @@ export class SessionsService {
     return id;
   }
 
+  async addSessions(userId: string, data: CreateSessionDto[]): Promise<void> {
+    const sessions = this.getCollection();
+    const list = data.map(session => ({
+      userId,
+      start: new Date(session.start),
+      duration: session.duration,
+      tags: session.tags?.map(toObjectId) ?? [],
+    }));
+    await sessions.insertMany(list)
+  }
+
   async updateSession(userId: string, id: string, session: Partial<CreateSessionDto>): Promise<number> {
     const changes: Partial<IMongoSession> = { };
     let hasChanges = false;

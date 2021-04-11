@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSessionTagDto, EventType, ISessionTag } from '@timetracker/shared';
+import { CreateSessionTagDto, EventType, ImportDataDto, ISessionTag } from '@timetracker/shared';
 import { Collection, ObjectId } from 'mongodb';
 import { EventsService } from './events.service';
 import { MongoService } from './mongo.service';
@@ -46,6 +46,21 @@ export class TagsService {
     this.events.push(userId, { type: EventType.SessionTagsModified });
 
     return id;
+  }
+
+  async addSessionTags(userId: string, tags: ImportDataDto['tags']): Promise<Record<string, string>> {
+    const collection = this.getCollection();
+    const data = tags.map(tag => ({
+      userId,
+      label: tag.label,
+    }));
+    const insertResult = await collection.insertMany(data);
+    const idsMap: Record<string, string> = { };
+    for (let i = 0; i < tags.length; i++) {
+      idsMap[tags[i].id] = insertResult.insertedIds[i].toHexString();
+    }
+
+    return idsMap;
   }
 
   async updateSessionTag(userId: string, id: string, tag: Partial<CreateSessionTagDto>): Promise<number> {

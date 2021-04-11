@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TagsController } from './tags.controller';
 import { SessionsService } from './sessions.service';
 import { TagsService } from './tags.service';
+import { ImportController } from './import.controller';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TagsService } from './tags.service';
     SessionsController,
     EventsController,
     TagsController,
+    ImportController,
   ],
   providers: [
     MongoService,
