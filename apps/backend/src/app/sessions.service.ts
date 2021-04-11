@@ -23,13 +23,22 @@ export class SessionsService {
   ) {
   }
 
-  async getSessions(userId: string): Promise<ISession[]> {
+  async getSessions(userId: string, from: Date, to: Date): Promise<ISession[]> {
     const sessions = this.getCollection();
     const results = sessions.find({
       userId,
+      $and: [
+        {
+          start: {
+            $gte: from,
+            $lte: to,
+          },
+        },
+      ],
     });
 
     const values = await results.toArray();
+    console.log(`Loaded ${values.length} sessions between ${from.toISOString()} and ${to.toISOString()}`)
 
 
     return values.map(s => ({

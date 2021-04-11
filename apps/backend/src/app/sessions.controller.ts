@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSessionDto, ISession } from '@timetracker/shared';
 import { UserId } from './auth/user-decorator';
@@ -16,8 +16,8 @@ export class SessionsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getSessions(@UserId() userId: string): Promise<ISession[]> {
-    return this.sessions.getSessions(userId);
+  async getSessions(@UserId() userId: string, @Query('from') from: string, @Query('to') to: string): Promise<ISession[]> {
+    return this.sessions.getSessions(userId, new Date(from), new Date(to));
   }
 
   @UseGuards(AuthGuard('jwt'))

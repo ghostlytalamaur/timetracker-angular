@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Update } from '@app/store';
 import { CreateSessionDto, ISession, ISessionTag, CreateSessionTagDto } from '@timetracker/shared';
@@ -16,8 +16,12 @@ export class ClientService {
   ) {
   }
 
-  getSessions$(): Observable<ISession[]> {
-    return this.http.get<ISession[]>(`${environment.serverUrl}/sessions`);
+  getSessions$(from: Date, to: Date): Observable<ISession[]> {
+    const params = new HttpParams()
+      .set('from', from.toISOString())
+      .set('to', to.toISOString());
+
+    return this.http.get<ISession[]>(`${environment.serverUrl}/sessions`, { params });
   }
 
   addSession$(session: CreateSessionDto): Observable<void> {

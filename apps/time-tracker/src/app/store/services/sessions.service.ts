@@ -4,7 +4,7 @@ import { generateUUID, Range, select$, StateOperator } from '@app/shared/utils';
 import { initialStatus, Nullable, applyStateOperator, LoadableState, LoadableStore } from '@app/shared/utils';
 import { EventType, ISession } from '@timetracker/shared';
 import { DateTime } from 'luxon';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isRunning, Session, SessionsGroupType, SortType, Update } from '../models';
 import { SessionsTagsService } from './sessions-tags.service';
@@ -132,11 +132,17 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
   }
 
   protected invalidate$(): Observable<unknown> {
-    return this.events.on$(EventType.SessionsModified);
+    return merge(
+      this.events.on$(EventType.SessionsModified),
+      this.select('displayRange'),
+    );
   }
 
   protected loadData$(): Observable<Nullable<ISession[]>> {
-    return this.client.getSessions$();
+    const from = this.get('displayRange', 'start').toJSDate();
+    const to = this.get('displayRange', 'end').toJSDate();
+
+    return this.client.getSessions$(from, to);
   }
 
   private deleteEffect$(): Observable<StateOperator<SessionsState>> {
