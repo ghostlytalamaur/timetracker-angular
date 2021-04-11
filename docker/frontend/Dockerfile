@@ -11,8 +11,8 @@ RUN npx yarn run build ${BUILD_FLAG}
 # Stage 2
 FROM nginx:stable-alpine
 
-#COPY --from=build /usr/src/app/dist/apps/time-tracker /usr/share/nginx/html
-COPY dist/apps/time-tracker /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/apps/time-tracker /usr/share/nginx/html
+# COPY dist/apps/time-tracker /usr/share/nginx/html
 
 COPY docker/frontend/00-setup-configs.sh /docker-entrypoint.d/
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
