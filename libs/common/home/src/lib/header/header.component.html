@@ -1,0 +1,8 @@
+<a mat-button routerLink="">Time Tracker</a>
+<span class="flex-1"></span>
+<ng-container *ngIf="isSignedIn$ | async; else loginBtnTemplate">
+  <button (click)="onSignOut()" mat-button>Sign Out</button>
+</ng-container>
+<ng-template #loginBtnTemplate>
+  <a mat-button routerLink="/login" routerLinkActive="active">Sign In</a>
+</ng-template>

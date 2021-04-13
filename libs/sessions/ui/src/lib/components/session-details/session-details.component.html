@@ -1,0 +1,28 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form" class="flex flex-col">
+  <mat-form-field appearance="outline" class="flex-1">
+    <mat-label>Date</mat-label>
+    <input [matDatepicker]="datePicker" formControlName="date" matInput />
+    <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+  </mat-form-field>
+
+  <div class="flex justify-between">
+    <mat-form-field appearance="outline" class="flex-1 mr-2">
+      <mat-label>Start</mat-label>
+      <input ttDateTimeInput [placeholder]="timeFormat" formControlName="start" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="flex-1 ml-2">
+      <mat-label>End</mat-label>
+      <input ttDateTimeInput [placeholder]="timeFormat" formControlName="end" />
+    </mat-form-field>
+  </div>
+
+  <div class="flex justify-between items-baseline">
+    <span class="flex-1">
+      Duration: <tt-session-duration [duration]="duration$ | async"></tt-session-duration>
+    </span>
+    <button [disabled]="!form.valid" color="primary" mat-flat-button type="submit">Save</button>
+    <button (click)="resetForm()" color="warn" mat-button type="button">Reset</button>
+  </div>
+</form>

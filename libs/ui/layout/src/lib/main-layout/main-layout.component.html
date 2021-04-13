@@ -1,0 +1,18 @@
+<mat-sidenav-container class="h-full w-full">
+  <mat-sidenav #sidenav mode="push">
+    <router-outlet name="sideNav"></router-outlet>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="h-14 md:h-16">
+      <button (click)="sidenav.open()" mat-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <router-outlet name="toolbar"></router-outlet>
+    </mat-toolbar>
+
+    <div class="mt-16 md:mt-20 mx-2 max-w-full md:max-w-screen-md md:mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

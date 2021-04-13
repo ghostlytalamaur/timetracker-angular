@@ -1,0 +1,16 @@
+<div class="p-2 flex flex-col">
+  <div *ngIf="showDate">
+    {{ session.start | dateTimeToFormat: dateFormat }}
+  </div>
+
+  <div class="flex items-baseline">
+    <span class="flex-1">Start: {{ session?.start | dateTimeToFormat: timeFormat }}</span>
+    <tt-session-duration [duration]="duration$ | async"></tt-session-duration>
+  </div>
+
+  <div class="col" *ngIf="session.tags.length">
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of session.tags">{{ tag.label }}</mat-chip>
+    </mat-chip-list>
+  </div>
+</div>

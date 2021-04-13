@@ -1,6 +1,6 @@
 @use '~@angular/material/theming' as material;
 @use './custom-styles';
-@use './bootstrap';
+//@use './bootstrap';
 @use './toastr';
 
 @mixin components-themes($theme) {
@@ -9,6 +9,6 @@
 
 @mixin app-theme($theme) {
   @include material.angular-material-theme($theme);
-  @include bootstrap.bootstrap-material-theme2($theme);
+  //@include bootstrap.bootstrap-material-theme2($theme);
   @include components-themes($theme);
 }

@@ -1,6 +1,0 @@
-@use '~@angular/material/theming' as material;
-
-$_app-dark-primary: material.mat-palette(material.$mat-blue-gray);
-$_app-dark-accent: material.mat-palette(material.$mat-blue-gray);
-$_app-dark-warn: material.mat-palette(material.$mat-red);
-$app-dark-theme: material.mat-dark-theme($_app-dark-primary, $_app-dark-accent, $_app-dark-warn);

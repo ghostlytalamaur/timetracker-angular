@@ -1,34 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/core/auth';
-import { AppDataContainerComponent } from '@app/core/containers';
 
-import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
+import { AuthGuard } from '@tt/auth/core';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/sessions' },
   {
     path: '',
-    component: AppDataContainerComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    children: [
-      {
-        path: 'sessions',
-        loadChildren: () => import('./sessions/sessions.module').then((mod) => mod.SessionsModule),
-      },
-      {
-        path: 'tags',
-        loadChildren: () =>
-          import('./sessions-tags/sessions-tags.module').then((m) => m.SessionsTagsModule),
-      },
-    ],
+    loadChildren: () =>
+      import('libs/common/home/src/lib/common-home.module').then((mod) => mod.CommonHomeModule),
   },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: '**',
+    loadChildren: () => import('@tt/errors/page-not-found').then((m) => m.ErrorsPageNotFoundModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
