@@ -1,4 +1,5 @@
 @use '~@angular/material/theming' as material;
+@use 'sass:map';
 @use './custom-styles';
 //@use './bootstrap';
 @use './toastr';
@@ -7,8 +8,19 @@
   @include custom-styles.custom-styles($theme);
 }
 
+@mixin theme-vars($theme) {
+  $foreground: map.get($theme, foreground);
+  $background: map.get($theme, background);
+  $warn: map.get($theme, warn);
+
+  :root {
+    --mat-color-bg: #{material.mat-color($background, background)};
+    --mat-color-fg-text: #{material.mat-color($foreground, text)};
+  }
+}
 @mixin app-theme($theme) {
   @include material.angular-material-theme($theme);
   //@include bootstrap.bootstrap-material-theme2($theme);
   @include components-themes($theme);
+  @include theme-vars($theme)
 }

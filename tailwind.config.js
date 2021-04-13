@@ -22,7 +22,17 @@ module.exports = {
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '(screen-14)': 'calc(100vh - 3.5rem)',
+        '(screen-16)': 'calc(100vh - 4rem)',
+        '(screen-20)': 'calc(100vh - 5rem)',
+      },
+      colors: {
+        'bg': 'var(--mat-color-bg)',
+        'fg-text': 'var(--mat-color-fg-text)'
+      }
+    },
   },
   variants: {
     extend: {},
