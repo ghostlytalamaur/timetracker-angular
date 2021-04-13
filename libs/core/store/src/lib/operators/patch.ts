@@ -7,8 +7,8 @@ export function patchObject<T extends object>(state: T, patchSpec: PatchSpec<T>)
 export type PatchSpec<T> = { [P in keyof T]?: T[P] | StateOperator<NonNullable<T[P]>> };
 
 type PatchValues<T> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly [P in keyof T]?: T[P] extends (...args: any[]) => infer R ? R : T[P];
+  readonly // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [P in keyof T]?: T[P] extends (...args: any[]) => infer R ? R : T[P];
 };
 
 type PatchOperator<T> = <U extends PatchValues<T>>(existing: Readonly<U>) => U;

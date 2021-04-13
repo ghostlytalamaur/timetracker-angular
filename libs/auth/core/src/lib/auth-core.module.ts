@@ -13,7 +13,6 @@ import {
   AuthHttpInterceptor,
   AuthModule as Auth0Module,
 } from '@auth0/auth0-angular';
-import { LoginComponent } from './login/login.component';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -38,12 +37,7 @@ export interface IAuthConfig {
 }
 
 @NgModule({
-  imports: [
-    Auth0Module.forRoot(),
-    CommonModule,
-    MatProgressSpinnerModule,
-  ],
-  declarations: [LoginComponent],
+  imports: [Auth0Module.forRoot(), CommonModule, MatProgressSpinnerModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
     { provide: AuthConfigService, useFactory: () => createAuthConfig(inject(AUTH_CONFIG)) },

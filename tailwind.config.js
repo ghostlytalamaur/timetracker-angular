@@ -29,9 +29,9 @@ module.exports = {
         '(screen-20)': 'calc(100vh - 5rem)',
       },
       colors: {
-        'bg': 'var(--mat-color-bg)',
-        'fg-text': 'var(--mat-color-fg-text)'
-      }
+        bg: 'var(--mat-color-bg)',
+        'fg-text': 'var(--mat-color-fg-text)',
+      },
     },
   },
   variants: {

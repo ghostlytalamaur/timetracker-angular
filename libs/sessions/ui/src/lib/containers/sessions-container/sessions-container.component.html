@@ -37,18 +37,16 @@
     </div>
   </div>
 
-<!--  <div class="flex flex-1">-->
-    <tt-sessions-table
-      class="flex-1 mt-4"
-      [sessions]="sessions$ | async"
-      [groupType]="groupType$ | async"
-      [sortType]="sortType$ | async"
-      [tags]="tags$ | async"
-      [expandedNodes]="expandedNodes$ | async"
-      (toggleSessionTag)="onToggleSessionTag($event)"
-      (deleteSessions)="onDeleteSessions($event)"
-      (toggleNode)="onToggleNode($event)"
-      (copyToClipboard)="onCopyToClipboard($event)"
-    ></tt-sessions-table>
-<!--  </div>-->
+  <tt-sessions-table
+    class="flex-1 mt-4"
+    [sessions]="sessions$ | async"
+    [groupType]="groupType$ | async"
+    [sortType]="sortType$ | async"
+    [tags]="tags$ | async"
+    [expandedNodes]="expandedNodes$ | async"
+    (toggleSessionTag)="onToggleSessionTag($event)"
+    (deleteSessions)="onDeleteSessions($event)"
+    (toggleNode)="onToggleNode($event)"
+    (copyToClipboard)="onCopyToClipboard($event)"
+  ></tt-sessions-table>
 </div>

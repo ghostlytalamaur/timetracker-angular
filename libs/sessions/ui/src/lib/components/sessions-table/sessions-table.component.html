@@ -27,10 +27,7 @@
           {{ model.treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
         </mat-icon>
       </button>
-      <tt-group-table-row
-        [group]="node.node"
-        class="flex-1 cursor-pointer"
-      ></tt-group-table-row>
+      <tt-group-table-row [group]="node.node" class="flex-1 cursor-pointer"></tt-group-table-row>
     </div>
   </mat-tree-node>
 </mat-tree>

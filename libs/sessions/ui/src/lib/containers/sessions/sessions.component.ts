@@ -11,13 +11,9 @@ import { SessionsTagsService } from '@tt/tags/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsComponent implements OnInit, OnDestroy {
-
   readonly status$: Observable<IStatus>;
 
-  constructor(
-    private sessionsSrv: SessionsService,
-    private readonly tags: SessionsTagsService,
-  ) {
+  constructor(private sessionsSrv: SessionsService, private readonly tags: SessionsTagsService) {
     this.status$ = this.sessionsSrv.getStatus$();
   }
 
@@ -30,5 +26,4 @@ export class SessionsComponent implements OnInit, OnDestroy {
     this.sessionsSrv.cancelRequest();
     this.tags.cancelRequest();
   }
-
 }

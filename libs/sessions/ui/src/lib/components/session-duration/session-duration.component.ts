@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core
 import { Duration } from 'luxon';
 import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
 
-
 @Component({
   selector: 'tt-session-duration',
   template: `
@@ -21,6 +20,5 @@ export class SessionDurationComponent {
 
   readonly timeFormat = this.env.settings.durationFormat;
 
-  public constructor(@Inject(ENVIRONMENT) private readonly env: IEnvironment) {
-  }
+  public constructor(@Inject(ENVIRONMENT) private readonly env: IEnvironment) {}
 }

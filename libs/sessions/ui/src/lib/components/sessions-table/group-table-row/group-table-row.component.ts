@@ -5,7 +5,6 @@ import { switchMap } from 'rxjs/operators';
 import { getDuration$, SessionsGroup, SessionsGroupType } from '@tt/sessions/core';
 import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@tt/core/services';
 
-
 @Component({
   selector: 'tt-group-table-row',
   templateUrl: './group-table-row.component.html',
@@ -22,7 +21,7 @@ export class GroupTableRowComponent implements OnInit, OnChanges {
   constructor(
     @Inject(TICKS_TIMER)
     private readonly ticks$: Observable<number>,
-    @Inject(ENVIRONMENT) private readonly env: IEnvironment
+    @Inject(ENVIRONMENT) private readonly env: IEnvironment,
   ) {}
 
   ngOnInit(): void {

@@ -3,7 +3,14 @@ import { Injectable } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { contramap, fromCompare, getDualOrd } from 'fp-ts/es6/Ord';
 import { DateTime } from 'luxon';
-import { createGroup, getGroupId, Session, SessionsGroup, SessionsGroupType, SortType } from '@tt/sessions/core';
+import {
+  createGroup,
+  getGroupId,
+  Session,
+  SessionsGroup,
+  SessionsGroupType,
+  SortType,
+} from '@tt/sessions/core';
 import { clustering, Nullable } from '@tt/core/util';
 
 export type TreeNode = SessionsGroup | Session;

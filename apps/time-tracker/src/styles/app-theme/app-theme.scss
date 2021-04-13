@@ -22,5 +22,5 @@
   @include material.angular-material-theme($theme);
   //@include bootstrap.bootstrap-material-theme2($theme);
   @include components-themes($theme);
-  @include theme-vars($theme)
+  @include theme-vars($theme);
 }

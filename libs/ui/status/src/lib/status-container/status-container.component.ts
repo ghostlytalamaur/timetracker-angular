@@ -14,10 +14,9 @@ import {
   isErrorStatus,
   isLoadingStatus,
   isResolvedStatus,
-  IStatus
+  IStatus,
 } from '@tt/core/store';
 import { hasChange, Nullable } from '@tt/core/util';
-
 
 @Directive({
   selector: '[ttResolved]',

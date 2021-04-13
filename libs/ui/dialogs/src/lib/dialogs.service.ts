@@ -54,12 +54,14 @@ export class DialogsService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component<D, R>(component: ComponentType<any>, data?: D): Observable<R | undefined> {
-    return this.matDialog
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .open<any, D, R>(component, {
-        ...this.defaultConfig,
-        data,
-      })
-      .afterClosed();
+    return (
+      this.matDialog
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .open<any, D, R>(component, {
+          ...this.defaultConfig,
+          data,
+        })
+        .afterClosed()
+    );
   }
 }
