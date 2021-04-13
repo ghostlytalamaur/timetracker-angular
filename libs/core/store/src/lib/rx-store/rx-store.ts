@@ -23,7 +23,6 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
     super();
     this.set(initialState);
     this.connect(this.loadEffect$(), applyStateOperator);
-    this.hold(this.select(), console.log);
   }
 
   getStatus$(): Observable<IStatus> {
