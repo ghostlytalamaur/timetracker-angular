@@ -8,6 +8,7 @@ import {
   initialStatus,
   LoadableState,
   LoadableStore,
+  patchObject,
   select$,
   StateOperator,
   Update,
@@ -18,11 +19,18 @@ import { SessionsTagsService } from '@tt/tags/core';
 import { generateUUID, Nullable, Range } from '@tt/core/util';
 import { isRunning, Session } from './session';
 import { ClientService, EventsService } from '@tt/core/api';
+import { UiStorageService } from '@tt/core/services';
 
 interface SessionsState extends LoadableState<ISession[]> {
   displayRange: Range<DateTime>;
   groupType: SessionsGroupType;
   sortType: SortType;
+}
+
+const enum StorageKeys {
+  GroupType = 'tt.sessions.groupType',
+  SortType = 'tt.sessions.sortType',
+  DisplayRange = 'tt.sessions.displayRange',
 }
 
 @Injectable({
@@ -33,6 +41,7 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
     private readonly client: ClientService,
     private readonly events: EventsService,
     private readonly tags: SessionsTagsService,
+    private readonly storage: UiStorageService,
   ) {
     super({
       data: undefined,
@@ -41,11 +50,12 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
         start: DateTime.local().startOf('month'),
         end: DateTime.local().endOf('month'),
       },
-      groupType: <SessionsGroupType>localStorage.getItem('tt.sessions.groupType') ?? 'none',
+      groupType: 'none',
       sortType: 'desc',
     });
 
     this.connect(this.deleteEffect$(), applyStateOperator);
+    this.loadSettings();
   }
 
   getSessions$(): Observable<Session[]> {
@@ -119,15 +129,20 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
 
   setDisplayRange(displayRange: Range<DateTime>): void {
     this.set({ displayRange });
+    this.storage.set(StorageKeys.DisplayRange, {
+      from: displayRange.start.toISO(),
+      to: displayRange.end.toISO(),
+    });
   }
 
   changeGroupType(groupType: SessionsGroupType) {
     this.set({ groupType });
-    localStorage.setItem('tt.sessions.groupType', groupType);
+    this.storage.set(StorageKeys.GroupType, groupType);
   }
 
   changeSortType(sortType: SortType) {
     this.set({ sortType });
+    this.storage.set(StorageKeys.SortType, sortType);
   }
 
   toggleSessionTag(sessionId: string, tagId: string): void {
@@ -163,6 +178,41 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
         ...state,
         data: state.data?.filter((s) => !event.data.ids.includes(s.id)),
       })),
+    );
+  }
+
+  private loadSettings() {
+    this.connect<Nullable<SessionsGroupType>>(
+      this.storage.get(StorageKeys.GroupType),
+      (state, groupType) => {
+        if (groupType) {
+          return patchObject(state, { groupType });
+        } else {
+          return state;
+        }
+      },
+    );
+    this.connect<Nullable<SortType>>(this.storage.get(StorageKeys.SortType), (state, sortType) => {
+      if (sortType) {
+        return patchObject(state, { sortType });
+      } else {
+        return state;
+      }
+    });
+    this.connect<Nullable<{ from: string; to: string }>>(
+      this.storage.get(StorageKeys.DisplayRange),
+      (state, isoRange) => {
+        if (isoRange) {
+          const start = DateTime.fromISO(isoRange.from);
+          const end = DateTime.fromISO(isoRange.from);
+
+          return start.isValid && end.isValid
+            ? patchObject(state, { displayRange: { start, end } })
+            : state;
+        } else {
+          return state;
+        }
+      },
     );
   }
 }
