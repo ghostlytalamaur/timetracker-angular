@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateSessionTagDto, ISessionTag } from '@timetracker/shared';
+import { CreateSessionTagDto, ISessionTag } from '@tt/shared';
 import { UserId } from './auth/user-decorator';
 import { TagsService } from './tags.service';
 

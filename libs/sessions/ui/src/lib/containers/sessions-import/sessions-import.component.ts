@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { ImportDataDto } from '@timetracker/shared';
+import { ImportDataDto } from '@tt/shared';
 import { Duration } from 'luxon';
 import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
 

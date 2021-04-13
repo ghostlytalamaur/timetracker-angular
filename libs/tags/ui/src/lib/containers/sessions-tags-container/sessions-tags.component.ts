@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ISessionTag } from '@timetracker/shared';
+import { ISessionTag } from '@tt/shared';
 import { Observable } from 'rxjs';
 import { IStatus } from '@tt/core/store';
 import { SessionsTagsService } from '@tt/tags/core';

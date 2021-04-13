@@ -19,8 +19,6 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "paths": {
-      "@timetracker/shared": ["libs/shared/src/index.ts"],
-      "@timetracker/ui/layout": ["libs/ui/layout/src/index.ts"],
       "@tt/common/home": ["libs/common/home/src/index.ts"],
       "@tt/auth/core": ["libs/auth/core/src/index.ts"],
       "@tt/ui/status": ["libs/ui/status/src/index.ts"],
@@ -37,7 +35,9 @@
       "@tt/ui/dialogs": ["libs/ui/dialogs/src/index.ts"],
       "@tt/ui/notifications": ["libs/ui/notifications/src/index.ts"],
       "@tt/ui/animations": ["libs/ui/animations/src/index.ts"],
-      "@tt/errors/page-not-found": ["libs/errors/page-not-found/src/index.ts"]
+      "@tt/errors/page-not-found": ["libs/errors/page-not-found/src/index.ts"],
+      "@tt/shared": ["libs/shared/src/index.ts"],
+      "@tt/ui/layout": ["libs/ui/layout/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"],

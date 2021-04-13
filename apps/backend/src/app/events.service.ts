@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IEvents } from '@timetracker/shared';
+import { IEvents } from '@tt/shared';
 import { Collection, ObjectId } from 'mongodb';
 import { defer, from, merge, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';

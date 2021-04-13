@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { EventType, IEvents } from '@timetracker/shared';
+import { EventType, IEvents } from '@tt/shared';
 import { fromEvent, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { filter, share, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from '@tt/auth/core';

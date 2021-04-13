@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CreateSessionDto, ISession, ISessionTag, CreateSessionTagDto } from '@timetracker/shared';
+import { CreateSessionDto, ISession, ISessionTag, CreateSessionTagDto } from '@tt/shared';
 import { forkJoin, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { Update } from '@tt/core/store';
@@ -39,10 +39,7 @@ export class ClientService {
   updateSessions$(changes: Update<ISession>[]): Observable<void> {
     return forkJoin(
       changes.map((change) => {
-        return this.http.patch<void>(
-          `${this.env.serverUrl}/sessions/${change.id}`,
-          change.changes,
-        );
+        return this.http.patch<void>(`${this.env.serverUrl}/sessions/${change.id}`, change.changes);
       }),
     ).pipe(mapTo(undefined));
   }

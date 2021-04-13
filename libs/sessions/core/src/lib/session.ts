@@ -1,4 +1,4 @@
-import { ISession, createSession, ISessionTag } from '@timetracker/shared';
+import { ISession, createSession, ISessionTag } from '@tt/shared';
 import { DateTime, Duration } from 'luxon';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';

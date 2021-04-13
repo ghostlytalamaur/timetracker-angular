@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ISessionTag } from '@timetracker/shared';
+import { ISessionTag } from '@tt/shared';
 import { hasChange, Nullable } from '@tt/core/util';
 
 @Component({

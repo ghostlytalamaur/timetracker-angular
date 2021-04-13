@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { MainLayoutComponent } from '@timetracker/ui/layout';
+import { MainLayoutComponent } from '@tt/ui/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { HeaderComponent } from './header/header.component';
 
@@ -15,7 +15,9 @@ export const routes: Routes = [
           {
             path: 'sessions',
             loadChildren: () =>
-              import('libs/sessions/ui/src/lib/sessions-ui.module').then((mod) => mod.SessionsUiModule),
+              import('libs/sessions/ui/src/lib/sessions-ui.module').then(
+                (mod) => mod.SessionsUiModule,
+              ),
           },
           {
             path: 'tags',
@@ -33,7 +35,7 @@ export const routes: Routes = [
         path: '',
         outlet: 'toolbar',
         component: HeaderComponent,
-      }
+      },
     ],
   },
 ];

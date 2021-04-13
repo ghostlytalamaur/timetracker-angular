@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, ISession } from '@timetracker/shared';
+import { EventType, ISession } from '@tt/shared';
 import { DateTime } from 'luxon';
 import { combineLatest, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
         start: DateTime.local().startOf('month'),
         end: DateTime.local().endOf('month'),
       },
-      groupType: <SessionsGroupType> localStorage.getItem('tt.sessions.groupType') ?? 'none',
+      groupType: <SessionsGroupType>localStorage.getItem('tt.sessions.groupType') ?? 'none',
       sortType: 'desc',
     });
 

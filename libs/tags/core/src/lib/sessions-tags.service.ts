@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, ISessionTag } from '@timetracker/shared';
+import { EventType, ISessionTag } from '@tt/shared';
 import { merge, Observable } from 'rxjs';
 import { initialStatus, LoadableState, LoadableStore } from '@tt/core/store';
 import { Nullable } from '@tt/core/util';

@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import { ISessionTag } from '@timetracker/shared';
+import { ISessionTag } from '@tt/shared';
 
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 import { Session, SessionsGroup, SessionsGroupType, SortType } from '@tt/sessions/core';

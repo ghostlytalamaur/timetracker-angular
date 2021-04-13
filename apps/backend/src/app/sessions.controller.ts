@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateSessionDto, ISession } from '@timetracker/shared';
+import { CreateSessionDto, ISession } from '@tt/shared';
 import { UserId } from './auth/user-decorator';
 import { SessionsService } from './sessions.service';
 

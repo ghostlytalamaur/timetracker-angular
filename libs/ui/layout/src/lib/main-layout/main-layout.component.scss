@@ -3,32 +3,32 @@
 $toolbar-breakpoint: 600px;
 
 mat-sidenav-container {
-mat-sidenav {
-  width: 200px;
-}
-
-mat-toolbar {
-  @include material.mat-elevation(8);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-.content {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 64px;
-  overflow: auto;
-}
-
-@media (max-width: $toolbar-breakpoint) {
-  .content {
-    top: 56px;
+  mat-sidenav {
+    width: 200px;
   }
-}
+
+  mat-toolbar {
+    @include material.mat-elevation(8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+
+  .content {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 64px;
+    overflow: auto;
+  }
+
+  @media (max-width: $toolbar-breakpoint) {
+    .content {
+      top: 56px;
+    }
+  }
 }
