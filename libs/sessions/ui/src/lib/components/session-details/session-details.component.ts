@@ -37,7 +37,6 @@ function withDate(date: DateTime, time: DateTime): DateTime {
 @Component({
   selector: 'tt-session-details',
   templateUrl: './session-details.component.html',
-  styleUrls: ['./session-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionDetailsComponent implements OnChanges {
