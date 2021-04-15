@@ -9,7 +9,6 @@ import { Nullable } from '@tt/core/util';
 @Component({
   selector: 'tt-session-details-container',
   templateUrl: './session-details-container.component.html',
-  styleUrls: ['./session-details-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionDetailsContainerComponent implements OnInit {

@@ -5,7 +5,6 @@ import { ISessionTag } from '@tt/shared';
 @Component({
   selector: 'tt-tags-list',
   templateUrl: './tags-list.component.html',
-  styleUrls: ['./tags-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsListComponent {

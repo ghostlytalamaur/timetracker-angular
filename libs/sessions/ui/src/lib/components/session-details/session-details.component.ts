@@ -41,18 +41,18 @@ function withDate(date: DateTime, time: DateTime): DateTime {
 })
 export class SessionDetailsComponent implements OnChanges {
   @Input() session!: Session;
-  @Output() saveSession: EventEmitter<ISession>;
+  @Output() saveSession = new EventEmitter<ISession>();
 
   readonly timeFormat = this.env.settings.timeFormat;
   readonly form: FormGroup;
   readonly duration$: Observable<Duration | null>;
 
   constructor(
-    @Inject(ENVIRONMENT) private readonly env: IEnvironment,
+    @Inject(ENVIRONMENT)
+    private readonly env: IEnvironment,
     @Inject(TICKS_TIMER)
     private readonly ticks$: Observable<number>,
   ) {
-    this.saveSession = new EventEmitter<ISession>();
     const now = new Date();
     this.form = new FormGroup({
       date: new FormControl(now, [Validators.required]),

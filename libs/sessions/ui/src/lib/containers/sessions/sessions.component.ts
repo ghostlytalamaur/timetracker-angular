@@ -7,7 +7,6 @@ import { SessionsTagsService } from '@tt/tags/core';
 @Component({
   selector: 'tt-sessions',
   templateUrl: './sessions.component.html',
-  styleUrls: ['./sessions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsComponent implements OnInit, OnDestroy {

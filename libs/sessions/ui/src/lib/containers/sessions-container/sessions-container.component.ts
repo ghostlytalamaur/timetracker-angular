@@ -13,7 +13,6 @@ import { Nullable, Range } from '@tt/core/util';
 @Component({
   selector: 'tt-sessions-container',
   templateUrl: './sessions-container.component.html',
-  styleUrls: ['./sessions-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsContainerComponent {

@@ -14,7 +14,6 @@ import { hasChange, Nullable } from '@tt/core/util';
 @Component({
   selector: 'tt-tags-editor',
   templateUrl: './tags-editor.component.html',
-  styleUrls: ['./tags-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsEditorComponent implements OnChanges {

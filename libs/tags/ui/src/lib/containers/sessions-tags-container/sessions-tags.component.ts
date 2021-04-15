@@ -8,7 +8,6 @@ import { Nullable } from '@tt/core/util';
 @Component({
   selector: 'tt-sessions-tags',
   templateUrl: './sessions-tags.component.html',
-  styleUrls: ['./sessions-tags.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsTagsComponent implements OnInit, OnDestroy {

@@ -21,7 +21,6 @@ interface SessionsBackup {
 @Component({
   selector: 'tt-sessions-import',
   templateUrl: './sessions-import.component.html',
-  styleUrls: ['./sessions-import.component.scss'],
 })
 export class SessionsImportComponent {
   constructor(

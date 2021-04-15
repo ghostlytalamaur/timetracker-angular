@@ -5,7 +5,6 @@ import { SessionsGroupType } from '@tt/sessions/core';
 @Component({
   selector: 'tt-sessions-group-type-selector',
   templateUrl: './sessions-group-type-selector.component.html',
-  styleUrls: ['./sessions-group-type-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionsGroupTypeSelectorComponent {
