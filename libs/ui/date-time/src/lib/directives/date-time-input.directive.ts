@@ -54,8 +54,7 @@ export class DateTimeInputDirective
   readonly class = 'mat-input-element mat-form-field-autofill-control';
 
   @Output()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly valueChange: EventEmitter<Date | null> = new EventEmitter<any>();
+  readonly valueChange = new EventEmitter<Date | null>();
 
   readonly ngControl: NgControl | null;
   readonly stateChanges: Observable<void>;
