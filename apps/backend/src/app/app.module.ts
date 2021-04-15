@@ -8,10 +8,17 @@ import { TagsController } from './tags.controller';
 import { SessionsService } from './sessions.service';
 import { TagsService } from './tags.service';
 import { ImportController } from './import.controller';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [AuthModule],
-  controllers: [SessionsController, EventsController, TagsController, ImportController],
+  controllers: [
+    AppController,
+    SessionsController,
+    EventsController,
+    TagsController,
+    ImportController,
+  ],
   providers: [MongoService, EventsService, SessionsService, TagsService, Logger],
 })
 export class AppModule {}
