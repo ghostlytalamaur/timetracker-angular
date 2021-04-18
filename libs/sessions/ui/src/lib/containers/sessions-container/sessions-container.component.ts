@@ -33,10 +33,10 @@ export class SessionsContainerComponent {
   ) {
     this.hasRunning$ = this.sessionsSrv.hasRunningSessions$();
     this.displayRange$ = this.sessionsSrv
-      .getDisplayRange()
+      .getDisplayRange$()
       .pipe(map((range) => ({ start: range.start.toJSDate(), end: range.end.toJSDate() })));
     this.isTodayInvisible$ = this.sessionsSrv
-      .getDisplayRange()
+      .getDisplayRange$()
       .pipe(map((range) => DateTime.local().diff(range.end).valueOf() > 0));
     this.groupType$ = this.sessionsSrv.getGroupType$();
     this.sortType$ = this.sessionsSrv.getSortType$();

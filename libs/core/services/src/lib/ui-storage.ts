@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UiStorageService {
-  get<T>(key: string): Observable<Nullable<T>> {
+  get$<T>(key: string): Observable<Nullable<T>> {
     const value = localStorage.getItem(key);
     if (isDefined(value)) {
       try {

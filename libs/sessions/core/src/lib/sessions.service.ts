@@ -123,8 +123,8 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
     }
   }
 
-  getDisplayRange(): Observable<Range<DateTime>> {
-    return of({ start: DateTime.now().startOf('month'), end: DateTime.now().endOf('month') });
+  getDisplayRange$(): Observable<Range<DateTime>> {
+    return this.select('displayRange');
   }
 
   setDisplayRange(displayRange: Range<DateTime>): void {
@@ -183,7 +183,7 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
 
   private loadSettings() {
     this.connect<Nullable<SessionsGroupType>>(
-      this.storage.get(StorageKeys.GroupType),
+      this.storage.get$(StorageKeys.GroupType),
       (state, groupType) => {
         if (groupType) {
           return patchObject(state, { groupType });
@@ -192,7 +192,7 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
         }
       },
     );
-    this.connect<Nullable<SortType>>(this.storage.get(StorageKeys.SortType), (state, sortType) => {
+    this.connect<Nullable<SortType>>(this.storage.get$(StorageKeys.SortType), (state, sortType) => {
       if (sortType) {
         return patchObject(state, { sortType });
       } else {
@@ -200,11 +200,11 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
       }
     });
     this.connect<Nullable<{ from: string; to: string }>>(
-      this.storage.get(StorageKeys.DisplayRange),
+      this.storage.get$(StorageKeys.DisplayRange),
       (state, isoRange) => {
         if (isoRange) {
           const start = DateTime.fromISO(isoRange.from);
-          const end = DateTime.fromISO(isoRange.from);
+          const end = DateTime.fromISO(isoRange.to);
 
           return start.isValid && end.isValid
             ? patchObject(state, { displayRange: { start, end } })
