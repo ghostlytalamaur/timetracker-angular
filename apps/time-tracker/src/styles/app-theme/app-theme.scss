@@ -1,26 +1,58 @@
-@use '~@angular/material/theming' as material;
+@use '~@angular/material/theming' as mat;
 @use 'sass:map';
+@use 'sass:color';
 @use './custom-styles';
-//@use './bootstrap';
 @use './toastr';
+
+$_palette_keys: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, A100, A200, A400, A700, 50-contrast,
+  100-contrast, 200-contrast, 300-contrast, 400-contrast, 500-contrast, 600-contrast, 700-contrast,
+  800-contrast, 900-contrast, A100-contrast, A200-contrast, A400-contrast, A700-contrast;
 
 @mixin components-themes($theme) {
   @include custom-styles.custom-styles($theme);
 }
 
-@mixin theme-vars($theme) {
+@function getRGB($color) {
+  $red: color.red($color);
+  $green: color.green($color);
+  $blue: color.blue($color);
+
+  @return $red, $green, $blue;
+}
+
+@mixin theme-vars($theme, $typography) {
   $foreground: map.get($theme, foreground);
   $background: map.get($theme, background);
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
   $warn: map.get($theme, warn);
 
+  $typography: mat.mat-get-typography-config($typography);
+
   :root {
-    --mat-color-bg: #{material.mat-color($background, background)};
-    --mat-color-fg-text: #{material.mat-color($foreground, text)};
+    --mat-color-bg: #{mat.mat-color($background, background)};
+    --mat-color-fg-text: #{mat.mat-color($foreground, text)};
+
+    --tt-font-family: #{mat.mat-font-family($typography)};
+
+    @each $name, $palette in (primary: $primary, accent: $accent, warn: $warn) {
+
+      --mat-#{$name}: #{getRGB(mat.mat-color($palette))};
+      --mat-#{$name}-lighter: #{getRGB(mat.mat-color($palette, lighter))};
+      --mat-#{$name}-darker: #{getRGB(mat.mat-color($palette, darker))};
+
+      @each $key, $value in $_palette_keys {
+        $value: mat.mat-color($palette, $key);
+        @if $value != null {
+          --mat-#{$name}-#{$key}: #{getRGB($value)};
+        }
+      }
+    }
   }
 }
-@mixin app-theme($theme) {
-  @include material.angular-material-theme($theme);
-  //@include bootstrap.bootstrap-material-theme2($theme);
+@mixin app-theme($theme, $typography) {
+  @include mat.angular-material-theme($theme);
+  @include mat.angular-material-typography($typography);
   @include components-themes($theme);
-  @include theme-vars($theme);
+  @include theme-vars($theme, $typography);
 }
