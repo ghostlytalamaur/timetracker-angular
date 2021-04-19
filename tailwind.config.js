@@ -14,15 +14,15 @@ function colorGenerator(key, varPrefix) {
     const colorVariable = key === 'DEFAULT' ? `var(--${varPrefix})` : `var(--${varPrefix}-${key})`;
     let colorValue;
     if (opacityValue !== undefined) {
-      colorValue= `rgba(${colorVariable}, ${opacityValue})`
+      colorValue = `rgba(${colorVariable}, ${opacityValue})`;
     } else if (opacityVariable !== undefined) {
-      colorValue = `rgba(${colorVariable}, var(${opacityVariable}, 1))`
+      colorValue = `rgba(${colorVariable}, var(${opacityVariable}, 1))`;
     } else {
       colorValue = `rgb(${colorVariable})`;
     }
 
     return colorValue;
-  }
+  };
 }
 function colorGenerators(varPrefix) {
   const keys = [
@@ -59,7 +59,7 @@ function colorGenerators(varPrefix) {
     'DEFAULT',
   ];
 
-  const palette = { };
+  const palette = {};
   for (const key of keys) {
     palette[key] = colorGenerator(key, varPrefix);
   }
@@ -90,9 +90,9 @@ module.exports = {
         '(screen-20)': 'calc(100vh - 5rem)',
       },
       colors: {
-        'primary': colorGenerators('mat-primary'),
-        'accent': colorGenerators('mat-accent'),
-        'warn': colorGenerators('mat-warn'),
+        primary: colorGenerators('mat-primary'),
+        accent: colorGenerators('mat-accent'),
+        warn: colorGenerators('mat-warn'),
         bg: 'var(--mat-color-bg)',
         'fg-text': 'var(--mat-color-fg-text)',
       },

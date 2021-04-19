@@ -5,7 +5,10 @@
     </ng-container>
   </div>
 
-  <div *ngIf="showError" class="absolute inset-0 flex items-center justify-center text-center text-warn text-2xl">
+  <div
+    *ngIf="showError"
+    class="absolute inset-0 flex items-center justify-center text-center text-warn text-2xl"
+  >
     <h4>{{ error }}</h4>
   </div>
 

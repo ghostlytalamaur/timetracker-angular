@@ -39,7 +39,9 @@ export class EventsController {
         take(1),
       )
       .toPromise();
-    const timeout$ = of({ id: `${lastEventId}`, data: new Array<IEvents>() }).pipe(delay(30 * 1000));
+    const timeout$ = of({ id: `${lastEventId}`, data: new Array<IEvents>() }).pipe(
+      delay(30 * 1000),
+    );
 
     return race(pushedEvents$, timeout$).toPromise();
   }
