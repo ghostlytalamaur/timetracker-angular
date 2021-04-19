@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EventType, ISession } from '@tt/shared';
 import { DateTime } from 'luxon';
-import { combineLatest, merge, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, merge, Observable } from 'rxjs';
+import { map, skip } from 'rxjs/operators';
 import {
   applyStateOperator,
   initialStatus,
@@ -162,7 +162,10 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
   }
 
   protected invalidate$(): Observable<unknown> {
-    return merge(this.events.on$(EventType.SessionsModified), this.select('displayRange'));
+    return merge(
+      this.events.on$(EventType.SessionsModified),
+      this.select('displayRange').pipe(skip(1)),
+    );
   }
 
   protected loadData$(): Observable<Nullable<ISession[]>> {

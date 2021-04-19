@@ -41,6 +41,6 @@ export class EventsService implements OnDestroy {
       .get<{ id: string; data: IEvents[] }>(`${this.env.serverUrl}/events`, {
         headers: new HttpHeaders().set('Last-Event-ID', `${lastEventId}`),
       })
-      .pipe(retryWhen((errors) => errors.pipe(delay(1000))));
+      .pipe(retryWhen((errors) => errors.pipe(delay(5000 + Math.random() * 500))));
   }
 }

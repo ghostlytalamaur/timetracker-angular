@@ -5,9 +5,10 @@ import {
   StatusContainerComponent,
 } from './status-container/status-container.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule, MatProgressBarModule],
   declarations: [ResolvedTemplateDirective, StatusContainerComponent],
   exports: [ResolvedTemplateDirective, StatusContainerComponent],
 })

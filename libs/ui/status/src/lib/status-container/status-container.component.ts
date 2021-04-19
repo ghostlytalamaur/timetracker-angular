@@ -41,12 +41,14 @@ export class StatusContainerComponent implements OnChanges {
   showContent = false;
   showLoadingIndicator = false;
   showError = false;
+  showUpdating = false;
   error: string | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChange(this, 'status', changes)) {
       this.status = this.status ?? initialStatus();
-      this.showLoadingIndicator = isLoadingStatus(this.status);
+      this.showUpdating = isResolvedStatus(this.status) && isLoadingStatus(this.status);
+      this.showLoadingIndicator = !isResolvedStatus(this.status) && isLoadingStatus(this.status);
       this.showError = isErrorStatus(this.status);
       this.error = getStatusError(this.status);
       this.showContent = isResolvedStatus(this.status) && !this.error;

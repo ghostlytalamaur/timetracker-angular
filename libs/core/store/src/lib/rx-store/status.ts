@@ -44,6 +44,8 @@ export function errorStatus(
   message?: string,
 ): IStatus | StateOperator<IStatus> {
   const op = patch<IStatus>({
+    pending: false,
+    resolved: false,
     error: {
       message: message ?? (typeof statusOrMsg === 'string' ? statusOrMsg : ''),
     },
@@ -80,7 +82,7 @@ export function isRequestedStatus(status: IStatus): boolean {
 
 export function getErrorMessage(err: unknown): string {
   if (err instanceof HttpErrorResponse) {
-    return err.message;
+    return `${err.status} ${err.statusText}`;
   }
 
   if (err instanceof Error) {

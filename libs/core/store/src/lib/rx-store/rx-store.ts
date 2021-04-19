@@ -1,6 +1,6 @@
 import { RxState } from '@rx-angular/state';
 import { defer, EMPTY, Observable, of } from 'rxjs';
-import { catchError, map, repeatWhen, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Nullable } from '@tt/core/util';
 import { applyStateOperator, StateOperator } from '../operators';
 import { select$ } from './rx-select';
@@ -9,6 +9,7 @@ import {
   getErrorMessage,
   isRequestedStatus,
   IStatus,
+  loadingStatus,
   requestedStatus,
   successStatus,
 } from './status';
@@ -19,10 +20,13 @@ export interface LoadableState<T> {
 }
 
 export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxState<S> {
-  protected constructor(initialState: S) {
+  protected constructor(initialState: S, enableLog: boolean = false) {
     super();
     this.set(initialState);
     this.connect(this.loadEffect$(), applyStateOperator);
+    if (enableLog) {
+      this.hold(this.select(), console.log);
+    }
   }
 
   getStatus$(): Observable<IStatus> {
@@ -55,13 +59,16 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
   }
 
   private loadEffect$(): Observable<StateOperator<S>> {
-    const load$ = defer(() => this.loadData$()).pipe(
-      repeatWhen(() => this.invalidate$()),
-      map((data) => (state: S) => ({
-        ...state,
-        status: successStatus(state.status),
-        data,
-      })),
+    const load$ = defer(() => {
+      return this.loadData$();
+    }).pipe(
+      map((data) => {
+        return (state: S) => ({
+          ...state,
+          status: successStatus(state.status),
+          data,
+        });
+      }),
       catchError((err) =>
         of((state: S) => ({
           ...state,
@@ -70,7 +77,26 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
       ),
     );
 
-    return this.isRequested$().pipe(switchMap((isRequested) => (isRequested ? load$ : EMPTY)));
+    return this.isRequested$().pipe(
+      switchMap((isRequested) => {
+        if (isRequested) {
+          return this.invalidate$().pipe(
+            switchMap(() => {
+              return load$.pipe(
+                startWith((state: S) => {
+                  return {
+                    ...state,
+                    status: loadingStatus(state.status),
+                  };
+                }),
+              );
+            }),
+          );
+        } else {
+          return EMPTY;
+        }
+      }),
+    );
   }
 }
 
