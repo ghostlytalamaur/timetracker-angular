@@ -16,6 +16,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     credentials: true,
+    maxAge: 15 * 60 * 1000,
     origin: true,
   });
   app.useGlobalPipes(

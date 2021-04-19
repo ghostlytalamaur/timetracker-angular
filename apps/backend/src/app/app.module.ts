@@ -24,8 +24,12 @@ import { LoggerMiddleware } from './logger.midleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(LoggerMiddleware)
-      .exclude({ path: '/health', method: RequestMethod.HEAD })
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude(
+        { path: '/health', method: RequestMethod.HEAD },
+        { path: '/events', method: RequestMethod.GET },
+      )
       .forRoutes('/');
   }
 }

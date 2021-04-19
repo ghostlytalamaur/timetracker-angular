@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IEvents } from '@tt/shared';
 import { Collection, ObjectId } from 'mongodb';
 import { defer, from, merge, Observable, Subject } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { MongoService } from './mongo.service';
 
 interface IMongoUserEvents {
@@ -29,12 +29,9 @@ export class EventsService {
         filter((e) => e.userId === userId),
         map((e) => ({ id: e.id, event: e.event })),
       );
-      if (lastEventId) {
+      if (lastEventId >= 0) {
         this.logger.debug(`Load events for user ${userId} starting from ${lastEventId}`);
         const storedEvents$ = from(this.loadEvents(userId, lastEventId)).pipe(
-          tap((events) =>
-            this.logger.debug(`Loaded events: ${JSON.stringify(events, undefined, 4)}`),
-          ),
           switchMap((events) => events),
         );
 

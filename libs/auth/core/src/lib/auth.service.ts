@@ -47,6 +47,6 @@ export class AuthService {
   }
 
   getToken$(): Observable<string | null> {
-    return this.auth0.user$;
+    return this.accessToken$;
   }
 }

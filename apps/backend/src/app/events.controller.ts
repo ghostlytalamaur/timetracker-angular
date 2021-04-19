@@ -1,75 +1,46 @@
-import {
-  Controller,
-  Headers,
-  HttpException,
-  HttpStatus,
-  MessageEvent,
-  Post,
-  Query,
-  Sse,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { defer, from, Observable, throwError } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { asyncScheduler, of, race } from 'rxjs';
+import { bufferTime, delay, filter, map, take } from 'rxjs/operators';
 import { UserId } from './auth/user-decorator';
 import { EventsService } from './events.service';
-import { MongoService } from './mongo.service';
-import { toObjectId } from './utils';
+import { IEvents } from '@tt/shared';
 
 @Controller({
   path: '/events',
 })
 export class EventsController {
-  constructor(private readonly events: EventsService, private readonly db: MongoService) {}
-
-  @Sse()
-  sseEvents(
-    @Query('slt') slt: string,
-    @Headers('last-event-id') lastEventId: string | undefined,
-  ): Observable<MessageEvent> {
-    return from(this.getUserId(slt)).pipe(
-      switchMap((userId) => {
-        return this.events.getEvents$(userId, lastEventId ? Number(lastEventId) : 0).pipe(
-          map((event) => {
-            return {
-              data: event.event,
-              id: `${event.id}`,
-            }
-          }),
-        );
-      }),
-    );
-  }
+  constructor(private readonly events: EventsService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post()
-  async onPost(@UserId() userId: string): Promise<string> {
-    const collection = this.getCollection();
-    const res = await collection.insertOne({
-      userId,
-    });
-
-    return res.insertedId.toHexString();
-  }
-
-  private async getUserId(slt: string): Promise<string> {
-    const collection = this.getCollection();
-    const filter = {
-      _id: toObjectId(slt),
-    };
-    const result = await collection.findOne(filter);
-
-    if (!result) {
-      throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
+  @Get()
+  getEvents(
+    @UserId() userId: string,
+    @Headers('last-event-id') header: string | undefined,
+  ): Promise<{ id: string; data: IEvents[] }> {
+    let lastEventId = header ? Number(header) : 0;
+    if (!Number.isFinite(lastEventId)) {
+      lastEventId = 0;
     }
 
-    await collection.deleteOne(filter);
+    const pushedEvents$ = this.events
+      .getEvents$(userId, lastEventId)
+      .pipe(
+        bufferTime(100, asyncScheduler),
+        map((data) => {
+          const eventId = data.reduce((acc, event) => Math.max(acc, event.id), lastEventId);
 
-    return result.userId;
-  }
+          return {
+            id: `${eventId}`,
+            data: data.map((event) => event.event),
+          };
+        }),
+        filter((data) => !!data.data.length),
+        take(1),
+      )
+      .toPromise();
+    const timeout$ = of({ id: `${lastEventId}`, data: new Array<IEvents>() }).pipe(delay(30 * 1000));
 
-  private getCollection() {
-    return this.db.client.db('timetracker').collection<{ userId: string }>('tokens');
+    return race(pushedEvents$, timeout$).toPromise();
   }
 }
