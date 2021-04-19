@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { MongoService } from './mongo.service';
@@ -9,6 +9,7 @@ import { SessionsService } from './sessions.service';
 import { TagsService } from './tags.service';
 import { ImportController } from './import.controller';
 import { AppController } from './app.controller';
+import { LoggerMiddleware } from './logger.midleware';
 
 @Module({
   imports: [AuthModule],
@@ -21,4 +22,10 @@ import { AppController } from './app.controller';
   ],
   providers: [MongoService, EventsService, SessionsService, TagsService, Logger],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(LoggerMiddleware)
+      .exclude({ path: '/health', method: RequestMethod.HEAD })
+      .forRoutes('/');
+  }
+}

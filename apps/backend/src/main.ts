@@ -27,8 +27,6 @@ async function bootstrap() {
   const port = process.env.TIMETRACKER_SERVER_PORT || 3000;
   await app.listen(port, () => {
     Logger.log('Listening at http://localhost:' + port + '/');
-    Logger.log('Environment');
-    Logger.log(JSON.stringify(process.env, undefined, 4));
   });
 }
 

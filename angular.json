@@ -182,7 +182,9 @@
         "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "backend:build"
+            "buildTarget": "backend:build",
+            "inspect": true,
+            "port": 7777
           }
         },
         "lint": {
