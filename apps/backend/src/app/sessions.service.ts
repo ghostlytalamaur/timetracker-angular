@@ -19,8 +19,8 @@ export class SessionsService {
   constructor(private readonly mongo: MongoService, private readonly events: EventsService) {}
 
   async getSessions(userId: string, from: Date, to: Date): Promise<ISession[]> {
-    const sessions = this.getCollection();
-    const results = sessions.find({
+    const collection = await this.getCollection();
+    const results = collection.find({
       userId,
       $and: [
         {
@@ -46,8 +46,8 @@ export class SessionsService {
   }
 
   async addSession(userId: string, session: CreateSessionDto): Promise<string> {
-    const sessions = this.getCollection();
-    const result = await sessions.insertOne({
+    const collection = await this.getCollection();
+    const result = await collection.insertOne({
       userId,
       start: new Date(session.start),
       duration: session.duration,
@@ -61,14 +61,14 @@ export class SessionsService {
   }
 
   async addSessions(userId: string, data: CreateSessionDto[]): Promise<void> {
-    const sessions = this.getCollection();
+    const collection = await this.getCollection();
     const list = data.map((session) => ({
       userId,
       start: new Date(session.start),
       duration: session.duration,
       tags: session.tags?.map(toObjectId) ?? [],
     }));
-    await sessions.insertMany(list);
+    await collection.insertMany(list);
   }
 
   async updateSession(
@@ -95,8 +95,8 @@ export class SessionsService {
       return 0;
     }
 
-    const sessions = this.getCollection();
-    const result = await sessions.updateOne(
+    const collection = await this.getCollection();
+    const result = await collection.updateOne(
       {
         _id: toObjectId(id),
         userId,
@@ -113,8 +113,8 @@ export class SessionsService {
   }
 
   async deleteSession(userId: string, id: string): Promise<number> {
-    const sessions = this.getCollection();
-    const result = await sessions.deleteOne({
+    const collection = await this.getCollection();
+    const result = await collection.deleteOne({
       _id: toObjectId(id),
       userId,
     });
@@ -126,8 +126,8 @@ export class SessionsService {
   }
 
   async deleteTagSessionsFromSession(userId: string, tagId: string): Promise<void> {
-    const sessions = this.getCollection();
-    const result = await sessions.updateMany(
+    const collection = await this.getCollection();
+    const result = await collection.updateMany(
       {
         userId: userId,
       },
@@ -143,11 +143,7 @@ export class SessionsService {
     }
   }
 
-  private getCollection(): Collection<IMongoSession> {
-    const client = this.mongo.client;
-    const db = client.db('timetracker');
-    const sessions = db.collection('session');
-
-    return sessions;
+  private getCollection(): Promise<Collection<IMongoSession>> {
+    return this.mongo.getCollection('session');
   }
 }

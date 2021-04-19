@@ -53,8 +53,8 @@ export class EventsService {
   }
 
   private async loadLastEventId(userId: string): Promise<number> {
-    const events = this.getCollection();
-    const cursor = events.aggregate<{ lastEventId: number }>([
+    const collection = await this.getCollection();
+    const cursor = collection.aggregate<{ lastEventId: number }>([
       { $match: { userId } },
       { $unwind: { path: '$events' } },
       { $group: { _id: null, lastEventId: { $max: '$events.eventId' } } },
@@ -73,7 +73,7 @@ export class EventsService {
     userId: string,
     lastEventId: number,
   ): Promise<{ id: number; event: IEvents }[]> {
-    const events = this.getCollection();
+    const events = await this.getCollection();
     const result = await events
       .aggregate<{ eventType: string; eventData: object | null; eventId: number }>([
         { $match: { userId } },
@@ -96,9 +96,9 @@ export class EventsService {
   }
 
   private async storeMessage(userId: string, eventId: number, event: IEvents): Promise<void> {
-    const events = this.getCollection();
+    const collection = await this.getCollection();
     const eventData = 'data' in event ? (event as { data: object }).data : null;
-    await events.bulkWrite([
+    await collection.bulkWrite([
       {
         updateOne: {
           filter: { userId },
@@ -145,11 +145,7 @@ export class EventsService {
     ]);
   }
 
-  private getCollection(): Collection<IMongoUserEvents> {
-    const client = this.mongo.client;
-    const db = client.db('timetracker');
-    const events = db.collection('events');
-
-    return events;
+  private getCollection(): Promise<Collection<IMongoUserEvents>> {
+    return this.mongo.getCollection('events');
   }
 }

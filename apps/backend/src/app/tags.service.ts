@@ -21,8 +21,8 @@ export class TagsService {
   ) {}
 
   async getSessionTags(userId: string): Promise<ISessionTag[]> {
-    const tags = this.getCollection();
-    const results = tags.find({
+    const collection = await this.getCollection();
+    const results = collection.find({
       userId,
     });
 
@@ -35,8 +35,8 @@ export class TagsService {
   }
 
   async addSessionTag(userId: string, tag: CreateSessionTagDto): Promise<string> {
-    const sessions = this.getCollection();
-    const result = await sessions.insertOne({
+    const collection = await this.getCollection();
+    const result = await collection.insertOne({
       userId,
       label: tag.label,
     });
@@ -51,7 +51,7 @@ export class TagsService {
     userId: string,
     tags: ImportDataDto['tags'],
   ): Promise<Record<string, string>> {
-    const collection = this.getCollection();
+    const collection = await this.getCollection();
     const data = tags.map((tag) => ({
       userId,
       label: tag.label,
@@ -80,8 +80,8 @@ export class TagsService {
     if (!hasChanges) {
       return 0;
     }
-    const sessions = this.getCollection();
-    const result = await sessions.updateOne(
+    const collection = await this.getCollection();
+    const result = await collection.updateOne(
       {
         _id: toObjectId(id),
         userId,
@@ -98,8 +98,8 @@ export class TagsService {
   }
 
   async deleteSessionTag(userId: string, id: string): Promise<void> {
-    const sessions = this.getCollection();
-    const result = await sessions.deleteOne({
+    const collection = await this.getCollection();
+    const result = await collection.deleteOne({
       _id: toObjectId(id),
       userId,
     });
@@ -109,11 +109,7 @@ export class TagsService {
     }
   }
 
-  public getCollection(): Collection<IMongoSessionTag> {
-    const client = this.mongo.client;
-    const db = client.db('timetracker');
-    const tags = db.collection('tags');
-
-    return tags;
+  public getCollection(): Promise<Collection<IMongoSessionTag>> {
+    return this.mongo.getCollection('tags');
   }
 }
