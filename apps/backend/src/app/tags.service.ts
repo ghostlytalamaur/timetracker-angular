@@ -42,7 +42,7 @@ export class TagsService {
     });
     const id = result.insertedId.toHexString();
 
-    this.events.push(userId, { type: EventType.SessionTagsModified });
+    this.events.queue(userId, { type: EventType.SessionTagsModified });
 
     return id;
   }
@@ -91,7 +91,7 @@ export class TagsService {
       },
     );
     if (result.modifiedCount) {
-      this.events.push(userId, { type: EventType.SessionTagsModified });
+      this.events.queue(userId, { type: EventType.SessionTagsModified });
     }
 
     return result.modifiedCount;
@@ -104,8 +104,8 @@ export class TagsService {
       userId,
     });
     if (result.deletedCount) {
-      this.events.push(userId, { type: EventType.SessionTagsDeleted, data: { ids: [id] } });
       await this.sessions.deleteTagSessionsFromSession(userId, id);
+      this.events.queue(userId, { type: EventType.SessionTagsDeleted, data: { ids: [id] } });
     }
   }
 

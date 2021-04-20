@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IEvents, IEventsData } from '@tt/shared';
-import { Collection, ObjectId } from 'mongodb';
+import { hasSameEventType, IEvents, IEventsData, isDataEvent } from '@tt/shared';
+import { BulkWriteOperation, Collection, ObjectId } from 'mongodb';
 import { defer, from, Observable, of, Subject } from 'rxjs';
-import { bufferTime, filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { MongoService } from './mongo.service';
 
 interface IMongoUserEvents {
@@ -25,10 +25,12 @@ function createEventsData(events: { id: number; event: IEvents }[]): IEventsData
 
 @Injectable()
 export class EventsService {
-  private readonly events$$: Subject<{ userId: string; id: number; event: IEvents }>;
+  private readonly eventsQueues: Map<string, IEvents[]>;
+  private readonly events$$: Subject<{ userId: string; id: number; events: IEvents[] }>;
 
   constructor(private readonly mongo: MongoService, private readonly logger: Logger) {
     this.events$$ = new Subject();
+    this.eventsQueues = new Map();
   }
 
   getEvents$(userId: string, lastEventId: number): Observable<IEventsData> {
@@ -38,7 +40,7 @@ export class EventsService {
           `Requested events above ${lastEventId}. Last stored event id: ${storedLastEventId}`,
           'Events',
         );
-        if (lastEventId <= 0) {
+        if (lastEventId < 0) {
           return of({ id: `${storedLastEventId}`, events: [] });
         } else if (storedLastEventId > lastEventId) {
           this.logger.debug(
@@ -48,24 +50,47 @@ export class EventsService {
           return from(this.loadEvents(userId, lastEventId)).pipe(map(createEventsData));
         } else {
           return this.events$$.pipe(
-            filter((e) => e.userId === userId),
-            bufferTime(100),
-            filter((data) => data.length > 0),
-            map(createEventsData),
+            filter((e) => e.userId === userId && e.events.length > 0),
+            map(
+              (data) =>
+                <IEventsData>{
+                  id: `${data.id}`,
+                  events: data.events,
+                },
+            ),
           );
         }
       }),
     );
   }
 
-  push(userId: string, event: IEvents): void {
-    this.pushAsync(userId, event);
+  queue(userId: string, event: IEvents): void {
+    let queue = this.eventsQueues.get(userId);
+    if (!queue) {
+      queue = new Array<IEvents>();
+      this.eventsQueues.set(userId, queue);
+    }
+    if (isDataEvent(event) || !hasSameEventType(queue, event)) {
+      queue.push(event);
+    }
   }
 
-  private async pushAsync(userId: string, event: IEvents): Promise<void> {
-    const id = (await this.loadLastEventId(userId)) + 1;
-    this.events$$.next({ id, userId, event });
-    this.storeMessage(userId, id, event);
+  async flush(userId: string): Promise<void> {
+    const queue = this.eventsQueues.get(userId);
+    if (!queue) {
+      return;
+    }
+    this.eventsQueues.delete(userId);
+
+    const eventId = (await this.loadLastEventId(userId)) + 1;
+    const operations = new Array<BulkWriteOperation<IMongoUserEvents>>();
+    for (const event of queue) {
+      operations.push(...EventsService.getUpsertOperations(userId, eventId, event));
+    }
+    const collection = await this.getCollection();
+    await collection.bulkWrite(operations);
+    this.events$$.next({ userId, id: eventId, events: queue });
+    await new Promise((resolve) => setTimeout(resolve, 0));
   }
 
   private async loadLastEventId(userId: string): Promise<number> {
@@ -111,10 +136,13 @@ export class EventsService {
     });
   }
 
-  private async storeMessage(userId: string, eventId: number, event: IEvents): Promise<void> {
-    const collection = await this.getCollection();
-    const eventData = 'data' in event ? (event as { data: object }).data : null;
-    await collection.bulkWrite([
+  private static getUpsertOperations(
+    userId: string,
+    eventId: number,
+    event: IEvents,
+  ): BulkWriteOperation<IMongoUserEvents>[] {
+    const eventData = isDataEvent(event) ? event.data : null;
+    return [
       {
         updateOne: {
           filter: { userId },
@@ -158,7 +186,7 @@ export class EventsService {
           },
         },
       },
-    ]);
+    ];
   }
 
   private getCollection(): Promise<Collection<IMongoUserEvents>> {

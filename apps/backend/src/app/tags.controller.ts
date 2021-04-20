@@ -1,9 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSessionTagDto, ISessionTag } from '@tt/shared';
 import { UserId } from './auth/user-decorator';
 import { TagsService } from './tags.service';
+import { EventsInterceptor } from './events.interceptor';
 
+@UseInterceptors(EventsInterceptor)
 @Controller({
   path: '/tags',
 })
@@ -38,6 +50,6 @@ export class TagsController {
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async deleteSessionTag(@UserId() userId: string, @Param('id') id: string): Promise<void> {
-    this.tags.deleteSessionTag(userId, id);
+    return this.tags.deleteSessionTag(userId, id);
   }
 }

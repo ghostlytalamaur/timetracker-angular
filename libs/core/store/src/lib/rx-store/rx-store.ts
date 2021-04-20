@@ -22,7 +22,7 @@ export interface LoadableState<T> {
 export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxState<S> {
   protected constructor(initialState: S, enableLog: boolean = false) {
     super();
-    (this as any as { accumulator: { state: S } }).accumulator.state = initialState;
+    ((this as any) as { accumulator: { state: S } }).accumulator.state = initialState;
     this.connect(this.loadEffect$(), applyStateOperator);
     if (enableLog) {
       this.hold(this.select(), console.log);

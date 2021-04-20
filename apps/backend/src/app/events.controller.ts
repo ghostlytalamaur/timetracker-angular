@@ -18,9 +18,9 @@ export class EventsController {
     @UserId() userId: string,
     @Headers('last-event-id') header: string | undefined,
   ): Promise<IEventsData> {
-    let lastEventId = header ? Number(header) : 0;
+    let lastEventId = header ? Number(header) : -1;
     if (!Number.isFinite(lastEventId)) {
-      lastEventId = 0;
+      lastEventId = -1;
     }
 
     const pushedEvents$ = this.events.getEvents$(userId, lastEventId).pipe(take(1)).toPromise();
@@ -28,11 +28,6 @@ export class EventsController {
       delay(30 * 1000),
     );
 
-    return race(pushedEvents$, timeout$)
-      .toPromise()
-      .then((data) => {
-        console.log('events', data);
-        return data;
-      });
+    return race(pushedEvents$, timeout$).toPromise();
   }
 }

@@ -33,9 +33,6 @@ export class SessionsService {
     });
 
     const values = await results.toArray();
-    console.log(
-      `Loaded ${values.length} sessions between ${from.toISOString()} and ${to.toISOString()}`,
-    );
 
     return values.map((s) => ({
       id: s._id.toHexString(),
@@ -55,7 +52,7 @@ export class SessionsService {
     });
     const id = result.insertedId.toHexString();
 
-    this.events.push(userId, { type: EventType.SessionsModified });
+    this.events.queue(userId, { type: EventType.SessionsModified });
 
     return id;
   }
@@ -106,7 +103,7 @@ export class SessionsService {
       },
     );
     if (result.modifiedCount) {
-      this.events.push(userId, { type: EventType.SessionsModified });
+      this.events.queue(userId, { type: EventType.SessionsModified });
     }
 
     return result.modifiedCount;
@@ -119,7 +116,7 @@ export class SessionsService {
       userId,
     });
     if (result.deletedCount) {
-      this.events.push(userId, { type: EventType.SessionsDeleted, data: { ids: [id] } });
+      this.events.queue(userId, { type: EventType.SessionsDeleted, data: { ids: [id] } });
     }
 
     return result.deletedCount ?? 0;
@@ -139,7 +136,7 @@ export class SessionsService {
     );
 
     if (result.modifiedCount) {
-      this.events.push(userId, { type: EventType.SessionsModified });
+      this.events.queue(userId, { type: EventType.SessionsModified });
     }
   }
 

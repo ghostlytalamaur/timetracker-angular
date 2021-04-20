@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
 import { Nullable } from '@tt/core/util';
 
@@ -8,12 +8,13 @@ const URI = process.env.TIMETRACKER_SERVER_MONGODB_URI || '';
 export class MongoService implements OnModuleDestroy {
   private readonly options: MongoClientOptions;
   private client: Nullable<MongoClient>;
+  private connecting: Nullable<Promise<MongoClient>>;
 
   constructor(private readonly logger: Logger) {
     this.options = {
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 20000,
-      logger: (message, state) => this.logger.log(state, message),
+      logger: (message, state) => this.logger.log(message, 'MongoService'),
     };
   }
 
@@ -25,15 +26,30 @@ export class MongoService implements OnModuleDestroy {
   }
 
   async onModuleDestroy(): Promise<void> {
-    console.log('Closing database connection');
+    this.logger.log('Closing database connection', 'MongoService');
     await this.client?.close();
   }
 
   private async getClient(): Promise<MongoClient> {
+    // If there is no client
     if (!this.client) {
-      Logger.log('Attempt to connect to database...');
-      Logger.log(process.env.TIMETRACKER_SERVER_MONGODB_URI, 'Database uri:');
-      this.client = await MongoClient.connect(URI, this.options);
+      try {
+        // and currently no connection in progress
+        if (!this.connecting) {
+          // try to connect to database
+          this.logger.log('Attempt to connect to database...', 'MongoService');
+          this.logger.log(
+            `Database uri: ${process.env.TIMETRACKER_SERVER_MONGODB_URI}`,
+            'MongoService',
+          );
+          this.connecting = MongoClient.connect(URI, this.options);
+        }
+
+        // wait until database is connected
+        this.client = await this.connecting;
+      } finally {
+        this.connecting = undefined;
+      }
     }
 
     return this.client;

@@ -4,6 +4,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { delay, expand, filter, mergeMap, retryWhen, share, takeUntil } from 'rxjs/operators';
 import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { isDefined, Nullable } from '@tt/core/util';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,9 @@ export class EventsService implements OnDestroy {
     private readonly http: HttpClient,
   ) {
     this.destroy$$ = new ReplaySubject(1);
-    this.events$ = of<IEventsData>({ id: '0', events: [] }).pipe(
-      expand((data) => this.getEvents$(data.id)),
+    this.events$ = of(null).pipe(
+      expand((data: Nullable<IEventsData>) => this.getEvents$(data?.id)),
+      filter(isDefined),
       mergeMap((data) => data.events),
       share(),
       takeUntil(this.destroy$$),
@@ -36,10 +38,10 @@ export class EventsService implements OnDestroy {
     this.destroy$$.complete();
   }
 
-  private getEvents$(lastEventId: string): Observable<IEventsData> {
+  private getEvents$(lastEventId: Nullable<string>): Observable<IEventsData> {
     return this.http
       .get<IEventsData>(`${this.env.serverUrl}/events`, {
-        headers: new HttpHeaders().set('Last-Event-ID', `${lastEventId}`),
+        headers: lastEventId ? new HttpHeaders().set('Last-Event-ID', `${lastEventId}`) : undefined,
       })
       .pipe(retryWhen((errors) => errors.pipe(delay(5000 + Math.random() * 500))));
   }

@@ -8,12 +8,15 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSessionDto, ISession } from '@tt/shared';
 import { UserId } from './auth/user-decorator';
 import { SessionsService } from './sessions.service';
+import { EventsInterceptor } from './events.interceptor';
 
+@UseInterceptors(EventsInterceptor)
 @Controller({
   path: 'sessions',
 })

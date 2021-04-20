@@ -1,3 +1,5 @@
+import { hasKey, isObject } from '@tt/core/util';
+
 export interface IEvent<T extends string> {
   readonly type: T;
 }
@@ -31,4 +33,17 @@ export type IEvents =
 export interface IEventsData {
   readonly id: string;
   readonly events: IEvents[];
+}
+
+const DATA_EVENT_TYPES = [EventType.SessionsDeleted, EventType.SessionTagsDeleted] as const;
+type DataEventTypes = typeof DATA_EVENT_TYPES[number];
+
+export function isDataEvent(
+  event: unknown,
+): event is Extract<IEvents, { type: Extract<EventType, DataEventTypes> }> {
+  return isObject(event) && hasKey(event, 'type') && DATA_EVENT_TYPES.some((t) => event.type === t);
+}
+
+export function hasSameEventType(events: IEvents[], event: IEvents): boolean {
+  return events.some((e) => e.type === event.type);
 }
