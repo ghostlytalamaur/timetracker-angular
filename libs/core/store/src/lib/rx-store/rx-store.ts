@@ -81,7 +81,7 @@ export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxSta
       switchMap((isRequested) => {
         if (isRequested) {
           return this.invalidate$().pipe(
-            startWith(null),
+            startWith(null), // FIXME: start load only when data is not valid
             switchMap(() => {
               return load$.pipe(
                 startWith((state: S) => {

@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IEvents } from '@tt/shared';
+import { IEvents, IEventsData } from '@tt/shared';
 import { Collection, ObjectId } from 'mongodb';
-import { defer, from, merge, Observable, Subject } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { defer, from, Observable, of, Subject } from 'rxjs';
+import { bufferTime, filter, map, switchMap } from 'rxjs/operators';
 import { MongoService } from './mongo.service';
 
 interface IMongoUserEvents {
@@ -15,6 +15,14 @@ interface IMongoUserEvents {
   }[];
 }
 
+function createEventsData(events: { id: number; event: IEvents }[]): IEventsData {
+  const maxEventId = events.reduce((acc, event) => Math.max(acc, event.id), 0);
+  return {
+    id: `${maxEventId}`,
+    events: events.map((event) => event.event),
+  };
+}
+
 @Injectable()
 export class EventsService {
   private readonly events$$: Subject<{ userId: string; id: number; event: IEvents }>;
@@ -23,23 +31,31 @@ export class EventsService {
     this.events$$ = new Subject();
   }
 
-  getEvents$(userId: string, lastEventId: number): Observable<{ id: number; event: IEvents }> {
-    return defer(() => {
-      const userEvents$ = this.events$$.pipe(
-        filter((e) => e.userId === userId),
-        map((e) => ({ id: e.id, event: e.event })),
-      );
-      if (lastEventId >= 0) {
-        this.logger.debug(`Load events for user ${userId} starting from ${lastEventId}`);
-        const storedEvents$ = from(this.loadEvents(userId, lastEventId)).pipe(
-          switchMap((events) => events),
+  getEvents$(userId: string, lastEventId: number): Observable<IEventsData> {
+    return defer(() => from(this.loadLastEventId(userId))).pipe(
+      switchMap((storedLastEventId) => {
+        this.logger.debug(
+          `Requested events above ${lastEventId}. Last stored event id: ${storedLastEventId}`,
+          'Events',
         );
-
-        return merge(storedEvents$, userEvents$);
-      } else {
-        return userEvents$;
-      }
-    });
+        if (lastEventId <= 0) {
+          return of({ id: `${storedLastEventId}`, events: [] });
+        } else if (storedLastEventId > lastEventId) {
+          this.logger.debug(
+            `Load events for user ${userId} starting from ${lastEventId}`,
+            'Events',
+          );
+          return from(this.loadEvents(userId, lastEventId)).pipe(map(createEventsData));
+        } else {
+          return this.events$$.pipe(
+            filter((e) => e.userId === userId),
+            bufferTime(100),
+            filter((data) => data.length > 0),
+            map(createEventsData),
+          );
+        }
+      }),
+    );
   }
 
   push(userId: string, event: IEvents): void {

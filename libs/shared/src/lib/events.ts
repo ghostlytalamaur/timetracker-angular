@@ -27,3 +27,8 @@ export type IEvents =
   | ISessionsModifiedEvent
   | ISessionTagsModifiedEvent
   | ISessionTagsDeletedEvent;
+
+export interface IEventsData {
+  readonly id: string;
+  readonly events: IEvents[];
+}
