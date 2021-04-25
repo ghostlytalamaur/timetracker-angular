@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { EventType, IEvents, IEventsData } from '@tt/shared';
+import { EventType, IEvents, IEventsData } from '@tt/types';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { delay, expand, filter, mergeMap, retryWhen, share, takeUntil } from 'rxjs/operators';
 import { ENVIRONMENT, IEnvironment } from '@tt/core/services';

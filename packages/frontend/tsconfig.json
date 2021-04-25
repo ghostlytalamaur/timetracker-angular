@@ -13,7 +13,7 @@
       "path": "./tsconfig.editor.json"
     },
     {
-      "path": "../shared/tsconfig.json"
+      "path": "../types/tsconfig.json"
     }
   ],
   "compilerOptions": {

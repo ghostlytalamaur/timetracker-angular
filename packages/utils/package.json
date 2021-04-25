@@ -1,5 +1,5 @@
 {
-  "name": "@tt/shared",
+  "name": "@tt/utils",
   "version": "1.0.0",
   "private": true,
   "devDependencies": {

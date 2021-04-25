@@ -1,13 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": [],
-  "include": [],
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": "./",
+    "incremental": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "types": ["node"]
+  },
   "references": [
     {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
+      "path": "../shared/tsconfig.json"
     }
   ]
 }

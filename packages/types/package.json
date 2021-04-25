@@ -1,0 +1,11 @@
+{
+  "name": "@tt/types",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "~4.0.3"
+  }
+}

@@ -4,7 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": { "project": ["packages/backend/tsconfig.*?.json"] },
+      "parserOptions": { "project": ["tsconfig.*?.json"] },
       "rules": {}
     },
     { "files": ["*.ts", "*.tsx"], "rules": {} },
