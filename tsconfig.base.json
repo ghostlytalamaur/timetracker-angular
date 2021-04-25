@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -13,29 +12,10 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "strict": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "paths": {
-      "@tt/shared": ["libs/shared/src/index.ts"],
-      "@tt/core/*": ["apps/time-tracker/src/app/core/*/index.ts"],
-      "@tt/auth/*": ["apps/time-tracker/src/app/auth/*/index.ts"],
-      "@tt/common/*": ["apps/time-tracker/src/app/common/*/index.ts"],
-      "@tt/sessions/*": ["apps/time-tracker/src/app/sessions/*/index.ts"],
-      "@tt/tags/*": ["apps/time-tracker/src/app/tags/*/index.ts"],
-      "@tt/ui/*": ["apps/time-tracker/src/app/ui/*/index.ts"]
-    }
+    "noImplicitThis": true
   },
-  "exclude": ["node_modules", "tmp"],
-  "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "enableResourceInlining": true,
-    "strictTemplates": true
-  }
+  "exclude": ["node_modules", "tmp"]
 }

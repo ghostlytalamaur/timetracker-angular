@@ -1,0 +1,41 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.editor.json"
+    },
+    {
+      "path": "../shared/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@tt/core/*": ["src/app/core/*/index.ts"],
+      "@tt/auth/*": ["src/app/auth/*/index.ts"],
+      "@tt/common/*": ["src/app/common/*/index.ts"],
+      "@tt/sessions/*": ["src/app/sessions/*/index.ts"],
+      "@tt/tags/*": ["src/app/tags/*/index.ts"],
+      "@tt/ui/*": ["src/app/ui/*/index.ts"],
+      "@tt/errors/*": ["src/app/errors/*/index.ts"]
+    }
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true,
+    "strictTemplates": true
+  }
+}
