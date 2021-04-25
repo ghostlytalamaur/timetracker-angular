@@ -32,63 +32,6 @@
     },
     "backend": {
       "tags": []
-    },
-    "common-home": {
-      "tags": []
-    },
-    "auth-core": {
-      "tags": []
-    },
-    "ui-status": {
-      "tags": []
-    },
-    "core-util": {
-      "tags": []
-    },
-    "core-store": {
-      "tags": []
-    },
-    "sessions-core": {
-      "tags": []
-    },
-    "tags-core": {
-      "tags": []
-    },
-    "tags-ui": {
-      "tags": []
-    },
-    "sessions-ui": {
-      "tags": []
-    },
-    "core-api": {
-      "tags": []
-    },
-    "core-services": {
-      "tags": []
-    },
-    "ui-menu": {
-      "tags": []
-    },
-    "ui-date-time": {
-      "tags": []
-    },
-    "ui-dialogs": {
-      "tags": []
-    },
-    "ui-notifications": {
-      "tags": []
-    },
-    "ui-animations": {
-      "tags": []
-    },
-    "errors-page-not-found": {
-      "tags": []
-    },
-    "shared": {
-      "tags": []
-    },
-    "ui-layout": {
-      "tags": []
     }
   }
 }
