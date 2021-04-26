@@ -18,18 +18,18 @@ import {
   SessionsImportComponent,
 } from './containers';
 import { SessionsRoutingModule } from './sessions-routing.module';
-import { UiStatusModule } from '@tt/ui/status';
+import { UiStatusModule } from '@app/ui/status';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UiMenuModule } from '@tt/ui/menu';
+import { UiMenuModule } from '@app/ui/menu';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
-import { UiDateTimeModule } from '@tt/ui/date-time';
+import { UiDateTimeModule } from '@app/ui/date-time';
 import { MatSelectModule } from '@angular/material/select';
-import { UiDialogsModule } from '@tt/ui/dialogs';
+import { UiDialogsModule } from '@app/ui/dialogs';
 
 @NgModule({
   imports: [

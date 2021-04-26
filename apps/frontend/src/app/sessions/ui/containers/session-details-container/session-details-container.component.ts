@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ISession } from '@tt/types';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { Session, SessionsService } from '@tt/sessions/core';
+import { Session, SessionsService } from '@app/sessions/core';
 import { Nullable } from '@tt/utils';
 
 @Component({

@@ -10,7 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISessionTag } from '@tt/types';
 import { Nullable } from '@tt/utils';
-import { hasChange } from '@tt/core/util';
+import { hasChange } from '@app/core/util';
 
 @Component({
   selector: 'tt-tags-editor',

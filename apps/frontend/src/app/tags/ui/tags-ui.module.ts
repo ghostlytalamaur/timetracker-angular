@@ -7,8 +7,8 @@ import { MatListModule } from '@angular/material/list';
 import { TagsEditorComponent, TagsListComponent } from './components';
 import { SessionsTagsComponent } from './containers';
 import { TagsUiRoutingModule } from './tags-ui-routing.module';
-import { UiStatusModule } from '@tt/ui/status';
-import { UiMenuModule } from '@tt/ui/menu';
+import { UiStatusModule } from '@app/ui/status';
+import { UiMenuModule } from '@app/ui/menu';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 

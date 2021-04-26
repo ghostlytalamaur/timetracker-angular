@@ -2,8 +2,8 @@ import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@ang
 import { Duration } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getDuration$, SessionsGroup, SessionsGroupType } from '@tt/sessions/core';
-import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@tt/core/services';
+import { getDuration$, SessionsGroup, SessionsGroupType } from '@app/sessions/core';
+import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@app/core/services';
 
 @Component({
   selector: 'tt-group-table-row',

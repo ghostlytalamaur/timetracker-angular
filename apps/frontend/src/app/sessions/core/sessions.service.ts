@@ -12,15 +12,15 @@ import {
   select$,
   StateOperator,
   Update,
-} from '@tt/core/store';
+} from '@app/core/store';
 import { SessionsGroupType } from './sessions-group';
 import { SortType } from './sort-type';
-import { SessionsTagsService } from '@tt/tags/core';
+import { SessionsTagsService } from '@app/tags/core';
 import { generateUUID, Nullable } from '@tt/utils';
-import { Range } from '@tt/core/util';
+import { Range } from '@app/core/util';
 import { isRunning, Session } from './session';
-import { ClientService, EventsService } from '@tt/core/api';
-import { UiStorageService } from '@tt/core/services';
+import { ClientService, EventsService } from '@app/core/api';
+import { UiStorageService } from '@app/core/services';
 
 interface SessionsState extends LoadableState<ISession[]> {
   displayRange: Range<DateTime>;

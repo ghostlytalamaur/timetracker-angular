@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IStatus } from '@tt/core/store';
-import { SessionsService } from '@tt/sessions/core';
-import { SessionsTagsService } from '@tt/tags/core';
+import { IStatus } from '@app/core/store';
+import { SessionsService } from '@app/sessions/core';
+import { SessionsTagsService } from '@app/tags/core';
 
 @Component({
   selector: 'tt-sessions',

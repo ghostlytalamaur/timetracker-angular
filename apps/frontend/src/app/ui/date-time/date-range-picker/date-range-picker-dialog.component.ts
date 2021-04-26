@@ -12,8 +12,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { Range } from '@tt/core/util';
-import { DialogsService } from '@tt/ui/dialogs';
+import { Range } from '@app/core/util';
+import { DialogsService } from '@app/ui/dialogs';
 
 @Component({
   template:

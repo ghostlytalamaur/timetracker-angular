@@ -13,8 +13,8 @@ import { ISession } from '@tt/types';
 import { DateTime, Duration } from 'luxon';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
-import { getDuration$, Session } from '@tt/sessions/core';
-import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@tt/core/services';
+import { getDuration$, Session } from '@app/sessions/core';
+import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@app/core/services';
 
 interface FormData {
   date: Date | null;

@@ -10,8 +10,8 @@ import {
 import { Duration } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getDuration$, Session } from '@tt/sessions/core';
-import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@tt/core/services';
+import { getDuration$, Session } from '@app/sessions/core';
+import { ENVIRONMENT, IEnvironment, TICKS_TIMER } from '@app/core/services';
 
 @Component({
   selector: 'tt-sessions-table-row',

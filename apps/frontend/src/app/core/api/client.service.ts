@@ -3,8 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { CreateSessionDto, CreateSessionTagDto, ISession, ISessionTag } from '@tt/types';
 import { forkJoin, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
-import { Update } from '@tt/core/store';
-import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
+import { Update } from '@app/core/store';
+import { ENVIRONMENT, IEnvironment } from '@app/core/services';
 
 @Injectable({
   providedIn: 'root',

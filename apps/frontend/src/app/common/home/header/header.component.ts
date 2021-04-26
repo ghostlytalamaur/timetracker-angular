@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '@tt/auth/core';
-import { ConnectionService } from '@tt/core/api';
+import { AuthService } from '@app/auth/core';
+import { ConnectionService } from '@app/core/api';
 
 @Component({
   selector: 'tt-header',

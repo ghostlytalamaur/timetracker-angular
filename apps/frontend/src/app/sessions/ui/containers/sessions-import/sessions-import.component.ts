@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { ImportDataDto } from '@tt/types';
 import { Duration } from 'luxon';
-import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
+import { ENVIRONMENT, IEnvironment } from '@app/core/services';
 
 interface SessionsBackup {
   readonly sessions: {

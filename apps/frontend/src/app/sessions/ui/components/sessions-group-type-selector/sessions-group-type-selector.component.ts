@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Nullable } from '@tt/utils';
-import { SessionsGroupType } from '@tt/sessions/core';
+import { SessionsGroupType } from '@app/sessions/core';
 
 @Component({
   selector: 'tt-sessions-group-type-selector',

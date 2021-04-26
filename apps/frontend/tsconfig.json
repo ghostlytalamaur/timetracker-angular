@@ -17,13 +17,13 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@tt/core/*": ["src/app/core/*/index.ts"],
-      "@tt/auth/*": ["src/app/auth/*/index.ts"],
-      "@tt/common/*": ["src/app/common/*/index.ts"],
-      "@tt/sessions/*": ["src/app/sessions/*/index.ts"],
-      "@tt/tags/*": ["src/app/tags/*/index.ts"],
-      "@tt/ui/*": ["src/app/ui/*/index.ts"],
-      "@tt/errors/*": ["src/app/errors/*/index.ts"]
+      "@app/core/*": ["src/app/core/*/index.ts"],
+      "@app/auth/*": ["src/app/auth/*/index.ts"],
+      "@app/common/*": ["src/app/common/*/index.ts"],
+      "@app/sessions/*": ["src/app/sessions/*/index.ts"],
+      "@app/tags/*": ["src/app/tags/*/index.ts"],
+      "@app/ui/*": ["src/app/ui/*/index.ts"],
+      "@app/errors/*": ["src/app/errors/*/index.ts"]
     }
   },
   "angularCompilerOptions": {

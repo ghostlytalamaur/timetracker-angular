@@ -7,7 +7,7 @@ import {
   SessionsContainerComponent,
   SessionsImportComponent,
 } from './containers';
-import { AuthGuard } from '@tt/auth/core';
+import { AuthGuard } from '@app/auth/core';
 
 const routes: Routes = [
   {

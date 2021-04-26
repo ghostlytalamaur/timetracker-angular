@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { MainLayoutComponent } from '@tt/ui/layout';
+import { MainLayoutComponent } from '@app/ui/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { HeaderComponent } from './header/header.component';
 
@@ -14,11 +14,11 @@ export const routes: Routes = [
         children: [
           {
             path: 'sessions',
-            loadChildren: () => import('@tt/sessions/ui').then((mod) => mod.SessionsUiModule),
+            loadChildren: () => import('@app/sessions/ui').then((mod) => mod.SessionsUiModule),
           },
           {
             path: 'tags',
-            loadChildren: () => import('@tt/tags/ui').then((m) => m.TagsUiModule),
+            loadChildren: () => import('@app/tags/ui').then((m) => m.TagsUiModule),
           },
         ],
       },

@@ -1,7 +1,7 @@
 import { interval, Observable, of } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
+import { ENVIRONMENT, IEnvironment } from '@app/core/services';
 import { catchError, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

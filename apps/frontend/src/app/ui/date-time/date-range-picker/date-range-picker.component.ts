@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Range } from '@tt/core/util';
+import { Range } from '@app/core/util';
 
 @Component({
   selector: 'tt-date-range-picker',

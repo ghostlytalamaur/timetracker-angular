@@ -10,9 +10,9 @@ import {
   SessionsGroup,
   SessionsGroupType,
   SortType,
-} from '@tt/sessions/core';
+} from '@app/sessions/core';
 import { Nullable } from '@tt/utils';
-import { clustering } from '@tt/core/util';
+import { clustering } from '@app/core/util';
 
 export type TreeNode = SessionsGroup | Session;
 

@@ -5,11 +5,11 @@ import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SessionsTableService } from './sessions-table.service';
-import { Session, SessionsGroupType, SessionsService, SortType } from '@tt/sessions/core';
-import { SessionsTagsService } from '@tt/tags/core';
-import { ClipboardContent, ClipboardService } from '@tt/core/services';
+import { Session, SessionsGroupType, SessionsService, SortType } from '@app/sessions/core';
+import { SessionsTagsService } from '@app/tags/core';
+import { ClipboardContent, ClipboardService } from '@app/core/services';
 import { Nullable } from '@tt/utils';
-import { Range } from '@tt/core/util';
+import { Range } from '@app/core/util';
 
 @Component({
   selector: 'tt-sessions-container',

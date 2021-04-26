@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { Duration } from 'luxon';
-import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
+import { ENVIRONMENT, IEnvironment } from '@app/core/services';
 
 @Component({
   selector: 'tt-session-duration',

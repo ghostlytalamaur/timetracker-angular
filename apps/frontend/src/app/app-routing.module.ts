@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '@tt/auth/core';
+import { AuthGuard } from '@app/auth/core';
 
 const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    loadChildren: () => import('@tt/common/home').then((mod) => mod.CommonHomeModule),
+    loadChildren: () => import('@app/common/home').then((mod) => mod.CommonHomeModule),
   },
   {
     path: '**',
-    loadChildren: () => import('@tt/errors/page-not-found').then((m) => m.ErrorsPageNotFoundModule),
+    loadChildren: () => import('@app/errors/page-not-found').then((m) => m.ErrorsPageNotFoundModule),
   },
 ];
 

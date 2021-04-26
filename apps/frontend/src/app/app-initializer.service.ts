@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { inject } from '@angular/core';
 import { filter, mapTo, take } from 'rxjs/operators';
-import { AuthService } from '@tt/auth/core';
+import { AuthService } from '@app/auth/core';
 
 class SplashScreenService {
   constructor(private readonly doc: Document) {}

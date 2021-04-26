@@ -8,12 +8,12 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
 import { ToastrModule } from 'ngx-toastr';
-import { AUTH_CONFIG, AuthCoreModule, IAuthConfig } from '@tt/auth/core';
+import { AUTH_CONFIG, AuthCoreModule, IAuthConfig } from '@app/auth/core';
 import { HttpClientModule } from '@angular/common/http';
 import { appInitializerFactory } from './app-initializer.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatMenuModule } from '@angular/material/menu';
-import { ENVIRONMENT } from '@tt/core/services';
+import { ENVIRONMENT } from '@app/core/services';
 
 function createAuthConfig(): IAuthConfig {
   return {
