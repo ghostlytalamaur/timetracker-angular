@@ -27,7 +27,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '100mb' }));
   const port = process.env.TIMETRACKER_SERVER_PORT || 3000;
   await app.listen(port, () => {
-    Logger.log('Listening at http://localhost:' + port + '/');
+    Logger.log(`Listening at http://localhost:${  port  }/`);
   });
 }
 

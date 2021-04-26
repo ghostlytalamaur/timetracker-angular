@@ -109,7 +109,7 @@ export class TagsService {
     }
   }
 
-  public getCollection(): Promise<Collection<IMongoSessionTag>> {
+  getCollection(): Promise<Collection<IMongoSessionTag>> {
     return this.mongo.getCollection('tags');
   }
 }

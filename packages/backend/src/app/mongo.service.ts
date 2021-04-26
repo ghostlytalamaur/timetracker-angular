@@ -18,7 +18,7 @@ export class MongoService implements OnModuleDestroy {
     };
   }
 
-  public async getCollection<T>(name: string): Promise<Collection<T>> {
+  async getCollection<T>(name: string): Promise<Collection<T>> {
     const client = await this.getClient();
     const db = client.db('timetracker');
 

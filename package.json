@@ -6,7 +6,8 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "postinstall": "yarn workspace @tt/utils build && yarn workspace @tt/types build",
-    "start": "concurrently -r -c \"blue.bold,magenta.bold,green.bold,red.bold\" -k -n \"types,utils,backend,frontend\" \"yarn workspace @tt/types start\" \"yarn workspace @tt/utils start\" \"yarn workspace @tt/backend start\" \"yarn workspace @tt/frontend start\""
+    "start": "concurrently -r -c \"blue.bold,magenta.bold,green.bold,red.bold\" -k -n \"types,utils,backend,frontend\" \"yarn workspace @tt/types start\" \"yarn workspace @tt/utils start\" \"yarn workspace @tt/backend start\" \"yarn workspace @tt/frontend start\"",
+    "lint": "yarn workspaces run lint"
   },
   "devDependencies": {
     "typescript": "~4.0.3",

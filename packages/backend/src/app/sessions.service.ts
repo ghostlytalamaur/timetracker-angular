@@ -126,7 +126,7 @@ export class SessionsService {
     const collection = await this.getCollection();
     const result = await collection.updateMany(
       {
-        userId: userId,
+        userId,
       },
       {
         $pull: {

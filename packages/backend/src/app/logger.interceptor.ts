@@ -20,6 +20,7 @@ export class LoggerInterceptor implements NestInterceptor {
 
     const method = context.switchToHttp().getRequest<Request>().method;
     this.logger.log(`Start processing request ${url}`, method);
+
     return next.handle().pipe(
       tap(() => {
         const time = (performance.now() - start).toFixed(4);

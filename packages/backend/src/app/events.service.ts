@@ -17,6 +17,7 @@ interface IMongoUserEvents {
 
 function createEventsData(events: { id: number; event: IEvents }[]): IEventsData {
   const maxEventId = events.reduce((acc, event) => Math.max(acc, event.id), 0);
+
   return {
     id: `${maxEventId}`,
     events: events.map((event) => event.event),
@@ -33,6 +34,60 @@ export class EventsService {
     this.eventsQueues = new Map();
   }
 
+  private static getUpsertOperations(
+    userId: string,
+    eventId: number,
+    event: IEvents,
+  ): BulkWriteOperation<IMongoUserEvents>[] {
+    const eventData = isDataEvent(event) ? event.data : null;
+
+    return [
+      {
+        updateOne: {
+          filter: { userId },
+          update: {
+            $setOnInsert: {
+              userId,
+              events: [
+                {
+                  eventType: event.type,
+                  eventData,
+                  eventId,
+                },
+              ],
+            },
+          },
+          upsert: true,
+        },
+      },
+      {
+        updateOne: {
+          filter: { userId, events: { $elemMatch: { eventType: event.type, eventData } } },
+          update: {
+            $set: {
+              'events.$.eventData': eventData,
+              'events.$.eventId': eventId,
+            },
+          },
+        },
+      },
+      {
+        updateOne: {
+          filter: { userId },
+          update: {
+            $addToSet: {
+              events: {
+                eventType: event.type,
+                eventData,
+                eventId,
+              },
+            },
+          },
+        },
+      },
+    ];
+  }
+
   getEvents$(userId: string, lastEventId: number): Observable<IEventsData> {
     return defer(() => from(this.loadLastEventId(userId))).pipe(
       switchMap((storedLastEventId) => {
@@ -47,6 +102,7 @@ export class EventsService {
             `Load events for user ${userId} starting from ${lastEventId}`,
             'Events',
           );
+
           return from(this.loadEvents(userId, lastEventId)).pipe(map(createEventsData));
         } else {
           return this.events$$.pipe(
@@ -134,59 +190,6 @@ export class EventsService {
         id: data.eventId,
       };
     });
-  }
-
-  private static getUpsertOperations(
-    userId: string,
-    eventId: number,
-    event: IEvents,
-  ): BulkWriteOperation<IMongoUserEvents>[] {
-    const eventData = isDataEvent(event) ? event.data : null;
-    return [
-      {
-        updateOne: {
-          filter: { userId },
-          update: {
-            $setOnInsert: {
-              userId,
-              events: [
-                {
-                  eventType: event.type,
-                  eventData,
-                  eventId,
-                },
-              ],
-            },
-          },
-          upsert: true,
-        },
-      },
-      {
-        updateOne: {
-          filter: { userId, events: { $elemMatch: { eventType: event.type, eventData } } },
-          update: {
-            $set: {
-              'events.$.eventData': eventData,
-              'events.$.eventId': eventId,
-            },
-          },
-        },
-      },
-      {
-        updateOne: {
-          filter: { userId },
-          update: {
-            $addToSet: {
-              events: {
-                eventType: event.type,
-                eventData,
-                eventId,
-              },
-            },
-          },
-        },
-      },
-    ];
   }
 
   private getCollection(): Promise<Collection<IMongoUserEvents>> {

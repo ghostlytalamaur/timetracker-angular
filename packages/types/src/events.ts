@@ -40,7 +40,6 @@ type DataEventTypes = typeof DATA_EVENT_TYPES[number];
 export function isDataEvent(
   event: unknown,
 ): event is Extract<IEvents, { type: Extract<EventType, DataEventTypes> }> {
-  debugger
   return isObject(event) && hasKey(event, 'type') && DATA_EVENT_TYPES.some((t) => event.type === t);
 }
 
