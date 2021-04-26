@@ -4,7 +4,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "apps/*",
+    "libs/*"
   ],
   "scripts": {
     "postinstall": "yarn workspace @tt/utils build && yarn workspace @tt/types build",
