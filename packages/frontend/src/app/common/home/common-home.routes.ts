@@ -14,15 +14,11 @@ export const routes: Routes = [
         children: [
           {
             path: 'sessions',
-            loadChildren: () =>
-              import('@tt/sessions/ui').then(
-                (mod) => mod.SessionsUiModule,
-              ),
+            loadChildren: () => import('@tt/sessions/ui').then((mod) => mod.SessionsUiModule),
           },
           {
             path: 'tags',
-            loadChildren: () =>
-              import('@tt/tags/ui').then((m) => m.TagsUiModule),
+            loadChildren: () => import('@tt/tags/ui').then((m) => m.TagsUiModule),
           },
         ],
       },

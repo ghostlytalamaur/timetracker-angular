@@ -11,7 +11,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "format": "nx format:write",
+    "format": "prettier --write **/*.{ts,html,js,json}",
     "update": "ng update",
     "web:config": "node scripts/setup-config.js"
   },

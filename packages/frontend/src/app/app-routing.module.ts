@@ -8,8 +8,7 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    loadChildren: () =>
-      import('@tt/common/home').then((mod) => mod.CommonHomeModule),
+    loadChildren: () => import('@tt/common/home').then((mod) => mod.CommonHomeModule),
   },
   {
     path: '**',

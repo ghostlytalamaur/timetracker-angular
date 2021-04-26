@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "tsc --watch --preserveWatchOutput",
     "lint": "eslint src --ext .ts",
+    "format": "prettier --write **/*.{ts,html,js,json}",
     "clean": "rimraf dist"
   },
   "devDependencies": {

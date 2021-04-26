@@ -18,7 +18,9 @@ export class AuthService {
   get user$(): Observable<User | null> {
     return this.auth0.user$.pipe(
       map((user) => {
-        return user && user.sub ? createUser(user.sub, `${user.given_name} ${user.family_name}`.trim()) : null;
+        return user && user.sub
+          ? createUser(user.sub, `${user.given_name} ${user.family_name}`.trim())
+          : null;
       }),
     );
   }

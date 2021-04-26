@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-
   server:
     container_name: timetracker-server-container
     image: timetracker-server-image

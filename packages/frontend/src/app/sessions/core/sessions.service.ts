@@ -196,13 +196,16 @@ export class SessionsService extends LoadableStore<ISession[], SessionsState> {
         }
       },
     );
-    this.connect<Nullable<SortType>>(this.storage.get$(StorageKeys.SortTypeKey), (state, sortType) => {
-      if (sortType) {
-        return patchObject(state, { sortType });
-      } else {
-        return state;
-      }
-    });
+    this.connect<Nullable<SortType>>(
+      this.storage.get$(StorageKeys.SortTypeKey),
+      (state, sortType) => {
+        if (sortType) {
+          return patchObject(state, { sortType });
+        } else {
+          return state;
+        }
+      },
+    );
     this.connect<Nullable<{ from: string; to: string }>>(
       this.storage.get$(StorageKeys.DisplayRangeKey),
       (state, isoRange) => {

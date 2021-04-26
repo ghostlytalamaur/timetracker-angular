@@ -5,9 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 async function setup() {
-  const templateConfigFileName = path.resolve(
-    './src/assets/config.template.json',
-  );
+  const templateConfigFileName = path.resolve('./src/assets/config.template.json');
 
   console.log('Setup config file');
   const config = JSON.parse((await fs.promises.readFile(templateConfigFileName)).toString());

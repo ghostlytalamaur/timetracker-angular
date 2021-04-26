@@ -12,7 +12,10 @@ import { SessionsTagsService } from '@tt/tags/core';
 export class SessionsComponent implements OnInit, OnDestroy {
   readonly status$: Observable<IStatus>;
 
-  constructor(private readonly sessionsSrv: SessionsService, private readonly tags: SessionsTagsService) {
+  constructor(
+    private readonly sessionsSrv: SessionsService,
+    private readonly tags: SessionsTagsService,
+  ) {
     this.status$ = this.sessionsSrv.getStatus$();
   }
 

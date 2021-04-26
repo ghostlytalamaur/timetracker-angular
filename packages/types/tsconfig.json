@@ -9,7 +9,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "declaration": true,
-    "types": [],
+    "types": []
   },
   "references": [
     {
