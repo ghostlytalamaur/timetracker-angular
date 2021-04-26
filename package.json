@@ -5,14 +5,17 @@
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
+    "postinstall": "yarn workspace @tt/utils build && yarn workspace @tt/types build",
+    "start": "concurrently -r -c \"blue.bold,magenta.bold,green.bold,red.bold\" -k -n \"types,utils,backend,frontend\" \"yarn workspace @tt/types start\" \"yarn workspace @tt/utils start\" \"yarn workspace @tt/backend start\" \"yarn workspace @tt/frontend start\""
   },
   "devDependencies": {
     "typescript": "~4.0.3",
     "prettier": "2.2.1",
     "eslint": "7.10.0",
     "eslint-config-prettier": "8.1.0",
-    "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-prettier": "^3.3.1",
     "@typescript-eslint/eslint-plugin": "4.3.0",
-    "@typescript-eslint/parser": "4.3.0"
+    "@typescript-eslint/parser": "4.3.0",
+    "concurrently": "^6.0.2"
   }
 }

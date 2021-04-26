@@ -7,10 +7,5 @@
     "outDir": "./dist",
     "declaration": true,
     "types": ["node"]
-  },
-  "references": [
-    {
-      "path": "../shared/tsconfig.json"
-    }
-  ]
+  }
 }

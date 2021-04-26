@@ -3,7 +3,7 @@ import { ISessionTag } from '@tt/types';
 import { Observable } from 'rxjs';
 import { IStatus } from '@tt/core/store';
 import { SessionsTagsService } from '@tt/tags/core';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 
 @Component({
   selector: 'tt-sessions-tags',

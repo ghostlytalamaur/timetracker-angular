@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { isDefined, Nullable } from '@tt/core/util';
+import { isDefined, Nullable } from '@tt/utils';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,7 @@ export class UiStorageService {
         return of(JSON.parse(value));
       } catch (e) {}
     }
+
     return of(null);
   }
 

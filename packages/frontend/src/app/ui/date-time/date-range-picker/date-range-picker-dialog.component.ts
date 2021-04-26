@@ -38,7 +38,7 @@ export class DateRangePickerDialogDirective implements OnDestroy {
   range!: Range<Date>;
   @Output()
   rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
-  private alive$: Subject<void> = new Subject<void>();
+  private readonly alive$: Subject<void> = new Subject<void>();
 
   constructor(private readonly dialogs: DialogsService) {}
 

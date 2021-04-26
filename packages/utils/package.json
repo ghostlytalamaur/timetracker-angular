@@ -5,10 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prebuild": "yarn clean",
     "build": "tsc",
-    "prestart": "yarn clean",
-    "start": "tsc --watch",
+    "start": "tsc --watch --preserveWatchOutput",
+    "lint": "eslint src --ext .ts",
     "clean": "rimraf dist"
   },
   "devDependencies": {

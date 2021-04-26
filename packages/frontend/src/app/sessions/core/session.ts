@@ -23,6 +23,7 @@ export class Session {
 
   static fromNow(id: string): Session {
     const date = DateTime.local();
+
     return new Session(id, date, null, []);
   }
 
@@ -70,5 +71,7 @@ export function getGroupId(session: Session, groupType: SessionsGroupType): stri
       return `${session.start.year}-${session.start.month}`;
     case 'year':
       return `${session.start.year}`;
+    default:
+      throw new Error(`Unsupported group type ${groupType}`);
   }
 }

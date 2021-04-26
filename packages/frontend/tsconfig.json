@@ -11,12 +11,6 @@
     },
     {
       "path": "./tsconfig.editor.json"
-    },
-    {
-      "path": "../types/tsconfig.json"
-    },
-    {
-      "path": "../utils/tsconfig.json"
     }
   ],
   "compilerOptions": {

@@ -16,7 +16,8 @@ import {
   isResolvedStatus,
   IStatus,
 } from '@tt/core/store';
-import { hasChange, Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
+import { hasChange } from '@tt/core/util';
 
 @Directive({
   selector: '[ttResolved]',

@@ -35,6 +35,7 @@ export function dateValidator(control: AbstractControl): ValidationErrors | null
   if (!control.value || isValidDate(control.value)) {
     return null;
   }
+
   return { invalidDate: true };
 }
 

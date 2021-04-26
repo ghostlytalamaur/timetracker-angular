@@ -13,7 +13,7 @@ import { ISessionTag } from '@tt/types';
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 import { Session, SessionsGroup, SessionsGroupType, SortType } from '@tt/sessions/core';
 import { ClipboardContent } from '@tt/core/services';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 
 @Component({
   selector: 'tt-sessions-table',

@@ -11,7 +11,8 @@ import {
   SessionsGroupType,
   SortType,
 } from '@tt/sessions/core';
-import { clustering, Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
+import { clustering } from '@tt/core/util';
 
 export type TreeNode = SessionsGroup | Session;
 

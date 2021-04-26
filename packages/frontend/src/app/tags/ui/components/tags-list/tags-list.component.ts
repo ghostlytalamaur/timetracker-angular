@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 import { ISessionTag } from '@tt/types';
 
 @Component({

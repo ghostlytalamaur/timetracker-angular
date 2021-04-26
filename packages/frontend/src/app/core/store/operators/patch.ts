@@ -13,11 +13,12 @@ type PatchValues<T> = {
 
 type PatchOperator<T> = <U extends PatchValues<T>>(existing: Readonly<U>) => U;
 
-export function patch<T>(patchObject: PatchSpec<T>): PatchOperator<T> {
+export function patch<T>(obj: PatchSpec<T>): PatchOperator<T> {
   return function patchStateOperator<U extends PatchValues<T>>(existing: Readonly<U>): U {
     let clone = null;
-    for (const k in patchObject) {
-      const newValue = patchObject[k];
+    // eslint-disable-next-line guard-for-in
+    for (const k in obj) {
+      const newValue = obj[k];
       const existingPropValue = existing[k];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newPropValue = isStateOperator(newValue) ? newValue(<any>existingPropValue) : newValue;
@@ -29,6 +30,7 @@ export function patch<T>(patchObject: PatchSpec<T>): PatchOperator<T> {
         clone[k] = newPropValue;
       }
     }
+
     return clone || existing;
   };
 }

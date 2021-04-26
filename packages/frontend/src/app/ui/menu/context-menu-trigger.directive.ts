@@ -40,9 +40,9 @@ interface ContextMenuConfig {
 
 class ContextMenuRef {
   private menuClosingActionsSubscription: Subscription | null = null;
-  private closed: Subject<void> = new Subject<void>();
+  private readonly closed: Subject<void> = new Subject<void>();
 
-  private subscription = new Subscription();
+  private readonly subscription = new Subscription();
   private overlayRef: OverlayRef | null;
 
   constructor(
@@ -127,6 +127,7 @@ class ContextMenuRef {
     );
 
     const detachments$ = this.overlayRef.detachments();
+
     return merge(docClick$, docContextMenu$, detachments$);
   }
 

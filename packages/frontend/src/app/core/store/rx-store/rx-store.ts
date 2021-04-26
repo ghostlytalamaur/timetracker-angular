@@ -1,7 +1,7 @@
 import { RxState } from '@rx-angular/state';
 import { defer, EMPTY, Observable, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 import { applyStateOperator, StateOperator } from '../operators';
 import { select$ } from './rx-select';
 import {
@@ -22,6 +22,7 @@ export interface LoadableState<T> {
 export abstract class LoadableStore<T, S extends LoadableState<T>> extends RxState<S> {
   protected constructor(initialState: S, enableLog: boolean = false) {
     super();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ((this as any) as { accumulator: { state: S } }).accumulator.state = initialState;
     this.connect(this.loadEffect$(), applyStateOperator);
     if (enableLog) {

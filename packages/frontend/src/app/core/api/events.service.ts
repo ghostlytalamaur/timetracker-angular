@@ -4,7 +4,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { delay, expand, filter, mergeMap, retryWhen, share, takeUntil } from 'rxjs/operators';
 import { ENVIRONMENT, IEnvironment } from '@tt/core/services';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { isDefined, Nullable } from '@tt/core/util';
+import { isDefined, Nullable } from '@tt/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,7 @@ export class EventsService implements OnDestroy {
 
   on$<T extends EventType>(eventType: T): Observable<Extract<IEvents, { type: T }>> {
     return this.events$.pipe(
-      filter((event): event is Extract<IEvents, { type: T }> => event.type == eventType),
+      filter((event): event is Extract<IEvents, { type: T }> => event.type === eventType),
     );
   }
 

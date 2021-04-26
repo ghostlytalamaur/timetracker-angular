@@ -4,7 +4,7 @@ import { ISession } from '@tt/types';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { Session, SessionsService } from '@tt/sessions/core';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 
 @Component({
   selector: 'tt-session-details-container',

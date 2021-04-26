@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EventType, ISessionTag } from '@tt/types';
 import { merge, Observable } from 'rxjs';
 import { initialStatus, LoadableState, LoadableStore } from '@tt/core/store';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 import { ClientService, EventsService } from '@tt/core/api';
 
 type ISessionsTagsState = LoadableState<ISessionTag[]>;

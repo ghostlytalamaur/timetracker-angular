@@ -8,7 +8,8 @@ import { SessionsTableService } from './sessions-table.service';
 import { Session, SessionsGroupType, SessionsService, SortType } from '@tt/sessions/core';
 import { SessionsTagsService } from '@tt/tags/core';
 import { ClipboardContent, ClipboardService } from '@tt/core/services';
-import { Nullable, Range } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
+import { Range } from '@tt/core/util';
 
 @Component({
   selector: 'tt-sessions-container',

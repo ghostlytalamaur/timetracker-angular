@@ -1,4 +1,4 @@
-export type Update<T> = {
+export interface Update<T> {
   readonly id: string;
   readonly changes: Partial<T>;
-};
+}

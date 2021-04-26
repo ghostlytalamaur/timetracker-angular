@@ -24,6 +24,7 @@ export function removeItem<T>(selector: number | Predicate<T>): StateOperator<T[
 
     const clone = existing.slice();
     clone.splice(index, 1);
+
     return clone;
   };
 }

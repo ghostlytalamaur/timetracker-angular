@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": ["src/index.ts"],
-  "include": ["**/*.ts"],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
     "composite": true,
     "rootDir": "./src",
@@ -9,7 +9,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "declaration": true,
-    "types": []
+    "types": [],
   },
   "references": [
     {
