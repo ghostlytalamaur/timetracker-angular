@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventType, ISession } from '@tt/shared';
+import { EventType, ISession } from '@tt/types';
 import { DateTime } from 'luxon';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, skip } from 'rxjs/operators';

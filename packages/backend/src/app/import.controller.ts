@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateSessionDto, ImportDataDto } from '@tt/shared';
+import { CreateSessionDto, ImportDataDto } from '@tt/types';
 import { UserId } from './auth/user-decorator';
 import { SessionsService } from './sessions.service';
 import { TagsService } from './tags.service';

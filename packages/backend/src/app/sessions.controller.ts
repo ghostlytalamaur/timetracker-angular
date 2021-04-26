@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateSessionDto, ISession } from '@tt/shared';
+import { CreateSessionDto, ISession } from '@tt/types';
 import { UserId } from './auth/user-decorator';
 import { SessionsService } from './sessions.service';
 import { EventsInterceptor } from './events.interceptor';

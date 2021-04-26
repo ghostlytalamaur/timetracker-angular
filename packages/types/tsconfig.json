@@ -3,7 +3,17 @@
   "files": ["src/index.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "outDir": "dist/out-tsc",
+    "composite": true,
+    "rootDir": "./src",
+    "module": "commonjs",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "declaration": true,
     "types": []
-  }
+  },
+  "references": [
+    {
+      "path": "../utils/tsconfig.json"
+    }
+  ]
 }

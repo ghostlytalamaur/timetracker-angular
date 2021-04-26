@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSessionTagDto, EventType, ImportDataDto, ISessionTag } from '@tt/shared';
+import { CreateSessionTagDto, EventType, ImportDataDto, ISessionTag } from '@tt/types';
 import { Collection, ObjectId } from 'mongodb';
 import { EventsService } from './events.service';
 import { MongoService } from './mongo.service';

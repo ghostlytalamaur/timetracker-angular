@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import { ISessionTag } from '@tt/shared';
+import { ISessionTag } from '@tt/types';
 
 import { FlatNode, SessionTreeModel } from './session-tree.model';
 import { Session, SessionsGroup, SessionsGroupType, SortType } from '@tt/sessions/core';

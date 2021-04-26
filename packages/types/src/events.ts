@@ -1,4 +1,4 @@
-import { hasKey, isObject } from '@tt/core/util';
+import { hasKey, isObject } from '@tt/utils';
 
 export interface IEvent<T extends string> {
   readonly type: T;

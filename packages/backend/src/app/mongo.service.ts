@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
-import { Nullable } from '@tt/core/util';
+import { Nullable } from '@tt/utils';
 
 const URI = process.env.TIMETRACKER_SERVER_MONGODB_URI || '';
 

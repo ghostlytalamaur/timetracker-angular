@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Nullable } from '@tt/core/util';
-import { ISessionTag } from '@tt/shared';
+import { ISessionTag } from '@tt/types';
 
 @Component({
   selector: 'tt-tags-list',

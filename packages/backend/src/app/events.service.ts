@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { hasSameEventType, IEvents, IEventsData, isDataEvent } from '@tt/shared';
+import { hasSameEventType, IEvents, IEventsData, isDataEvent } from '@tt/types';
 import { BulkWriteOperation, Collection, ObjectId } from 'mongodb';
 import { defer, from, Observable, of, Subject } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';

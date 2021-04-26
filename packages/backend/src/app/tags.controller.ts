@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateSessionTagDto, ISessionTag } from '@tt/shared';
+import { CreateSessionTagDto, ISessionTag } from '@tt/types';
 import { UserId } from './auth/user-decorator';
 import { TagsService } from './tags.service';
 import { EventsInterceptor } from './events.interceptor';

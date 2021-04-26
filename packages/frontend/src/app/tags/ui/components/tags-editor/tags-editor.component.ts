@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ISessionTag } from '@tt/shared';
+import { ISessionTag } from '@tt/types';
 import { hasChange, Nullable } from '@tt/core/util';
 
 @Component({

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CreateSessionDto, CreateSessionTagDto, ISession, ISessionTag } from '@tt/shared';
+import { CreateSessionDto, CreateSessionTagDto, ISession, ISessionTag } from '@tt/types';
 import { forkJoin, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { Update } from '@tt/core/store';

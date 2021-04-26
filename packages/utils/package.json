@@ -2,7 +2,17 @@
   "name": "@tt/utils",
   "version": "1.0.0",
   "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "yarn clean",
+    "build": "tsc",
+    "prestart": "yarn clean",
+    "start": "tsc --watch",
+    "clean": "rimraf dist"
+  },
   "devDependencies": {
-    "typescript": "~4.0.3"
+    "typescript": "~4.0.3",
+    "rimraf": "^3.0.2"
   }
 }

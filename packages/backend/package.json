@@ -4,7 +4,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prebuild": "rimraf dist",
+    "prebuild": "yarn clean",
+    "clean": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -32,7 +33,9 @@
     "uuid": "8.3.2",
     "dotenv": "8.2.0",
     "class-validator": "0.13.1",
-    "class-transformer": "0.4.0"
+    "class-transformer": "0.4.0",
+    "@tt/utils": "1.0.0",
+    "@tt/types": "1.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
@@ -53,7 +56,8 @@
     "eslint-plugin-cypress": "^2.10.3",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
-    "typescript": "~4.0.3"
+    "typescript": "~4.0.3",
+    "rimraf": "^3.0.2"
   },
   "jest": {
     "moduleFileExtensions": [

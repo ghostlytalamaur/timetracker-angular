@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ISession } from '@tt/shared';
+import { ISession } from '@tt/types';
 import { DateTime, Duration } from 'luxon';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';

@@ -4,7 +4,7 @@ import { of, race } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 import { UserId } from './auth/user-decorator';
 import { EventsService } from './events.service';
-import { IEvents, IEventsData } from '@tt/shared';
+import { IEvents, IEventsData } from '@tt/types';
 
 @Controller({
   path: '/events',
