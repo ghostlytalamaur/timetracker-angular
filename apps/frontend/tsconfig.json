@@ -17,13 +17,7 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@app/core/*": ["src/app/core/*/index.ts"],
-      "@app/auth/*": ["src/app/auth/*/index.ts"],
-      "@app/common/*": ["src/app/common/*/index.ts"],
-      "@app/sessions/*": ["src/app/sessions/*/index.ts"],
-      "@app/tags/*": ["src/app/tags/*/index.ts"],
-      "@app/ui/*": ["src/app/ui/*/index.ts"],
-      "@app/errors/*": ["src/app/errors/*/index.ts"]
+      "@app/*": ["src/app/*/index.ts"]
     }
   },
   "angularCompilerOptions": {
