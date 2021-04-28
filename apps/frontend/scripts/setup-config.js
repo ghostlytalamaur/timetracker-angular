@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 async function setup() {
   const templateConfigFileName = path.resolve('./src/assets/config.template.json');

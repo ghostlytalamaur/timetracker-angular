@@ -6,8 +6,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "clean": "rimraf dist",
-    "prestart": "yarn web:config",
-    "start": "ng serve",
+    "start": "yarn web:config && ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

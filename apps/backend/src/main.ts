@@ -10,7 +10,7 @@ import * as bodyParser from 'body-parser';
 
 import { AppModule } from './app/app.module';
 
-dotenv.config();
+dotenv.config({ path: '../../.env' });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

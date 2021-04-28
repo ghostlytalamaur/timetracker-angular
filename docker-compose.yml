@@ -5,7 +5,7 @@ services:
     container_name: timetracker-server-container
     image: timetracker-server-image
     ports:
-      - 3000:3000
+      - ${TIMETRACKER_SERVER_PORT}:${TIMETRACKER_SERVER_PORT}
     environment:
       - TIMETRACKER_SERVER_MONGODB_URI
       - TIMETRACKER_SERVER_PORT

@@ -2,10 +2,9 @@ import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Collection, MongoClient, MongoClientOptions } from 'mongodb';
 import { Nullable } from '@tt/utils';
 
-const URI = process.env.TIMETRACKER_SERVER_MONGODB_URI || '';
-
 @Injectable()
 export class MongoService implements OnModuleDestroy {
+  private readonly URI = process.env.TIMETRACKER_SERVER_MONGODB_URI || '';
   private readonly options: MongoClientOptions;
   private client: Nullable<MongoClient>;
   private connecting: Nullable<Promise<MongoClient>>;
@@ -39,10 +38,10 @@ export class MongoService implements OnModuleDestroy {
           // try to connect to database
           this.logger.log('Attempt to connect to database...', 'MongoService');
           this.logger.log(
-            `Database uri: ${process.env.TIMETRACKER_SERVER_MONGODB_URI}`,
+            `Database uri: ${this.URI}`,
             'MongoService',
           );
-          this.connecting = MongoClient.connect(URI, this.options);
+          this.connecting = MongoClient.connect(this.URI, this.options);
         }
 
         // wait until database is connected
