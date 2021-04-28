@@ -15,8 +15,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-      args:
-        BUILD_FLAG: --prod
     depends_on:
       - mongo
 

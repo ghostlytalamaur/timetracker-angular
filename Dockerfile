@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN npx yarn install
+RUN yarn install
