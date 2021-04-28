@@ -14,6 +14,7 @@ COPY --from=build /usr/src/app/apps/frontend/dist /usr/share/nginx/html
 # COPY dist/apps/time-tracker /usr/share/nginx/html
 
 COPY docker/frontend/00-setup-configs.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/00-setup-configs.sh
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 ENV PORT 80
