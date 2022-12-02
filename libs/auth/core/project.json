@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/auth/core/src",
+  "prefix": "tt",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/auth/core/src/**/*.ts", "libs/auth/core/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/auth/core"],
+      "options": {
+        "jestConfig": "libs/auth/core/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

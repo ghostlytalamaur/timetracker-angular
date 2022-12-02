@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/core/services/src",
+  "prefix": "tt",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/core/services/src/**/*.ts", "libs/core/services/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/core/services"],
+      "options": {
+        "jestConfig": "libs/core/services/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

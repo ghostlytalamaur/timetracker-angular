@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/tags/ui/src",
+  "prefix": "tt",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/tags/ui/src/**/*.ts", "libs/tags/ui/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/tags/ui"],
+      "options": {
+        "jestConfig": "libs/tags/ui/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

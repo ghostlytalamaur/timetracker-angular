@@ -1,0 +1,28 @@
+{
+  "sourceRoot": "apps/time-tracker-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/time-tracker-e2e/cypress.json",
+        "tsConfig": "apps/time-tracker-e2e/tsconfig.e2e.json",
+        "devServerTarget": "time-tracker:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "time-tracker:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/time-tracker-e2e/**/*.{js,ts}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["time-tracker"]
+}

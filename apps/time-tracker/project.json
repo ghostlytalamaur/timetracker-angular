@@ -1,0 +1,92 @@
+{
+  "projectType": "application",
+  "sourceRoot": "apps/time-tracker/src",
+  "prefix": "tt",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/time-tracker",
+        "index": "apps/time-tracker/src/index.html",
+        "main": "apps/time-tracker/src/main.ts",
+        "polyfills": "apps/time-tracker/src/polyfills.ts",
+        "tsConfig": "apps/time-tracker/tsconfig.app.json",
+        "aot": true,
+        "assets": [
+          "apps/time-tracker/src/favicon.ico",
+          "apps/time-tracker/src/assets",
+          "apps/time-tracker/src/manifest.webmanifest"
+        ],
+        "styles": [
+          "apps/time-tracker/src/styles/styles.css",
+          "apps/time-tracker/src/styles/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/time-tracker/src/environments/environment.ts",
+              "with": "apps/time-tracker/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/time-tracker/ngsw-config.json"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "time-tracker:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "time-tracker:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "time-tracker:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/time-tracker/src/**/*.ts", "apps/time-tracker/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/time-tracker"],
+      "options": {
+        "jestConfig": "apps/time-tracker/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
