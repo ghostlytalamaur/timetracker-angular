@@ -12,7 +12,7 @@ import { AUTH_CONFIG, AuthCoreModule, IAuthConfig } from '@tt/auth/core';
 import { HttpClientModule } from '@angular/common/http';
 import { appInitializerFactory } from './app-initializer.service';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { ENVIRONMENT } from '@tt/core/services';
 
 function createAuthConfig(): IAuthConfig {

@@ -1,5 +1,5 @@
 import { Directionality } from '@angular/cdk/bidi';
-import { Point } from '@angular/cdk/drag-drop/drag-ref';
+import { Point } from '@angular/cdk/drag-drop';
 import {
   FlexibleConnectedPositionStrategy,
   HorizontalConnectionPos,
@@ -23,11 +23,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  MatMenu,
-  MAT_MENU_SCROLL_STRATEGY,
-  MenuPositionX,
-  MenuPositionY,
-} from '@angular/material/menu';
+  MatLegacyMenu as MatMenu,
+  MAT_LEGACY_MENU_SCROLL_STRATEGY as MAT_MENU_SCROLL_STRATEGY,
+  LegacyMenuPositionX as MenuPositionX,
+  LegacyMenuPositionY as MenuPositionY,
+} from '@angular/material/legacy-menu';
 import { EMPTY, fromEvent, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, mapTo, take, takeUntil } from 'rxjs/operators';
 

@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ISessionTag } from '@tt/shared';
 import { hasChange, Nullable } from '@tt/core/util';
 
@@ -25,9 +25,9 @@ export class TagsEditorComponent implements OnChanges {
   @Output()
   addTag = new EventEmitter<string>();
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: UntypedFormBuilder) {
     this.form = fb.group({
       label: fb.control('', [Validators.required, Validators.min(1)]),
     });

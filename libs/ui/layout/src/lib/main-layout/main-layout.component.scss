@@ -1,4 +1,4 @@
-@use '~@angular/material/theming' as material;
+@use '@angular/material/theming' as material;
 
 $toolbar-breakpoint: 600px;
 
@@ -8,7 +8,7 @@ mat-sidenav-container {
   }
 
   mat-toolbar {
-    @include material.mat-elevation(8);
+    //@include material.elevation(8);
     position: fixed;
     top: 0;
     left: 0;

@@ -18,6 +18,10 @@ export class AuthService {
   get user$(): Observable<User | null> {
     return this.auth0.user$.pipe(
       map((user) => {
+        if (!user || !user.sub) {
+          return null;
+        }
+
         return {
           id: user.sub,
           name: `${user.given_name} ${user.family_name}`.trim(),

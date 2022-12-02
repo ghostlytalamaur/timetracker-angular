@@ -16,79 +16,61 @@
   "npmScope": "tt",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "parallel": 3
       }
     }
   },
-  "projects": {
-    "time-tracker": {
-      "tags": []
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
+  },
+  "defaultProject": "time-tracker",
+  "generators": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
     },
-    "time-tracker-e2e": {
-      "tags": [],
-      "implicitDependencies": ["time-tracker"]
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
-    "backend": {
-      "tags": []
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     },
-    "common-home": {
-      "tags": []
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "targetDefaults": {
+    "e2e": {
+      "inputs": ["default", "^default"]
     },
-    "auth-core": {
-      "tags": []
+    "test": {
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
     },
-    "ui-status": {
-      "tags": []
-    },
-    "core-util": {
-      "tags": []
-    },
-    "core-store": {
-      "tags": []
-    },
-    "sessions-core": {
-      "tags": []
-    },
-    "tags-core": {
-      "tags": []
-    },
-    "tags-ui": {
-      "tags": []
-    },
-    "sessions-ui": {
-      "tags": []
-    },
-    "core-api": {
-      "tags": []
-    },
-    "core-services": {
-      "tags": []
-    },
-    "ui-menu": {
-      "tags": []
-    },
-    "ui-date-time": {
-      "tags": []
-    },
-    "ui-dialogs": {
-      "tags": []
-    },
-    "ui-notifications": {
-      "tags": []
-    },
-    "ui-animations": {
-      "tags": []
-    },
-    "errors-page-not-found": {
-      "tags": []
-    },
-    "shared": {
-      "tags": []
-    },
-    "ui-layout": {
-      "tags": []
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   }
 }

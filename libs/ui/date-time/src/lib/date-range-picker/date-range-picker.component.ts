@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Range } from '@tt/core/util';
 
 @Component({
@@ -23,9 +23,9 @@ export class DateRangePickerComponent implements OnChanges {
   @Output()
   rangeChange: EventEmitter<Range<Date>> = new EventEmitter<Range<Date>>();
 
-  readonly rangeGroup = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
+  readonly rangeGroup = new UntypedFormGroup({
+    start: new UntypedFormControl(),
+    end: new UntypedFormControl(),
   });
 
   ngOnChanges(changes: SimpleChanges): void {

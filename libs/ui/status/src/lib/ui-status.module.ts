@@ -4,8 +4,8 @@ import {
   ResolvedTemplateDirective,
   StatusContainerComponent,
 } from './status-container/status-container.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 
 @NgModule({
   imports: [CommonModule, MatProgressSpinnerModule, MatProgressBarModule],

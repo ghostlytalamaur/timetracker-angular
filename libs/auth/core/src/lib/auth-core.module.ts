@@ -14,7 +14,7 @@ import {
   AuthModule as Auth0Module,
 } from '@auth0/auth0-angular';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
 function createAuthConfig(env: IAuthConfig): AuthConfig {
   return {

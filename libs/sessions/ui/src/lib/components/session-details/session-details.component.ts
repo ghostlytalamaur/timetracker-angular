@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ISession } from '@tt/shared';
 import { DateTime, Duration } from 'luxon';
 import { Observable } from 'rxjs';
@@ -44,7 +44,7 @@ export class SessionDetailsComponent implements OnChanges {
   @Output() saveSession = new EventEmitter<ISession>();
 
   readonly timeFormat = this.env.settings.timeFormat;
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
   readonly duration$: Observable<Duration | null>;
 
   constructor(
@@ -54,10 +54,10 @@ export class SessionDetailsComponent implements OnChanges {
     private readonly ticks$: Observable<number>,
   ) {
     const now = new Date();
-    this.form = new FormGroup({
-      date: new FormControl(now, [Validators.required]),
-      start: new FormControl(now, [Validators.required]),
-      end: new FormControl(now),
+    this.form = new UntypedFormGroup({
+      date: new UntypedFormControl(now, [Validators.required]),
+      start: new UntypedFormControl(now, [Validators.required]),
+      end: new UntypedFormControl(now),
     });
 
     this.duration$ = getDuration$(this.ticks$, () => {

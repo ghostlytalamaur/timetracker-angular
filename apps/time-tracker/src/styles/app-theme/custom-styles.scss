@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '~@angular/material/theming' as material;
+@use '@angular/material/theming' as material;
 
 @mixin custom-styles($theme) {
   $background: map.get($theme, background);

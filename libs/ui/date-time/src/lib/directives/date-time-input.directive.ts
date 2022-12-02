@@ -22,7 +22,7 @@ import {
   NG_VALIDATORS,
   ValidationErrors,
 } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { DateTime } from 'luxon';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { v4 as uuid } from 'uuid';
