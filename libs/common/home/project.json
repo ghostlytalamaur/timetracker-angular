@@ -1,4 +1,5 @@
 {
+  "name": "common-home",
   "projectType": "library",
   "sourceRoot": "libs/common/home/src",
   "prefix": "tt",

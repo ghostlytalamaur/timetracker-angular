@@ -1,4 +1,5 @@
 {
+  "name": "tags-ui",
   "projectType": "library",
   "sourceRoot": "libs/tags/ui/src",
   "prefix": "tt",

@@ -1,4 +1,5 @@
 {
+  "name": "ui-menu",
   "projectType": "library",
   "sourceRoot": "libs/ui/menu/src",
   "prefix": "tt",

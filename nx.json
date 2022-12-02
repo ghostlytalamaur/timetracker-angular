@@ -35,7 +35,7 @@
     "defaultCollection": "@nrwl/angular",
     "analytics": false
   },
-  "defaultProject": "time-tracker",
+  "defaultProject": "fire-tracker",
   "generators": {
     "@nrwl/angular": {
       "application": {

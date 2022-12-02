@@ -1,4 +1,5 @@
 {
+  "name": "core-services",
   "projectType": "library",
   "sourceRoot": "libs/core/services/src",
   "prefix": "tt",

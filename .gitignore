@@ -42,3 +42,5 @@ Thumbs.db
 # Auto generated config file
 apps/time-tracker/src/assets/config.json
 .env
+
+.angular

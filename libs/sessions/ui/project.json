@@ -1,4 +1,5 @@
 {
+  "name": "sessions-ui",
   "projectType": "library",
   "sourceRoot": "libs/sessions/ui/src",
   "prefix": "tt",

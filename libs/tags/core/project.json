@@ -1,4 +1,5 @@
 {
+  "name": "tags-core",
   "projectType": "library",
   "sourceRoot": "libs/tags/core/src",
   "prefix": "tt",

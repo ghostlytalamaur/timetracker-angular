@@ -1,4 +1,5 @@
 {
+  "name": "auth-core",
   "projectType": "library",
   "sourceRoot": "libs/auth/core/src",
   "prefix": "tt",

@@ -1,4 +1,5 @@
 {
+  "name": "ui-dialogs",
   "projectType": "library",
   "sourceRoot": "libs/ui/dialogs/src",
   "prefix": "tt",

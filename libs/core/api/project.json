@@ -1,4 +1,5 @@
 {
+  "name": "core-api",
   "projectType": "library",
   "sourceRoot": "libs/core/api/src",
   "prefix": "tt",

@@ -1,4 +1,5 @@
 {
+  "name": "ui-date-time",
   "projectType": "library",
   "sourceRoot": "libs/ui/date-time/src",
   "prefix": "tt",

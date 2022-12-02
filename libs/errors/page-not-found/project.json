@@ -1,4 +1,5 @@
 {
+  "name": "errors-page-not-found",
   "projectType": "library",
   "sourceRoot": "libs/errors/page-not-found/src",
   "prefix": "tt",

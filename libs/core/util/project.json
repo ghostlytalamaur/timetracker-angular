@@ -1,4 +1,5 @@
 {
+  "name": "core-util",
   "projectType": "library",
   "sourceRoot": "libs/core/util/src",
   "prefix": "tt",

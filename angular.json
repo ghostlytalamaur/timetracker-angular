@@ -9,6 +9,8 @@
     "core-store": "libs/core/store",
     "core-util": "libs/core/util",
     "errors-page-not-found": "libs/errors/page-not-found",
+    "fire-tracker": "apps/fire-tracker",
+    "firetracker-e2e": "apps/firetracker-e2e",
     "sessions-core": "libs/sessions/core",
     "sessions-ui": "libs/sessions/ui",
     "shared": "libs/shared",

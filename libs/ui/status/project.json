@@ -1,4 +1,5 @@
 {
+  "name": "ui-status",
   "projectType": "library",
   "sourceRoot": "libs/ui/status/src",
   "prefix": "tt",

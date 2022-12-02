@@ -1,4 +1,5 @@
 {
+  "name": "core-store",
   "projectType": "library",
   "sourceRoot": "libs/core/store/src",
   "prefix": "tt",

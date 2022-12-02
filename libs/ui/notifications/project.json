@@ -1,4 +1,5 @@
 {
+  "name": "ui-notifications",
   "projectType": "library",
   "sourceRoot": "libs/ui/notifications/src",
   "prefix": "tt",

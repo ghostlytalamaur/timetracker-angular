@@ -1,4 +1,5 @@
 {
+  "name": "sessions-core",
   "projectType": "library",
   "sourceRoot": "libs/sessions/core/src",
   "prefix": "tt",

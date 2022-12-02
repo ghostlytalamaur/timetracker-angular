@@ -1,4 +1,5 @@
 {
+  "name": "backend",
   "sourceRoot": "apps/backend/src",
   "projectType": "application",
   "prefix": "backend",

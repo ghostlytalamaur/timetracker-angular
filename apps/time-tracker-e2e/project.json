@@ -1,4 +1,5 @@
 {
+  "name": "time-tracker-e2e",
   "sourceRoot": "apps/time-tracker-e2e/src",
   "projectType": "application",
   "targets": {
