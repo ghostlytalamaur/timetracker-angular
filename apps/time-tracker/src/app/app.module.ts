@@ -14,6 +14,8 @@ import { appInitializerFactory } from './app-initializer.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { ENVIRONMENT } from '@tt/core/services';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 function createAuthConfig(): IAuthConfig {
   return {
@@ -40,6 +42,8 @@ function createAuthConfig(): IAuthConfig {
 
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializerFactory, multi: true },
