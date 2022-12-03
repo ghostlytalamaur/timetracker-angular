@@ -7,7 +7,7 @@
   <tbody>
   <tr *ngFor="let session of sessions" class="border border-gray-700">
     <td>{{ session.start | date }}</td>
-    <td>{{ session.durationMs }}</td>
+    <td>{{ session | ttSessionDuration }}</td>
   </tr>
   </tbody>
 </table>

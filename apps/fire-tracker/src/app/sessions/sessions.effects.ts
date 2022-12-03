@@ -10,7 +10,6 @@ import {
   FirestoreDataConverter,
   query,
   QueryDocumentSnapshot,
-  SnapshotOptions,
   Timestamp,
   updateDoc, where,
 } from '@angular/fire/firestore';
