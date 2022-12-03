@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Session } from '../sessions.store';
 import { v4 } from 'uuid';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'tt-session-recorder',
   templateUrl: './session-recorder.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block' },
   standalone: true,
 })
 export class SessionRecorderComponent {
@@ -14,13 +16,13 @@ export class SessionRecorderComponent {
   @Output()
   readonly startSession = new EventEmitter<Session>();
   @Output()
-  readonly stopSession = new EventEmitter<{ id: string; durationMs: number }>();
+  readonly sessionChange = new EventEmitter<Update<Session>>();
 
   protected onToggle(): void {
     if (this.session) {
-      this.stopSession.emit({
+      this.sessionChange.emit({
         id: this.session.id,
-        durationMs: Date.now() - this.session.start.valueOf(),
+        changes: { durationMs: Date.now() - this.session.start.valueOf() },
       });
     } else {
       this.startSession.emit({

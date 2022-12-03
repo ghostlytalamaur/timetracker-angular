@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import { SessionRecorderComponent } from "../session-recorder/session-recorder.component";
-import { Store } from "@ngrx/store";
-import { selectActiveSession, selectSessions, Session, sessionActions } from "../sessions.store";
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
+import { Store } from '@ngrx/store';
+import { selectActiveSession, selectSessions, Session, sessionActions } from '../sessions.store';
 import { LetModule, PushModule } from '@ngrx/component';
 import { SessionsTableComponent } from '../sessions-table/sessions-table.component';
 import { UserButtonComponent } from '../../header/user-button/user-button.component';
 import { TopBarLayoutComponent } from '../../layout/top-bar-layout/top-bar-layout.component';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'tt-sessions',
@@ -31,7 +32,7 @@ export class SessionsPageComponent {
     this.store.dispatch(sessionActions.startSession({ session }));
   }
 
-  protected onStopSession(session: { id: string; durationMs: number }): void {
-    this.store.dispatch(sessionActions.stopSession(session));
+  protected onSessionChange(changes: Update<Session>): void {
+    this.store.dispatch(sessionActions.changeSession({ changes }));
   }
 }

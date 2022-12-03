@@ -3,13 +3,17 @@
   input:focus-visible {
     outline: none;
   }
+
+  td {
+    padding: 0;
+  }
 }
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
 @layer components {
   .input {
-    @apply p-2 bg-gray-700;
+    @apply p-2 bg-gray-100 dark:bg-slate-400/10;
   }
 
   .btn {

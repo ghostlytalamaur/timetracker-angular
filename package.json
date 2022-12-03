@@ -59,6 +59,7 @@
     "@rx-angular/template": "1.0.0-rc.4",
     "fp-ts": "^2.13.1",
     "jwks-rsa": "2.0.1",
+    "date-fns": "2.29.3",
     "luxon": "^3.1.1",
     "luxon-angular": "^5.2.0",
     "mongodb": "3.6.4",

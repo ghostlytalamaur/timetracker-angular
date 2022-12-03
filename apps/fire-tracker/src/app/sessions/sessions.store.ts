@@ -1,9 +1,10 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState, Update } from '@ngrx/entity';
 import {
   createActionGroup,
   createFeature,
   createReducer,
-  createSelector, emptyProps,
+  createSelector,
+  emptyProps,
   on,
   props,
 } from '@ngrx/store';
@@ -19,7 +20,7 @@ export const sessionActions = createActionGroup({
   source: 'Sessions',
   events: {
     'Start Session': props<{ session: Session }>(),
-    'Stop Session': props<{ id: string; durationMs: number }>(),
+    'Change Session': props<{ changes: Update<Session> }>(),
     'Sessions Changed': props<{ sessions: Session[] }>(),
     'Sessions Loaded': props<{ sessions: Session[] }>(),
     'Clear Sessions': emptyProps(),
@@ -33,6 +34,9 @@ export const sessionsFeature = createFeature({
   name: 'sessions',
   reducer: createReducer(
     adapter.getInitialState(),
+    on(sessionActions.changeSession, (state, { changes }) => {
+      return adapter.updateOne(changes, state);
+    }),
     on(sessionActions.clearSessions, (state) => {
       return adapter.removeAll(state);
     }),

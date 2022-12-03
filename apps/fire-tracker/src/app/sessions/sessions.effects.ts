@@ -11,7 +11,8 @@ import {
   query,
   QueryDocumentSnapshot,
   Timestamp,
-  updateDoc, where,
+  updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { Session, sessionActions } from './sessions.store';
 import { EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
@@ -79,14 +80,12 @@ export class SessionsEffects {
     { dispatch: false },
   );
 
-  public readonly onStopSession = createEffect(
+  public readonly onChangeSession = createEffect(
     () => {
       return this.actions.pipe(
-        ofType(sessionActions.stopSession),
-        mergeMap((action) => {
-          return updateDoc(doc(this.sessionsCol, action.id), {
-            durationMs: action.durationMs,
-          });
+        ofType(sessionActions.changeSession),
+        mergeMap(({ changes: { id, changes } }) => {
+          return updateDoc(doc(this.sessionsCol, id as string), changes);
         }),
       );
     },
@@ -95,19 +94,19 @@ export class SessionsEffects {
 
   public readonly onLoadSessions = createEffect(() => {
     return this.store.select(authFeature.selectUser).pipe(
-     switchMap(user => {
-       if (!user) {
-         return of(sessionActions.clearSessions());
-       }
+      switchMap((user) => {
+        if (!user) {
+          return of(sessionActions.clearSessions());
+        }
 
-       return collectionChanges(query(this.sessionsCol, where('uid', '==', user.id))).pipe(
-         map((changes) => {
-           const sessions = changes.map((change) => change.doc.data());
+        return collectionChanges(query(this.sessionsCol, where('uid', '==', user.id))).pipe(
+          map((changes) => {
+            const sessions = changes.map((change) => change.doc.data());
 
-           return sessionActions.sessionsChanged({ sessions });
-         }),
-       );
-     })
-    )
+            return sessionActions.sessionsChanged({ sessions });
+          }),
+        );
+      }),
+    );
   });
 }

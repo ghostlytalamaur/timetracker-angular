@@ -1,0 +1,23 @@
+th {
+  @apply p-2 text-left;
+}
+td {
+  @apply border-x border-slate-300/10;
+}
+tr {
+  @apply border-b border-slate-300/10;
+}
+
+.col-description {
+  @apply text-left;
+}
+
+.col-start,
+.col-end,
+.col-duration {
+  @apply text-center w-20;
+}
+
+input {
+  text-align: inherit;
+}

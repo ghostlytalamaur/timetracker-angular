@@ -22,3 +22,26 @@ function formatNum(num: number): string {
 
   return num.toString();
 }
+
+export function parseDuration(durationStr: string): number {
+  const parseRes = /^ *(?:(\d+)h)?\s*(?:(\d+)m)?\s*$/.exec(durationStr);
+  if (!parseRes) {
+    return NaN;
+  }
+
+  const hours = +parseRes[1];
+  const min = +parseRes[2];
+  let ms = 0;
+  let valid = false;
+  if (!isNaN(hours)) {
+    ms += hours * MS_PER_HOUR;
+    valid = true;
+  }
+
+  if (!isNaN(min)) {
+    ms += min * MS_PER_SEC;
+    valid = true;
+  }
+
+  return valid ? ms : NaN;
+}

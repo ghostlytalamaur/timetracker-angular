@@ -1,15 +1,58 @@
 <table class="w-full table-fixed">
   <thead>
-    <th class="text-left">Start</th>
-    <th class="text-left">End</th>
-    <th class="text-left">Duration</th>
+  <th class="col-description">Description</th>
+  <th class="col-start">Start</th>
+  <th class="col-end">End</th>
+  <th class="col-duration">Duration</th>
   </thead>
 
   <tbody>
-    <tr *ngFor="let session of sessions" class="border border-gray-700">
-      <td>{{ session.start | date : 'HH:mm' }}</td>
-      <td>{{ session.durationMs >= 0 ? (session | ttSessionEnd | date : 'HH:mm') : '' }}</td>
-      <td>{{ session | ttSessionDuration }}</td>
-    </tr>
+  <tr *ngFor="let row of rows; trackBy: trackById">
+    <td class="col-description">
+      <input
+        class="block w-full h-full input"
+        type="text"
+        name="value"
+        [(ngModel)]="row.description"
+        [ngModelOptions]="{ standalone: true }"
+        (blur)="onDescriptionChange(row)"
+        (keyup.enter)="onDescriptionChange(row)"
+        (keyup.escape)="resetRow(row)"
+      />
+    </td>
+    <td class="col-start">
+      <input
+        class="block w-full h-full input"
+        type="text"
+        [(ngModel)]="row.start"
+        [ngModelOptions]="{ standalone: true }"
+        (keyup.enter)="onStartChange(row)"
+        (blur)="onStartChange(row)"
+        (keyup.escape)="resetRow(row)"
+      />
+    </td>
+    <td class="col-end">
+      <input
+        class="block w-full h-full input"
+        type="text"
+        [(ngModel)]="row.end"
+        [ngModelOptions]="{ standalone: true }"
+        (keyup.enter)="onEndChange(row)"
+        (blur)="onEndChange(row)"
+        (keyup.escape)="resetRow(row)"
+      />
+    </td>
+    <td class="col-duration">
+      <input
+        class="block w-full h-full input"
+        type="text"
+        [(ngModel)]="row.duration"
+        [ngModelOptions]="{ standalone: true }"
+        (keyup.enter)="onDurationChange(row)"
+        (blur)="onDurationChange(row)"
+        (keyup.escape)="resetRow(row)"
+      />
+    </td>
+  </tr>
   </tbody>
 </table>
