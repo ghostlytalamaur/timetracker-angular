@@ -1,13 +1,15 @@
-<table class="md:w-64 w-full table-fixed">
+<table class="w-full table-fixed">
   <thead>
-  <th class="text-left">Start</th>
-  <th class="text-left">Duration</th>
+    <th class="text-left">Start</th>
+    <th class="text-left">End</th>
+    <th class="text-left">Duration</th>
   </thead>
 
   <tbody>
-  <tr *ngFor="let session of sessions" class="border border-gray-700">
-    <td>{{ session.start | date }}</td>
-    <td>{{ session | ttSessionDuration }}</td>
-  </tr>
+    <tr *ngFor="let session of sessions" class="border border-gray-700">
+      <td>{{ session.start | date : 'HH:mm' }}</td>
+      <td>{{ session.durationMs >= 0 ? (session | ttSessionEnd | date : 'HH:mm') : '' }}</td>
+      <td>{{ session | ttSessionDuration }}</td>
+    </tr>
   </tbody>
 </table>
