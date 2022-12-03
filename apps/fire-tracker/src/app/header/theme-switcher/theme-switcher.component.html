@@ -1,0 +1,7 @@
+<button
+  class="btn rounded-full"
+  (click)="onChangeDarkMode()"
+  *ngrxLet="darkMode$; let darkMode"
+>
+  {{ darkMode ? 'Dark' : 'Light' }}
+</button>

@@ -1,0 +1,21 @@
+<form (ngSubmit)="onLogin()" class="flex flex-col items-center p-4 gap-4">
+  <input
+    class="input"
+    type="email"
+    id="email"
+    name="email"
+    [(ngModel)]="email"
+    required
+    placeholder="Email"
+  />
+  <input
+    class="input"
+    type="password"
+    name="password"
+    [(ngModel)]="password"
+    required
+    placeholder="Password"
+  />
+
+  <button class="btn" type="submit" (click)="onLogin()">Login</button>
+</form>

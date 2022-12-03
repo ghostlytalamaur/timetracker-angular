@@ -6,13 +6,19 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/shared/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/shared/**/*.ts"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/shared"],
+      "outputs": [
+        "coverage/libs/shared"
+      ],
       "options": {
         "jestConfig": "libs/shared/jest.config.ts",
         "passWithNoTests": true

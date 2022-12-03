@@ -7,13 +7,20 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/sessions/core/src/**/*.ts", "libs/sessions/core/src/**/*.html"]
+        "lintFilePatterns": [
+          "libs/sessions/core/src/**/*.ts",
+          "libs/sessions/core/src/**/*.html"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/sessions/core"],
+      "outputs": [
+        "coverage/libs/sessions/core"
+      ],
       "options": {
         "jestConfig": "libs/sessions/core/jest.config.ts",
         "passWithNoTests": true

@@ -44,3 +44,8 @@ apps/time-tracker/src/assets/config.json
 .env
 
 .angular
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

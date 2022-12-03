@@ -7,13 +7,20 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/ui/animations/src/**/*.ts", "libs/ui/animations/src/**/*.html"]
+        "lintFilePatterns": [
+          "libs/ui/animations/src/**/*.ts",
+          "libs/ui/animations/src/**/*.html"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/animations"],
+      "outputs": [
+        "coverage/libs/ui/animations"
+      ],
       "options": {
         "jestConfig": "libs/ui/animations/jest.config.ts",
         "passWithNoTests": true

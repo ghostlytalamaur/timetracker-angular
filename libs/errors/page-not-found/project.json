@@ -12,11 +12,15 @@
           "libs/errors/page-not-found/src/**/*.html"
         ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/errors/page-not-found"],
+      "outputs": [
+        "coverage/libs/errors/page-not-found"
+      ],
       "options": {
         "jestConfig": "libs/errors/page-not-found/jest.config.ts",
         "passWithNoTests": true

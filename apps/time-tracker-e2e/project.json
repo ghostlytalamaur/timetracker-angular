@@ -19,11 +19,17 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["apps/time-tracker-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": [
+          "apps/time-tracker-e2e/**/*.{js,ts}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   },
   "tags": [],
-  "implicitDependencies": ["time-tracker"]
+  "implicitDependencies": [
+    "time-tracker"
+  ]
 }

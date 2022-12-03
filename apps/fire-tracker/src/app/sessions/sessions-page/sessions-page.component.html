@@ -1,0 +1,7 @@
+<tt-top-bar-layout>
+  <ng-container *ngrxLet="{ activeSession: activeSession$, sessions: sessions$ }; let vm">
+    <tt-session-recorder [session]="vm.activeSession" (startSession)="onStartSession($event)"
+                         (stopSession)="onStopSession($event)"></tt-session-recorder>
+    <tt-sessions-table [sessions]="vm.sessions"></tt-sessions-table>
+  </ng-container>
+</tt-top-bar-layout>

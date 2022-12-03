@@ -1,13 +1,19 @@
 {
   "projects": {
-    "prod": "timetracker-1548352730517",
-    "dev": "timetracker-dev-8cae3"
+    "default": "fire-tracker-b48f3"
   },
   "targets": {
     "timetracker-1548352730517": {
       "hosting": {
         "time-tracker": [
           "timetracker-1548352730517"
+        ]
+      }
+    },
+    "fire-tracker-b48f3": {
+      "hosting": {
+        "fire-tracker": [
+          "fire-tracker-b48f3"
         ]
       }
     }

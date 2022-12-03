@@ -1,0 +1,13 @@
+<table class="md:w-64 w-full table-fixed">
+  <thead>
+  <th class="text-left">Start</th>
+  <th class="text-left">Duration</th>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let session of sessions" class="border border-gray-700">
+    <td>{{ session.start | date }}</td>
+    <td>{{ session.durationMs }}</td>
+  </tr>
+  </tbody>
+</table>

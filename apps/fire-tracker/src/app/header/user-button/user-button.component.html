@@ -1,0 +1,10 @@
+<div *ngIf="user$ | ngrxPush as user" class="rounder px-4 py-2 flex items-center gap-2" [cdkMenuTriggerFor]="menu">
+  <div class="rounded-full bg-gray-300 w-6 h-6 material-icons">account</div>
+  <div>{{ user.email }}</div>
+
+  <ng-template #menu>
+    <div class="border border-gray-700 rounder">
+      <button class="btn">Sign Out</button>
+    </div>
+  </ng-template>
+</div>

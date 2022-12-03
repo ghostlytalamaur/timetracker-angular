@@ -1,0 +1,11 @@
+<ng-container *ngIf="user$ | ngrxPush as user">
+  <div class="w-fit mx-auto bg-slate-100 dark:bg-slate-800 shadow-xl rounded-xl p-4">
+    <div class="flex flex">
+      <div><mat-icon class="w-24 h-24">help</mat-icon></div>
+      <div class="text-sky-500 dark:text-sky-400">{{ user.email }}</div>
+    </div>
+    <div class="flex justify-end">
+      <button class="btn" (click)="onLogout()">Logout</button>
+    </div>
+  </div>
+</ng-container>

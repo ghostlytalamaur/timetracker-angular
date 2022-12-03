@@ -7,16 +7,26 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/fire-tracker",
         "index": "apps/fire-tracker/src/index.html",
         "main": "apps/fire-tracker/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/fire-tracker/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/fire-tracker/src/favicon.ico", "apps/fire-tracker/src/assets"],
-        "styles": ["apps/fire-tracker/src/styles.scss"],
+        "assets": [
+          "apps/fire-tracker/src/favicon.ico",
+          "apps/fire-tracker/src/assets"
+        ],
+        "styles": [
+          "@angular/material/prebuilt-themes/indigo-pink.css",
+          "apps/fire-tracker/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -67,15 +77,30 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["apps/fire-tracker/**/*.ts", "apps/fire-tracker/**/*.html"]
+        "lintFilePatterns": [
+          "apps/fire-tracker/**/*.ts",
+          "apps/fire-tracker/**/*.html"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/fire-tracker/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "deploy": {
+      "executor": "@angular/fire:deploy",
+      "options": {
+        "prerender": false,
+        "ssr": false,
+        "browserTarget": "fire-tracker:build:production",
+        "firebaseProject": "fire-tracker-b48f3",
+        "firebaseHostingSite": "fire-tracker-b48f3"
       }
     }
   },

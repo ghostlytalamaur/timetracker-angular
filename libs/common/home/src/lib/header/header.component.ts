@@ -4,7 +4,7 @@ import { AuthService } from '@tt/auth/core';
 import { ConnectionService } from '@tt/core/api';
 
 @Component({
-  selector: 'tt-header',
+  selector: 'tt-top-bar',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

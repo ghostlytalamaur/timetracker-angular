@@ -63,5 +63,6 @@ import { UiDialogsModule } from '@tt/ui/dialogs';
     SessionsTableRowComponent,
     GroupTableRowComponent,
   ],
+  exports: [SessionsTableComponent],
 })
 export class SessionsUiModule {}
