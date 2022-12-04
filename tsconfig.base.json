@@ -18,7 +18,9 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "paths": {}
+    "paths": {
+      "@tt/ui": ["libs/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"],
   "angularCompilerOptions": {

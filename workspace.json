@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
-    "fire-tracker": "apps/fire-tracker"
+    "fire-tracker": "apps/fire-tracker",
+    "ui": "libs/ui"
   }
 }
