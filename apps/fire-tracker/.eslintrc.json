@@ -9,7 +9,10 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "parserOptions": {
-        "project": "apps/fire-tracker/tsconfig.*.json"
+        "project": [
+          "apps/fire-tracker/tsconfig.*.json",
+          "apps/fire-tracker/.storybook/tsconfig.json"
+        ]
       },
       "rules": {
         "@angular-eslint/no-host-metadata-property": "off",
