@@ -6,8 +6,11 @@ dotenv.config();
 
 async function setup() {
   const templateConfigFileName = path.resolve(
-    './apps/time-tracker/src/assets/config.template.json',
+    './apps/fire-tracker/src/assets/config.template.json',
   );
+  if (!fs.existsSync(templateConfigFileName)) {
+    return;
+  }
 
   console.log('Setup config file');
   const config = JSON.parse((await fs.promises.readFile(templateConfigFileName)).toString());

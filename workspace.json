@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "projects": {
+    "fire-tracker": "apps/fire-tracker"
+  }
+}

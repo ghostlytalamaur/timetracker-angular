@@ -18,27 +18,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "paths": {
-      "@tt/auth/core": ["libs/auth/core/src/index.ts"],
-      "@tt/common/home": ["libs/common/home/src/index.ts"],
-      "@tt/core/api": ["libs/core/api/src/index.ts"],
-      "@tt/core/services": ["libs/core/services/src/index.ts"],
-      "@tt/core/store": ["libs/core/store/src/index.ts"],
-      "@tt/core/util": ["libs/core/util/src/index.ts"],
-      "@tt/errors/page-not-found": ["libs/errors/page-not-found/src/index.ts"],
-      "@tt/sessions/core": ["libs/sessions/core/src/index.ts"],
-      "@tt/sessions/ui": ["libs/sessions/ui/src/index.ts"],
-      "@tt/shared": ["libs/shared/src/index.ts"],
-      "@tt/tags/core": ["libs/tags/core/src/index.ts"],
-      "@tt/tags/ui": ["libs/tags/ui/src/index.ts"],
-      "@tt/ui/animations": ["libs/ui/animations/src/index.ts"],
-      "@tt/ui/date-time": ["libs/ui/date-time/src/index.ts"],
-      "@tt/ui/dialogs": ["libs/ui/dialogs/src/index.ts"],
-      "@tt/ui/layout": ["libs/ui/layout/src/index.ts"],
-      "@tt/ui/menu": ["libs/ui/menu/src/index.ts"],
-      "@tt/ui/notifications": ["libs/ui/notifications/src/index.ts"],
-      "@tt/ui/status": ["libs/ui/status/src/index.ts"]
-    }
+    "paths": {}
   },
   "exclude": ["node_modules", "tmp"],
   "angularCompilerOptions": {

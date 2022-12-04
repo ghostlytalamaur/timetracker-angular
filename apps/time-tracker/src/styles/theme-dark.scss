@@ -1,7 +1,0 @@
-@use '@angular/material/theming' as mat;
-
-$_app-dark-primary: mat.mat-palette(mat.$mat-blue-gray);
-$_app-dark-accent: mat.mat-palette(mat.$mat-blue-gray);
-$_app-dark-warn: mat.mat-palette(mat.$mat-red);
-$app-dark-theme: mat.mat-dark-theme($_app-dark-primary, $_app-dark-accent, $_app-dark-warn);
-$app-dark-typography: mat.mat-typography-config();
