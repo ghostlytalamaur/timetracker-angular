@@ -19,7 +19,8 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "paths": {
-      "@tt/ui": ["libs/ui/src/index.ts"]
+      "@tt/ui": ["libs/ui/src/index.ts"],
+      "@tt/ui/calendar": ["libs/ui/calendar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"],
