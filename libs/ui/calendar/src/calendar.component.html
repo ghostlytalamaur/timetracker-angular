@@ -1,0 +1,60 @@
+<div class="flex flex-nowrap items-center justify-between font-medium text-lg p-2">
+  <div>{{ activeMonth | date : 'MMMM YYYY' }}</div>
+  <div class="flex gap-1">
+    <button
+      class="rounded-full hover:bg-gray-700/10 w-10 h-10 flex items-center justify-center transition"
+      (click)="onSwitchMonth(-1)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <polyline points="15 6 9 12 15 18"></polyline>
+      </svg>
+    </button>
+    <button
+      class="rounded-full hover:bg-gray-700/10 w-10 h-10 flex items-center justify-center transition"
+      (click)="onSwitchMonth(1)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <polyline points="9 6 15 12 9 18"></polyline>
+      </svg>
+    </button>
+  </div>
+</div>
+<div class="grid grid-cols-7 justify-items-center gap-1 select-none">
+  <div class="text-gray-700 font-medium" *ngFor="let header of headers">{{ header.caption }}</div>
+  <button
+    type="button"
+    class="rounded-full hover:bg-gray-700/10 w-10 h-10 transition select-none"
+    [class.text-gray-400]="!day.isCurMonth"
+    [ngClass]="{
+      'text-gray-400': !day.isCurMonth,
+      'bg-indigo-700/10 text-white': day.isToday,
+      'bg-indigo-700/90 text-white hover:bg-indigo-700': day.date | isSameDay : date
+    }"
+    *ngFor="let day of days"
+    (click)="onDateChange(day.date)"
+  >
+    {{ day.caption }}
+  </button>
+</div>
