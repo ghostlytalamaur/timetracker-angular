@@ -60,6 +60,10 @@ export class SessionsTableComponent implements OnChanges {
   }
 
   protected onStartChange(row: SessionRow): void {
+    if (row.start === formatStart(row.session)) {
+      return;
+    }
+
     const start = parseTime(row.session.start, row.start);
     const startMs = +start;
     if (isNaN(startMs) || startMs === +row.session.start) {
@@ -73,6 +77,10 @@ export class SessionsTableComponent implements OnChanges {
   }
 
   protected onEndChange(row: SessionRow): void {
+    if (row.start === formatEnd(row.session)) {
+      return;
+    }
+
     const end = parseTime(row.session.start, row.end);
     const durationMs = +end - +row.session.start;
     if (isNaN(durationMs) || durationMs < 0 || durationMs === row.session.durationMs) {
@@ -84,6 +92,10 @@ export class SessionsTableComponent implements OnChanges {
   }
 
   protected onDurationChange(row: SessionRow): void {
+    if (row.start === formatSessionDuration(row.session)) {
+      return;
+    }
+
     const durationMs = parseDuration(row.duration);
     if (isNaN(durationMs) || durationMs === row.session.durationMs) {
       this.resetRow(row);
@@ -125,10 +137,25 @@ function createRows(sessions: Session[]): SessionRow[] {
     });
 }
 
-function fillRow(row: SessionRow, session: Session): void {
+function formatStart(session: Session): string {
+  return format(session.start, 'HH:mm');
+}
+
+function formatEnd(session: Session): string {
   const isActive = session.durationMs < 0;
+
+  return !isActive ? format(+session.start + session.durationMs, 'HH:mm') : '';
+}
+
+function formatSessionDuration(session: Session): string {
+  const isActive = session.durationMs < 0;
+
+  return !isActive ? formatDuration(session.durationMs) : '';
+}
+
+function fillRow(row: SessionRow, session: Session): void {
   row.description = session.description;
-  row.start = format(session.start, 'HH:mm');
-  row.end = !isActive ? format(+session.start + session.durationMs, 'HH:mm') : '';
-  row.duration = !isActive ? formatDuration(session.durationMs) : '';
+  row.start = formatStart(session);
+  row.end = formatEnd(session);
+  row.duration = formatSessionDuration(session);
 }
