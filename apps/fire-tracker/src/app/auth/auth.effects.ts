@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { getErrorMessage } from '../utils/get-error-message';
 import { authActions } from './auth.store';
 import { Router } from '@angular/router';
@@ -18,16 +18,19 @@ export class AuthEffects {
       ofType(authActions.silentSignIn),
       switchMap(() => {
         return user(this.auth).pipe(
-          map(user => {
+          take(1),
+          map((user) => {
             if (user) {
-              return authActions.silentSignInSuccess({ user: { id: user.uid, email: user.email ?? '' }});
+              return authActions.silentSignInSuccess({
+                user: { id: user.uid, email: user.email ?? '' },
+              });
             }
 
             return authActions.silentSignInFailure();
           }),
           catchError(() => of(authActions.silentSignInFailure())),
         );
-      })
+      }),
     );
   });
 
@@ -64,7 +67,7 @@ export class AuthEffects {
         ofType(authActions.signOut),
         tap(async () => {
           await signOut(this.auth);
-          await this.router.navigate(['/']);
+          await this.router.navigate(['/login']);
         }),
       );
     },

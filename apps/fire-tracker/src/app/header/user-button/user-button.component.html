@@ -3,8 +3,8 @@
   <div>{{ user.email }}</div>
 
   <ng-template #menu>
-    <div class="border border-gray-700 rounder">
-      <button class="btn">Sign Out</button>
+    <div cdkMenu class="menu">
+      <button cdkMenuItem class="menu-item" (click)="onSignOut()">Sign Out</button>
     </div>
   </ng-template>
 </div>
