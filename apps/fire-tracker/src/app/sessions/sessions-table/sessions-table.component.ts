@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
 import { formatDuration, parseDuration } from '../../utils/duration';
 import { Update } from '@ngrx/entity';
 import { FormsModule } from '@angular/forms';
-import { format } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import { parseTime } from '../../utils/date-time';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { isActive, Session } from '../session';
+import { DatePickerDirective } from '@tt/ui/calendar';
 
 interface SessionRow {
   readonly id: string;
@@ -32,7 +33,7 @@ interface SessionRow {
   styleUrls: ['./sessions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkMenuTrigger, CdkMenu, CdkMenuItem],
+  imports: [CommonModule, FormsModule, CdkMenuTrigger, CdkMenu, CdkMenuItem, DatePickerDirective],
 })
 export class SessionsTableComponent implements OnChanges {
   @Input()
@@ -49,6 +50,24 @@ export class SessionsTableComponent implements OnChanges {
     if (changes['sessions']) {
       this.rows = createRows(this.sessions);
     }
+  }
+
+  protected onChangeDate(row: SessionRow, date: Date): void {
+    if (isSameDay(row.session.start, date)) {
+      return;
+    }
+
+    const start = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      row.session.start.getHours(),
+      row.session.start.getMinutes(),
+      row.session.start.getSeconds(),
+      row.session.start.getMilliseconds(),
+    );
+
+    this.sessionChange.emit({ id: row.id, changes: { start } });
   }
 
   protected onDescriptionChange(row: SessionRow): void {

@@ -48,6 +48,7 @@ export class DatePickerDirective implements OnDestroy {
             overlayY: 'top',
           },
         ]),
+      panelClass: 'tt-date-picker-panel',
       disposeOnNavigation: true,
       hasBackdrop: true,
     });
@@ -55,6 +56,7 @@ export class DatePickerDirective implements OnDestroy {
 
     const portal = new ComponentPortal(CalendarComponent);
     const calendarRef = ref.attach(portal);
+    calendarRef.instance.date = this.date;
     const sub = calendarRef.instance.dateChange.pipe(take(1)).subscribe((date) => {
       this.date = date;
       this.dateChange.emit(date);

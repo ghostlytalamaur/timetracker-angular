@@ -30,3 +30,8 @@ $theme: mat.define-light-theme(
 @include mat.core();
 @include mat.core-theme($theme);
 @include mat.all-component-themes($theme);
+
+.tt-date-picker-panel {
+  @apply bg-white dark:bg-slate-800 rounded-2xl p-2
+  border border-gray-200 dark:border-gray-700;
+}
