@@ -1,6 +1,6 @@
 <div class="flex flex-nowrap items-center justify-between font-medium text-lg p-2">
-  <div>{{ activeMonth | date : 'MMMM YYYY' }}</div>
-  <div class="flex gap-1">
+  <div class="dark:text-sky-400">{{ activeMonth | date : 'MMMM YYYY' }}</div>
+  <div class="flex gap-1 dark:text-gray-400">
     <button
       class="rounded-full hover:bg-gray-700/10 w-10 h-10 flex items-center justify-center transition"
       (click)="onSwitchMonth(-1)"
@@ -42,15 +42,17 @@
   </div>
 </div>
 <div class="grid grid-cols-7 justify-items-center gap-1 select-none">
-  <div class="text-gray-700 font-medium" *ngFor="let header of headers">{{ header.caption }}</div>
+  <div class="text-gray-700 font-medium dark:text-sky-400" *ngFor="let header of headers">
+    {{ header.caption }}
+  </div>
   <button
     type="button"
-    class="rounded-full hover:bg-gray-700/10 w-10 h-10 transition select-none"
-    [class.text-gray-400]="!day.isCurMonth"
+    class="rounded-full hover:bg-gray-700/10 w-10 h-10 transition select-none dark:text-white dark:hover:bg-gray-300/10"
     [ngClass]="{
-      'text-gray-400': !day.isCurMonth,
-      'bg-indigo-700/10 text-white': day.isToday,
-      'bg-indigo-700/90 text-white hover:bg-indigo-700': day.date | isSameDay : date
+      'text-gray-400 dark:text-gray-500': !day.isCurMonth,
+      'bg-indigo-700/10 text-white dark:bg-indigo-300/30': day.isToday,
+      'bg-indigo-700/90 text-white hover:bg-indigo-700 dark:bg-indigo-600/90 hover:dark:bg-indigo-600':
+        day.date | isSameDay : date
     }"
     *ngFor="let day of days"
     (click)="onDateChange(day.date)"
