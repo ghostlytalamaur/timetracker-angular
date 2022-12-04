@@ -21,8 +21,10 @@ export const sessionActions = createActionGroup({
   events: {
     'Start Session': props<{ session: Session }>(),
     'Change Session': props<{ changes: Update<Session> }>(),
+    'Delete Session': props<{ id: string }>(),
     'Sessions Changed': props<{ sessions: Session[] }>(),
     'Sessions Loaded': props<{ sessions: Session[] }>(),
+    'Sessions Deleted': props<{ ids: string[] }>(),
     'Clear Sessions': emptyProps(),
   },
 });
@@ -39,6 +41,12 @@ export const sessionsFeature = createFeature({
     }),
     on(sessionActions.clearSessions, (state) => {
       return adapter.removeAll(state);
+    }),
+    on(sessionActions.deleteSession, (state, { id }): State => {
+      return adapter.removeOne(id, state);
+    }),
+    on(sessionActions.sessionsDeleted, (state, { ids }): State => {
+      return adapter.removeMany(ids, state);
     }),
     on(sessionActions.sessionsChanged, (state, { sessions }) => {
       return adapter.upsertMany(sessions, state);

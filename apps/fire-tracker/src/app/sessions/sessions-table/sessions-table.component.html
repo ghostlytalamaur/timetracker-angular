@@ -1,58 +1,75 @@
-<table class="w-full table-fixed">
-  <thead>
-  <th class="col-description">Description</th>
-  <th class="col-start">Start</th>
-  <th class="col-end">End</th>
-  <th class="col-duration">Duration</th>
-  </thead>
+<div class="sessions-grid">
+    <th class="col-description">Description</th>
+    <th class="col-start">Start</th>
+    <th class="col-end">End</th>
+    <th class="col-duration">Duration</th>
+    <th class="col-menu"></th>
 
-  <tbody>
-  <tr *ngFor="let row of rows; trackBy: trackById">
-    <td class="col-description">
-      <input
-        class="block w-full h-full input"
-        type="text"
-        name="value"
-        [(ngModel)]="row.description"
-        [ngModelOptions]="{ standalone: true }"
-        (blur)="onDescriptionChange(row)"
-        (keyup.enter)="onDescriptionChange(row)"
-        (keyup.escape)="resetRow(row)"
-      />
-    </td>
-    <td class="col-start">
-      <input
-        class="block w-full h-full input"
-        type="text"
-        [(ngModel)]="row.start"
-        [ngModelOptions]="{ standalone: true }"
-        (keyup.enter)="onStartChange(row)"
-        (blur)="onStartChange(row)"
-        (keyup.escape)="resetRow(row)"
-      />
-    </td>
-    <td class="col-end">
-      <input
-        class="block w-full h-full input"
-        type="text"
-        [(ngModel)]="row.end"
-        [ngModelOptions]="{ standalone: true }"
-        (keyup.enter)="onEndChange(row)"
-        (blur)="onEndChange(row)"
-        (keyup.escape)="resetRow(row)"
-      />
-    </td>
-    <td class="col-duration">
-      <input
-        class="block w-full h-full input"
-        type="text"
-        [(ngModel)]="row.duration"
-        [ngModelOptions]="{ standalone: true }"
-        (keyup.enter)="onDurationChange(row)"
-        (blur)="onDurationChange(row)"
-        (keyup.escape)="resetRow(row)"
-      />
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <ng-container *ngFor="let row of rows; trackBy: trackById">
+      <div class="col-description">
+        <input
+          class="block w-full h-full input"
+          type="text"
+          name="value"
+          [(ngModel)]="row.description"
+          [ngModelOptions]="{ standalone: true }"
+          (blur)="onDescriptionChange(row)"
+          (keyup.enter)="onDescriptionChange(row)"
+          (keyup.escape)="resetRow(row)"
+        />
+      </div>
+
+      <div class="col-start">
+        <input
+          class="block w-full h-full input"
+          type="text"
+          [(ngModel)]="row.start"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup.enter)="onStartChange(row)"
+          (blur)="onStartChange(row)"
+          (keyup.escape)="resetRow(row)"
+        />
+      </div>
+
+      <div class="col-end">
+        <input
+          class="block w-full h-full input"
+          type="text"
+          [(ngModel)]="row.end"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup.enter)="onEndChange(row)"
+          (blur)="onEndChange(row)"
+          (keyup.escape)="resetRow(row)"
+        />
+      </div>
+
+      <div class="col-duration">
+        <input
+          class="block w-full h-full input"
+          type="text"
+          [(ngModel)]="row.duration"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup.enter)="onDurationChange(row)"
+          (blur)="onDurationChange(row)"
+          (keyup.escape)="resetRow(row)"
+        />
+      </div>
+
+      <div class="col-menu">
+        <div class="flex items-center justify-center w-full h-full">
+          <button class="btn-icon" [cdkMenuTriggerFor]="menu" [cdkMenuTriggerData]="{ $implicit: row.id }">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="currentColor"
+                    d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+</div>
+
+<ng-template #menu let-id>
+  <div class="menu" cdkMenu>
+    <button class="menu-item" cdkMenuItem (click)="onDeleteSession(id)">Delete</button>
+  </div>
+</ng-template>

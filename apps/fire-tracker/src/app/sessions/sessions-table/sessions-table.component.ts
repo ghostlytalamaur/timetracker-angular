@@ -15,6 +15,7 @@ import { Update } from '@ngrx/entity';
 import { FormsModule } from '@angular/forms';
 import { format } from 'date-fns';
 import { parseTime } from '../../utils/date-time';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 interface SessionRow {
   readonly id: string;
@@ -31,13 +32,15 @@ interface SessionRow {
   styleUrls: ['./sessions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CdkMenuTrigger, CdkMenu, CdkMenuItem],
 })
 export class SessionsTableComponent implements OnChanges {
   @Input()
   sessions = new Array<Session>();
   @Output()
   readonly sessionChange = new EventEmitter<Update<Session>>();
+  @Output()
+  readonly deleteSession = new EventEmitter<string>();
 
   protected rows = new Array<SessionRow>();
   protected readonly trackById: TrackByFunction<SessionRow> = (index, item) => item.id;
@@ -95,6 +98,10 @@ export class SessionsTableComponent implements OnChanges {
 
   protected resetRow(row: SessionRow): void {
     fillRow(row, row.session);
+  }
+
+  protected onDeleteSession(id: string): void {
+    this.deleteSession.emit(id);
   }
 }
 

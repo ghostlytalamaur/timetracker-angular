@@ -9,6 +9,7 @@
     <tt-sessions-table
       [sessions]="vm.sessions"
       (sessionChange)="onSessionChange($event)"
+      (deleteSession)="onDeleteSession($event)"
     ></tt-sessions-table>
   </ng-container>
 </tt-top-bar-layout>

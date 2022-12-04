@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import {
   addDoc,
   collection,
   collectionChanges,
+  deleteDoc,
   doc,
   Firestore,
   FirestoreDataConverter,
@@ -15,7 +16,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Session, sessionActions } from './sessions.store';
-import { EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
+import { EMPTY, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
 
 interface SessionData {
@@ -92,6 +93,18 @@ export class SessionsEffects {
     { dispatch: false },
   );
 
+  public readonly onDeleteSession = createEffect(
+    () => {
+      return this.actions.pipe(
+        ofType(sessionActions.deleteSession),
+        mergeMap(({ id }) => {
+          return deleteDoc(doc(this.sessionsCol, id));
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
   public readonly onLoadSessions = createEffect(() => {
     return this.store.select(authFeature.selectUser).pipe(
       switchMap((user) => {
@@ -100,10 +113,29 @@ export class SessionsEffects {
         }
 
         return collectionChanges(query(this.sessionsCol, where('uid', '==', user.id))).pipe(
-          map((changes) => {
-            const sessions = changes.map((change) => change.doc.data());
+          switchMap((changes) => {
+            const { updated, deleted } = changes.reduce(
+              (acc, change) => {
+                if (change.type === 'removed') {
+                  acc.deleted.push(change.doc.id);
+                } else {
+                  acc.updated.push(change.doc.data());
+                }
 
-            return sessionActions.sessionsChanged({ sessions });
+                return acc;
+              },
+              { updated: new Array<Session>(), deleted: new Array<string>() },
+            );
+
+            const actions = new Array<Action>();
+            if (updated.length) {
+              actions.push(sessionActions.sessionsChanged({ sessions: updated }));
+            }
+            if (deleted.length) {
+              actions.push(sessionActions.sessionsDeleted({ ids: deleted }));
+            }
+
+            return actions;
           }),
         );
       }),

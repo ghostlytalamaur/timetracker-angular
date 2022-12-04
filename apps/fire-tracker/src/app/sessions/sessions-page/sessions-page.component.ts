@@ -35,4 +35,8 @@ export class SessionsPageComponent {
   protected onSessionChange(changes: Update<Session>): void {
     this.store.dispatch(sessionActions.changeSession({ changes }));
   }
+
+  protected onDeleteSession(id: string): void {
+    this.store.dispatch(sessionActions.deleteSession({ id }));
+  }
 }
