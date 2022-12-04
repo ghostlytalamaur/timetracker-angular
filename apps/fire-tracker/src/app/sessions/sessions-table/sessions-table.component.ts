@@ -8,7 +8,6 @@ import {
   SimpleChanges,
   TrackByFunction,
 } from '@angular/core';
-import { Session } from '../sessions.store';
 import { CommonModule } from '@angular/common';
 import { formatDuration, parseDuration } from '../../utils/duration';
 import { Update } from '@ngrx/entity';
@@ -16,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { format } from 'date-fns';
 import { parseTime } from '../../utils/date-time';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { isActive, Session } from '../session';
 
 interface SessionRow {
   readonly id: string;
@@ -142,15 +142,11 @@ function formatStart(session: Session): string {
 }
 
 function formatEnd(session: Session): string {
-  const isActive = session.durationMs < 0;
-
-  return !isActive ? format(+session.start + session.durationMs, 'HH:mm') : '';
+  return !isActive(session) ? format(+session.start + session.durationMs, 'HH:mm') : '';
 }
 
 function formatSessionDuration(session: Session): string {
-  const isActive = session.durationMs < 0;
-
-  return !isActive ? formatDuration(session.durationMs) : '';
+  return !isActive(session) ? formatDuration(session.durationMs) : '';
 }
 
 function fillRow(row: SessionRow, session: Session): void {

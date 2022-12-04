@@ -15,9 +15,10 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { Session, sessionActions } from './sessions.store';
+import { sessionActions } from './sessions.store';
 import { EMPTY, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
+import { Session } from './session';
 
 interface SessionData {
   readonly start: Timestamp;
@@ -72,7 +73,10 @@ export class SessionsEffects {
           }
 
           return addDoc(this.sessionsCol, {
-            ...action.session,
+            id: '',
+            start: action.start,
+            description: '',
+            durationMs: -1,
             uid: user.id,
           });
         }),

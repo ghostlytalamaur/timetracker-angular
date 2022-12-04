@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Session } from '../sessions.store';
-import { v4 } from 'uuid';
 import { Update } from '@ngrx/entity';
+import { Session } from '../session';
 
 @Component({
   selector: 'tt-session-recorder',
@@ -14,7 +13,7 @@ export class SessionRecorderComponent {
   @Input()
   session: Session | undefined;
   @Output()
-  readonly startSession = new EventEmitter<Session>();
+  readonly startSession = new EventEmitter<{ start: Date }>();
   @Output()
   readonly sessionChange = new EventEmitter<Update<Session>>();
 
@@ -26,10 +25,7 @@ export class SessionRecorderComponent {
       });
     } else {
       this.startSession.emit({
-        id: v4(),
         start: new Date(),
-        description: '',
-        durationMs: -1,
       });
     }
   }

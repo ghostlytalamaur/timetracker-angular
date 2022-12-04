@@ -8,18 +8,12 @@ import {
   on,
   props,
 } from '@ngrx/store';
-
-export interface Session {
-  readonly id: string;
-  readonly start: Date;
-  readonly durationMs: number;
-  readonly description: string;
-}
+import { isActive, Session } from './session';
 
 export const sessionActions = createActionGroup({
   source: 'Sessions',
   events: {
-    'Start Session': props<{ session: Session }>(),
+    'Start Session': props<{ start: Date }>(),
     'Change Session': props<{ changes: Update<Session> }>(),
     'Delete Session': props<{ id: string }>(),
     'Sessions Changed': props<{ sessions: Session[] }>(),
@@ -60,7 +54,7 @@ export const sessionsFeature = createFeature({
 function getActiveSession(state: State): Session | undefined {
   for (const id of state.ids) {
     const session = state.entities[id];
-    if (session && session.durationMs < 0) {
+    if (session && isActive(session)) {
       return session;
     }
   }
