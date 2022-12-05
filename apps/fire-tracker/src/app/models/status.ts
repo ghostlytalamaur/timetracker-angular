@@ -20,7 +20,7 @@ export function loadStatus(status: Status): Status {
 export function successStatus(status: Status): Status {
   return {
     ...status,
-    pending: true,
+    pending: false,
     resolved: true,
   };
 }

@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
 import { createSelector, Store } from '@ngrx/store';
-import { selectActiveSession, selectSessions, sessionActions } from '../sessions.store';
+import {
+  selectActiveSession,
+  selectSessions,
+  sessionActions,
+  sessionsFeature,
+} from '../sessions.store';
 import { LetModule, PushModule } from '@ngrx/component';
 import { SessionsTableComponent } from '../sessions-table/sessions-table.component';
 import { UserButtonComponent } from '../../header/user-button/user-button.component';
@@ -11,6 +16,7 @@ import { Session } from '../session';
 import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
 import { sessionsViewActions, sessionsViewFeature } from '../sessions-view.store';
 import { DateRange } from '../../models/date-range';
+import { LoaderDirective } from '../../ui/loader.directive';
 
 @Component({
   selector: 'tt-sessions',
@@ -25,6 +31,7 @@ import { DateRange } from '../../models/date-range';
     UserButtonComponent,
     TopBarLayoutComponent,
     DateRangePickerComponent,
+    LoaderDirective,
   ],
 })
 export class SessionsPageComponent implements OnInit {
@@ -35,7 +42,8 @@ export class SessionsPageComponent implements OnInit {
       selectSessions,
       selectActiveSession,
       sessionsViewFeature.selectRange,
-      (sessions, activeSession, range) => ({ sessions, activeSession, range }),
+      sessionsFeature.selectStatus,
+      (sessions, activeSession, range, status) => ({ sessions, activeSession, range, status }),
     ),
   );
 
