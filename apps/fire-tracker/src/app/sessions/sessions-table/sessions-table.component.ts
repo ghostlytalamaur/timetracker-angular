@@ -17,6 +17,7 @@ import { parseTime } from '../../utils/date-time';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { isActive, Session } from '../session';
 import { DatePickerDirective } from '@tt/ui/calendar';
+import { IconComponent } from '../../ui/icon.component';
 
 interface SessionRow {
   readonly id: string;
@@ -33,7 +34,15 @@ interface SessionRow {
   styleUrls: ['./sessions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkMenuTrigger, CdkMenu, CdkMenuItem, DatePickerDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CdkMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    DatePickerDirective,
+    IconComponent,
+  ],
 })
 export class SessionsTableComponent implements OnChanges {
   @Input()

@@ -65,7 +65,7 @@
         [ttDatePicker]="row.session.start"
         (ttDatePickerChange)="onChangeDate(row, $event)"
       >
-        📅
+        <svg [ttIcon]="'calendar-outline'"></svg>
       </button>
       <button
         class="btn-icon"
