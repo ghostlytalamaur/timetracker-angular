@@ -7,7 +7,14 @@ module.exports = {
     './apps/**/*.{html,ts,css,scss,sass,less,styl}',
     './libs/**/*.{html,ts,css,scss,sass,less,styl}',
   ],
-  theme: {},
+  theme: {
+    extend: {
+      lineHeight: {
+        11: '2.75rem',
+        12: '3rem',
+      }
+    }
+  },
   variants: {
     extend: {},
   },

@@ -1,10 +1,4 @@
-<div class="sessions-grid">
-  <div class="col-description text-medium p-2">Description</div>
-  <div class="col-start text-medium p-2">Start</div>
-  <div class="col-end text-medium p-2">End</div>
-  <div class="col-duration text-medium p-2">Duration</div>
-  <div class="col-menu text-medium p-2"></div>
-
+<div class="sessions-grid" *ngIf="rows.length > 0; else tplEmpty">
   <ng-container *ngFor="let row of rows; trackBy: trackById">
     <div class="col-description">
       <input
@@ -87,4 +81,8 @@
   <div class="menu" cdkMenu>
     <button class="menu-item" cdkMenuItem (click)="onDeleteSession(id)">Delete</button>
   </div>
+</ng-template>
+
+<ng-template #tplEmpty>
+  <div class="text-center leading-12">There is no any session</div>
 </ng-template>
