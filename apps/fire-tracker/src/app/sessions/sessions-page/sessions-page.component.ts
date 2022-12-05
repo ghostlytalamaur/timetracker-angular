@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
 import { createSelector, Store } from '@ngrx/store';
 import { selectActiveSession, selectSessions, sessionActions } from '../sessions.store';
@@ -27,7 +27,7 @@ import { DateRange } from '../../models/date-range';
     DateRangePickerComponent,
   ],
 })
-export class SessionsPageComponent {
+export class SessionsPageComponent implements OnInit {
   private readonly store = inject(Store);
 
   protected readonly vm$ = this.store.select(
@@ -38,6 +38,10 @@ export class SessionsPageComponent {
       (sessions, activeSession, range) => ({ sessions, activeSession, range }),
     ),
   );
+
+  public ngOnInit(): void {
+    this.store.dispatch(sessionActions.loadSessions());
+  }
 
   protected onStartSession(params: { start: Date }): void {
     this.store.dispatch(sessionActions.startSession(params));

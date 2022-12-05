@@ -8,6 +8,7 @@ import {
   on,
   props,
 } from '@ngrx/store';
+import { initialStatus, loadStatus, Status, successStatus } from '../models/status';
 import { isActive, Session } from './session';
 
 export const sessionActions = createActionGroup({
@@ -17,19 +18,24 @@ export const sessionActions = createActionGroup({
     'Change Session': props<{ changes: Update<Session> }>(),
     'Delete Session': props<{ id: string }>(),
     'Sessions Changed': props<{ sessions: Session[] }>(),
+    'Load Sessions': emptyProps(),
     'Sessions Loaded': props<{ sessions: Session[] }>(),
     'Sessions Deleted': props<{ ids: string[] }>(),
     'Clear Sessions': emptyProps(),
   },
 });
 
-type State = EntityState<Session>;
+interface State extends EntityState<Session> {
+  readonly status: Status;
+}
 const adapter = createEntityAdapter<Session>();
 
 export const sessionsFeature = createFeature({
   name: 'sessions',
   reducer: createReducer(
-    adapter.getInitialState(),
+    adapter.getInitialState({
+      status: initialStatus(),
+    }),
     on(sessionActions.changeSession, (state, { changes }) => {
       return adapter.updateOne(changes, state);
     }),
@@ -45,8 +51,14 @@ export const sessionsFeature = createFeature({
     on(sessionActions.sessionsChanged, (state, { sessions }) => {
       return adapter.upsertMany(sessions, state);
     }),
+    on(sessionActions.loadSessions, (state) => {
+      return { ...state, status: loadStatus(state.status) };
+    }),
     on(sessionActions.sessionsLoaded, (state, { sessions }) => {
-      return adapter.setAll(sessions, state);
+      return adapter.setAll(sessions, {
+        ...state,
+        status: successStatus(state.status),
+      });
     }),
   ),
 });

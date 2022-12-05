@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Action, createSelector, Store } from '@ngrx/store';
+import { createSelector, Store } from '@ngrx/store';
 import {
   addDoc,
   collection,
-  collectionChanges,
+  collectionSnapshots,
   deleteDoc,
   doc,
   Firestore,
@@ -16,7 +16,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { sessionActions } from './sessions.store';
-import { EMPTY, mergeMap, of, switchMap } from 'rxjs';
+import { EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
 import { sessionsViewFeature } from './sessions-view.store';
@@ -117,13 +117,15 @@ export class SessionsEffects {
       (user, range) => ({ user, range }),
     );
 
-    return this.store.select(selectQueryData).pipe(
+    const request$ = this.actions.pipe(ofType(sessionActions.loadSessions));
+
+    const load$ = this.store.select(selectQueryData).pipe(
       switchMap(({ user, range }) => {
         if (!user) {
           return of(sessionActions.clearSessions());
         }
 
-        return collectionChanges(
+        return collectionSnapshots(
           query(
             this.sessionsCol,
             where('uid', '==', user.id),
@@ -131,32 +133,17 @@ export class SessionsEffects {
             where('start', '<=', range.to),
           ),
         ).pipe(
-          switchMap((changes) => {
-            const { updated, deleted } = changes.reduce(
-              (acc, change) => {
-                if (change.type === 'removed') {
-                  acc.deleted.push(change.doc.id);
-                } else {
-                  acc.updated.push(change.doc.data());
-                }
+          map((changes) => {
+            const sessions = changes.map((doc) => {
+              return doc.data();
+            });
 
-                return acc;
-              },
-              { updated: new Array<Session>(), deleted: new Array<string>() },
-            );
-
-            const actions = new Array<Action>();
-            if (updated.length) {
-              actions.push(sessionActions.sessionsChanged({ sessions: updated }));
-            }
-            if (deleted.length) {
-              actions.push(sessionActions.sessionsDeleted({ ids: deleted }));
-            }
-
-            return actions;
+            return sessionActions.sessionsLoaded({ sessions });
           }),
         );
       }),
     );
+
+    return request$.pipe(switchMap(() => load$));
   });
 }

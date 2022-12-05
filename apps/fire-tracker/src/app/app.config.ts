@@ -2,6 +2,7 @@ import { InjectionToken } from '@angular/core';
 import { FirebaseOptions } from '@angular/fire/app';
 
 export interface AppConfig {
+  readonly useEmulators: boolean;
   readonly firebase: FirebaseOptions;
 }
 
@@ -9,6 +10,7 @@ export const APP_CONFIG = new InjectionToken<AppConfig>('APP_CONFIG', {
   providedIn: 'root',
   factory: () => {
     const config: AppConfig = {
+      useEmulators: true,
       firebase: {
         apiKey: 'AIzaSyAR62G2hpBY3QxKHihkSX0RvL2T9LVOavs',
         authDomain: 'fire-tracker-b48f3.firebaseapp.com',

@@ -1,6 +1,6 @@
 import { inject, NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getAuth, provideAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,7 @@ import { provideRouterStore } from '@ngrx/router-store';
 import { provideSilentSignIn } from './auth/silent-sign.service';
 import { preferencesFeature } from './preferences/preferences.store';
 import { PreferencesEffects } from './preferences/preferences.effects';
+import { connectFirestoreEmulator } from '@firebase/firestore';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,8 +26,22 @@ import { PreferencesEffects } from './preferences/preferences.effects';
     BrowserAnimationsModule,
     RouterModule,
     provideFirebaseApp(() => initializeApp(inject(APP_CONFIG).firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideAuth(() => {
+      const auth = getAuth();
+      const config = inject(APP_CONFIG);
+      if (config.useEmulators) {
+        connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+      }
+      return auth;
+    }),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      const config = inject(APP_CONFIG);
+      if (config.useEmulators) {
+        connectFirestoreEmulator(firestore, 'localhost', 9098);
+      }
+      return firestore;
+    }),
   ],
   providers: [
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
