@@ -11,6 +11,7 @@
         class="block w-full h-full input"
         type="text"
         name="value"
+        placeholder="Description"
         [(ngModel)]="row.description"
         [ngModelOptions]="{ standalone: true }"
         (blur)="onDescriptionChange(row)"
@@ -23,6 +24,7 @@
       <input
         class="block w-full h-full input"
         type="text"
+        placeholder="Start"
         [(ngModel)]="row.start"
         [ngModelOptions]="{ standalone: true }"
         (keyup.enter)="onStartChange(row)"
@@ -35,6 +37,7 @@
       <input
         class="block w-full h-full input"
         type="text"
+        placeholder="End"
         [(ngModel)]="row.end"
         [ngModelOptions]="{ standalone: true }"
         (keyup.enter)="onEndChange(row)"
@@ -47,6 +50,7 @@
       <input
         class="block w-full h-full input"
         type="text"
+        placeholder="Duration"
         [(ngModel)]="row.duration"
         [ngModelOptions]="{ standalone: true }"
         (keyup.enter)="onDurationChange(row)"
