@@ -27,7 +27,7 @@
   }
 
   .btn-icon {
-    @apply flex items-center justify-center
+    @apply inline-flex items-center justify-center
     rounded-full bg-transparent dark:bg-transparent h-10 w-10
     transition outline-none
     focus-visible:bg-slate-400/10 dark:focus-visible:bg-slate-400/10
@@ -36,6 +36,12 @@
     max-width: 40px;
     min-height: 40px;
     max-height: 40px;
+  }
+
+  .icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
   }
 
   .menu {

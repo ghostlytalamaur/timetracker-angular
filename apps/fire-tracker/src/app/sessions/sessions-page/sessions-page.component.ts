@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
-import { Store } from '@ngrx/store';
+import { createSelector, Store } from '@ngrx/store';
 import { selectActiveSession, selectSessions, sessionActions } from '../sessions.store';
 import { LetModule, PushModule } from '@ngrx/component';
 import { SessionsTableComponent } from '../sessions-table/sessions-table.component';
@@ -8,6 +8,9 @@ import { UserButtonComponent } from '../../header/user-button/user-button.compon
 import { TopBarLayoutComponent } from '../../layout/top-bar-layout/top-bar-layout.component';
 import { Update } from '@ngrx/entity';
 import { Session } from '../session';
+import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
+import { sessionsViewActions, sessionsViewFeature } from '../sessions-view.store';
+import { DateRange } from '../../models/date-range';
 
 @Component({
   selector: 'tt-sessions',
@@ -21,13 +24,20 @@ import { Session } from '../session';
     LetModule,
     UserButtonComponent,
     TopBarLayoutComponent,
+    DateRangePickerComponent,
   ],
 })
 export class SessionsPageComponent {
   private readonly store = inject(Store);
 
-  protected readonly sessions$ = this.store.select(selectSessions);
-  protected readonly activeSession$ = this.store.select(selectActiveSession);
+  protected readonly vm$ = this.store.select(
+    createSelector(
+      selectSessions,
+      selectActiveSession,
+      sessionsViewFeature.selectRange,
+      (sessions, activeSession, range) => ({ sessions, activeSession, range }),
+    ),
+  );
 
   protected onStartSession(params: { start: Date }): void {
     this.store.dispatch(sessionActions.startSession(params));
@@ -39,5 +49,9 @@ export class SessionsPageComponent {
 
   protected onDeleteSession(id: string): void {
     this.store.dispatch(sessionActions.deleteSession({ id }));
+  }
+
+  protected onRangeChange(range: DateRange): void {
+    this.store.dispatch(sessionsViewActions.changeRange({ range }));
   }
 }

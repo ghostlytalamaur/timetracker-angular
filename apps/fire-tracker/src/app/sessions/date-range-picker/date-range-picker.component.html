@@ -1,0 +1,8 @@
+<span>{{ range.from | date }}</span
+><span class="mx-1"> - </span><span class="mr-2">{{ range.to | date }}</span>
+<button class="btn-icon" (click)="onRangeChange(-1)">
+  <svg [ttIcon]="'previous'"></svg>
+</button>
+<button class="btn-icon" (click)="onRangeChange(1)">
+  <svg [ttIcon]="'next'"></svg>
+</button>

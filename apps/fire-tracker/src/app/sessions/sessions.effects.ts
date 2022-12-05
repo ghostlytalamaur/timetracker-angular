@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Action, createSelector, Store } from '@ngrx/store';
 import {
   addDoc,
   collection,
@@ -19,6 +19,7 @@ import { sessionActions } from './sessions.store';
 import { EMPTY, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
+import { sessionsViewFeature } from './sessions-view.store';
 
 interface SessionData {
   readonly start: Timestamp;
@@ -110,13 +111,26 @@ export class SessionsEffects {
   );
 
   public readonly onLoadSessions = createEffect(() => {
-    return this.store.select(authFeature.selectUser).pipe(
-      switchMap((user) => {
+    const selectQueryData = createSelector(
+      authFeature.selectUser,
+      sessionsViewFeature.selectRange,
+      (user, range) => ({ user, range }),
+    );
+
+    return this.store.select(selectQueryData).pipe(
+      switchMap(({ user, range }) => {
         if (!user) {
           return of(sessionActions.clearSessions());
         }
 
-        return collectionChanges(query(this.sessionsCol, where('uid', '==', user.id))).pipe(
+        return collectionChanges(
+          query(
+            this.sessionsCol,
+            where('uid', '==', user.id),
+            where('start', '>=', range.from),
+            where('start', '<=', range.to),
+          ),
+        ).pipe(
           switchMap((changes) => {
             const { updated, deleted } = changes.reduce(
               (acc, change) => {
