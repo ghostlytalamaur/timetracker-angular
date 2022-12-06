@@ -42,6 +42,9 @@ export const authFeature = createFeature({
     on(authActions.silentSignInSuccess, authActions.silentSignInFailure, (state): State => {
       return { ...state, inSilentSignIn: false };
     }),
+    on(authActions.signIn, authActions.silentSignInSuccess, (state): State => {
+      return { ...state, error: '' };
+    }),
     on(authActions.signInSuccess, authActions.silentSignInSuccess, (state, { user }): State => {
       return { ...state, user };
     }),
