@@ -5,6 +5,16 @@ export interface Session {
   readonly description: string;
 }
 
+export interface SessionsGroup {
+  readonly id: string;
+  readonly date: Date;
+  readonly sessions: Session[];
+}
+
 export function isActive(session: Session): boolean {
   return session.durationMs < 0;
+}
+
+export function getDuration(session: Session): number {
+  return isActive(session) ? Date.now() - session.start.valueOf() : session.durationMs;
 }

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, TrackByFunction } from "@angular/core";
 import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
 import { createSelector, Store } from '@ngrx/store';
 import {
   selectActiveSession,
-  selectSessions,
+  selectSessionsGroups,
   sessionActions,
   sessionsFeature,
 } from '../sessions.store';
@@ -12,11 +12,13 @@ import { SessionsTableComponent } from '../sessions-table/sessions-table.compone
 import { UserButtonComponent } from '../../header/user-button/user-button.component';
 import { TopBarLayoutComponent } from '../../layout/top-bar-layout/top-bar-layout.component';
 import { Update } from '@ngrx/entity';
-import { Session } from '../session';
+import { Session, SessionsGroup } from '../session';
 import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
 import { sessionsViewActions, sessionsViewFeature } from '../sessions-view.store';
 import { DateRange } from '../../models/date-range';
 import { LoaderDirective } from '../../ui/loader.directive';
+import { SessionsGroupComponent } from "../sessions-group/sessions-group.component";
+import { NgForOf } from "@angular/common";
 
 @Component({
   selector: 'tt-sessions',
@@ -32,6 +34,8 @@ import { LoaderDirective } from '../../ui/loader.directive';
     TopBarLayoutComponent,
     DateRangePickerComponent,
     LoaderDirective,
+    SessionsGroupComponent,
+    NgForOf,
   ],
 })
 export class SessionsPageComponent implements OnInit {
@@ -39,13 +43,20 @@ export class SessionsPageComponent implements OnInit {
 
   protected readonly vm$ = this.store.select(
     createSelector(
-      selectSessions,
+      selectSessionsGroups,
       selectActiveSession,
       sessionsViewFeature.selectRange,
       sessionsFeature.selectStatus,
-      (sessions, activeSession, range, status) => ({ sessions, activeSession, range, status }),
+      (groups, activeSession, range, status) => ({
+        groups,
+        activeSession,
+        range,
+        status,
+      }),
     ),
   );
+
+  protected readonly trackById: TrackByFunction<SessionsGroup> = (index, item) => item.id;
 
   public ngOnInit(): void {
     this.store.dispatch(sessionActions.loadSessions());

@@ -1,0 +1,11 @@
+<ng-container *ngIf="group">
+  <div class="bg-gray-100 dark:bg-slate-800 p-2 flex justify-between">
+    <span>{{ group.date | date }}</span>
+    <span><span class="text-gray-400 mr-2">Total:</span><span>{{ group.sessions | duration | ngrxPush | formatDuration }}</span></span>
+  </div>
+  <tt-sessions-table
+    [sessions]="group.sessions"
+    (sessionChange)="sessionChange.emit($event)"
+    (deleteSession)="deleteSession.emit($event)"
+  ></tt-sessions-table>
+</ng-container>

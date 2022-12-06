@@ -9,7 +9,7 @@ import {
   props,
 } from '@ngrx/store';
 import { initialStatus, loadStatus, Status, successStatus } from '../models/status';
-import { isActive, Session } from './session';
+import { isActive, Session, SessionsGroup } from "./session";
 
 export const sessionActions = createActionGroup({
   source: 'Sessions',
@@ -80,3 +80,28 @@ function getActiveSession(state: EntityState<Session>): Session | undefined {
 export const { selectAll: selectSessions } = adapter.getSelectors(sessionsFeature.selectSessions);
 
 export const selectActiveSession = createSelector(sessionsFeature.selectSessions, getActiveSession);
+
+
+export const selectSessionsGroups = createSelector(
+  selectSessions,
+  sessions => {
+    const groups = new Array<SessionsGroup>();
+    const idToGroup = new Map<string, SessionsGroup>();
+    for (const session of sessions) {
+      const id = `${session.start.getFullYear()-session.start.getMonth()-session.start.getDate()}`;
+      let group = idToGroup.get(id);
+      if (!group) {
+        group = {
+          id,
+          date: session.start,
+          sessions: [],
+        }
+        groups.push(group);
+        idToGroup.set(id, group);
+      }
+      group.sessions.push(session)
+    }
+
+    return groups.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+  }
+)

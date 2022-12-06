@@ -1,5 +1,5 @@
 <tt-top-bar-layout>
-  <ng-container *ngrxLet="vm$; let vm">
+  <div class="px-2" *ngrxLet="vm$; let vm">
     <ng-container *ttLoader="vm.status">
       <tt-session-recorder
         class="mt-2"
@@ -7,18 +7,22 @@
         (startSession)="onStartSession($event)"
         (sessionChange)="onSessionChange($event)"
       ></tt-session-recorder>
-      <div class="flex justify-end px-1">
+      <div class="flex justify-end px-1 pb-2">
         <tt-date-range-picker
           class="self-end"
           [range]="vm.range"
           (rangeChange)="onRangeChange($event)"
         ></tt-date-range-picker>
       </div>
-      <tt-sessions-table
-        [sessions]="vm.sessions"
-        (sessionChange)="onSessionChange($event)"
-        (deleteSession)="onDeleteSession($event)"
-      ></tt-sessions-table>
+
+      <div class="grid gap-2">
+        <tt-sessions-group
+          *ngFor="let group of vm.groups; trackBy: trackById"
+          [group]="group"
+          (sessionChange)="onSessionChange($event)"
+          (deleteSession)="onDeleteSession($event)"
+        ></tt-sessions-group>
+      </div>
     </ng-container>
-  </ng-container>
+  </div>
 </tt-top-bar-layout>
