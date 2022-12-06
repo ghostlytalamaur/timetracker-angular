@@ -11,7 +11,7 @@ import {
   ViewContainerRef,
   ViewRef,
 } from '@angular/core';
-import { initialStatus } from '../models/status';
+import { initialStatus, StatusType } from '../models/status';
 
 @Component({
   selector: 'tt-loader',
@@ -131,16 +131,16 @@ export class LoaderDirective implements OnChanges {
   private viewRef: ViewRef | ComponentRef<LoaderComponent> | undefined;
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['status']) {
+    if (changes['status'].previousValue?.type !== this.status.type) {
       this.updateView();
     }
   }
 
   private updateView(): void {
     this.viewRef?.destroy();
-    if (this.status.pending) {
+    if (this.status.type === StatusType.Loading) {
       this.viewRef = this.vcRef.createComponent(LoaderComponent);
-    } else if (this.status.resolved) {
+    } else if (this.status.type === StatusType.Success) {
       this.viewRef = this.vcRef.createEmbeddedView(this.templateRef);
     }
   }

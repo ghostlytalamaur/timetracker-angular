@@ -55,11 +55,11 @@ export const sessionsFeature = createFeature({
       return { ...state, sessions: adapter.upsertMany(sessions, state.sessions) };
     }),
     on(sessionActions.loadSessions, (state) => {
-      return { ...state, status: loadStatus(state.status) };
+      return { ...state, status: loadStatus() };
     }),
     on(sessionActions.sessionsLoaded, (state, { sessions }) => {
       return {
-        status: successStatus(state.status),
+        status: successStatus(),
         sessions: adapter.setAll(sessions, state.sessions),
       };
     }),

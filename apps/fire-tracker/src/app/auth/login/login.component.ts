@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { authActions, authFeature } from "../auth.store";
-import { PushModule } from "@ngrx/component";
-import { NgIf } from "@angular/common";
+import { authActions, authFeature } from '../auth.store';
+import { PushModule } from '@ngrx/component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'tt-login',

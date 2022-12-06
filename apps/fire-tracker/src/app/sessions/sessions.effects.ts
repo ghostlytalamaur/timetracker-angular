@@ -16,7 +16,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { sessionActions } from './sessions.store';
-import { EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
+import { combineLatest, EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
 import { sessionsViewFeature } from './sessions-view.store';
@@ -125,16 +125,21 @@ export class SessionsEffects {
           return of(sessionActions.clearSessions());
         }
 
-        return collectionSnapshots(
+        const sessionsInRange$ = collectionSnapshots(
           query(
             this.sessionsCol,
             where('uid', '==', user.id),
             where('start', '>=', range.from),
             where('start', '<=', range.to),
           ),
-        ).pipe(
-          map((changes) => {
-            const sessions = changes.map((doc) => {
+        );
+        const activeSessions$ = collectionSnapshots(
+          query(this.sessionsCol, where('uid', '==', user.id), where('durationMs', '<', 1)),
+        );
+
+        return combineLatest([sessionsInRange$, activeSessions$]).pipe(
+          map(([sessionsInRange, activeSessions]) => {
+            const sessions = sessionsInRange.concat(activeSessions).map((doc) => {
               return doc.data();
             });
 
