@@ -25,45 +25,48 @@ export const sessionActions = createActionGroup({
   },
 });
 
-interface State extends EntityState<Session> {
+interface State {
+  readonly sessions: EntityState<Session>;
   readonly status: Status;
 }
-const adapter = createEntityAdapter<Session>();
 
+const adapter = createEntityAdapter<Session>();
+const defaults: State = {
+  sessions: adapter.getInitialState(),
+  status: initialStatus(),
+};
 export const sessionsFeature = createFeature({
   name: 'sessions',
   reducer: createReducer(
-    adapter.getInitialState({
-      status: initialStatus(),
-    }),
+    defaults,
     on(sessionActions.changeSession, (state, { changes }) => {
-      return adapter.updateOne(changes, state);
+      return { ...state, sessions: adapter.updateOne(changes, state.sessions) };
     }),
     on(sessionActions.clearSessions, (state) => {
-      return adapter.removeAll(state);
+      return { ...state, sessions: adapter.removeAll(state.sessions) };
     }),
     on(sessionActions.deleteSession, (state, { id }): State => {
-      return adapter.removeOne(id, state);
+      return { ...state, sessions: adapter.removeOne(id, state.sessions) };
     }),
     on(sessionActions.sessionsDeleted, (state, { ids }): State => {
-      return adapter.removeMany(ids, state);
+      return { ...state, sessions: adapter.removeMany(ids, state.sessions) };
     }),
     on(sessionActions.sessionsChanged, (state, { sessions }) => {
-      return adapter.upsertMany(sessions, state);
+      return { ...state, sessions: adapter.upsertMany(sessions, state.sessions) };
     }),
     on(sessionActions.loadSessions, (state) => {
       return { ...state, status: loadStatus(state.status) };
     }),
     on(sessionActions.sessionsLoaded, (state, { sessions }) => {
-      return adapter.setAll(sessions, {
-        ...state,
+      return {
         status: successStatus(state.status),
-      });
+        sessions: adapter.setAll(sessions, state.sessions),
+      };
     }),
   ),
 });
 
-function getActiveSession(state: State): Session | undefined {
+function getActiveSession(state: EntityState<Session>): Session | undefined {
   for (const id of state.ids) {
     const session = state.entities[id];
     if (session && isActive(session)) {
@@ -74,11 +77,6 @@ function getActiveSession(state: State): Session | undefined {
   return undefined;
 }
 
-export const { selectAll: selectSessions } = adapter.getSelectors(
-  sessionsFeature.selectSessionsState,
-);
+export const { selectAll: selectSessions } = adapter.getSelectors(sessionsFeature.selectSessions);
 
-export const selectActiveSession = createSelector(
-  sessionsFeature.selectSessionsState,
-  getActiveSession,
-);
+export const selectActiveSession = createSelector(sessionsFeature.selectSessions, getActiveSession);
