@@ -12,6 +12,7 @@ import { DurationPipe, FormatDurationPipe } from '../duration.pipe';
 import { PushModule } from '@ngrx/component';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { IconComponent } from '../../ui/icon.component';
 
 @Component({
   selector: 'tt-session-recorder',
@@ -19,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex gap-2 items-center' },
   standalone: true,
-  imports: [DurationPipe, PushModule, FormatDurationPipe, NgIf, FormsModule],
+  imports: [DurationPipe, PushModule, FormatDurationPipe, NgIf, FormsModule, IconComponent],
 })
 export class SessionRecorderComponent implements OnChanges {
   @Input()
@@ -30,6 +31,8 @@ export class SessionRecorderComponent implements OnChanges {
   readonly stopSession = new EventEmitter<{ durationMs: number }>();
   @Output()
   readonly sessionChange = new EventEmitter<{ description: string }>();
+  @Output()
+  readonly discardSession = new EventEmitter<void>();
 
   protected description = '';
 
@@ -58,5 +61,11 @@ export class SessionRecorderComponent implements OnChanges {
 
   protected onResetDescription(): void {
     this.description = this.session?.description ?? '';
+  }
+
+  protected onDiscard(): void {
+    if (this.session) {
+      this.discardSession.emit();
+    }
   }
 }

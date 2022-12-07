@@ -85,4 +85,8 @@ export class SessionsPageComponent implements OnInit {
   protected onStopSession(params: { durationMs: number }): void {
     this.store.dispatch(sessionActions.stopSession(params));
   }
+
+  protected onDiscardSession(): void {
+    this.store.dispatch(sessionActions.discardActiveSession());
+  }
 }

@@ -168,6 +168,23 @@ export class SessionsEffects {
     { dispatch: false },
   );
 
+  public readonly onDiscardActiveSession = createEffect(
+    () => {
+      return this.actions.pipe(
+        ofType(sessionActions.discardActiveSession),
+        concatLatestFrom(() => this.store.select(authFeature.selectUser)),
+        mergeMap(([, user]) => {
+          if (!user) {
+            return EMPTY;
+          }
+
+          return deleteDoc(doc(this.activeSessionsCol, user.id)).catch(console.error);
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
   public readonly onChangeSession = createEffect(
     () => {
       return this.actions.pipe(

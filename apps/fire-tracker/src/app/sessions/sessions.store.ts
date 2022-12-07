@@ -23,6 +23,7 @@ export const sessionActions = createActionGroup({
     'Sessions Loaded': props<{ sessions: Session[] }>(),
     'Active Session Loaded': props<{ session: Session | undefined }>(),
     'Change Active Session': props<{ description: string }>(),
+    'Discard Active Session': emptyProps(),
     'Sessions Deleted': props<{ ids: string[] }>(),
     'Clear Sessions': emptyProps(),
   },

@@ -7,8 +7,9 @@
         (startSession)="onStartSession($event)"
         (stopSession)="onStopSession($event)"
         (sessionChange)="onActiveSessionChange($event)"
+        (discardSession)="onDiscardSession()"
       ></tt-session-recorder>
-      <div class="flex justify-end px-1 pb-2">
+      <div class="flex justify-end px-1 py-2">
         <tt-date-range-picker
           class="self-end"
           [range]="vm.range"
