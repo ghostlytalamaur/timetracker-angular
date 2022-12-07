@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { PushModule } from '@ngrx/component';
 import { Store } from '@ngrx/store';
+import { IconComponent } from '../../ui/icon.component';
 import { authActions, authFeature } from '../auth.store';
 
 @Component({
@@ -10,7 +10,7 @@ import { authActions, authFeature } from '../auth.store';
   templateUrl: './profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, PushModule, MatIconModule],
+  imports: [CommonModule, PushModule, IconComponent],
 })
 export class ProfileComponent {
   private readonly store = inject(Store);

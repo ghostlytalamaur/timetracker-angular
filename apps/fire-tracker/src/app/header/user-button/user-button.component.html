@@ -1,9 +1,9 @@
 <div
   *ngIf="user$ | ngrxPush as user"
-  class="rounder px-4 py-2 flex items-center gap-2"
+  class="rounder p-2 flex items-center gap-2"
   [cdkMenuTriggerFor]="menu"
 >
-  <div class="rounded-full bg-gray-300 w-6 h-6 material-icons">account</div>
+  <svg [ttIcon]="'account'"></svg>
   <div>{{ user.email }}</div>
 
   <ng-template #menu>
