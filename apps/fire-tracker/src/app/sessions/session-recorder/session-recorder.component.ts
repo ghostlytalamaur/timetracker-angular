@@ -5,13 +5,13 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
-} from "@angular/core";
+  SimpleChanges,
+} from '@angular/core';
 import { Session } from '../session';
-import { DurationPipe, FormatDurationPipe } from "../duration.pipe";
-import { PushModule } from "@ngrx/component";
-import { NgIf } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { DurationPipe, FormatDurationPipe } from '../duration.pipe';
+import { PushModule } from '@ngrx/component';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tt-session-recorder',
@@ -25,7 +25,7 @@ export class SessionRecorderComponent implements OnChanges {
   @Input()
   session: Session | undefined;
   @Output()
-  readonly startSession = new EventEmitter<{ start: Date, description: string }>();
+  readonly startSession = new EventEmitter<{ start: Date; description: string }>();
   @Output()
   readonly stopSession = new EventEmitter<{ durationMs: number }>();
   @Output()
@@ -53,7 +53,7 @@ export class SessionRecorderComponent implements OnChanges {
   }
 
   protected onChangeDescription(): void {
-    this.sessionChange.emit({ description: this.description })
+    this.sessionChange.emit({ description: this.description });
   }
 
   protected onResetDescription(): void {

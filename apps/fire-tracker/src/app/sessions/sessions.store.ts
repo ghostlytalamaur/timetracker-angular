@@ -9,12 +9,12 @@ import {
   props,
 } from '@ngrx/store';
 import { initialStatus, loadStatus, Status, successStatus } from '../models/status';
-import { Session, SessionsGroup } from "./session";
+import { Session, SessionsGroup } from './session';
 
 export const sessionActions = createActionGroup({
   source: 'Sessions',
   events: {
-    'Start Session': props<{ start: Date, description: string }>(),
+    'Start Session': props<{ start: Date; description: string }>(),
     'Stop Session': props<{ durationMs: number }>(),
     'Change Session': props<{ changes: Update<Session> }>(),
     'Delete Session': props<{ id: string }>(),
@@ -82,27 +82,25 @@ export const { selectAll: selectSessions } = adapter.getSelectors(sessionsFeatur
 
 export const selectActiveSession = sessionsFeature.selectActiveSession;
 
-
-export const selectSessionsGroups = createSelector(
-  selectSessions,
-  sessions => {
-    const groups = new Array<SessionsGroup>();
-    const idToGroup = new Map<string, SessionsGroup>();
-    for (const session of sessions) {
-      const id = `${session.start.getFullYear()-session.start.getMonth()-session.start.getDate()}`;
-      let group = idToGroup.get(id);
-      if (!group) {
-        group = {
-          id,
-          date: session.start,
-          sessions: [],
-        }
-        groups.push(group);
-        idToGroup.set(id, group);
-      }
-      group.sessions.push(session)
+export const selectSessionsGroups = createSelector(selectSessions, (sessions) => {
+  const groups = new Array<SessionsGroup>();
+  const idToGroup = new Map<string, SessionsGroup>();
+  for (const session of sessions) {
+    const id = `${
+      session.start.getFullYear() - session.start.getMonth() - session.start.getDate()
+    }`;
+    let group = idToGroup.get(id);
+    if (!group) {
+      group = {
+        id,
+        date: session.start,
+        sessions: [],
+      };
+      groups.push(group);
+      idToGroup.set(id, group);
     }
-
-    return groups.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+    group.sessions.push(session);
   }
-)
+
+  return groups.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+});

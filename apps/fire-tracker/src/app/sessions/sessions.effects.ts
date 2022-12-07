@@ -16,8 +16,8 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { selectActiveSession, sessionActions } from "./sessions.store";
-import { catchError, EMPTY, map, merge, mergeMap, of, switchMap } from "rxjs";
+import { selectActiveSession, sessionActions } from './sessions.store';
+import { catchError, EMPTY, map, merge, mergeMap, of, switchMap } from 'rxjs';
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
 import { sessionsViewFeature } from './sessions-view.store';
@@ -105,7 +105,7 @@ export class SessionsEffects {
             }
 
             return transaction.set(d, { start: action.start, description: action.description });
-          }).catch(err => console.error(err));
+          }).catch((err) => console.error(err));
         }),
       );
     },
@@ -139,35 +139,43 @@ export class SessionsEffects {
             };
 
             return transaction.delete(d).set(doc(this.sessionsCol), sessionData);
-          }).catch(err => console.error(err));
+          }).catch((err) => console.error(err));
         }),
       );
     },
     { dispatch: false },
   );
 
-  public readonly onChangeActiveSession = createEffect(() => {
-    return this.actions.pipe(
-      ofType(sessionActions.changeActiveSession),
-      concatLatestFrom(() => [this.store.select(selectActiveSession), this.store.select(authFeature.selectUser)]),
-      mergeMap(([action, activeSession, user]) => {
-        if (!user || !activeSession) {
-          return EMPTY;
-        }
+  public readonly onChangeActiveSession = createEffect(
+    () => {
+      return this.actions.pipe(
+        ofType(sessionActions.changeActiveSession),
+        concatLatestFrom(() => [
+          this.store.select(selectActiveSession),
+          this.store.select(authFeature.selectUser),
+        ]),
+        mergeMap(([action, activeSession, user]) => {
+          if (!user || !activeSession) {
+            return EMPTY;
+          }
 
-        const docRef = doc(this.activeSessionsCol, user.id);
+          const docRef = doc(this.activeSessionsCol, user.id);
 
-        return updateDoc(docRef, { description: action.description }).catch(console.error);
-      }),
-    )
-  }, { dispatch: false })
+          return updateDoc(docRef, { description: action.description }).catch(console.error);
+        }),
+      );
+    },
+    { dispatch: false },
+  );
 
   public readonly onChangeSession = createEffect(
     () => {
       return this.actions.pipe(
         ofType(sessionActions.changeSession),
         mergeMap(({ changes: { id, changes } }) => {
-          return updateDoc(doc(this.sessionsCol, id as string), changes).catch(err => console.error(err));
+          return updateDoc(doc(this.sessionsCol, id as string), changes).catch((err) =>
+            console.error(err),
+          );
         }),
       );
     },
@@ -179,7 +187,7 @@ export class SessionsEffects {
       return this.actions.pipe(
         ofType(sessionActions.deleteSession),
         mergeMap(({ id }) => {
-          return deleteDoc(doc(this.sessionsCol, id)).catch(err => console.error(err));
+          return deleteDoc(doc(this.sessionsCol, id)).catch((err) => console.error(err));
         }),
       );
     },
@@ -225,11 +233,11 @@ export class SessionsEffects {
               },
             });
           }),
-          catchError(err =>{
+          catchError((err) => {
             console.error(err);
 
             return EMPTY;
-          })
+          }),
         );
 
         const loadedSessions$ = sessionsInRange$.pipe(
@@ -240,11 +248,11 @@ export class SessionsEffects {
 
             return sessionActions.sessionsLoaded({ sessions });
           }),
-          catchError(err =>{
+          catchError((err) => {
             console.error(err);
 
             return EMPTY;
-          })
+          }),
         );
 
         return merge(activeDoc$, loadedSessions$);

@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { Session, SessionsGroup } from "../session";
-import { Update } from "@ngrx/entity";
-import { SessionsTableComponent } from "../sessions-table/sessions-table.component";
-import { DatePipe, NgIf } from "@angular/common";
-import { PushModule } from "@ngrx/component";
-import { DurationPipe, FormatDurationPipe } from "../duration.pipe";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Session, SessionsGroup } from '../session';
+import { Update } from '@ngrx/entity';
+import { SessionsTableComponent } from '../sessions-table/sessions-table.component';
+import { DatePipe, NgIf } from '@angular/common';
+import { PushModule } from '@ngrx/component';
+import { DurationPipe, FormatDurationPipe } from '../duration.pipe';
 
 @Component({
   selector: 'tt-sessions-group',

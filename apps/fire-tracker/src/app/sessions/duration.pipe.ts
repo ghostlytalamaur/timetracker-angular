@@ -1,8 +1,8 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import { coerceArray } from "@angular/cdk/coercion";
-import { getDuration, isActive, Session } from "./session";
-import { interval, map, Observable, of, startWith } from "rxjs";
-import { formatDuration } from "../utils/duration";
+import { Pipe, PipeTransform } from '@angular/core';
+import { coerceArray } from '@angular/cdk/coercion';
+import { getDuration, isActive, Session } from './session';
+import { interval, map, Observable, of, startWith } from 'rxjs';
+import { formatDuration } from '../utils/duration';
 
 @Pipe({
   name: 'duration',
