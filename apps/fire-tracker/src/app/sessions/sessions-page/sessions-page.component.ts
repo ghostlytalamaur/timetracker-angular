@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, TrackByFunction } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit, TrackByFunction } from '@angular/core';
 import { SessionRecorderComponent } from '../session-recorder/session-recorder.component';
 import { createSelector, Store } from '@ngrx/store';
 import {
@@ -17,8 +17,8 @@ import { DateRangePickerComponent } from '../date-range-picker/date-range-picker
 import { sessionsViewActions, sessionsViewFeature } from '../sessions-view.store';
 import { DateRange } from '../../models/date-range';
 import { LoaderDirective } from '../../ui/loader.directive';
-import { SessionsGroupComponent } from "../sessions-group/sessions-group.component";
-import { NgForOf } from "@angular/common";
+import { SessionsGroupComponent } from '../sessions-group/sessions-group.component';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'tt-sessions',
@@ -76,5 +76,9 @@ export class SessionsPageComponent implements OnInit {
 
   protected onRangeChange(range: DateRange): void {
     this.store.dispatch(sessionsViewActions.changeRange({ range }));
+  }
+
+  protected onStopSession(params: { durationMs: number }): void {
+    this.store.dispatch(sessionActions.stopSession(params));
   }
 }

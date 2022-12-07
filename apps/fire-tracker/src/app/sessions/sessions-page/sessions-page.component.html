@@ -5,6 +5,7 @@
         class="mt-2"
         [session]="vm.activeSession"
         (startSession)="onStartSession($event)"
+        (stopSession)="onStopSession($event)"
         (sessionChange)="onSessionChange($event)"
       ></tt-session-recorder>
       <div class="flex justify-end px-1 pb-2">

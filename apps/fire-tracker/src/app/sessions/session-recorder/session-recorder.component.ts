@@ -15,13 +15,14 @@ export class SessionRecorderComponent {
   @Output()
   readonly startSession = new EventEmitter<{ start: Date }>();
   @Output()
+  readonly stopSession = new EventEmitter<{ durationMs: number }>();
+  @Output()
   readonly sessionChange = new EventEmitter<Update<Session>>();
 
   protected onToggle(): void {
     if (this.session) {
-      this.sessionChange.emit({
-        id: this.session.id,
-        changes: { durationMs: Date.now() - this.session.start.valueOf() },
+      this.stopSession.emit({
+        durationMs: Date.now() - this.session.start.valueOf(),
       });
     } else {
       this.startSession.emit({

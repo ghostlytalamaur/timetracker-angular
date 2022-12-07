@@ -2,21 +2,22 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { createSelector, Store } from '@ngrx/store';
 import {
-  addDoc,
   collection,
   collectionSnapshots,
   deleteDoc,
   doc,
+  docData,
   Firestore,
   FirestoreDataConverter,
   query,
   QueryDocumentSnapshot,
+  runTransaction,
   Timestamp,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { sessionActions } from './sessions.store';
-import { combineLatest, EMPTY, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, merge, mergeMap, of, switchMap } from "rxjs";
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
 import { sessionsViewFeature } from './sessions-view.store';
@@ -26,6 +27,11 @@ interface SessionData {
   readonly durationMs: number;
   readonly description: string;
   readonly uid: string;
+}
+
+interface ActiveSessionData {
+  readonly start: Timestamp;
+  readonly description: string;
 }
 
 interface UserSession extends Session {
@@ -62,6 +68,22 @@ export class SessionsEffects {
   private readonly sessionsCol = collection(this.firestore, 'sessions').withConverter(
     firestoreConverter,
   );
+  private readonly activeSessionsCol = collection(this.firestore, 'activeSessions').withConverter({
+    toFirestore(modelObject: { start: Date; description: string }): ActiveSessionData {
+      return {
+        start: Timestamp.fromDate(modelObject.start),
+        description: modelObject.description,
+      };
+    },
+    fromFirestore(snapshot) {
+      const data = snapshot.data();
+
+      return {
+        start: data['start'].toDate(),
+        description: data['description'],
+      };
+    },
+  });
 
   public readonly onStartSession = createEffect(
     () => {
@@ -73,13 +95,51 @@ export class SessionsEffects {
             return EMPTY;
           }
 
-          return addDoc(this.sessionsCol, {
-            id: '',
-            start: action.start,
-            description: '',
-            durationMs: -1,
-            uid: user.id,
-          });
+          return runTransaction(this.firestore, async (transaction) => {
+            const d = doc(this.activeSessionsCol, user.id);
+            const snapshot = await transaction.get(d);
+            if (snapshot.exists()) {
+              console.error('There is active session');
+
+              return;
+            }
+
+            return transaction.set(d, { start: action.start, description: '' });
+          }).catch(err => console.error(err));
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
+  public readonly onStopSession = createEffect(
+    () => {
+      return this.actions.pipe(
+        ofType(sessionActions.stopSession),
+        concatLatestFrom(() => this.store.select(authFeature.selectUser)),
+        mergeMap(([{ durationMs }, user]) => {
+          if (!user) {
+            return EMPTY;
+          }
+
+          return runTransaction(this.firestore, async (transaction) => {
+            const d = doc(this.activeSessionsCol, user.id);
+            const snapshot = await transaction.get(d);
+            if (!snapshot.exists()) {
+              console.error('There is no active session');
+
+              return;
+            }
+            const data = snapshot.data();
+            const sessionData = {
+              start: data.start,
+              description: data.description,
+              durationMs,
+              uid: user.id,
+            };
+
+            return transaction.delete(d).set(doc(this.sessionsCol), sessionData);
+          }).catch(err => console.error(err));
         }),
       );
     },
@@ -91,7 +151,7 @@ export class SessionsEffects {
       return this.actions.pipe(
         ofType(sessionActions.changeSession),
         mergeMap(({ changes: { id, changes } }) => {
-          return updateDoc(doc(this.sessionsCol, id as string), changes);
+          return updateDoc(doc(this.sessionsCol, id as string), changes).catch(err => console.error(err));
         }),
       );
     },
@@ -103,7 +163,7 @@ export class SessionsEffects {
       return this.actions.pipe(
         ofType(sessionActions.deleteSession),
         mergeMap(({ id }) => {
-          return deleteDoc(doc(this.sessionsCol, id));
+          return deleteDoc(doc(this.sessionsCol, id)).catch(err => console.error(err));
         }),
       );
     },
@@ -133,19 +193,45 @@ export class SessionsEffects {
             where('start', '<=', range.to),
           ),
         );
-        const activeSessions$ = collectionSnapshots(
-          query(this.sessionsCol, where('uid', '==', user.id), where('durationMs', '<', 1)),
+
+        const activeDoc$ = docData(doc(this.activeSessionsCol, user.id)).pipe(
+          map((data) => {
+            if (!data) {
+              return sessionActions.activeSessionsLoaded({ session: undefined });
+            }
+
+            return sessionActions.activeSessionsLoaded({
+              session: {
+                id: 'ACTIVE',
+                start: data.start,
+                description: data.description,
+                durationMs: -1,
+              },
+            });
+          }),
+          catchError(err =>{
+            console.error(err);
+
+            return EMPTY;
+          })
         );
 
-        return combineLatest([sessionsInRange$, activeSessions$]).pipe(
-          map(([sessionsInRange, activeSessions]) => {
-            const sessions = sessionsInRange.concat(activeSessions).map((doc) => {
+        const loadedSessions$ = sessionsInRange$.pipe(
+          map((sessionsInRange) => {
+            const sessions = sessionsInRange.map((doc) => {
               return doc.data();
             });
 
             return sessionActions.sessionsLoaded({ sessions });
           }),
+          catchError(err =>{
+            console.error(err);
+
+            return EMPTY;
+          })
         );
+
+        return merge(activeDoc$, loadedSessions$);
       }),
     );
 

@@ -94,18 +94,18 @@ export class SessionsTableComponent implements OnChanges {
 
     const start = parseTime(row.session.start, row.start);
     const startMs = +start;
-    if (isNaN(startMs) || startMs === +row.session.start) {
+    const end = +row.session.start + row.session.durationMs;
+    const durationMs = end - startMs;
+    if (isNaN(startMs) || startMs === +row.session.start || durationMs < 0) {
       this.resetRow(row);
       return;
     }
 
-    const end = +row.session.start + row.session.durationMs;
-
-    this.sessionChange.emit({ id: row.id, changes: { start, durationMs: end - startMs } });
+    this.sessionChange.emit({ id: row.id, changes: { start, durationMs } });
   }
 
   protected onEndChange(row: SessionRow): void {
-    if (row.start === formatEnd(row.session)) {
+    if (row.end === formatEnd(row.session)) {
       return;
     }
 
@@ -120,12 +120,12 @@ export class SessionsTableComponent implements OnChanges {
   }
 
   protected onDurationChange(row: SessionRow): void {
-    if (row.start === formatSessionDuration(row.session)) {
+    if (row.duration === formatSessionDuration(row.session)) {
       return;
     }
 
     const durationMs = parseDuration(row.duration);
-    if (isNaN(durationMs) || durationMs === row.session.durationMs) {
+    if (isNaN(durationMs) || durationMs === row.session.durationMs || durationMs < 0) {
       this.resetRow(row);
       return;
     }
