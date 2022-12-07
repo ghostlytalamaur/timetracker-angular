@@ -9,19 +9,20 @@ import {
   props,
 } from '@ngrx/store';
 import { initialStatus, loadStatus, Status, successStatus } from '../models/status';
-import { isActive, Session, SessionsGroup } from "./session";
+import { Session, SessionsGroup } from "./session";
 
 export const sessionActions = createActionGroup({
   source: 'Sessions',
   events: {
-    'Start Session': props<{ start: Date }>(),
+    'Start Session': props<{ start: Date, description: string }>(),
     'Stop Session': props<{ durationMs: number }>(),
     'Change Session': props<{ changes: Update<Session> }>(),
     'Delete Session': props<{ id: string }>(),
     'Sessions Changed': props<{ sessions: Session[] }>(),
     'Load Sessions': emptyProps(),
     'Sessions Loaded': props<{ sessions: Session[] }>(),
-    'Active Sessions Loaded': props<{ session: Session | undefined }>(),
+    'Active Session Loaded': props<{ session: Session | undefined }>(),
+    'Change Active Session': props<{ description: string }>(),
     'Sessions Deleted': props<{ ids: string[] }>(),
     'Clear Sessions': emptyProps(),
   },
@@ -61,7 +62,7 @@ export const sessionsFeature = createFeature({
     on(sessionActions.loadSessions, (state): State => {
       return { ...state, status: loadStatus() };
     }),
-    on(sessionActions.activeSessionsLoaded, (state, { session }): State => {
+    on(sessionActions.activeSessionLoaded, (state, { session }): State => {
       return {
         ...state,
         activeSession: session,
@@ -76,17 +77,6 @@ export const sessionsFeature = createFeature({
     }),
   ),
 });
-
-function getActiveSession(state: EntityState<Session>): Session | undefined {
-  for (const id of state.ids) {
-    const session = state.entities[id];
-    if (session && isActive(session)) {
-      return session;
-    }
-  }
-
-  return undefined;
-}
 
 export const { selectAll: selectSessions } = adapter.getSelectors(sessionsFeature.selectSessions);
 

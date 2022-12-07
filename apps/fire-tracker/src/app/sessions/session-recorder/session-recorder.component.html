@@ -1,1 +1,15 @@
+<input
+  type="text"
+  class="input flex-1"
+  placeholder="Description"
+  [(ngModel)]="description"
+  [ngModelOptions]="{ standalone: true }"
+  (keyup.enter)="onChangeDescription()"
+  (blur)="onChangeDescription()"
+  (keyup.escape)="onResetDescription()"
+/>
+<span class="font-medium w-20 text-center" *ngIf="session">{{
+  session | duration | ngrxPush | formatDuration
+}}</span>
+<span class="font-medium w-20 text-center" *ngIf="!session">00:00:00</span>
 <button class="btn" (click)="onToggle()">{{ session ? 'Stop' : 'Start' }}</button>

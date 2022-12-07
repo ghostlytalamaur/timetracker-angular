@@ -62,8 +62,12 @@ export class SessionsPageComponent implements OnInit {
     this.store.dispatch(sessionActions.loadSessions());
   }
 
-  protected onStartSession(params: { start: Date }): void {
+  protected onStartSession(params: { start: Date, description: string }): void {
     this.store.dispatch(sessionActions.startSession(params));
+  }
+
+  protected onActiveSessionChange(changes: { description: string }): void {
+    this.store.dispatch(sessionActions.changeActiveSession(changes));
   }
 
   protected onSessionChange(changes: Update<Session>): void {

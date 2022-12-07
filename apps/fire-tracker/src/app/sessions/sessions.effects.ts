@@ -16,7 +16,7 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { sessionActions } from './sessions.store';
+import { selectActiveSession, sessionActions } from "./sessions.store";
 import { catchError, EMPTY, map, merge, mergeMap, of, switchMap } from "rxjs";
 import { authFeature } from '../auth/auth.store';
 import { Session } from './session';
@@ -104,7 +104,7 @@ export class SessionsEffects {
               return;
             }
 
-            return transaction.set(d, { start: action.start, description: '' });
+            return transaction.set(d, { start: action.start, description: action.description });
           }).catch(err => console.error(err));
         }),
       );
@@ -145,6 +145,22 @@ export class SessionsEffects {
     },
     { dispatch: false },
   );
+
+  public readonly onChangeActiveSession = createEffect(() => {
+    return this.actions.pipe(
+      ofType(sessionActions.changeActiveSession),
+      concatLatestFrom(() => [this.store.select(selectActiveSession), this.store.select(authFeature.selectUser)]),
+      mergeMap(([action, activeSession, user]) => {
+        if (!user || !activeSession) {
+          return EMPTY;
+        }
+
+        const docRef = doc(this.activeSessionsCol, user.id);
+
+        return updateDoc(docRef, { description: action.description }).catch(console.error);
+      }),
+    )
+  }, { dispatch: false })
 
   public readonly onChangeSession = createEffect(
     () => {
@@ -197,10 +213,10 @@ export class SessionsEffects {
         const activeDoc$ = docData(doc(this.activeSessionsCol, user.id)).pipe(
           map((data) => {
             if (!data) {
-              return sessionActions.activeSessionsLoaded({ session: undefined });
+              return sessionActions.activeSessionLoaded({ session: undefined });
             }
 
-            return sessionActions.activeSessionsLoaded({
+            return sessionActions.activeSessionLoaded({
               session: {
                 id: 'ACTIVE',
                 start: data.start,
