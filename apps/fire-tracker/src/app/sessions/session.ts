@@ -3,6 +3,7 @@ export interface Session {
   readonly start: Date;
   readonly durationMs: number;
   readonly description: string;
+  readonly tags: string[];
 }
 
 export interface SessionsGroup {

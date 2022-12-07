@@ -27,6 +27,7 @@ interface SessionData {
   readonly durationMs: number;
   readonly description: string;
   readonly uid: string;
+  readonly tags?: string[];
 }
 
 interface ActiveSessionData {
@@ -45,6 +46,7 @@ const firestoreConverter: FirestoreDataConverter<UserSession> = {
       durationMs: modelObject.durationMs,
       description: modelObject.description,
       uid: modelObject.uid,
+      tags: modelObject.tags,
     };
   },
   fromFirestore(snapshot: QueryDocumentSnapshot<SessionData>): UserSession {
@@ -56,6 +58,7 @@ const firestoreConverter: FirestoreDataConverter<UserSession> = {
       durationMs: data.durationMs,
       description: data.description,
       uid: data.uid,
+      tags: data.tags ?? [],
     };
   },
 };
@@ -247,6 +250,7 @@ export class SessionsEffects {
                 start: data.start,
                 description: data.description,
                 durationMs: -1,
+                tags: [],
               },
             });
           }),

@@ -43,7 +43,10 @@
     },
     {
       "files": ["*.ts"],
-      "extends": ["plugin:@ngrx/all-requiring-type-checking"]
+      "extends": ["plugin:@ngrx/all-requiring-type-checking"],
+      "rules": {
+        "@ngrx/prefer-inline-action-props": "off"
+      }
     }
   ]
 }

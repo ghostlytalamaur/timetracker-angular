@@ -8,6 +8,11 @@ export const appRoutes: Route[] = [
     loadChildren: () => import('./sessions/routes').then((m) => m.ROUTES),
   },
   {
+    path: 'tags',
+    canActivate: [isSignedIn],
+    loadChildren: () => import('./tags/routes').then((m) => m.ROUTES),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./auth/login/login.component').then((m) => m.LoginComponent),
   },

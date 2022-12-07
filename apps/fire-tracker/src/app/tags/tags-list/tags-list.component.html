@@ -1,0 +1,6 @@
+<div
+  *ngFor="let tag of tags; trackBy: trackById"
+  class="p-2 hover:bg-gray-300/10 border-b border-gray-300/10 last:border-transparent hover:border-transparent"
+>
+  <span>{{ tag.caption }}</span>
+</div>
