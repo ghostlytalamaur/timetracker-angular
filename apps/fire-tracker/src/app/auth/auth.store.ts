@@ -1,11 +1,4 @@
-import {
-  createActionGroup,
-  createFeature,
-  createReducer,
-  emptyProps,
-  on,
-  props,
-} from '@ngrx/store';
+import { createAction, createFeature, createReducer, on, props } from '@ngrx/store';
 
 export interface User {
   readonly id: string;
@@ -18,18 +11,15 @@ interface State {
   readonly error: string;
 }
 
-export const authActions = createActionGroup({
-  source: 'Auth',
-  events: {
-    'Silent Sign In': emptyProps(),
-    'Silent Sign In Success': props<{ user: User }>(),
-    'Silent Sign In Failure': emptyProps(),
-    'Sign In': props<{ email: string; password: string }>(),
-    'Sign In Failure': props<{ error: string }>(),
-    'Sign In Success': props<{ user: User }>(),
-    'Sign Out': emptyProps(),
-  },
-});
+export const authActions = {
+  silentSignIn: createAction('[Auth] Silent Sign In'),
+  silentSignInSuccess: createAction('[Auth] Silent Sign In Success', props<{ user: User }>()),
+  silentSignInFailure: createAction('[Auth] Silent Sign In Failure'),
+  signIn: createAction('[Auth] Sign In', props<{ email: string; password: string }>()),
+  signInFailure: createAction('[Auth] Sign In Failure', props<{ error: string }>()),
+  signInSuccess: createAction('[Auth] Sign In Success', props<{ user: User }>()),
+  signOut: createAction('[Auth] Sign Out'),
+};
 
 const defaults: State = { user: undefined, error: '', inSilentSignIn: false };
 export const authFeature = createFeature({

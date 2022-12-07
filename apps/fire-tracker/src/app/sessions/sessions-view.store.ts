@@ -1,12 +1,5 @@
-import { addWeeks, endOfWeek, startOfWeek } from 'date-fns';
-import {
-  createActionGroup,
-  createFeature,
-  createReducer,
-  createSelector,
-  on,
-  props,
-} from '@ngrx/store';
+import { endOfWeek, startOfWeek } from 'date-fns';
+import { createAction, createFeature, createReducer, on, props } from '@ngrx/store';
 import { DateRange } from '../models/date-range';
 
 interface State {
@@ -20,12 +13,9 @@ const defaults: State = {
   },
 };
 
-export const sessionsViewActions = createActionGroup({
-  source: 'Sessions View',
-  events: {
-    'Change Range': props<{ range: DateRange }>(),
-  },
-});
+export const sessionsViewActions = {
+  changeRange: createAction('[Sessions View] Change Range', props<{ range: DateRange }>()),
+};
 
 export const sessionsViewFeature = createFeature({
   name: 'sessionsView',

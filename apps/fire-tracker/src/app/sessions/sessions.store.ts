@@ -1,33 +1,29 @@
 import { createEntityAdapter, EntityState, Update } from '@ngrx/entity';
-import {
-  createActionGroup,
-  createFeature,
-  createReducer,
-  createSelector,
-  emptyProps,
-  on,
-  props,
-} from '@ngrx/store';
+import { createAction, createFeature, createReducer, createSelector, on, props } from '@ngrx/store';
 import { initialStatus, loadStatus, Status, successStatus } from '../models/status';
 import { Session, SessionsGroup } from './session';
 
-export const sessionActions = createActionGroup({
-  source: 'Sessions',
-  events: {
-    'Start Session': props<{ start: Date; description: string }>(),
-    'Stop Session': props<{ durationMs: number }>(),
-    'Change Session': props<{ changes: Update<Session> }>(),
-    'Delete Session': props<{ id: string }>(),
-    'Sessions Changed': props<{ sessions: Session[] }>(),
-    'Load Sessions': emptyProps(),
-    'Sessions Loaded': props<{ sessions: Session[] }>(),
-    'Active Session Loaded': props<{ session: Session | undefined }>(),
-    'Change Active Session': props<{ description: string }>(),
-    'Discard Active Session': emptyProps(),
-    'Sessions Deleted': props<{ ids: string[] }>(),
-    'Clear Sessions': emptyProps(),
-  },
-});
+export const sessionActions = {
+  startSession: createAction(
+    '[Sessions] Start Session',
+    props<{ start: Date; description: string }>(),
+  ),
+  stopSession: createAction('[Sessions] Stop Session', props<{ durationMs: number }>()),
+  changeSession: createAction('[Sessions] Change Session', props<{ changes: Update<Session> }>()),
+  deleteSession: createAction('[Sessions] Delete Session', props<{ id: string }>()),
+  loadSessions: createAction('[Sessions] Load Sessions'),
+  sessionsLoaded: createAction('[Sessions] Sessions Loaded', props<{ sessions: Session[] }>()),
+  activeSessionLoaded: createAction(
+    '[Sessions] Active Session Loaded',
+    props<{ session: Session | undefined }>(),
+  ),
+  changeActiveSession: createAction(
+    '[Sessions] Change Active Session',
+    props<{ description: string }>(),
+  ),
+  discardActiveSession: createAction('[Sessions] Discard Active Session'),
+  clearSessions: createAction('[Sessions] Clear Sessions'),
+};
 
 interface State {
   readonly activeSession: Session | undefined;
@@ -53,12 +49,6 @@ export const sessionsFeature = createFeature({
     }),
     on(sessionActions.deleteSession, (state, { id }): State => {
       return { ...state, sessions: adapter.removeOne(id, state.sessions) };
-    }),
-    on(sessionActions.sessionsDeleted, (state, { ids }): State => {
-      return { ...state, sessions: adapter.removeMany(ids, state.sessions) };
-    }),
-    on(sessionActions.sessionsChanged, (state, { sessions }): State => {
-      return { ...state, sessions: adapter.upsertMany(sessions, state.sessions) };
     }),
     on(sessionActions.loadSessions, (state): State => {
       return { ...state, status: loadStatus() };
