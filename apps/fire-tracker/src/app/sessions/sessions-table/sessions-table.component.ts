@@ -5,6 +5,8 @@ import {
   Input,
   OnChanges,
   Output,
+  Pipe,
+  PipeTransform,
   SimpleChanges,
   TrackByFunction,
 } from '@angular/core';
@@ -18,6 +20,7 @@ import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { isActive, Session } from '../session';
 import { DatePickerDirective } from '@tt/ui/calendar';
 import { IconComponent } from '../../ui/icon.component';
+import { Tag } from '../../models/tag';
 
 interface SessionRow {
   readonly id: string;
@@ -26,6 +29,13 @@ interface SessionRow {
   end: string;
   duration: string;
   description: string;
+}
+
+@Pipe({ name: 'sessionTags', standalone: true })
+export class SessionTagsPipe implements PipeTransform {
+  transform(session: Session, tags: ReadonlyArray<Tag>): ReadonlyArray<Tag> {
+    return tags.filter((tag) => session.tags.includes(tag.id));
+  }
 }
 
 @Component({
@@ -42,11 +52,14 @@ interface SessionRow {
     CdkMenuItem,
     DatePickerDirective,
     IconComponent,
+    SessionTagsPipe,
   ],
 })
 export class SessionsTableComponent implements OnChanges {
   @Input()
   sessions = new Array<Session>();
+  @Input()
+  tags = new Array<Tag>();
   @Output()
   readonly sessionChange = new EventEmitter<Update<Session>>();
   @Output()
@@ -54,6 +67,7 @@ export class SessionsTableComponent implements OnChanges {
 
   protected rows = new Array<SessionRow>();
   protected readonly trackById: TrackByFunction<SessionRow> = (index, item) => item.id;
+  protected readonly trackByTagId: TrackByFunction<Tag> = (index, item) => item.id;
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['sessions']) {

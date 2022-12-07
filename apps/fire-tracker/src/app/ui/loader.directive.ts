@@ -1,3 +1,4 @@
+import { coerceArray } from '@angular/cdk/coercion';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +12,7 @@ import {
   ViewContainerRef,
   ViewRef,
 } from '@angular/core';
-import { initialStatus, StatusType } from '../models/status';
+import { initialStatus, isLoading, Status } from '../models/status';
 
 @Component({
   selector: 'tt-loader',
@@ -124,23 +125,31 @@ export class LoaderComponent {}
 })
 export class LoaderDirective implements OnChanges {
   @Input('ttLoader')
-  status = initialStatus();
+  status: Status | ReadonlyArray<Status> = initialStatus();
 
   private readonly vcRef = inject(ViewContainerRef);
   private readonly templateRef = inject(TemplateRef);
   private viewRef: ViewRef | ComponentRef<LoaderComponent> | undefined;
+  private showLoader = false;
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['status'].previousValue?.type !== this.status.type) {
+    if (changes['status']) {
       this.updateView();
     }
   }
 
   private updateView(): void {
+    const statuses = coerceArray(this.status);
+    const showLoader = statuses.some(isLoading);
+    if (showLoader === this.showLoader) {
+      return;
+    }
+
+    this.showLoader = showLoader;
     this.viewRef?.destroy();
-    if (this.status.type === StatusType.Loading) {
+    if (this.showLoader) {
       this.viewRef = this.vcRef.createComponent(LoaderComponent);
-    } else if (this.status.type === StatusType.Success) {
+    } else {
       this.viewRef = this.vcRef.createEmbeddedView(this.templateRef);
     }
   }

@@ -31,3 +31,7 @@ export function loadStatus(): Status {
 export function successStatus(): Status {
   return SUCCESS_STATUS;
 }
+
+export function isLoading(status: Status): boolean {
+  return status.type === StatusType.Loading;
+}

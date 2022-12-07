@@ -19,6 +19,23 @@ import { DateRange } from '../../models/date-range';
 import { LoaderDirective } from '../../ui/loader.directive';
 import { SessionsGroupComponent } from '../sessions-group/sessions-group.component';
 import { NgForOf } from '@angular/common';
+import { selectTags, tagsActions, tagsFeature } from '../../state/tags.store';
+
+const selectViewModel = createSelector(
+  selectSessionsGroups,
+  selectTags,
+  selectActiveSession,
+  sessionsViewFeature.selectRange,
+  sessionsFeature.selectStatus,
+  tagsFeature.selectStatus,
+  (groups, tags, activeSession, range, sessionsStatus, tagsStatus) => ({
+    groups,
+    tags,
+    activeSession,
+    range,
+    status: [sessionsStatus, tagsStatus],
+  }),
+);
 
 @Component({
   selector: 'tt-sessions',
@@ -41,25 +58,13 @@ import { NgForOf } from '@angular/common';
 export class SessionsPageComponent implements OnInit {
   private readonly store = inject(Store);
 
-  protected readonly vm$ = this.store.select(
-    createSelector(
-      selectSessionsGroups,
-      selectActiveSession,
-      sessionsViewFeature.selectRange,
-      sessionsFeature.selectStatus,
-      (groups, activeSession, range, status) => ({
-        groups,
-        activeSession,
-        range,
-        status,
-      }),
-    ),
-  );
+  protected readonly vm$ = this.store.select(selectViewModel);
 
   protected readonly trackById: TrackByFunction<SessionsGroup> = (index, item) => item.id;
 
   public ngOnInit(): void {
     this.store.dispatch(sessionActions.loadSessions());
+    this.store.dispatch(tagsActions.loadTags());
   }
 
   protected onStartSession(params: { start: Date; description: string }): void {

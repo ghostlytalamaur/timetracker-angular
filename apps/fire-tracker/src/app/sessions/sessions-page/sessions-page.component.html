@@ -21,6 +21,7 @@
         <tt-sessions-group
           *ngFor="let group of vm.groups; trackBy: trackById"
           [group]="group"
+          [tags]="vm.tags"
           (sessionChange)="onSessionChange($event)"
           (deleteSession)="onDeleteSession($event)"
         ></tt-sessions-group>

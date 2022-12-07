@@ -8,6 +8,7 @@
   </div>
   <tt-sessions-table
     [sessions]="group.sessions"
+    [tags]="tags"
     (sessionChange)="sessionChange.emit($event)"
     (deleteSession)="deleteSession.emit($event)"
   ></tt-sessions-table>

@@ -5,6 +5,7 @@ import { SessionsTableComponent } from '../sessions-table/sessions-table.compone
 import { DatePipe, NgIf } from '@angular/common';
 import { PushModule } from '@ngrx/component';
 import { DurationPipe, FormatDurationPipe } from '../duration.pipe';
+import { Tag } from '../../models/tag';
 
 @Component({
   selector: 'tt-sessions-group',
@@ -17,6 +18,8 @@ import { DurationPipe, FormatDurationPipe } from '../duration.pipe';
 export class SessionsGroupComponent {
   @Input()
   group: SessionsGroup | undefined;
+  @Input()
+  tags = new Array<Tag>();
   @Output()
   readonly sessionChange = new EventEmitter<Update<Session>>();
   @Output()

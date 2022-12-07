@@ -1,6 +1,6 @@
 <div class="sessions-grid" *ngIf="rows.length > 0; else tplEmpty">
   <ng-container *ngFor="let row of rows; trackBy: trackById">
-    <div class="col-description">
+    <div class="col-description flex flex-col">
       <input
         class="block w-full h-full input"
         type="text"
@@ -12,6 +12,13 @@
         (keyup.enter)="onDescriptionChange(row)"
         (keyup.escape)="resetRow(row)"
       />
+      <div class="flex gap-2">
+        <span
+          *ngFor="let tag of row.session | sessionTags : tags; trackBy: trackByTagId"
+          class="text-gray-300"
+          >#{{ tag.caption }}</span
+        >
+      </div>
     </div>
 
     <div class="col-start">
