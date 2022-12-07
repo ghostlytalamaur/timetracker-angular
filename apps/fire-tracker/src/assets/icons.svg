@@ -52,5 +52,9 @@
     <symbol id="account" viewBox="0 0 24 24">
       <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
     </symbol>
+
+    <symbol id="delete-outline" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
+    </symbol>
   </defs>
 </svg>

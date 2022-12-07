@@ -1,9 +1,9 @@
 <ng-container *ngrxLet="vm$; let vm">
   <tt-top-bar-layout *ttLoader="vm.status">
     <div class="flex gap-2 p-2">
-      <input type="text" class="input" #input placeholder="Tag Caption" />
+      <input type="text" class="input flex-1" #input placeholder="Tag Caption" />
       <button class="btn" (click)="onCreateTag(input.value)">Add</button>
     </div>
-    <tt-tags-list [tags]="vm.tags"></tt-tags-list>
+    <tt-tags-list [tags]="vm.tags" (deleteTag)="onDeleteTag($event)"></tt-tags-list>
   </tt-top-bar-layout>
 </ng-container>

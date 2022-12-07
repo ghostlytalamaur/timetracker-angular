@@ -3,6 +3,8 @@ import {
   addDoc,
   collection,
   collectionSnapshots,
+  deleteDoc,
+  doc,
   Firestore,
   FirestoreDataConverter,
 } from '@angular/fire/firestore';
@@ -77,7 +79,19 @@ export class TagsEffects {
             caption: params.caption,
             color: params.color,
             uid: user.id,
-          });
+          }).catch(console.error);
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
+  public readonly onDeleteTag = createEffect(
+    () => {
+      return this.actions.pipe(
+        ofType(tagsActions.deleteTag),
+        mergeMap(({ id }) => {
+          return deleteDoc(doc(this.collection, id)).catch(console.error);
         }),
       );
     },

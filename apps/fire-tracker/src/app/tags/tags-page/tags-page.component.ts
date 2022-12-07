@@ -28,4 +28,8 @@ export class TagsPageComponent implements OnInit {
   protected onCreateTag(caption: string): void {
     this.store.dispatch(tagsActions.createTag({ params: { caption, color: '' } }));
   }
+
+  protected onDeleteTag(id: string): void {
+    this.store.dispatch(tagsActions.deleteTag({ id }));
+  }
 }

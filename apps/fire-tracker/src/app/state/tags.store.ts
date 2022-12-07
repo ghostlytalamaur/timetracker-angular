@@ -20,6 +20,7 @@ export const tagsActions = {
   loadTagsSuccess: createAction('[Tags] Load Tags Success', props<{ tags: Tag[] }>()),
   clearTags: createAction('[Tags] Clear'),
   createTag: createAction('[Tags] Create Tag', props<{ params: CreateTagParams }>()),
+  deleteTag: createAction('[Tags] Delete Tag', props<{ id: string }>()),
 };
 
 export const tagsFeature = createFeature({

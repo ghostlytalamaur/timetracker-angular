@@ -1,6 +1,9 @@
 <div
   *ngFor="let tag of tags; trackBy: trackById"
-  class="p-2 hover:bg-gray-300/10 border-b border-gray-300/10 last:border-transparent hover:border-transparent"
+  class="pl-4 py-2 pr-6 hover:bg-gray-300/10 flex items-center justify-between"
 >
   <span>{{ tag.caption }}</span>
+  <button class="btn-icon" (click)="deleteTag.emit(tag.id)">
+    <svg [ttIcon]="'delete-outline'"></svg>
+  </button>
 </div>
