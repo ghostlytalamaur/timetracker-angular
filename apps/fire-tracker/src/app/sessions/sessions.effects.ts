@@ -27,7 +27,7 @@ interface SessionData {
   readonly durationMs: number;
   readonly description: string;
   readonly uid: string;
-  readonly tags?: string[];
+  readonly tags: string[] | null;
 }
 
 interface ActiveSessionData {
@@ -134,11 +134,13 @@ export class SessionsEffects {
               return;
             }
             const data = snapshot.data();
-            const sessionData = {
+            const sessionData: UserSession = {
+              id: '',
               start: data.start,
               description: data.description,
               durationMs,
               uid: user.id,
+              tags: [],
             };
 
             return transaction.delete(d).set(doc(this.sessionsCol), sessionData);
