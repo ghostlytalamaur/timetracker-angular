@@ -31,7 +31,7 @@
     "bootstrap": "^4.4.1",
     "firebase": "^8.2.6",
     "fp-ts": "^2.5.4",
-    "luxon": "^1.24.1",
+    "luxon": "^1.28.1",
     "luxon-angular": "^3.0.0",
     "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.3",
